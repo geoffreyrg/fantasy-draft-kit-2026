@@ -6,7 +6,7 @@ Optimized for 12-Team 1/2 PPR live drafts with a 45-second pick clock.
 import streamlit as st
 import pandas as pd
 import numpy as np
-from src.dashboard.ui_components import STANDARD_COLUMN_CONFIG
+from src.dashboard.ui_components import STANDARD_COLUMN_CONFIG, compute_tactical_edge
 
 def render_tab_live_draft(df: pd.DataFrame):
     st.markdown("""
@@ -58,6 +58,8 @@ def render_tab_live_draft(df: pd.DataFrame):
     if "upside_pct" in unpicked_df.columns:
         unpicked_df["upside_pct_display"] = (unpicked_df["upside_pct"] * 100.0).round(1) if unpicked_df["upside_pct"].abs().max() <= 1.0 else unpicked_df["upside_pct"].round(1)
 
+    unpicked_df["tactical_context"] = unpicked_df.apply(compute_tactical_edge, axis=1)
+
     # --------------------------------------------------------------------------
     # VIEW 1: 45-SECOND LIVE DECISION RADAR
     # --------------------------------------------------------------------------
@@ -81,8 +83,8 @@ def render_tab_live_draft(df: pd.DataFrame):
                     st.markdown(f"""
                     <div style="border: 2px solid {border_color}; background-color: #F8FAFC; padding: 12px; border-radius: 8px;">
                         <div style="font-weight: 800; color: #1E3A8A; font-size: 1.05rem;">{pos} Cliff Alert</div>
-                        <div style="font-size: 0.9rem; margin-top: 4px;"><b>Top Avail:</b> {top_player['player_name']} ({top_player['adjusted_vorp']:.1f} VORP)</div>
-                        <div style="font-size: 0.85rem; color: #4B5563;">Est. Next: {next_avail['player_name']} ({next_avail['adjusted_vorp']:.1f} VORP)</div>
+                        <div style="font-size: 0.9rem; margin-top: 4px;"><b>Top Avail:</b> {top_player['player_name']} (+{top_player['adjusted_vorp']:.1f} VORP)</div>
+                        <div style="font-size: 0.85rem; color: #4B5563;">Est. Next: {next_avail['player_name']} (+{next_avail['adjusted_vorp']:.1f} VORP)</div>
                         <div style="font-size: 0.95rem; font-weight: 700; color: {border_color}; margin-top: 4px;">
                             {'⚠️ Tier Drop: -' if vorp_drop >= 12.0 else '✅ Stable: -'}{vorp_drop:.1f} VORP
                         </div>
@@ -98,11 +100,11 @@ def render_tab_live_draft(df: pd.DataFrame):
             st.markdown("#### 🏆 Top 10 Recommended Best Available (Calibrated VORP)")
             top_bpa = unpicked_df.sort_values("composite_rank").head(10)
             
-            # Format badges
+            # Standardized Column Sequence: Rank -> Player -> Pos -> Team -> Tier -> Designation -> VORP -> Calib Proj -> Tactical Context -> Yahoo ADP -> Yahoo Edge -> Smyth Tag
             top_bpa_display = top_bpa[[
                 "composite_rank", "player_name", "position", "team", "composite_tier",
-                "adjusted_vorp", "adjusted_proj_pts", "adp_yahoo", "adp_delta_yahoo",
-                "smyth_color_tag", "nfl_talent_score", "master_designation"
+                "master_designation", "adjusted_vorp", "adjusted_proj_pts", "tactical_context",
+                "adp_yahoo", "adp_delta_yahoo", "smyth_color_tag"
             ]]
 
             st.dataframe(
@@ -257,7 +259,9 @@ def render_tab_live_draft(df: pd.DataFrame):
             st.info("No players drafted yet! Use the '45-Second Live Decision Radar' or click 'DRAFT TO ME' to add players.")
         else:
             team_df = pd.DataFrame(my_team)
-            
+            if "tactical_context" not in team_df.columns:
+                team_df["tactical_context"] = team_df.apply(compute_tactical_edge, axis=1)
+
             m1, m2, m3, m4 = st.columns(4)
             with m1:
                 st.metric("Total Players Drafted", len(team_df), f"{14 - len(team_df)} picks remaining")
@@ -273,21 +277,21 @@ def render_tab_live_draft(df: pd.DataFrame):
 
             st.dataframe(
                 team_df[[
-                    "round_drafted", "pick_drafted", "player_name", "position", "team",
-                    "adjusted_proj_pts", "adjusted_vorp", "smyth_color_tag", "nfl_talent_score", "master_designation"
+                    "round_drafted", "pick_drafted", "player_name", "position", "team", "master_designation",
+                    "adjusted_vorp", "adjusted_proj_pts", "tactical_context", "smyth_color_tag"
                 ]],
                 use_container_width=True,
                 hide_index=True,
                 column_config={
-                    "round_drafted": st.column_config.NumberColumn("Round", format="R%d"),
-                    "pick_drafted": st.column_config.NumberColumn("Pick", format="#%d"),
-                    "player_name": st.column_config.TextColumn("Player"),
-                    "position": st.column_config.TextColumn("Pos"),
-                    "team": st.column_config.TextColumn("Team"),
-                    "adjusted_proj_pts": st.column_config.NumberColumn("Calib Proj", format="%.1f"),
+                    "round_drafted": st.column_config.NumberColumn("Round", format="R%d", pinned=True),
+                    "pick_drafted": st.column_config.NumberColumn("Pick", format="#%d", pinned=True),
+                    "player_name": st.column_config.TextColumn("Player", pinned=True),
+                    "position": st.column_config.TextColumn("Pos", pinned=True),
+                    "team": st.column_config.TextColumn("Team", pinned=True),
+                    "master_designation": st.column_config.TextColumn("Designation", pinned=True),
                     "adjusted_vorp": st.column_config.NumberColumn("VORP", format="%.1f"),
+                    "adjusted_proj_pts": st.column_config.NumberColumn("Calib Proj", format="%.1f"),
+                    "tactical_context": st.column_config.TextColumn("⚡ Key Tactical Context", width="large"),
                     "smyth_color_tag": st.column_config.TextColumn("Smyth Tag"),
-                    "nfl_talent_score": st.column_config.NumberColumn("Talent (0-100)", format="%.1f"),
-                    "master_designation": st.column_config.TextColumn("Designation"),
                 }
             )

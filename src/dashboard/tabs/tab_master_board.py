@@ -1,16 +1,16 @@
 """
 Tab 2: 🏆 Master Consensus Draft Board & Boris Chen Tiers
-Unified multi-source quantitative board with standardized columns and interactive GMM tiering.
+Unified multi-source quantitative board with standardized columns, tactical context, and GMM tiering.
 """
 
 import streamlit as st
 import pandas as pd
-from src.dashboard.ui_components import STANDARD_COLUMN_CONFIG, render_boris_chen_staircase
+from src.dashboard.ui_components import STANDARD_COLUMN_CONFIG, render_boris_chen_staircase, compute_tactical_edge
 
 def render_tab_master_board(df: pd.DataFrame):
     st.subheader("🏆 Master Consensus Draft Board & VORP Rankings (1/2 PPR 12-Team)")
     st.markdown("""
-    Combines **Official Projections**, **Joel Smyth's 2026 Model**, **JoScho Play-by-Play Talent Scores**, **Duracell 2-WR & OL Schemes**, and **Boris Chen GMM Tiers**.
+    Combines **Official Projections**, **Joel Smyth's 2026 Model**, **Duracell 2-WR & OL Schemes**, and **Boris Chen GMM Tiers**.
     """)
 
     view_mode = st.radio("Select Board Display Format:", ["📋 Standard Master Table", "📊 Boris Chen GMM Tier Staircase Charts"], horizontal=True)
@@ -49,13 +49,16 @@ def render_tab_master_board(df: pd.DataFrame):
         else:
             board_df["upside_pct_display"] = board_df["upside_pct"].round(1)
 
+    # Compute tactical context
+    board_df["tactical_context"] = board_df.apply(compute_tactical_edge, axis=1)
+
     if view_mode == "📋 Standard Master Table":
+        # Standardized Column Sequence: Rank -> Player -> Pos -> Team -> Tier -> Designation -> VORP -> Calib Proj -> Tactical Context -> Yahoo ADP -> Yahoo Edge -> Smyth Tag -> Contract Yr -> Injury
         display_cols = [
             "composite_rank", "player_name", "position", "team", "composite_tier",
-            "adjusted_vorp", "adjusted_proj_pts", "upside_pct_display",
-            "smyth_color_tag", "smyth_gold_mine", "nfl_talent_score",
-            "adp_yahoo", "adp_delta_yahoo", "duracell_ol_rank", "two_wr_set_pct",
-            "is_contract_year", "master_designation", "injury_status"
+            "master_designation", "adjusted_vorp", "adjusted_proj_pts",
+            "tactical_context", "adp_yahoo", "adp_delta_yahoo",
+            "smyth_color_tag", "upside_pct_display", "is_contract_year", "injury_status"
         ]
         disp_df = board_df[[c for c in display_cols if c in board_df.columns]].sort_values(by="composite_rank")
 
@@ -66,7 +69,7 @@ def render_tab_master_board(df: pd.DataFrame):
             column_config=STANDARD_COLUMN_CONFIG
         )
 
-        st.caption(f"Showing {len(disp_df)} scouted players. Pinned left: Rank, Player, Pos, Team, Tier.")
+        st.caption(f"Showing {len(disp_df)} scouted players. Pinned left: Rank, Player, Pos, Team, Tier, Designation.")
 
     elif view_mode == "📊 Boris Chen GMM Tier Staircase Charts":
         st.markdown("### 📊 Boris Chen Gaussian Mixture Model (GMM) Tier Staircase")
@@ -74,7 +77,7 @@ def render_tab_master_board(df: pd.DataFrame):
         Each bar represents the **expert consensus ranking uncertainty range**.
         - **Solid Dot**: Model Calibrated Rank.
         - **Whiskers / Horizontal Line**: Expert High-to-Low rank spread.
-        - **Tier Colors**: Statistically separated Gaussian clusters. Drafters should target players near the top/right of their tier before a tier boundary drop!
+        - **Tier Colors**: Statistically separated Gaussian clusters. Target players near the top of their tier before a tier drop!
         """)
 
         pos_tab1, pos_tab2, pos_tab3, pos_tab4, pos_tab5 = st.tabs(["🔥 Overall Top 100", "🏃 Running Backs (RB)", "⚡ Wide Receivers (WR)", "🎯 Quarterbacks (QB)", "🛡️ Tight Ends (TE)"])

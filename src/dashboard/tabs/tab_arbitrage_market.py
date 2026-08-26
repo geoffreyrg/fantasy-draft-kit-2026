@@ -5,7 +5,7 @@ Cross-platform pricing discounts (Yahoo/ESPN/Sleeper/CBS), Sleepers, Rookie ML H
 
 import streamlit as st
 import pandas as pd
-from src.dashboard.ui_components import STANDARD_COLUMN_CONFIG
+from src.dashboard.ui_components import STANDARD_COLUMN_CONFIG, compute_tactical_edge
 
 def render_tab_arbitrage_market(df: pd.DataFrame):
     st.subheader("🎯 Market Inefficiencies, Platform Arbitrage & Sleeper Radar")
@@ -25,16 +25,18 @@ def render_tab_arbitrage_market(df: pd.DataFrame):
     # --------------------------------------------------------------------------
     with sub_t1:
         st.markdown("### 🟣 Top Value Steals on Yahoo Fantasy (Tonight's Draft)")
-        st.markdown("These players are being drafted **significantly later on Yahoo** than their Model Calibrated VORP rank. Target these players 1 round before their Yahoo ADP to get massive value!")
+        st.markdown("These players are being drafted **significantly later on Yahoo** than their Model Calibrated VORP rank. Target these players 1 round before their Yahoo ADP to lock in massive value!")
 
         yahoo_steals = df[df["adp_delta_yahoo"] >= 4.0].sort_values(by="adp_delta_yahoo", ascending=False).copy()
         if "upside_pct" in yahoo_steals.columns:
             yahoo_steals["upside_pct_display"] = (yahoo_steals["upside_pct"] * 100.0).round(1) if yahoo_steals["upside_pct"].abs().max() <= 1.0 else yahoo_steals["upside_pct"].round(1)
 
+        yahoo_steals["tactical_context"] = yahoo_steals.apply(compute_tactical_edge, axis=1)
+
         disp_cols = [
             "composite_rank", "player_name", "position", "team", "composite_tier",
-            "adp_yahoo", "adp_delta_yahoo", "adjusted_vorp", "adjusted_proj_pts",
-            "nfl_talent_score", "smyth_color_tag", "master_designation"
+            "master_designation", "adp_yahoo", "adp_delta_yahoo", "adjusted_vorp",
+            "adjusted_proj_pts", "tactical_context", "smyth_color_tag"
         ]
 
         st.dataframe(
@@ -53,7 +55,7 @@ def render_tab_arbitrage_market(df: pd.DataFrame):
         arb_df = df[df["adp_spread"] >= 6.0].sort_values(by="adp_spread", ascending=False).copy()
         
         arb_cols = [
-            "composite_rank", "player_name", "position", "team", "adp_spread",
+            "composite_rank", "player_name", "position", "team", "master_designation", "adp_spread",
             "best_value_platform", "cheapest_adp", "most_expensive_adp",
             "adp_yahoo", "adp_espn", "adp_sleeper", "adp_cbs"
         ]
@@ -65,8 +67,9 @@ def render_tab_arbitrage_market(df: pd.DataFrame):
             column_config={
                 "composite_rank": st.column_config.NumberColumn("Rank", format="#%d", pinned=True),
                 "player_name": st.column_config.TextColumn("Player", pinned=True),
-                "position": st.column_config.TextColumn("Pos"),
-                "team": st.column_config.TextColumn("Team"),
+                "position": st.column_config.TextColumn("Pos", pinned=True),
+                "team": st.column_config.TextColumn("Team", pinned=True),
+                "master_designation": st.column_config.TextColumn("Designation", pinned=True),
                 "adp_spread": st.column_config.NumberColumn("ADP Spread (Picks)", format="%.1f"),
                 "best_value_platform": st.column_config.TextColumn("Cheapest Platform"),
                 "cheapest_adp": st.column_config.NumberColumn("Latest ADP", format="%.1f"),
@@ -82,17 +85,19 @@ def render_tab_arbitrage_market(df: pd.DataFrame):
     # SUBTAB 3: SLEEPERS & BREAKOUTS
     # --------------------------------------------------------------------------
     with sub_t3:
-        st.markdown("### 🚀 Late-Round High-Upside Sleepers (Picks 90+)")
+        st.markdown("### 🚀 Late-Round High-Upside Sleepers (Picks 80+)")
         sleepers_df = df[(df["composite_rank"] >= 80) & (df["adjusted_vorp"] >= -15.0)].sort_values(by="composite_rank").copy()
 
         if "upside_pct" in sleepers_df.columns:
             sleepers_df["upside_pct_display"] = (sleepers_df["upside_pct"] * 100.0).round(1) if sleepers_df["upside_pct"].abs().max() <= 1.0 else sleepers_df["upside_pct"].round(1)
 
+        sleepers_df["tactical_context"] = sleepers_df.apply(compute_tactical_edge, axis=1)
+
         st.dataframe(
             sleepers_df[[
                 "composite_rank", "player_name", "position", "team", "composite_tier",
-                "adp_yahoo", "adp_delta_yahoo", "adjusted_vorp", "adjusted_proj_pts",
-                "nfl_talent_score", "breakout_catalyst", "smyth_color_tag"
+                "master_designation", "adp_yahoo", "adp_delta_yahoo", "adjusted_vorp",
+                "adjusted_proj_pts", "tactical_context", "smyth_color_tag"
             ]],
             use_container_width=True,
             hide_index=True,
@@ -109,7 +114,7 @@ def render_tab_arbitrage_market(df: pd.DataFrame):
         if not rookie_df.empty:
             st.dataframe(
                 rookie_df[[
-                    "composite_rank", "player_name", "position", "team",
+                    "composite_rank", "player_name", "position", "team", "master_designation",
                     "rookie_hit_prob", "rookie_speed_score", "rookie_dominator_pct",
                     "college_talent_score", "adp_yahoo", "adjusted_vorp"
                 ]],
@@ -118,8 +123,9 @@ def render_tab_arbitrage_market(df: pd.DataFrame):
                 column_config={
                     "composite_rank": st.column_config.NumberColumn("Rank", format="#%d", pinned=True),
                     "player_name": st.column_config.TextColumn("Player", pinned=True),
-                    "position": st.column_config.TextColumn("Pos"),
-                    "team": st.column_config.TextColumn("Team"),
+                    "position": st.column_config.TextColumn("Pos", pinned=True),
+                    "team": st.column_config.TextColumn("Team", pinned=True),
+                    "master_designation": st.column_config.TextColumn("Designation", pinned=True),
                     "rookie_hit_prob": st.column_config.ProgressColumn("ML Hit Prob", min_value=0.0, max_value=1.0, format="%.1%"),
                     "rookie_speed_score": st.column_config.NumberColumn("Speed Score", format="%.1f"),
                     "rookie_dominator_pct": st.column_config.NumberColumn("Dominator %", format="%.1f%%"),

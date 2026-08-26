@@ -7,6 +7,87 @@ import pandas as pd
 import numpy as np
 import altair as alt
 
+def compute_tactical_edge(r) -> str:
+    """Computes punchy, position-specific contextual intelligence for fast draft decisions."""
+    pos = str(r.get("position", "")).strip().upper()
+    ol = r.get("duracell_ol_rank", 16)
+    twowr = r.get("two_wr_set_pct", 35.0)
+    proe = r.get("duracell_proe", 0.0)
+    gold = str(r.get("smyth_gold_mine", "")).strip()
+    exodia = r.get("is_exodia", 0)
+    top_off = r.get("is_top_offense_undervalued", 0)
+    cat = r.get("has_breakout_catalyst", 0)
+    contract = r.get("is_contract_year", 0)
+    
+    parts = []
+    if pos == "RB":
+        if pd.notna(ol):
+            if ol <= 5:
+                parts.append(f"🛡️ Elite OL (#{int(ol)})")
+            elif ol >= 25:
+                parts.append(f"⚠️ Poor OL (#{int(ol)})")
+            else:
+                parts.append(f"OL #{int(ol)}")
+        
+        if gold == "Gold Standard":
+            parts.append("👑 3-Down Bellcow")
+        elif gold == "Gold Diggers":
+            parts.append("⚡ Goal-Line Anchor")
+        elif gold == "Fool's Gold":
+            parts.append("⚠️ Committee Trap")
+            
+        if pd.notna(proe) and proe <= -3.0:
+            parts.append("🏃 Run-Heavy Volume")
+        if top_off == 1:
+            parts.append("⭐ Top-10 Offense")
+        if contract == 1:
+            parts.append("💰 Contract Yr")
+
+    elif pos == "WR":
+        if pd.notna(twowr):
+            if twowr >= 45.0:
+                rank_val = r.get("composite_rank", 99)
+                if rank_val <= 40:
+                    parts.append(f"🎯 Target Funnel ({twowr:.0f}% 2-WR)")
+                else:
+                    parts.append(f"🚨 Bench Risk ({twowr:.0f}% 2-WR)")
+            elif twowr <= 28.0:
+                parts.append(f"⚡ 3-WR Slot Heavy ({twowr:.0f}% 2-WR)")
+                
+        if pd.notna(proe):
+            if proe >= 3.0:
+                parts.append(f"🚀 Pass-Funnel (+{proe:.1f}%)")
+            elif proe <= -3.0:
+                parts.append(f"⚠️ Run-Capped ({proe:.1f}%)")
+                
+        if cat == 1:
+            parts.append("🔥 Scheme Catalyst")
+        if contract == 1:
+            parts.append("💰 Contract Yr")
+
+    elif pos == "QB":
+        if pd.notna(ol):
+            if ol <= 6:
+                parts.append(f"🛡️ Clean Pocket (OL #{int(ol)})")
+            elif ol >= 24:
+                parts.append(f"⚠️ High Pressure Risk (OL #{int(ol)})")
+                
+        if pd.notna(proe) and proe >= 3.0:
+            parts.append(f"🚀 High Pass Volume (+{proe:.1f}%)")
+        if top_off == 1:
+            parts.append("⭐ Elite McShanahan Scheme")
+            
+    elif pos == "TE":
+        if pd.notna(twowr) and twowr >= 40.0:
+            parts.append(f"🎯 90%+ Route Snaps ({twowr:.0f}% 12p)")
+        if exodia == 1:
+            parts.append("💥 TE1 Alpha")
+        if cat == 1:
+            parts.append("🔥 Target Funnel")
+
+    return " • ".join(parts) if parts else "—"
+
+
 # Standardized Column Configuration across all tables
 STANDARD_COLUMN_CONFIG = {
     "composite_rank": st.column_config.NumberColumn("Rank", format="#%d", pinned=True, help="Overall Calibrated VORP Master Rank"),
@@ -14,30 +95,22 @@ STANDARD_COLUMN_CONFIG = {
     "position": st.column_config.TextColumn("Pos", pinned=True),
     "team": st.column_config.TextColumn("Team", pinned=True),
     "composite_tier": st.column_config.TextColumn("Tier", pinned=True),
-    "calibrated_vorp": st.column_config.NumberColumn("🏆 VORP", format="%.1f", help="Value Over Replacement Player (12-Team 1/2 PPR Baseline)"),
+    "master_designation": st.column_config.TextColumn("Designation", pinned=True, help="Primary Expert Badge (Exodia / Target / Value / Avoid)"),
     "adjusted_vorp": st.column_config.NumberColumn("🏆 VORP", format="%.1f", help="Value Over Replacement Player (12-Team 1/2 PPR Baseline)"),
     "adjusted_proj_pts": st.column_config.NumberColumn("🚀 Calib Proj", format="%.1f", help="Multi-source consensus projection scaled by expert upside model"),
-    "consensus_proj_pts": st.column_config.NumberColumn("📊 Proj Pts", format="%.1f", help="Baseline weighted consensus projection"),
-    "upside_pct_display": st.column_config.NumberColumn("🎯 Upside Mod", format="%+.1f%%", help="Expert upside multiplier (-8% to +10%)"),
-    "smyth_color_tag": st.column_config.TextColumn("🎯 Smyth Tag", help="Joel Smyth Big Board: Green=Target (+12), Yellow=Pass (-5), Red=Avoid (-15)"),
-    "smyth_gold_mine": st.column_config.TextColumn("⛏️ RB Gold Mine", help="Joel Smyth RB Tiers: Gold Standard (+6), Gold Diggers (+3), Silver Lining (+1), Fool's Gold (-5)"),
-    "nfl_talent_score": st.column_config.NumberColumn("🔬 Talent (0-100)", format="%.1f", help="JoScho Play-by-Play Per-Opportunity Efficiency Rating (Separation, YAC/x, MTF, CPOE)"),
+    "tactical_context": st.column_config.TextColumn("⚡ Key Tactical Context", width="large", help="Position-specific role, OL rank, 2-WR usage %, PROE, and scheme flags"),
     "adp_yahoo": st.column_config.NumberColumn("Yahoo ADP", format="%.1f", help="Current Live Yahoo Fantasy ADP"),
     "adp_delta_yahoo": st.column_config.NumberColumn("Yahoo Edge", format="%+.1f", help="Model Rank vs Yahoo ADP (Positive = Huge Value / Steal on Yahoo)"),
+    "smyth_color_tag": st.column_config.TextColumn("🎯 Smyth Tag", help="Joel Smyth Big Board: Green=Target (+12), Yellow=Pass (-5), Red=Avoid (-15)"),
+    "upside_pct_display": st.column_config.NumberColumn("🎯 Upside Mod", format="%+.1f%%", help="Expert upside multiplier (-8% to +10%)"),
+    "consensus_proj_pts": st.column_config.NumberColumn("📊 Proj Pts", format="%.1f"),
     "ecr": st.column_config.NumberColumn("Consensus ECR", format="%.1f"),
     "adp_consensus": st.column_config.NumberColumn("Consensus ADP", format="%.1f"),
     "adp_delta_consensus": st.column_config.NumberColumn("Market Delta", format="%+.1f"),
-    "duracell_ol_rank": st.column_config.NumberColumn("OL Rank", format="#%d", help="Duracell / PFF Consensus Offensive Line Rank"),
-    "two_wr_set_pct": st.column_config.NumberColumn("2-WR Set %", format="%.1f%%", help="Percentage of team snaps in 2-WR personnel (12p/21p/13p)"),
-    "duracell_proe": st.column_config.NumberColumn("PROE %", format="%+.1f%%", help="Pass Rate Over Expected"),
+    "duracell_ol_rank": st.column_config.NumberColumn("OL Rank", format="#%d"),
+    "two_wr_set_pct": st.column_config.NumberColumn("2-WR Set %", format="%.1f%%"),
+    "duracell_proe": st.column_config.NumberColumn("PROE %", format="%+.1f%%"),
     "is_contract_year": st.column_config.CheckboxColumn("Contract Yr"),
-    "fp_pos_rank": st.column_config.TextColumn("FP Pos Rank"),
-    "fp_proj_pts_half_ppr": st.column_config.NumberColumn("FP Proj Pts", format="%.1f"),
-    "hansen_top200_rank": st.column_config.NumberColumn("👑 Guru Top 200", format="#%d"),
-    "joscho_proj_pts": st.column_config.NumberColumn("🤖 JoScho Proj", format="%.1f"),
-    "breakout_catalyst": st.column_config.TextColumn("🔥 Breakout Catalyst", width="medium"),
-    "top_offense_note": st.column_config.TextColumn("⭐ Top 10 Offense Asset", width="medium"),
-    "master_designation": st.column_config.TextColumn("Designation"),
     "injury_status": st.column_config.TextColumn("Injury"),
 }
 
