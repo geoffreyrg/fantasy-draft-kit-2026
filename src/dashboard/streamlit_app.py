@@ -24,12 +24,20 @@ from config.settings import settings
 from src.analytics.pipeline import AnalyticsPipeline
 from src.dashboard.sheets_sync import GoogleSheetsSync
 
-# Import 5 Modular Tab Renderers
-from src.dashboard.tabs.tab_live_draft import render_tab_live_draft
-from src.dashboard.tabs.tab_master_board import render_tab_master_board
-from src.dashboard.tabs.tab_player_dossier import render_tab_player_dossier
-from src.dashboard.tabs.tab_arbitrage_market import render_tab_arbitrage_market
-from src.dashboard.tabs.tab_team_schematics import render_tab_team_schematics
+# Force reload of UI and Tab modules
+import src.dashboard.ui_components as ui_comp
+import src.dashboard.tabs.tab_live_draft as t_live
+import src.dashboard.tabs.tab_master_board as t_board
+import src.dashboard.tabs.tab_player_dossier as t_dossier
+import src.dashboard.tabs.tab_arbitrage_market as t_arb
+import src.dashboard.tabs.tab_team_schematics as t_schem
+
+importlib.reload(ui_comp)
+importlib.reload(t_live)
+importlib.reload(t_board)
+importlib.reload(t_dossier)
+importlib.reload(t_arb)
+importlib.reload(t_schem)
 
 # Set Streamlit page layout
 st.set_page_config(
@@ -188,7 +196,7 @@ except Exception as e:
 st.markdown('<div class="main-header">🏈 Fantasy Football Draft Kit & Scouting Intelligence Engine 2026</div>', unsafe_allow_html=True)
 st.markdown(
     f'<div class="sub-header">Multi-Source Quantitative Engine: FantasyPros 1/2 PPR ECR, Joel Smyth 2026 Guide, '
-    f'JoScho Analytics (PBP Talent & ML Hit Model), Duracell POS/2-WR/OL/PROE & Schedules, and Fantasy Points Exodia Matrix.</div>',
+    f'Duracell POS/2-WR/OL/PROE & Schedules, and Fantasy Points Exodia Matrix.</div>',
     unsafe_allow_html=True
 )
 
@@ -224,16 +232,16 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 ])
 
 with tab1:
-    render_tab_live_draft(df)
+    t_live.render_tab_live_draft(df)
 
 with tab2:
-    render_tab_master_board(df)
+    t_board.render_tab_master_board(df)
 
 with tab3:
-    render_tab_player_dossier(df)
+    t_dossier.render_tab_player_dossier(df)
 
 with tab4:
-    render_tab_arbitrage_market(df)
+    t_arb.render_tab_arbitrage_market(df)
 
 with tab5:
-    render_tab_team_schematics(df)
+    t_schem.render_tab_team_schematics(df)
