@@ -5,7 +5,7 @@ Unified multi-source quantitative board with standardized columns, tactical cont
 
 import streamlit as st
 import pandas as pd
-from src.dashboard.ui_components import STANDARD_COLUMN_CONFIG, render_boris_chen_staircase, compute_tactical_edge
+from src.dashboard.ui_components import STANDARD_COLUMN_CONFIG, render_boris_chen_staircase, compute_tactical_edge, TOP_10_TEAMS
 
 def render_tab_master_board(df: pd.DataFrame):
     st.subheader("🏆 Master Consensus Draft Board & VORP Rankings (1/2 PPR 12-Team)")
@@ -15,25 +15,51 @@ def render_tab_master_board(df: pd.DataFrame):
 
     view_mode = st.radio("Select Board Display Format:", ["📋 Standard Master Table", "📊 Boris Chen GMM Tier Staircase Charts"], horizontal=True)
 
-    f_col1, f_col2, f_col3, f_col4 = st.columns([1.5, 1.5, 2, 2])
+    f_col1, f_col2, f_col3, f_col4 = st.columns([1.5, 1.5, 2.2, 1.8])
     with f_col1:
         pos_filter = st.multiselect("Filter Position", ["QB", "RB", "WR", "TE", "K", "DST"], default=["QB", "RB", "WR", "TE"], key="mb_pos_filter")
     with f_col2:
         tier_filter = st.multiselect("Filter Tiers", ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8"], default=["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8"], key="mb_tier_filter")
     with f_col3:
-        cat_filter = st.selectbox("Focus Filter", ["All Players", "💥 Exodia Core Only", "🔥 20 Breakout Catalysts Only", "⭐ Top 10 Offense Value Assets Only", "🎯 Joel Smyth Green Targets Only"], index=0, key="mb_cat_filter")
+        focus_filters = st.multiselect(
+            "Focus Filters (Multi-Select)",
+            [
+                "💥 Exodia Core",
+                "🔥 Breakout Catalysts",
+                "⭐ Top 10 Offense Assets",
+                "🎯 Joel Smyth Green Targets",
+                "👑 Guru 12 Targets",
+                "💰 Contract Year Assets"
+            ],
+            default=[],
+            key="mb_focus_multiselect"
+        )
     with f_col4:
         search_query = st.text_input("🔍 Search Player or Team", "", key="mb_search_query")
 
     board_df = df[df["position"].isin(pos_filter) & df["composite_tier"].isin(tier_filter)].copy()
-    if cat_filter == "💥 Exodia Core Only":
-        board_df = board_df[board_df["is_exodia"] == 1]
-    elif cat_filter == "🔥 20 Breakout Catalysts Only":
-        board_df = board_df[board_df["has_breakout_catalyst"] == 1]
-    elif cat_filter == "⭐ Top 10 Offense Value Assets Only":
-        board_df = board_df[board_df["is_top_offense_undervalued"] == 1]
-    elif cat_filter == "🎯 Joel Smyth Green Targets Only":
-        board_df = board_df[board_df["smyth_color_tag"] == "TARGET"]
+
+    # Apply Multi-Select Focus Filters
+    if focus_filters:
+        masks = []
+        if "💥 Exodia Core" in focus_filters:
+            masks.append(board_df["is_exodia"] == 1)
+        if "🔥 Breakout Catalysts" in focus_filters:
+            masks.append(board_df["has_breakout_catalyst"] == 1)
+        if "⭐ Top 10 Offense Assets" in focus_filters:
+            masks.append((board_df["is_top_offense_undervalued"] == 1) | (board_df["team"].isin(TOP_10_TEAMS)))
+        if "🎯 Joel Smyth Green Targets" in focus_filters:
+            masks.append(board_df["smyth_color_tag"] == "TARGET")
+        if "👑 Guru 12 Targets" in focus_filters:
+            masks.append(board_df["master_designation"].str.contains("Twelve|Guru", case=False, na=False))
+        if "💰 Contract Year Assets" in focus_filters:
+            masks.append(board_df["is_contract_year"] == 1)
+
+        if masks:
+            combined_mask = masks[0]
+            for m in masks[1:]:
+                combined_mask = combined_mask | m
+            board_df = board_df[combined_mask]
 
     if search_query:
         board_df = board_df[
@@ -49,7 +75,7 @@ def render_tab_master_board(df: pd.DataFrame):
         else:
             board_df["upside_pct_display"] = board_df["upside_pct"].round(1)
 
-    # Compute tactical context
+    # Compute comprehensive tactical context
     board_df["tactical_context"] = board_df.apply(compute_tactical_edge, axis=1)
 
     if view_mode == "📋 Standard Master Table":

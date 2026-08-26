@@ -7,84 +7,90 @@ import pandas as pd
 import numpy as np
 import altair as alt
 
+TOP_10_TEAMS = {"DET", "LAR", "SF", "KC", "BUF", "PHI", "CIN", "BAL", "GB", "HOU", "DAL", "MIA"}
+
 def compute_tactical_edge(r) -> str:
-    """Computes punchy, position-specific contextual intelligence for fast draft decisions."""
+    """Computes punchy, comprehensive position-specific contextual intelligence for fast draft decisions."""
     pos = str(r.get("position", "")).strip().upper()
+    tm = str(r.get("team", "")).strip().upper()
     ol = r.get("duracell_ol_rank", 16)
     twowr = r.get("two_wr_set_pct", 35.0)
     proe = r.get("duracell_proe", 0.0)
+    coach = r.get("playcaller", "") or r.get("duracell_coach", "")
     gold = str(r.get("smyth_gold_mine", "")).strip()
     exodia = r.get("is_exodia", 0)
-    top_off = r.get("is_top_offense_undervalued", 0)
+    is_top_eco = (tm in TOP_10_TEAMS) or (r.get("is_top_offense_undervalued", 0) == 1)
     cat = r.get("has_breakout_catalyst", 0)
     contract = r.get("is_contract_year", 0)
+    shadow_cb = r.get("wr_shadow_cb_count", None)
     
     parts = []
-    if pos == "RB":
-        if pd.notna(ol):
-            if ol <= 5:
-                parts.append(f"🛡️ Elite OL (#{int(ol)})")
-            elif ol >= 25:
-                parts.append(f"⚠️ Poor OL (#{int(ol)})")
-            else:
-                parts.append(f"OL #{int(ol)}")
+    
+    # 1. Macro Ecosystem & Playcaller
+    if is_top_eco:
+        if coach and coach != "—":
+            parts.append(f"⭐ Top-10 Eco ({coach})")
+        else:
+            parts.append("⭐ Top-10 Eco")
+    elif coach and coach != "—":
+        parts.append(f"Scheme: {coach}")
         
+    # 2. Offensive Line Rank
+    if pd.notna(ol):
+        ol_int = int(ol)
+        if ol_int <= 5:
+            parts.append(f"🛡️ Top-5 OL (#{ol_int})")
+        elif ol_int >= 25:
+            parts.append(f"⚠️ Bad OL (#{ol_int})")
+        elif pos in ["RB", "QB"]:
+            parts.append(f"OL #{ol_int}")
+            
+    # 3. Position-Specific Volume & Roles
+    if pos == "RB":
         if gold == "Gold Standard":
             parts.append("👑 3-Down Bellcow")
         elif gold == "Gold Diggers":
             parts.append("⚡ Goal-Line Anchor")
         elif gold == "Fool's Gold":
             parts.append("⚠️ Committee Trap")
-            
         if pd.notna(proe) and proe <= -3.0:
-            parts.append("🏃 Run-Heavy Volume")
-        if top_off == 1:
-            parts.append("⭐ Top-10 Offense")
-        if contract == 1:
-            parts.append("💰 Contract Yr")
-
+            parts.append("🏃 Run-Heavy Vol")
+            
     elif pos == "WR":
         if pd.notna(twowr):
             if twowr >= 45.0:
                 rank_val = r.get("composite_rank", 99)
-                if rank_val <= 40:
+                if rank_val <= 35:
                     parts.append(f"🎯 Target Funnel ({twowr:.0f}% 2-WR)")
                 else:
-                    parts.append(f"🚨 Bench Risk ({twowr:.0f}% 2-WR)")
+                    parts.append(f"🚨 2-WR Bench Risk ({twowr:.0f}%)")
             elif twowr <= 28.0:
-                parts.append(f"⚡ 3-WR Slot Heavy ({twowr:.0f}% 2-WR)")
-                
+                parts.append(f"⚡ 3-WR Slot Heavy ({twowr:.0f}%)")
         if pd.notna(proe):
             if proe >= 3.0:
                 parts.append(f"🚀 Pass-Funnel (+{proe:.1f}%)")
             elif proe <= -3.0:
-                parts.append(f"⚠️ Run-Capped ({proe:.1f}%)")
-                
-        if cat == 1:
-            parts.append("🔥 Scheme Catalyst")
-        if contract == 1:
-            parts.append("💰 Contract Yr")
-
+                parts.append(f"⚠️ Run-Cap ({proe:.1f}%)")
+        if pd.notna(shadow_cb) and shadow_cb <= 2.0 and shadow_cb >= 0:
+            parts.append("🟢 Green Schedule (≤2 Shadows)")
+            
     elif pos == "QB":
-        if pd.notna(ol):
-            if ol <= 6:
-                parts.append(f"🛡️ Clean Pocket (OL #{int(ol)})")
-            elif ol >= 24:
-                parts.append(f"⚠️ High Pressure Risk (OL #{int(ol)})")
-                
         if pd.notna(proe) and proe >= 3.0:
-            parts.append(f"🚀 High Pass Volume (+{proe:.1f}%)")
-        if top_off == 1:
-            parts.append("⭐ Elite McShanahan Scheme")
+            parts.append(f"🚀 High Pass Vol (+{proe:.1f}%)")
+        if r.get("qb_runs", False):
+            parts.append("⚡ Dual-Threat Floor")
             
     elif pos == "TE":
         if pd.notna(twowr) and twowr >= 40.0:
             parts.append(f"🎯 90%+ Route Snaps ({twowr:.0f}% 12p)")
         if exodia == 1:
             parts.append("💥 TE1 Alpha")
-        if cat == 1:
-            parts.append("🔥 Target Funnel")
-
+            
+    if cat == 1:
+        parts.append("🔥 Breakout Catalyst")
+    if contract == 1:
+        parts.append("💰 Contract Yr")
+        
     return " • ".join(parts) if parts else "—"
 
 
@@ -98,7 +104,7 @@ STANDARD_COLUMN_CONFIG = {
     "master_designation": st.column_config.TextColumn("Designation", pinned=True, help="Primary Expert Badge (Exodia / Target / Value / Avoid)"),
     "adjusted_vorp": st.column_config.NumberColumn("🏆 VORP", format="%.1f", help="Value Over Replacement Player (12-Team 1/2 PPR Baseline)"),
     "adjusted_proj_pts": st.column_config.NumberColumn("🚀 Calib Proj", format="%.1f", help="Multi-source consensus projection scaled by expert upside model"),
-    "tactical_context": st.column_config.TextColumn("⚡ Key Tactical Context", width="large", help="Position-specific role, OL rank, 2-WR usage %, PROE, and scheme flags"),
+    "tactical_context": st.column_config.TextColumn("⚡ Key Tactical Context", width="large", help="Position-specific role, playcaller, OL rank, 2-WR usage %, PROE, schedule and scheme flags"),
     "adp_yahoo": st.column_config.NumberColumn("Yahoo ADP", format="%.1f", help="Current Live Yahoo Fantasy ADP"),
     "adp_delta_yahoo": st.column_config.NumberColumn("Yahoo Edge", format="%+.1f", help="Model Rank vs Yahoo ADP (Positive = Huge Value / Steal on Yahoo)"),
     "smyth_color_tag": st.column_config.TextColumn("🎯 Smyth Tag", help="Joel Smyth Big Board: Green=Target (+12), Yellow=Pass (-5), Red=Avoid (-15)"),

@@ -74,7 +74,6 @@ def render_tab_live_draft(df: pd.DataFrame):
             with cliff_cols[idx]:
                 if not pos_unpicked.empty:
                     top_player = pos_unpicked.iloc[0]
-                    # Estimate player available at next pick
                     lookahead = min(len(pos_unpicked) - 1, max(1, picks_away // 2))
                     next_avail = pos_unpicked.iloc[lookahead]
                     vorp_drop = top_player["adjusted_vorp"] - next_avail["adjusted_vorp"]
@@ -100,7 +99,6 @@ def render_tab_live_draft(df: pd.DataFrame):
             st.markdown("#### 🏆 Top 10 Recommended Best Available (Calibrated VORP)")
             top_bpa = unpicked_df.sort_values("composite_rank").head(10)
             
-            # Standardized Column Sequence: Rank -> Player -> Pos -> Team -> Tier -> Designation -> VORP -> Calib Proj -> Tactical Context -> Yahoo ADP -> Yahoo Edge -> Smyth Tag
             top_bpa_display = top_bpa[[
                 "composite_rank", "player_name", "position", "team", "composite_tier",
                 "master_designation", "adjusted_vorp", "adjusted_proj_pts", "tactical_context",
