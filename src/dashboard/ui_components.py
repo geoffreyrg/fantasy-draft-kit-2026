@@ -1,0 +1,104 @@
+"""
+Standardized UI components, column configurations, and visual themes for the 2026 Fantasy Draft Kit.
+"""
+
+import streamlit as st
+import pandas as pd
+import numpy as np
+import altair as alt
+
+# Standardized Column Configuration across all tables
+STANDARD_COLUMN_CONFIG = {
+    "composite_rank": st.column_config.NumberColumn("Rank", format="#%d", pinned=True, help="Overall Calibrated VORP Master Rank"),
+    "player_name": st.column_config.TextColumn("Player", pinned=True),
+    "position": st.column_config.TextColumn("Pos", pinned=True),
+    "team": st.column_config.TextColumn("Team", pinned=True),
+    "composite_tier": st.column_config.TextColumn("Tier", pinned=True),
+    "calibrated_vorp": st.column_config.NumberColumn("🏆 VORP", format="%.1f", help="Value Over Replacement Player (12-Team 1/2 PPR Baseline)"),
+    "adjusted_vorp": st.column_config.NumberColumn("🏆 VORP", format="%.1f", help="Value Over Replacement Player (12-Team 1/2 PPR Baseline)"),
+    "adjusted_proj_pts": st.column_config.NumberColumn("🚀 Calib Proj", format="%.1f", help="Multi-source consensus projection scaled by expert upside model"),
+    "consensus_proj_pts": st.column_config.NumberColumn("📊 Proj Pts", format="%.1f", help="Baseline weighted consensus projection"),
+    "upside_pct_display": st.column_config.NumberColumn("🎯 Upside Mod", format="%+.1f%%", help="Expert upside multiplier (-8% to +10%)"),
+    "smyth_color_tag": st.column_config.TextColumn("🎯 Smyth Tag", help="Joel Smyth Big Board: Green=Target (+12), Yellow=Pass (-5), Red=Avoid (-15)"),
+    "smyth_gold_mine": st.column_config.TextColumn("⛏️ RB Gold Mine", help="Joel Smyth RB Tiers: Gold Standard (+6), Gold Diggers (+3), Silver Lining (+1), Fool's Gold (-5)"),
+    "nfl_talent_score": st.column_config.NumberColumn("🔬 Talent (0-100)", format="%.1f", help="JoScho Play-by-Play Per-Opportunity Efficiency Rating (Separation, YAC/x, MTF, CPOE)"),
+    "adp_yahoo": st.column_config.NumberColumn("Yahoo ADP", format="%.1f", help="Current Live Yahoo Fantasy ADP"),
+    "adp_delta_yahoo": st.column_config.NumberColumn("Yahoo Edge", format="%+.1f", help="Model Rank vs Yahoo ADP (Positive = Huge Value / Steal on Yahoo)"),
+    "ecr": st.column_config.NumberColumn("Consensus ECR", format="%.1f"),
+    "adp_consensus": st.column_config.NumberColumn("Consensus ADP", format="%.1f"),
+    "adp_delta_consensus": st.column_config.NumberColumn("Market Delta", format="%+.1f"),
+    "duracell_ol_rank": st.column_config.NumberColumn("OL Rank", format="#%d", help="Duracell / PFF Consensus Offensive Line Rank"),
+    "two_wr_set_pct": st.column_config.NumberColumn("2-WR Set %", format="%.1f%%", help="Percentage of team snaps in 2-WR personnel (12p/21p/13p)"),
+    "duracell_proe": st.column_config.NumberColumn("PROE %", format="%+.1f%%", help="Pass Rate Over Expected"),
+    "is_contract_year": st.column_config.CheckboxColumn("Contract Yr"),
+    "fp_pos_rank": st.column_config.TextColumn("FP Pos Rank"),
+    "fp_proj_pts_half_ppr": st.column_config.NumberColumn("FP Proj Pts", format="%.1f"),
+    "hansen_top200_rank": st.column_config.NumberColumn("👑 Guru Top 200", format="#%d"),
+    "joscho_proj_pts": st.column_config.NumberColumn("🤖 JoScho Proj", format="%.1f"),
+    "breakout_catalyst": st.column_config.TextColumn("🔥 Breakout Catalyst", width="medium"),
+    "top_offense_note": st.column_config.TextColumn("⭐ Top 10 Offense Asset", width="medium"),
+    "master_designation": st.column_config.TextColumn("Designation"),
+    "injury_status": st.column_config.TextColumn("Injury"),
+}
+
+
+def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str):
+    """Renders calibrated Boris Chen Gaussian Mixture Model Staircase Chart."""
+    if chart_data.empty:
+        st.info(f"No player data available for {position_title}.")
+        return
+
+    tier_color_scale = alt.Scale(
+        domain=[f"Tier {i}" for i in range(1, 13)],
+        range=[
+            "#1E3A8A", "#2563EB", "#0284C7", "#059669", "#10B981", "#84CC16",
+            "#EAB308", "#F97316", "#EA580C", "#DC2626", "#991B1B", "#6B7280"
+        ]
+    )
+
+    y_sort = alt.EncodingSortField(field="composite_rank", order="ascending")
+
+    error_bars = alt.Chart(chart_data).mark_errorbar(
+        thickness=2.5,
+        ticks=True
+    ).encode(
+        y=alt.Y("player_name:N", sort=y_sort, title="Player (Ordered by Model Rank)", axis=alt.Axis(labelLimit=180)),
+        x=alt.X("boris_best_rank:Q", title="Model Rank & Expert Uncertainty Range (Narrower Bar = Higher Confidence)"),
+        x2=alt.X2("boris_worst_rank:Q"),
+        color=alt.Color("boris_tier_pos:N", scale=tier_color_scale, legend=alt.Legend(title="Boris Chen Tier")),
+        tooltip=[
+            alt.Tooltip("player_name:N", title="Player"),
+            alt.Tooltip("position:N", title="Position"),
+            alt.Tooltip("team:N", title="Team"),
+            alt.Tooltip("boris_tier_pos:N", title="Positional Tier"),
+            alt.Tooltip("composite_rank:Q", title="Model Overall Rank"),
+            alt.Tooltip("boris_best_rank:Q", title="Best Expert Rank"),
+            alt.Tooltip("boris_worst_rank:Q", title="Worst Expert Rank"),
+            alt.Tooltip("boris_rank_range:Q", title="Rank Uncertainty Spread"),
+            alt.Tooltip("adjusted_proj_pts:Q", format=".1f", title="Calibrated Proj Pts"),
+            alt.Tooltip("adjusted_vorp:Q", format=".1f", title="Calibrated VORP")
+        ]
+    )
+
+    points = alt.Chart(chart_data).mark_circle(size=70, opacity=0.9).encode(
+        y=alt.Y("player_name:N", sort=y_sort),
+        x=alt.X("composite_rank:Q"),
+        color=alt.Color("boris_tier_pos:N", scale=tier_color_scale),
+        tooltip=[
+            alt.Tooltip("player_name:N", title="Player"),
+            alt.Tooltip("position:N", title="Position"),
+            alt.Tooltip("team:N", title="Team"),
+            alt.Tooltip("composite_rank:Q", title="Model Rank"),
+            alt.Tooltip("boris_tier_pos:N", title="Tier"),
+            alt.Tooltip("adjusted_proj_pts:Q", format=".1f", title="Calibrated Proj Pts"),
+            alt.Tooltip("adjusted_vorp:Q", format=".1f", title="Calibrated VORP")
+        ]
+    )
+
+    staircase_chart = (error_bars + points).properties(
+        width=850,
+        height=max(380, len(chart_data) * 22),
+        title=f"📊 {position_title} — Boris Chen GMM Tiering & Uncertainty Ranges"
+    ).interactive()
+
+    st.altair_chart(staircase_chart, use_container_width=True)
