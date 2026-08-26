@@ -206,31 +206,51 @@ class CompositeModelEngine:
         df["upside_pct"] = df.apply(_calculate_upside_multiplier, axis=1)
         df["adjusted_proj_pts"] = (df["consensus_proj_pts"] * (1.0 + df["upside_pct"])).round(2)
 
-        # 4. 1-QB 12-Team Positional Scarcity Replacement Calibration
-        # Roster: 1 QB / 2 RB / 2 WR / 1 TE / 1 FLEX (12 teams)
-        # Demand Context: 12 QBs started vs 30+ RBs and 36+ WRs.
-        # In 1-QB leagues, QB waiver replacement level is QB15 (~290.0 pts) and demand factor is 0.65x
-        # to prevent mid-tier pocket QBs from artificially crowding out high-demand RBs and WRs.
+        # 4. 1-QB 12-Team Dynamic Positional Scarcity Replacement Baselines
+        # Cutoffs for 12-team 1/2 PPR (1QB / 2RB / 2WR / 1TE / 1FLEX / 1K / 1DST):
+        # - QB: 12 starters -> Baseline is QB13 (first waiver replacement)
+        # - RB: 24 starters + ~6 flex = 30 -> Baseline is RB30
+        # - WR: 24 starters + ~6 flex + depth = 36 -> Baseline is WR36
+        # - TE: 12 starters -> Baseline is TE13
+        # - K: 12 starters -> Baseline is K13
+        # - DST: 12 starters -> Baseline is DST13
+        pos_cutoffs = {
+            "QB": 13,
+            "RB": 30,
+            "WR": 36,
+            "TE": 13,
+            "K": 13,
+            "DST": 13
+        }
+
+        baselines = {}
+        for pos, cutoff in pos_cutoffs.items():
+            pos_sub = df[df["position"].str.upper() == pos].sort_values(by="adjusted_proj_pts", ascending=False).reset_index(drop=True)
+            if len(pos_sub) >= cutoff:
+                baselines[pos] = float(pos_sub.iloc[cutoff - 1]["adjusted_proj_pts"])
+            elif len(pos_sub) > 0:
+                baselines[pos] = float(pos_sub.iloc[-1]["adjusted_proj_pts"])
+            else:
+                baselines[pos] = 0.0
+
         def _calc_calibrated_vorp(row):
             pos = str(row.get("position", "")).upper()
-            pts = _safe_float(row.get("adjusted_proj_pts"), 50.0)
+            pts = _safe_float(row.get("adjusted_proj_pts"), 0.0)
+            base_pts = baselines.get(pos, 0.0)
+            raw_diff = pts - base_pts
+
             if pos == "QB":
-                # Baseline at QB15 (~290.0 pts) with 0.65x starter scarcity multiplier
-                return round((pts - 290.0) * 0.65, 2)
+                # Single-starter demand scaling (0.75x) to balance high raw QB point totals with RB/WR flex demand
+                return round(raw_diff * 0.75, 2)
             elif pos == "RB":
-                # Baseline at RB32 (~175.0 pts)
-                return round(pts - 175.0, 2)
+                return round(raw_diff, 2)
             elif pos == "WR":
-                # Baseline at WR40 (~155.0 pts)
-                return round(pts - 155.0, 2)
+                return round(raw_diff, 2)
             elif pos == "TE":
-                # Baseline at TE12 starter replacement (~136.0 pts) with 0.75x single-starter demand factor
-                return round((pts - 136.0) * 0.75, 2)
-            elif pos == "K":
-                return round((pts - 130.0) * 0.20, 2)
-            elif pos == "DST":
-                return round((pts - 95.0) * 0.20, 2)
-            return 0.0
+                return round(raw_diff * 0.85, 2)
+            elif pos in ["K", "DST"]:
+                return round(raw_diff * 0.25, 2)
+            return round(raw_diff, 2)
 
         df["adjusted_vorp"] = df.apply(_calc_calibrated_vorp, axis=1)
         df["vorp"] = df["adjusted_vorp"]
