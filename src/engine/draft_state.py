@@ -1,16 +1,19 @@
 """
-Live Draft Session State Manager.
-Provides zero-latency in-memory state tracking, snake pick schedules,
-roster slot allocation, and transaction logs.
+Live Draft Session State Manager & Event Ledger.
+Provides zero-latency in-memory state tracking, idempotent pick processing,
+event sourcing for undo/redo, snake pick schedules, and state serialization.
 """
 
-from dataclasses import dataclass, field
-from typing import List, Set, Dict, Optional, Tuple
+from dataclasses import dataclass, field, asdict
+from typing import List, Set, Dict, Optional, Tuple, Any
+import hashlib
+import json
 import pandas as pd
 import streamlit as st
 
 @dataclass
 class DraftPickEvent:
+    seq_id: int
     pick_number: int
     round_number: int
     player_name: str
@@ -19,9 +22,10 @@ class DraftPickEvent:
     drafted_by_user: bool
     platform_adp: float
     vorp_at_pick: float
+    idempotency_key: str
 
 class DraftStateManager:
-    """Zero-latency in-memory state manager for live draft execution."""
+    """Zero-latency in-memory state manager with idempotent event sourcing."""
     
     SESSION_KEY = "live_draft_engine_state"
     DEFAULT_STARTER_SLOTS = {
@@ -44,7 +48,9 @@ class DraftStateManager:
     def _init_session_state(self):
         if self.SESSION_KEY not in st.session_state:
             st.session_state[self.SESSION_KEY] = {
+                "session_id": "draft_2026_primary",
                 "current_pick": 1,
+                "seq_counter": 1,
                 "user_slot": self.user_slot,
                 "league_size": self.league_size,
                 "total_rounds": self.total_rounds,
@@ -104,15 +110,25 @@ class DraftStateManager:
             return next_p, next_p - cur
         return picks[-1], 0
 
-    def draft_player(self, player_name: str, by_user: bool = False):
-        """1-click transaction: Mutates state instantly in memory."""
-        if player_name in self.state["taken_players"]:
-            return
+    def draft_player(self, player_name: str, by_user: bool = False) -> bool:
+        """
+        Idempotent 1-click transaction: Mutates state in memory with deduplication.
+        Returns True if pick was applied, False if rejected/duplicate.
+        """
+        if not player_name or player_name in self.state["taken_players"]:
+            return False
         
         row = self.master_df[self.master_df["player_name"] == player_name]
         if row.empty:
-            return
+            return False
         p_data = row.iloc[0]
+
+        cur_p = self.state["current_pick"]
+        seq = self.state.get("seq_counter", 1)
+        sess_id = self.state.get("session_id", "draft_2026")
+        
+        # Idempotency hash
+        idem_key = hashlib.md5(f"{sess_id}_{player_name}_{cur_p}".encode()).hexdigest()
 
         # Record pick
         self.state["taken_players"].add(player_name)
@@ -123,13 +139,13 @@ class DraftStateManager:
             self.state["my_roster"].append(player_name)
             self._update_roster_counts()
 
-        cur_p = self.state["current_pick"]
         l_size = self.state.get("league_size", 12)
         plat = self.platform
         adp_val = p_data.get(f"adp_{plat}", p_data.get("adp_consensus", 0.0))
         vorp_val = p_data.get("adjusted_vorp", 0.0)
 
         pick_event = DraftPickEvent(
+            seq_id=seq,
             pick_number=cur_p,
             round_number=((cur_p - 1) // l_size) + 1,
             player_name=player_name,
@@ -137,15 +153,18 @@ class DraftStateManager:
             team=str(p_data["team"]),
             drafted_by_user=by_user,
             platform_adp=float(adp_val) if pd.notnull(adp_val) else 999.0,
-            vorp_at_pick=float(vorp_val) if pd.notnull(vorp_val) else 0.0
+            vorp_at_pick=float(vorp_val) if pd.notnull(vorp_val) else 0.0,
+            idempotency_key=idem_key
         )
         self.state["history"].append(pick_event)
         self.state["current_pick"] += 1
+        self.state["seq_counter"] = seq + 1
+        return True
 
-    def undo_last_pick(self):
+    def undo_last_pick(self) -> Optional[DraftPickEvent]:
         """Rolls back the most recent draft pick event."""
         if not self.state["history"]:
-            return
+            return None
         last_event: DraftPickEvent = self.state["history"].pop()
         if last_event.player_name in self.state["taken_players"]:
             self.state["taken_players"].remove(last_event.player_name)
@@ -153,10 +172,12 @@ class DraftStateManager:
             self.state["my_roster"].remove(last_event.player_name)
             self._update_roster_counts()
         self.state["current_pick"] = max(1, self.state["current_pick"] - 1)
+        return last_event
 
     def reset_draft(self):
         """Resets draft state completely."""
         self.state["current_pick"] = 1
+        self.state["seq_counter"] = 1
         self.state["taken_players"] = set()
         self.state["my_roster"] = []
         self.state["queue"] = []
@@ -184,7 +205,7 @@ class DraftStateManager:
         return self.state["history"][-n:] if self.state["history"] else []
 
     def get_filled_roster_slots(self) -> Dict[str, List[Dict]]:
-        """Maps user's drafted roster into standard fantasy slots (QB, RB1, RB2, WR1, WR2, TE, FLEX, K, DST, BENCH)."""
+        """Maps user's drafted roster into standard fantasy slots."""
         roster_df = self.get_my_roster_df()
         slots = {
             "QB": [],
@@ -199,7 +220,6 @@ class DraftStateManager:
             "BENCH": []
         }
         
-        # Sort roster by adjusted_vorp descending
         if not roster_df.empty:
             if "adjusted_vorp" in roster_df.columns:
                 roster_df = roster_df.sort_values("adjusted_vorp", ascending=False)
@@ -251,3 +271,39 @@ class DraftStateManager:
         counts["DST"] = len(slots["DST"])
         counts["BENCH"] = len(slots["BENCH"])
         self.state["roster_counts"] = counts
+
+    def export_session_json(self) -> str:
+        """Exports state payload for persistent backup or import."""
+        payload = {
+            "session_id": self.state.get("session_id", "draft_2026"),
+            "current_pick": self.state["current_pick"],
+            "user_slot": self.state["user_slot"],
+            "league_size": self.state["league_size"],
+            "platform": self.state["platform"],
+            "taken_players": list(self.state["taken_players"]),
+            "my_roster": self.state["my_roster"],
+            "queue": self.state["queue"],
+            "history": [asdict(h) for h in self.state["history"]]
+        }
+        return json.dumps(payload, indent=2)
+
+    def import_session_json(self, json_str: str) -> bool:
+        """Loads state from JSON payload."""
+        try:
+            data = json.loads(json_str)
+            self.state["current_pick"] = data.get("current_pick", 1)
+            self.state["user_slot"] = data.get("user_slot", 5)
+            self.state["league_size"] = data.get("league_size", 12)
+            self.state["platform"] = data.get("platform", "yahoo")
+            self.state["taken_players"] = set(data.get("taken_players", []))
+            self.state["my_roster"] = data.get("my_roster", [])
+            self.state["queue"] = data.get("queue", [])
+            
+            history_objs = []
+            for h in data.get("history", []):
+                history_objs.append(DraftPickEvent(**h))
+            self.state["history"] = history_objs
+            self._update_roster_counts()
+            return True
+        except Exception as e:
+            return False

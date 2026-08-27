@@ -1,15 +1,15 @@
 """
 Dynamic VORP (D-VORP) & Positional Scarcity Engine.
 Dynamically recalculates replacement levels, marginal baseline points,
-and tier cliff drop-offs as the draft pool is depleted.
+tier cliff drop-offs, and rolling draft runs / positional velocity.
 """
 
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Optional, Any
 import pandas as pd
 import numpy as np
 
 class DynamicVORPEngine:
-    """Computes real-time dynamic baseline cutoffs and VORP shifts."""
+    """Computes real-time dynamic baseline cutoffs, VORP shifts, and draft run velocity."""
 
     DEFAULT_LEAGUE_STARTERS = {
         "QB": 12,   # 12 QBs started across 12 teams
@@ -30,13 +30,52 @@ class DynamicVORPEngine:
     }
 
     @classmethod
+    def calculate_positional_run_velocity(
+        cls,
+        recent_picks: List[Any],
+        window_size: int = 5
+    ) -> Dict[str, Dict]:
+        """
+        Calculates rolling draft velocity V_pos(t) over the last N picks.
+        Returns: {'WR': {'count': 4, 'velocity': 0.80, 'is_run': True, 'tag': '🚨 WR RUN (4 of 5)'}}
+        """
+        velocity = {}
+        if not recent_picks:
+            for pos in ["RB", "WR", "TE", "QB"]:
+                velocity[pos] = {"count": 0, "velocity": 0.0, "is_run": False, "tag": ""}
+            return velocity
+
+        sample = recent_picks[-window_size:]
+        n_sample = len(sample)
+        
+        for pos in ["RB", "WR", "TE", "QB"]:
+            # Check attribute or dictionary
+            cnt = sum(
+                1 for p in sample 
+                if (getattr(p, "position", None) or (p.get("position") if isinstance(p, dict) else "")).upper() == pos
+            )
+            v_score = cnt / n_sample if n_sample > 0 else 0.0
+            is_run = (cnt >= 3 and n_sample >= 4) or (cnt >= 2 and pos in ["QB", "TE"] and n_sample >= 3)
+            
+            tag = f"🚨 {pos} TSUNAMI ({cnt} of last {n_sample} picks)" if is_run else ""
+            velocity[pos] = {
+                "count": cnt,
+                "velocity": round(v_score, 2),
+                "is_run": is_run,
+                "tag": tag
+            }
+            
+        return velocity
+
+    @classmethod
     def calculate_dynamic_vorp(
         cls,
         available_df: pd.DataFrame,
         drafted_counts_by_pos: Dict[str, int],
         league_size: int = 12,
         starters_per_pos: Dict[str, int] = None,
-        waiver_buffers: Dict[str, int] = None
+        waiver_buffers: Dict[str, int] = None,
+        recent_picks: Optional[List[Any]] = None
     ) -> pd.DataFrame:
         """
         Recalculates dynamic VORP over the remaining available player pool.
@@ -65,6 +104,9 @@ class DynamicVORPEngine:
         }
         buffers = waiver_buffers or cls.DEFAULT_WAIVER_BUFFERS
 
+        # Positional Run Scarcity Inflation
+        run_velocities = cls.calculate_positional_run_velocity(recent_picks or [])
+
         baselines = {}
         for pos in ["QB", "RB", "WR", "TE", "K", "DST"]:
             pos_pool = df[df["position"] == pos].sort_values(proj_col, ascending=False)
@@ -88,7 +130,14 @@ class DynamicVORPEngine:
             pos = row.get("position", "RB")
             pts = row.get(proj_col, 0.0)
             base = baselines.get(pos, 0.0)
-            return round(pts - base, 1)
+            raw_dvorp = pts - base
+            
+            # Apply velocity run boost (+10% if position is in active run)
+            v_info = run_velocities.get(pos, {})
+            if v_info.get("is_run", False):
+                raw_dvorp *= 1.10
+                
+            return round(raw_dvorp, 1)
 
         df["dynamic_vorp"] = df.apply(get_dvorp, axis=1)
         df["dyn_vorp_rank"] = df["dynamic_vorp"].rank(ascending=False, method="min").astype(int)
@@ -99,7 +148,6 @@ class DynamicVORPEngine:
     def compute_tier_scarcity_matrix(cls, available_df: pd.DataFrame) -> Dict[str, Dict[str, int]]:
         """
         Computes remaining player counts per tier for QB, RB, WR, TE.
-        Returns: {'RB': {'Tier 1': 0, 'Tier 2': 1, 'Tier 3': 6}, ...}
         """
         scarcity = {}
         tier_col = "boris_tier_pos" if "boris_tier_pos" in available_df.columns else "boris_tier_overall"

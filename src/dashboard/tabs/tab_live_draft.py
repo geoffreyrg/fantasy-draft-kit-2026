@@ -3,8 +3,10 @@ Tab 1: ⚡ 2026 Live Draft War Room & Decision Cockpit
 High-speed, zero-latency 60-second pick decision support engine with:
 - Dynamic Roster Scarcity & Positional Cliff Matrix
 - Tri-Strategy Optimal Recommendations (Best Value, Tier Cliff Safeguard, High-Ceiling Stacks)
-- Sniping Radar with Gaussian Pick Survival Probabilities P(avail)
-- 1-Click Fast Draft Entry, Rollback, and Queue Management
+- Sniping Radar with Bayesian Pick Survival Probabilities P(avail) & Opponent Needs
+- Positional Run / Tsunami Velocity Radar
+- Dynamic Auction / Salary Cap Inflation Optimizer
+- 1-Click Fast Draft Entry, Rollback, and JSON State Persistence
 """
 
 import streamlit as st
@@ -18,6 +20,7 @@ from src.engine.dynamic_vorp import DynamicVORPEngine
 from src.engine.survival_model import PickSurvivalModel
 from src.engine.correlation_engine import StackingCorrelationEngine
 from src.engine.recommendation_engine import RecommendationEngine
+from src.engine.auction_engine import DynamicAuctionEngine
 
 def render_tab_live_draft(df: pd.DataFrame):
     # Initialize Engine State Manager
@@ -34,7 +37,7 @@ def render_tab_live_draft(df: pd.DataFrame):
     turn_text = f"🚨 YOU ARE ON THE CLOCK (Pick #{cur_p})" if is_my_turn else f"⏱️ Next Pick: #{next_user_p} ({picks_away} picks away)"
 
     st.markdown(f"""
-    <div style="background: {status_bg}; color: white; padding: 16px 20px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.12);">
+    <div style="background: {status_bg}; color: white; padding: 16px 20px; border-radius: 10px; margin-bottom: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.12);">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div>
                 <h2 style="color: white; margin: 0; font-size: 1.6rem; font-weight: 800;">⚡ Live Draft War Room Cockpit</h2>
@@ -48,6 +51,18 @@ def render_tab_live_draft(df: pd.DataFrame):
         </div>
     </div>
     """, unsafe_allow_html=True)
+
+    # Positional Run / Velocity Check
+    recent_picks = state.get("history", [])
+    run_velocities = DynamicVORPEngine.calculate_positional_run_velocity(recent_picks, window_size=5)
+    active_runs = [v["tag"] for k, v in run_velocities.items() if v.get("is_run")]
+    if active_runs:
+        run_alert_txt = " • ".join(active_runs)
+        st.markdown(f"""
+        <div style="background-color: #EA580C; color: white; padding: 8px 14px; border-radius: 6px; font-weight: 800; font-size: 0.92rem; margin-bottom: 10px;">
+            {run_alert_txt} — Dynamic baseline replacement inflated by +10%!
+        </div>
+        """, unsafe_allow_html=True)
 
     # Global Live Draft Controls Bar
     c1, c2, c3, c4, c5, c6 = st.columns([1.5, 1.2, 1.5, 1.3, 1.2, 1.3])
@@ -89,7 +104,7 @@ def render_tab_live_draft(df: pd.DataFrame):
     user_roster_df = state_mgr.get_my_roster_df()
     roster_counts = state.get("roster_counts", {})
 
-    # 1. Dynamic VORP
+    # 1. Dynamic VORP with Run Scarcity
     drafted_by_pos = {}
     if state.get("history"):
         for h in state["history"]:
@@ -98,14 +113,15 @@ def render_tab_live_draft(df: pd.DataFrame):
     dyn_available_df = DynamicVORPEngine.calculate_dynamic_vorp(
         available_df=available_df,
         drafted_counts_by_pos=drafted_by_pos,
-        league_size=state.get("league_size", 12)
+        league_size=state.get("league_size", 12),
+        recent_picks=recent_picks
     )
 
     # 2. Scarcity & Positional Cliffs
     tier_scarcity = DynamicVORPEngine.compute_tier_scarcity_matrix(dyn_available_df)
     cliffs = DynamicVORPEngine.detect_positional_tier_cliffs(dyn_available_df, picks_away=picks_away)
 
-    # 3. MRU Scoring & Tri-Strategy Recommendations
+    # 3. MRU Scoring & Tri-Strategy Recommendations (with Bayesian Opponent Need)
     scored_df = RecommendationEngine.calculate_marginal_roster_utility(
         available_df=dyn_available_df,
         user_roster_df=user_roster_df,
@@ -117,10 +133,11 @@ def render_tab_live_draft(df: pd.DataFrame):
     tri_cards = RecommendationEngine.get_tri_strategy_recommendations(scored_df, cliffs)
 
     # Main Cockpit vs Master Views
-    cockpit_view = st.radio("War Room View:", [
+    cockpit_view = st.radio("War Room View Mode:", [
         "🎯 60-Second In-Draft Cockpit",
+        "💰 Dynamic Salary Cap / Auction Mode",
         "🗺️ Round-by-Round Blueprint & Strategy",
-        "📜 Draft Transaction Log & Pick Feed"
+        "📜 Draft Transaction Log & JSON Backup"
     ], horizontal=True)
 
     st.markdown("---")
@@ -129,6 +146,18 @@ def render_tab_live_draft(df: pd.DataFrame):
     # VIEW 1: 60-SECOND IN-DRAFT COCKPIT (3-COLUMN WAR ROOM)
     # ==========================================================================
     if cockpit_view == "🎯 60-Second In-Draft Cockpit":
+        # Panic Button / 10-Second Safeguard
+        top_auto = scored_df.iloc[0] if not scored_df.empty else None
+        if top_auto is not None and is_my_turn:
+            st.markdown(f"""
+            <div style="background-color: #FEF3C7; border: 2px dashed #D97706; padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <span style="font-weight: 800; color: #92400E; font-size: 0.95rem;">⚡ 10-SECOND EMERGENCY AUTO-PICK SAFEGUARD:</span>
+                    <b style="color: #111827; font-size: 1.05rem; margin-left: 8px;">{top_auto['player_name']}</b> ({top_auto['position']}-{top_auto['team']}) — +{top_auto.get('dynamic_vorp', 0):.1f} VORP
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
         col_left, col_center, col_right = st.columns([1.1, 1.5, 1.4])
 
         # ----------------------------------------------------------------------
@@ -138,8 +167,6 @@ def render_tab_live_draft(df: pd.DataFrame):
             st.markdown("### 🛡️ My Roster & Needs")
             
             slots = state_mgr.get_filled_roster_slots()
-            
-            # Format Starter Slots
             starter_definitions = [
                 ("QB", slots["QB"], "1 Required"),
                 ("RB1", slots["RB1"], "Anchor RB"),
@@ -207,6 +234,7 @@ def render_tab_live_draft(df: pd.DataFrame):
             bpa = tri_cards.get("bpa")
             if bpa is not None:
                 bpa_emoji = get_designation_emoji(bpa)
+                market_tag = bpa.get("platform_market_tag", "")
                 st.markdown(f"""
                 <div style="border: 2px solid #0284C7; background-color: #F0F9FF; padding: 12px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -290,7 +318,6 @@ def render_tab_live_draft(df: pd.DataFrame):
         with col_right:
             st.markdown("### 🎯 Target Queue & Sniping Radar")
             
-            # Queue Display
             queue_names = state.get("queue", [])
             if queue_names:
                 q_df = scored_df[scored_df["player_name"].isin(queue_names)]
@@ -319,7 +346,6 @@ def render_tab_live_draft(df: pd.DataFrame):
             st.markdown("---")
             st.markdown("#### ⚡ 1-Click Fast Board")
             
-            # Fast search & filter
             search_query = st.text_input("🔍 Filter Player / Team:", key="fast_board_search")
             fast_pool = scored_df.copy()
             if search_query:
@@ -335,12 +361,15 @@ def render_tab_live_draft(df: pd.DataFrame):
                 f_team = f_p["team"]
                 f_vorp = f_p.get("dynamic_vorp", 0.0)
                 f_emoji = get_designation_emoji(f_p)
+                m_tag = f_p.get("platform_market_tag", "")
+                
+                tag_badge = f" <span style='font-size:0.75rem; color:#DC2626; font-weight:700;'>[{m_tag}]</span>" if m_tag in ["🚫 TRAP", "💎 STEAL"] else ""
                 
                 fc_info, fc_mine, fc_taken, fc_q = st.columns([2.5, 1, 1, 0.8])
                 with fc_info:
                     st.markdown(f"""
                     <div style="font-size: 0.88rem; padding-top: 4px;">
-                        {f_emoji} <b>{f_name}</b> <span style="font-size: 0.78rem; color: #64748B;">({f_pos}-{f_team})</span> 
+                        {f_emoji} <b>{f_name}</b> <span style="font-size: 0.78rem; color: #64748B;">({f_pos}-{f_team})</span>{tag_badge}
                         <span style="color: #059669; font-weight: 700; font-size: 0.8rem;">+{f_vorp:.1f} V</span>
                     </div>
                     """, unsafe_allow_html=True)
@@ -359,7 +388,55 @@ def render_tab_live_draft(df: pd.DataFrame):
                         st.rerun()
 
     # ==========================================================================
-    # VIEW 2: ROUND-BY-ROUND BLUEPRINT & STRATEGY
+    # VIEW 2: DYNAMIC SALARY CAP / AUCTION MODE
+    # ==========================================================================
+    elif cockpit_view == "💰 Dynamic Salary Cap / Auction Mode":
+        st.markdown("### 💰 Dynamic Salary Cap & Auction Value Optimizer")
+        
+        auc_c1, auc_c2, auc_c3, auc_c4 = st.columns([1.5, 1.5, 1.5, 1.5])
+        with auc_c1:
+            tot_spent = st.number_input("Total League Cash Spent ($):", min_value=0.0, max_value=2400.0, value=float(cur_p * 12.0), step=10.0)
+        with auc_c2:
+            my_cash = st.number_input("My Remaining Budget ($):", min_value=1.0, max_value=200.0, value=200.0 - float(len(state['my_roster']) * 18.0), step=5.0)
+        with auc_c3:
+            my_unfilled = max(1, 15 - len(state["my_roster"]))
+            max_bid = DynamicAuctionEngine.get_max_user_bid(my_cash, my_unfilled)
+            st.metric("My Max Allowable Bid", f"${max_bid:.0f}", f"{my_unfilled} Slots Remaining")
+        with auc_c4:
+            st.metric("Draft Room Total Slots", f"{cur_p - 1} / {12 * 15}", "Live Progress")
+
+        # Compute dynamic auction table
+        auc_df = DynamicAuctionEngine.calculate_auction_values(
+            available_df=dyn_available_df,
+            league_size=12,
+            total_cash_spent_in_league=tot_spent,
+            total_slots_filled_in_league=cur_p - 1,
+            user_remaining_budget=my_cash,
+            user_unfilled_slots=my_unfilled
+        )
+
+        st.markdown("#### 🏆 Real-Time Dynamic Auction Valuations & Surplus Index")
+        auc_cols = [
+            "composite_rank", "player_name", "position", "team", "composite_tier",
+            "dyn_auction_value", "base_auction_value", "dynamic_vorp", "surplus_value_index", "is_affordable"
+        ]
+        
+        st.dataframe(
+            auc_df[[c for c in auc_cols if c in auc_df.columns]].sort_values("dyn_auction_value", ascending=False),
+            use_container_width=True,
+            hide_index=True,
+            column_config={
+                "composite_rank": st.column_config.NumberColumn("Rank", format="#%d"),
+                "dyn_auction_value": st.column_config.NumberColumn("Dynamic Fair Value ($)", format="$%.1f"),
+                "base_auction_value": st.column_config.NumberColumn("Static Base ($)", format="$%.1f"),
+                "dynamic_vorp": st.column_config.NumberColumn("DynVORP", format="+%.1f"),
+                "surplus_value_index": st.column_config.NumberColumn("Surplus Value Index (SVI)", format="+%.1f"),
+                "is_affordable": st.column_config.CheckboxColumn("Affordable (Under Max Bid)"),
+            }
+        )
+
+    # ==========================================================================
+    # VIEW 3: ROUND-BY-ROUND BLUEPRINT & STRATEGY
     # ==========================================================================
     elif cockpit_view == "🗺️ Round-by-Round Blueprint & Strategy":
         st.markdown("### 🗺️ Master Strategic Blueprint (Slot #5 / 12-Team 1/2 PPR)")
@@ -384,20 +461,21 @@ def render_tab_live_draft(df: pd.DataFrame):
             st.markdown("""
             #### 🚀 Phase 3: Late Upside (R8 - R14)
             * **Rounds 8–10**: Target vacated-volume WRs & high-upside rookie running backs (JoScho 80+ talent).
-            * **Rounds 11–12**: Value backup RBs with standalone standalone work (Jaylen Wright, Tyjae Spears).
+            * **Rounds 11–12**: Value backup RBs with standalone work (Jaylen Wright, Tyjae Spears).
             * **Rounds 13–14**: Top-5 scoring offense Kicker (KC/BUF/DET) & Week 1 streaming DST.
             """)
 
     # ==========================================================================
-    # VIEW 3: DRAFT TRANSACTION LOG & PICK FEED
+    # VIEW 4: DRAFT TRANSACTION LOG & JSON BACKUP
     # ==========================================================================
-    elif cockpit_view == "📜 Draft Transaction Log & Pick Feed":
-        st.markdown("### 📜 Live Draft Pick History")
+    elif cockpit_view == "📜 Draft Transaction Log & JSON Backup":
+        st.markdown("### 📜 Live Draft Pick History & Session Persistence")
         history = state.get("history", [])
         if history:
             h_records = []
             for ev in reversed(history):
                 h_records.append({
+                    "Seq": ev.seq_id,
                     "Pick": f"#{ev.pick_number} (R{ev.round_number})",
                     "Player": ev.player_name,
                     "Position": ev.position,
@@ -409,3 +487,29 @@ def render_tab_live_draft(df: pd.DataFrame):
             st.dataframe(pd.DataFrame(h_records), use_container_width=True, hide_index=True)
         else:
             st.info("No picks logged yet. Log picks from the 60-Second In-Draft Cockpit!")
+
+        st.markdown("---")
+        st.markdown("#### 💾 Session State JSON Export / Import")
+        exp_col, imp_col = st.columns([1, 1])
+        with exp_col:
+            st.markdown("**Export Current Draft Session (JSON):**")
+            json_export = state_mgr.export_session_json()
+            st.download_button(
+                label="📥 Download Session State JSON",
+                data=json_export,
+                file_name="fantasy_draft_session_2026.json",
+                mime="application/json",
+                use_container_width=True
+            )
+            st.code(json_export[:300] + "\n...", language="json")
+        with imp_col:
+            st.markdown("**Import Draft Session (JSON):**")
+            import_txt = st.text_area("Paste Session JSON to restore state:", height=130)
+            if st.button("🔄 Restore Session State", use_container_width=True):
+                if import_txt:
+                    success = state_mgr.import_session_json(import_txt)
+                    if success:
+                        st.success("Session state restored successfully!")
+                        st.rerun()
+                    else:
+                        st.error("Invalid JSON format.")

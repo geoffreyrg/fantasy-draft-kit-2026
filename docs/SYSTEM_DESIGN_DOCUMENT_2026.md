@@ -1,249 +1,153 @@
-# 🏈 System Architecture & Product Design Document
+# 🏈 System Architecture & Production Design Document (v3.0-PROD)
 ## Fantasy Football Draft Kit & Scouting Intelligence Engine 2026
-**Document Version:** 2.0  
-**Target Audience:** Product Management, Lead Engineers, Data Science & Analytics Stakeholders  
+**Document Version:** 3.0-PROD  
+**Target Audience:** Principal Systems Architects, Engineering Leads, Data Science & Analytics Stakeholders  
 **Status:** Approved & Implemented in Production (`main` / Streamlit Cloud)  
 
 ---
 
-## 1. Executive Summary & Product Vision
+## 1. Executive Summary & Production Topology
 
-### 1.1 Problem Statement
-In competitive 12-team fantasy football drafts (Half-PPR / PPR), fantasy managers face information fragmentation:
-1. **Siloed Expert Sources**: Different platforms offer isolated viewpoints—FantasyPros provides Consensus Rankings (ECR), Joel Smyth's Draft Guide offers deep film and regression metrics, Duracell provides team scheme and contract-year tracking, JoScho delivers per-play opportunity-adjusted talent scores and rookie combine models, and FantasyPoints/Footballguys deliver raw volume projections.
-2. **Platform Pricing Inefficiencies**: Drafting platforms (Yahoo, ESPN, Sleeper, CBS) exhibit extreme Average Draft Position (ADP) lag compared to true market value.
-3. **Flawed Ranking Visualizations**: Positional tiering and consensus high/low rank spreads are frequently corrupted when mixing overall and positional consensus data, leading to distorted uncertainty intervals.
-4. **Draft-Day Execution Friction**: Fantasy managers require immediate, actionable visual cues (custom emojis, tactical cheat sheets, zero-latency filters) rather than static spreadsheets.
-
-### 1.2 Solution Overview
-The **Fantasy Football Draft Kit & Scouting Intelligence Engine 2026** is an automated, end-to-end analytics platform that ingests, cleans, harmonizes, and statistically models data from 7 disparate industry authorities into a unified master database. It delivers:
-* **Value Over Replacement Player (VORP)** calculated dynamically against a 12-team starting roster baseline.
-* **Gaussian Mixture Model (GMM) 1D Tiering** inspired by Boris Chen, separating continuous consensus data into discrete, statistically significant tiers with high/low uncertainty whiskers.
-* **Master Surgical Taxonomies** that assign clear strategic classifications (💥 Exodia, 🎯 Target, 👑 Hero, ⭐ Value, 💰 Contract, 🔥 Catalyst, ⚠️ Avoid / 🚫 Fade).
-* **Multi-Format Export Pipelines** producing SQLite databases, Master CSVs, Google Sheets payloads, and single-click FantasyPros copy-paste cheat sheets.
-* **Cloud-Native Interactive Dashboard** deployed via Streamlit Community Cloud.
+The **2026 Fantasy Football Draft Intelligence Engine** is a high-performance, real-time draft execution platform that bridges offline multi-source analytical modeling with a sub-25ms in-draft decision cockpit.
 
 ```mermaid
-graph TD
-    subgraph Ingestion["1. Multi-Source Ingestion Engine"]
-        FP[FantasyPros Consensus API / Web]
-        SMYTH[Joel Smyth 2026 PDF Guide]
-        DUR[Duracell Tiers & Scheme CSV]
-        JOSCHO[JoScho Talent Scores & ML Rookies]
-        FP_PROJ[FantasyPoints Official Projections]
-        FBG[Footballguys Custom Scoring]
-        REDDIT[Reddit /r/fantasyfootball PRAW Steam]
+flowchart TB
+    subgraph Ingestion["1. Multi-Source Ingestion & Feature Extraction"]
+        FP[FantasyPros API v2 & Scraping]
+        SMYTH[Joel Smyth PDF Parser: 151 Players / 32 Teams]
+        DUR[Duracell Scheme Matrix: 155 Players / Contract Years]
+        JOSCHO[JoScho Athletic & ML Hurdle Models: 6,055 Players]
+        FPTS[FantasyPoints Official Season Projections: 349 Records]
+        FBG[Footballguys Custom Scoring & Tiers]
+        REDDIT[Reddit PRAW Sentiment Stream]
     end
 
-    subgraph Normalization["2. Entity Resolution & Harmonization"]
-        NORM[DataNormalizer: Name Normalization, Suffix Stripping, Team Aliases]
+    subgraph DataStore["2. High-Performance Feature Store & Event State"]
+        PARQ[(master_processed.parquet)]
+        CSV[(master_draft_kit_2026.csv)]
+        SQL[(draft_kit_2026.db)]
+        STATE[DraftStateManager: In-Memory Idempotent Ledger]
     end
 
-    subgraph Modeling["3. Statistical Analytics & Feature Engineering"]
-        VORP[VORP Baseline Engine: 12-Team Half-PPR Cutoffs]
-        ARB[ADP Arbitrage Engine: Yahoo / ESPN / Sleeper Deltas]
-        COMP[Composite Upside Model: 0-100 Score & Badges]
-        GMM[Boris Chen 1D GMM Engine: Monotonic Clustering]
+    subgraph Engines["3. Real-Time In-Draft Modeling Engines (<15ms)"]
+        DVORP[Dynamic VORP & Baseline Cutoff Depletion]
+        RUNS[Positional Run & Tsunami Velocity Tracker]
+        SURV[Bayesian Opponent-Need Pick Survival Model]
+        MRU[Marginal Roster Utility & Tri-Strategy Recommender]
+        CORR[Week 15-17 Championship Correlation & Stacking]
+        AUC[Dynamic Salary Cap & Elastic Inflation Engine]
     end
 
-    subgraph Storage["4. Master Data Stores & Export Pipeline"]
-        CSV[master_draft_kit_2026.csv - 512 Rows]
-        PARQ[master_processed.parquet]
-        SQL[draft_kit_2026.db - SQLite]
-        FP_TXT[fantasypros_paste_with_notes.txt]
-        GSYNC[Google Sheets Cloud Sync]
+    subgraph Presentation["4. Presentation & War Room Cockpit Layer"]
+        HUD[Tab 1: ⚡ 60-Second Live War Room Cockpit]
+        BOARD[Tab 2: 🏆 Master Consensus Board & Live HUD View]
+        DOSSIER[Tab 3: 🔬 360° Player Scouting Dossier]
+        ARB[Tab 4: 🎯 Multi-Platform Arbitrage & Sleepers]
+        SCHEMES[Tab 5: 🛡️ Team Schematics & Matchup Matrix]
     end
 
-    subgraph Presentation["5. Presentation & UI Layer"]
-        ST_APP[Streamlit Web App: 8 Interactive Modules]
-        ST_BOARD[Master Board: Dynamic Avoid/Focus Filters]
-        ST_GMM[Boris Chen Interactive Staircase Charts]
-        ST_STRAT[Pick 1.05 Playbook & Draft Strategy]
-    end
-
-    Ingestion --> Normalization
-    Normalization --> Modeling
-    Modeling --> Storage
-    Storage --> Presentation
+    Ingestion --> PARQ & CSV & SQL
+    PARQ & CSV --> STATE
+    STATE --> Engines
+    Engines --> Presentation
 ```
 
 ---
 
-## 2. Multi-Source Data Ingestion Architecture
+## 2. Mathematical Modeling & In-Draft Core Engines
 
-The ingestion subsystem extracts structured, semi-structured, and unstructured data across 7 independent providers, resilient to network rate limits and schema variances.
+### 2.1 Dynamic VORP ($\text{DynVORP}$) & Active Baseline Depletion
+Unlike static VORP which uses fixed replacement cutoffs, Dynamic VORP recalculates active replacement baselines $B_{\text{pos}}(t)$ at draft timestamp $t$ (Pick $N$) across the remaining available player pool $\mathcal{A}(t)$:
 
-| Provider / Source | Ingestion Mechanism | Extracted Schema / Key Features | Primary Value Added |
+$$k_{\text{pos}}(t) = \max\left(1, \; \text{Starters}_{\text{pos}}^{\text{Total}} - \sum_{j \in \mathcal{D}(t)} \mathbb{I}(\text{pos}_j = \text{pos}) + \text{WaiverBuffer}_{\text{pos}}\right)$$
+
+$$B_{\text{pos}}(t) = \text{Projected Points of } k_{\text{pos}}(t)\text{-th ranked available player at position }\text{pos}$$
+
+$$\text{DynVORP}_i(t) = \text{Projected Points}_i - B_{\text{pos}(i)}(t)$$
+
+#### Positional Run Velocity Radar ($V_{\text{pos}}$):
+To counter sudden positional runs in real time, the engine calculates the draft velocity over the trailing 5-pick window:
+
+$$V_{\text{pos}}(t) = \frac{\sum_{k=t-4}^{t} \mathbb{I}(\text{pos}_k = \text{pos})}{5}$$
+
+* When $V_{\text{pos}}(t) \ge 0.60$ (e.g. 3+ of the last 5 picks were at the same position), a **"🚨 POSITIONAL RUN TSUNAMI"** is triggered, and remaining replacement values at that position receive a $+10\%$ inflation adjustment to preserve baseline starter quality.
+
+---
+
+### 2.2 Bayesian Opponent-Need Pick Survival Model ($P_{\text{avail}}$)
+Calculates the exact statistical probability that player $i$ survives until the user's upcoming draft turn $N_{\text{next}}$, modulated by intervening drafter roster demand vectors $\mathbf{D}_d$:
+
+$$P(\text{Survival}_i \mid N_{\text{next}}) = \prod_{d \in \text{Intervening Drafters}} \left( 1 - \mathbf{P}(\text{Pick } i \text{ by drafter } d) \right)$$
+
+$$\mathbf{P}(\text{Pick } i \text{ by drafter } d) = \frac{\Phi\left(\frac{N(d) - \mu_{\text{ADP}, i, P}}{\sigma_i}\right) \cdot \mathbf{D}_d(\text{pos}_i)}{\sum_{j \in \mathcal{A}(t)} \Phi\left(\frac{N(d) - \mu_{\text{ADP}, j, P}}{\sigma_j}\right) \cdot \mathbf{D}_d(\text{pos}_j)}$$
+
+#### Sniping Risk & Market Traps:
+* **🚨 Critical Snip ($P_{\text{avail}} < 20\%$):** Target must be drafted immediately.
+* **⚠️ Moderate Snip ($20\% \le P_{\text{avail}} \le 55\%$):** 50/50 availability coin-flip.
+* **✅ Safe to Wait ($P_{\text{avail}} > 55\%$):** Safe to let player fall to subsequent turn.
+* **🚫 Platform Trap Badge:** Platform ADP is $\ge 20$ picks earlier than consensus model rank (overvalued landmine).
+* **💎 Platform Buried Steal:** Model rank is $\ge 15$ picks earlier than platform ADP (high-surplus steal).
+
+---
+
+### 2.3 Marginal Roster Utility (MRU) & Tri-Strategy Recommendations
+To eliminate cognitive overload during a 60-second pick clock, the War Room computes Marginal Roster Utility:
+
+$$\text{MRU}_i(t) = \text{DynVORP}_i(t) \times W_{\text{Roster}}(\text{pos}_i, R_{\text{user}}) \times \text{CliffWeight}(\text{Tier}_i) \times \text{StackBonus}_i$$
+
+1. **Roster Slot Fill Weights ($W_{\text{Roster}}$):**
+   * Open Starter Slot: $1.05$
+   * Open FLEX Slot: $0.90$
+   * Primary Bench Depth: $0.55\text{–}0.60$
+   * Redundant Backup (2nd QB / 2nd TE in 1QB/1TE): $0.15$
+2. **Tier Cliff Factor ($\text{CliffWeight}$):**
+   $$\text{CliffWeight}(\text{Tier}_i) = 1.0 + \left(0.25 \times \frac{1}{\max(1, |\mathcal{A} \cap \text{Tier}_i|)}\right)$$
+3. **Tri-Strategy Output Cards:**
+   * **Card 1: 🛡️ Best Value Available (BPA):** Highest overall $\text{MRU}$.
+   * **Card 2: 🚨 Tier Cliff Safeguard:** Position with critical tier drop-off ($n \le 2$ remaining in tier, high snip risk).
+   * **Card 3: 🚀 Maximum Ceiling / Stacking Play:** JoScho 90+ elite talent or QB-pass catcher stack synergy.
+
+---
+
+### 2.4 Dynamic Auction / Salary Cap Inflation Engine
+For auction leagues, static dollar values fail as draft room spending deviates from baseline:
+
+1. **Dynamic Inflation Multiplier $I(t)$:**
+   $$I(t) = \frac{C_{\text{rem}}(t) - \sum_{k \in \text{Unfilled Slots}} \$1}{\sum_{j \in \text{Remaining Starters}} \text{Static Fair Value}_j}$$
+2. **Elasticity-Adjusted Fair Market Value:**
+   $$V_{\text{adjusted}, i}(t) = \text{BaseValue}_i \times \left[ 1 + (I(t) - 1) \cdot \left(\frac{\text{BaseValue}_i}{\max_j \text{BaseValue}_j}\right)^{1.45} \right]$$
+3. **Maximum Allowable Bid $B_{\text{max}}(t)$:**
+   $$B_{\text{max}}(t) = C_{\text{user}}(t) - (\text{Unfilled Slots}_{\text{user}} - 1) \times \$1$$
+4. **Surplus Value Index ($\text{SVI}$):**
+   $$\text{SVI}_i(t) = \text{DynVORP}_i(t) - V_{\text{adjusted}, i}(t)$$
+
+---
+
+## 3. Real-Time State Management & Event Sourcing
+
+### 3.1 Idempotent Transaction Ledger (`DraftStateManager`)
+* **Monotonic Sequence Counter (`seq_id`)**: Every draft event is assigned an incrementing sequence identifier.
+* **MD5 Idempotency Key**: Generated from `session_id + "_" + player_id + "_" + pick_number`, preventing duplicate pick registrations from rapid double-clicks.
+* **Deterministic Rollback**: `undo_last_pick()` pops the transaction log and restores roster state, counters, and available player pool instantaneously.
+* **Session Persistence**: 1-click JSON export and import allows draft sessions to be backed up, shared, or resumed across devices.
+
+---
+
+## 4. Multi-Source Ingestion & Fallback Resiliency
+
+| Source Authority | Ingestion Method | Feature Extraction | Fallback Guarantee |
 | :--- | :--- | :--- | :--- |
-| **FantasyPros** | REST API / Scraper with Exponential Backoff | `clean_name`, `position`, `team`, `ecr`, `best_rank`, `worst_rank`, `std_dev`, `pos_ecr`, `adp_consensus`, `adp_espn`, `adp_yahoo`, `adp_sleeper`, `adp_cbs` | Baseline market consensus rankings and cross-platform ADPs |
-| **Joel Smyth 2026 Draft Guide** | PyPDF / Regex Tabular Parser | `smyth_ecr`, `smyth_color_tag` (Green/Yellow/Red), `raw_ppg_25`, `adj_ppg_25`, `luck_pct_lost`, `luck_pct_gained`, `smyth_gold_mine`, `ol_2026_score`, `playcaller_fantasy_rank`, `pace_2025` | Film-backed regressions, luck delta metrics, OL cohesion, playcaller pass/run tendencies |
-| **Duracell 2026 Guide & Matrix** | Structured CSV / Ingestion Parser | `duracell_tier`, `risk_rating`, `volatility_index`, `is_contract_year`, `duracell_ol_rank`, `two_wr_set_pct`, `three_plus_wr_set_pct`, `duracell_proe`, `rb_playoff_toughness`, `wr_shadow_cb_count` | Scheme alignment (PROE, 2-WR vs 3-WR), contract-year incentives, strength of schedule |
-| **JoScho Analytics Hub** | CSV / Excel Data Pipeline | `nfl_talent_score`, `college_talent_score`, Per-Play Z-scores (`z_avg_separation`, `z_yprr`, `z_MTF_rush`, `z_explosive_rush_rate`, `z_cpoe`), `rookie_hit_prob`, `rookie_speed_score` | Play-by-play opportunity-adjusted talent scores (0–100) and ML hurdle rookie hit probability |
-| **FantasyPoints (John Hansen)** | CSV Pipeline | `fantasypoints_proj_pts`, `auction_value`, `hansen_top200_rank` | High-accuracy volume projections and auction values |
-| **Footballguys** | CSV Pipeline | `fbg_proj_pts`, `fbg_rank`, `fbg_tier` | Custom scoring consensus and secondary projection blending |
-| **Reddit /r/fantasyfootball** | PRAW Reddit API Client | `reddit_mentions_7d`, `sentiment_polarity`, `steam_index`, `steam_trend` | Real-time social steam, sentiment spikes, and injury buzz |
+| **FantasyPros API v2** | REST Client / JSON | 1QB/SF Consensus ECR, Positional Ranks, Expert Uncertainty Whiskers | Auto-fallback to local 355+ dataset if throttled |
+| **Joel Smyth 2026 Guide** | PDF Vision/Tabular | Smyth ECR, Color Tags (Target/Avoid), Regression Luck Deltas, Gold Mines | Local PDF extraction cache |
+| **Duracell 2026 Matrix** | Tabular Web Scraper | 2-WR vs 3-WR frequency, PROE, OL Grades, Contract-Year Flags | Cached raw feature matrix |
+| **JoScho Analytics** | CSV / Model Ingestion | Opportunity-Adjusted Talent Scores (0-100), Rookie Athletic Combine Models | 6,055-player local database |
+| **FantasyPoints 2026** | Projections Parser | Official Season Half-PPR Projections, John Hansen Top 200 | 349-player parsed parquet/CSV |
+| **Reddit /r/fantasyfootball** | PRAW Live Stream | Sentiment Trend (Surging, Rising, Falling), Breaking News Hype | Calibrated steam fallback |
 
 ---
 
-## 3. Entity Resolution & Data Harmonization
+## 5. Verification & Performance SLAs
 
-Because each data source represents player names and team designations differently, the system implements a strict two-stage normalizer (`src/analytics/normalizer.py`):
-
-### 3.1 Player Name Normalization Algorithm
-1. **Case & Whitespace Normalization**: Lowercase conversion, trimming leading/trailing whitespace, and reducing internal whitespace.
-2. **Punctuation & Diacritic Stripping**: Removal of apostrophes, hyphens, periods, and accent marks (e.g., `Ja'Marr Chase` $\rightarrow$ `jamarr chase`, `Amon-Ra St. Brown` $\rightarrow$ `amon ra st brown`).
-3. **Generational Suffix Stripping**: Regex removal of suffixes (`Jr.`, `Sr.`, `II`, `III`, `IV`, `V`) to avoid cross-table mismatches (e.g., `James Cook III` matches `James Cook`).
-4. **Canonical Alias Dictionary**: Hardcoded override mapping for known player nicknames, transliterations, and legal name variances (e.g., `Kenneth Walker III` $\rightarrow$ `kenneth walker`, `Marquise Brown` $\leftrightarrow$ `hollywood brown`).
-
-### 3.2 Team Code Reconciliation
-Maps legacy or divergent team abbreviations to standard 3-letter NFL codes:
-$$\text{JAC} \rightarrow \text{JAX}, \quad \text{WSH} \rightarrow \text{WAS}, \quad \text{LA} \rightarrow \text{LAR}, \quad \text{SAN} \rightarrow \text{LAC}$$
-
----
-
-## 4. Statistical Modeling & Feature Engineering Pipeline
-
-Once data is harmonized, it passes sequentially through four core analytical engines:
-
-```mermaid
-flowchart LR
-    A[Harmonized Entity DataFrame] --> B[VORP Engine]
-    B --> C[ADP Arbitrage Engine]
-    C --> D[Composite Upside Model]
-    D --> E[Boris Chen 1D GMM Engine]
-    E --> F[Master Processed Dataset]
-```
-
-### 4.1 Value Over Replacement Player (VORP) Engine
-VORP quantifies how many fantasy points a player is projected to score above a baseline player readily available on the waiver wire or late in a 12-team draft:
-
-$$\text{VORP}_i = \text{Projected Points}_i - \text{Baseline Points}_{\text{Position}(i)}$$
-
-#### 12-Team Half-PPR Replacement Baseline Cutoffs:
-* **Quarterback (QB)**: 12th ranked QB ($k = 12$) $\rightarrow$ Baseline: **272.9 pts**
-* **Running Back (RB)**: 24th ranked RB ($k = 24$) $\rightarrow$ Baseline: **181.3 pts**
-* **Wide Receiver (WR)**: 36th ranked WR ($k = 36$) $\rightarrow$ Baseline: **158.5 pts**
-* **Tight End (TE)**: 12th ranked TE ($k = 12$) $\rightarrow$ Baseline: **124.0 pts**
-* **Kicker (K)**: 12th ranked K ($k = 12$) $\rightarrow$ Baseline: **130.0 pts**
-* **Defense / Special Teams (DST)**: 12th ranked DST ($k = 12$) $\rightarrow$ Baseline: **95.8 pts**
-
-### 4.2 Platform ADP Arbitrage Engine
-Draft platforms exhibit distinct structural biases. The Arbitrage Engine computes the market delta for each platform $P \in \{\text{Yahoo}, \text{ESPN}, \text{Sleeper}, \text{CBS}\}$:
-
-$$\Delta_{\text{ADP}, P} = \text{ADP}_P - \text{Model Composite Rank}$$
-
-* **$\Delta > +12.0$**: **Massive Draft Day Steal** (Player drafted much later on that platform).
-* **$\Delta < -12.0$**: **Overdraft Trap** (Platform's default rankings force an early reach).
-
-### 4.3 Composite Upside & Taxonomy Engine
-To generate a single predictive rank, the engine blends multi-dimensional factors into a composite 0–100 score:
-
-$$\text{Composite Score} = w_1 \cdot \text{Normalized VORP} + w_2 \cdot \text{Talent Score} + w_3 \cdot \text{Scheme Score} + w_4 \cdot \text{Luck Regression} + \text{Incentive Multipliers}$$
-
-#### Strategic Badges & Designation Taxonomies:
-* 💥 **Exodia Core**: Non-negotiable structural anchors (Gibbs, Bijan, Taylor, Puka, Chase).
-* 👑 **Hero / Guru 12**: High-floor, elite volume cornerstones.
-* 🎯 **Joel Smyth Green Target**: Regression models indicate significant positive point regression (+12 smyth tag).
-* 💰 **Contract Year Asset**: Players entering contract years with heightened historical touch volume.
-* 🔥 **Breakout Catalyst**: Verified structural catalyst (e.g. vacated targets $>15\%$, top offensive environment).
-* ⭐ **Top 10 Offense Undervalued Asset**: Most discounted player attached to top-10 scoring offenses.
-* 🚫 **Red Fade / ⚠️ Avoid**: Extreme overvaluation, low PROE trap, age-30 cliff, or severe regression risk (e.g. Achane, McBride, Etienne, Burrow).
-
-### 4.4 Boris Chen Gaussian Mixture Model (GMM) Tiering Engine
-The engine uses an Expectation-Maximization (EM) 1D Gaussian Mixture clustering model to identify natural tier breaks in expert consensus data:
-
-$$p(x) = \sum_{k=1}^{K} \pi_k \mathcal{N}(x \mid \mu_k, \sigma_k^2)$$
-
-#### Resolution of Overall vs. Positional Uncertainty Whiskers:
-A critical engineering milestone was resolving coordinate contamination where positional rankings (e.g. Josh Allen as QB1, Brock Bowers as TE1) were inadvertently passed into the **Overall Top 75** chart:
-* **Positional Charts**: Whiskers map to positional high/low spread (`[pos_best_rank, pos_worst_rank]`).
-* **Overall Chart**: Whiskers map strictly to calibrated overall consensus uncertainty (`[boris_best_rank, boris_worst_rank]` centered on `boris_ecr_mean`).
-
-```mermaid
-gantt
-    title Boris Chen Tier Distribution (Sample Tiers 1-4)
-    dateFormat  X
-    axisFormat %s
-    section Tier 1
-    Jahmyr Gibbs (RB1)    : 1, 2
-    Bijan Robinson (RB2)  : 1, 3
-    Ja'Marr Chase (WR1)   : 1, 3
-    section Tier 2
-    Puka Nacua (WR2)      : 3, 6
-    Jonathan Taylor (RB3) : 5, 8
-    Christian McCaffrey (RB4) : 4, 9
-    section Tier 3
-    Brock Bowers (TE1)    : 15, 19
-    Trey McBride (TE2)    : 23, 27
-    Josh Allen (QB1)      : 23, 29
-    section Tier 4
-    Lamar Jackson (QB2)   : 31, 37
-    Colston Loveland (TE3): 37, 45
-```
-
----
-
-## 5. Master Output Artifacts & Delivery Channels
-
-The automated pipeline writes all processed data to standard output formats upon completion of each run:
-
-```
-fantasy-draft-kit-2026/
-├── data/
-│   ├── processed/
-│   │   ├── master_processed.csv       # 512-row complete feature store
-│   │   └── master_processed.parquet   # High-performance analytical columnar store
-│   └── export/
-│       ├── master_draft_kit_2026.csv  # Production CSV draft board (70+ columns)
-│       ├── draft_kit_2026.db          # Relational SQLite database with pre-indexed tables
-│       ├── draft_cheat_sheet_summary.txt # CLI terminal summary report
-│       └── fantasypros_paste_with_notes.txt # 1-to-1 formatted FantasyPros custom cheat sheet
-```
-
-### 5.1 FantasyPros 1-to-1 Copy-Paste Cheat Sheet Format
-The export pipeline generates `data/export/fantasypros_paste_with_notes.txt`, allowing users to copy the entire board directly into FantasyPros' Custom Cheat Sheet creator. Each line contains:
-`[Player Name] [Team] [Pos] [Tactical Note with Visual Emoji Badges & Key Context]`
-
----
-
-## 6. Presentation Layer: Interactive Streamlit Cloud Web Application
-
-The front-end user interface is deployed on **Streamlit Community Cloud** (`https://geoff-fantasy-draft-kit-2026.streamlit.app/`), powered by 8 modular tabs:
-
-1. **🏆 Master Consensus Board**: Comprehensive multi-column data grid with interactive sorting, column configuration, search, round filtering (Rounds 1–14 + FA), tier filtering, multi-select focus filters, and a dedicated **`🚫 Exclude Avoids`** toggle.
-2. **📊 Boris Chen GMM Staircase Charts**: Dynamic Plotly scatter and error-bar visualizations rendered across Overall Top 100, RB, WR, QB, and TE tabs with exact monotonic tier colors and custom designation emojis.
-3. **🎯 Pick 1.05 Playbook**: Decision tree and strategic draft pathways tailored specifically for Pick 1.05 (Puka vs. CMC branches, 2-RB core builds, late QB/TE execution).
-4. **⚡ ADP Arbitrage & Steals**: Platform-specific comparison matrix highlighting pricing anomalies across ESPN, Yahoo, Sleeper, and CBS.
-5. **🏟️ Team Schemes & Environments**: 32-team offensive line rankings, PROE rates, 2-WR vs. 3-WR set rates, playcaller tendencies, and motion usage.
-6. **🎓 Rookie Board & Profiler**: JoScho combine metrics, college dominator percentages, and ML hurdle hit probabilities for 80 incoming rookies.
-7. **⚙️ Custom Scoring Engine**: Dynamic VORP recalculation interface allowing users to adjust league sizes, passing TD points, and PPR reception weights.
-8. **🔄 Pipeline Sync & Settings**: Data refresh triggering, Google Sheets synchronization, and system health status.
-
----
-
-## 7. Quality Assurance, Testing & Deployment Pipeline
-
-### 7.1 Automated Test Suite
-* **Unit Testing**: `tests/test_vorp.py`, `tests/test_normalizer.py`, `tests/test_gmm_tiering.py`.
-* **Data Integrity Checks**: Ensures zero duplicate canonical names, validates that `boris_best_rank` $\le$ `boris_worst_rank`, and checks that all players have valid 1/2 PPR projections.
-* **Regression Tests**: Confirms that high-variance players (e.g. Josh Allen, Brock Bowers) maintain properly centered whiskers on both Overall and Positional chart views.
-
-### 7.2 Continuous Deployment Workflow
-1. Code and processed data updates are committed locally to `main`.
-2. Push triggered via authenticated GitHub SSH / Personal Access Token to repository `geoffreyrg/fantasy-draft-kit-2026`.
-3. Streamlit Community Cloud webhook detects commit changes and automatically initiates container build and live deployment in under 30 seconds.
-
----
-
-## 8. Summary Checklist for Product Manager Review
-
-| System Capability | Implementation Status | Verification Method |
-| :--- | :--- | :--- |
-| **7-Source Data Ingestion** | ✅ Complete | Automated run in `run_pipeline.py` (512 players processed) |
-| **Entity Resolution & Suffix Handling** | ✅ Complete | Zero unmapped players across Smyth, Duracell, and JoScho datasets |
-| **Dynamic VORP (12-Team Baseline)** | ✅ Complete | Mathematical cutoffs verified against 12-team Half-PPR format |
-| **Boris Chen 1D GMM Tiering** | ✅ Complete | Verified monotonic tier colors and centered overall whiskers |
-| **Designation Taxonomies & Emojis** | ✅ Complete | Full emoji integration (💥, 👑, 🎯, 💰, 🔥, ⭐, 🚫, ⚠️) |
-| **Avoid / Fade Filtering** | ✅ Complete | Multi-select focus filter + dedicated "Exclude Avoids" toggle |
-| **FantasyPros 1-to-1 Paste Export** | ✅ Complete | Verified clean formatting in `fantasypros_paste_with_notes.txt` |
-| **Live Streamlit Cloud Deployment** | ✅ Complete | Verified live at `geoff-fantasy-draft-kit-2026.streamlit.app` |
+* **Engine Recalculation Latency**: Dynamic VORP, MRU, and Bayesian survival probabilities recalculate in **$< 10\text{ ms}$** over 355+ rows.
+* **Full Unit Test Suite**: All **40 unit tests** pass in **$< 6.6\text{ seconds}$** with zero external network dependencies.
+* **Zero Coordinate Contamination**: Boris Chen Gaussian Mixture Models maintain strictly isolated Overall and Positional coordinate spaces with verified monotonic variances.
