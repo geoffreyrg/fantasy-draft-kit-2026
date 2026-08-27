@@ -157,17 +157,14 @@ def render_tab_team_schematics(df: pd.DataFrame):
                 "team": tm,
                 "team_name": intel.get("team_name", tm),
                 "playoff_grade": intel.get("playoff_sos_grade", "⭐⭐⭐ Standard"),
+                "playoff_stars": intel.get("playoff_sos_grade", "").count("⭐"),
                 "w15": intel.get("playoff_w15", "Competitive"),
                 "w16": intel.get("playoff_w16", "Competitive"),
                 "w17_champ": intel.get("playoff_w17_championship", "Championship"),
-                "rb_sos": f"#{intel.get('rb_sos_rank', 16)} ({intel.get('rb_sos_grade', 'B')})",
-                "wr_sos": f"#{intel.get('wr_sos_rank', 16)} ({intel.get('wr_sos_grade', 'B')})",
-                "qb_sos": f"#{intel.get('qb_sos_rank', 16)} ({intel.get('qb_sos_grade', 'B')})",
-                "te_sos": f"#{intel.get('te_sos_rank', 16)} ({intel.get('te_sos_grade', 'B')})",
-                "rb_rank_num": intel.get("rb_sos_rank", 16),
-                "wr_rank_num": intel.get("wr_sos_rank", 16),
-                "qb_rank_num": intel.get("qb_sos_rank", 16),
-                "te_rank_num": intel.get("te_sos_rank", 16),
+                "rb_sos_rank": int(intel.get("rb_sos_rank", 16)),
+                "wr_sos_rank": int(intel.get("wr_sos_rank", 16)),
+                "qb_sos_rank": int(intel.get("qb_sos_rank", 16)),
+                "te_sos_rank": int(intel.get("te_sos_rank", 16)),
                 "shadow_intel": intel.get("shadow_cb_risk", "Standard"),
                 "run_defense_intel": intel.get("run_defense_toughness", "Standard"),
                 "playoff_summary": intel.get("playoff_summary", "Standard slate.")
@@ -176,27 +173,27 @@ def render_tab_team_schematics(df: pd.DataFrame):
         sched_df = pd.DataFrame(sched_rows)
 
         if sos_sort == "RB Strength of Schedule (Easiest First)":
-            sched_df = sched_df.sort_values("rb_rank_num", ascending=True)
+            sched_df = sched_df.sort_values("rb_sos_rank", ascending=True)
         elif sos_sort == "WR Strength of Schedule (Easiest First)":
-            sched_df = sched_df.sort_values("wr_rank_num", ascending=True)
+            sched_df = sched_df.sort_values("wr_sos_rank", ascending=True)
         elif sos_sort == "QB Strength of Schedule (Easiest First)":
-            sched_df = sched_df.sort_values("qb_rank_num", ascending=True)
+            sched_df = sched_df.sort_values("qb_sos_rank", ascending=True)
         elif sos_sort == "TE Strength of Schedule (Easiest First)":
-            sched_df = sched_df.sort_values("te_rank_num", ascending=True)
+            sched_df = sched_df.sort_values("te_sos_rank", ascending=True)
         elif sos_sort == "Alphabetical by Team Name":
             sched_df = sched_df.sort_values("team_name", ascending=True)
         else:
-            # Sort by star count in playoff_grade
-            sched_df["star_count"] = sched_df["playoff_grade"].apply(lambda s: s.count("⭐"))
-            sched_df = sched_df.sort_values("star_count", ascending=False)
+            sched_df = sched_df.sort_values(["playoff_stars", "team_name"], ascending=[False, True])
 
         st.dataframe(
             sched_df[[
                 "team", "team_name", "playoff_grade", "w15", "w16", "w17_champ",
-                "rb_sos", "wr_sos", "qb_sos", "te_sos", "shadow_intel", "run_defense_intel", "playoff_summary"
+                "rb_sos_rank", "wr_sos_rank", "qb_sos_rank", "te_sos_rank",
+                "shadow_intel", "run_defense_intel", "playoff_summary"
             ]],
             use_container_width=True,
             hide_index=True,
+            key=f"sos_grid_{sos_sort}",
             column_config={
                 "team": st.column_config.TextColumn("Team", pinned=True),
                 "team_name": st.column_config.TextColumn("Full Name", pinned=True),
@@ -204,10 +201,10 @@ def render_tab_team_schematics(df: pd.DataFrame):
                 "w15": st.column_config.TextColumn("📅 Week 15 (Quarterfinals)", width="medium"),
                 "w16": st.column_config.TextColumn("📅 Week 16 (Semifinals)", width="medium"),
                 "w17_champ": st.column_config.TextColumn("🏆 Week 17 (Championship)", width="large"),
-                "rb_sos": st.column_config.TextColumn("RB SOS"),
-                "wr_sos": st.column_config.TextColumn("WR SOS"),
-                "qb_sos": st.column_config.TextColumn("QB SOS"),
-                "te_sos": st.column_config.TextColumn("TE SOS"),
+                "rb_sos_rank": st.column_config.NumberColumn("RB SOS", format="#%d", help="1 = Easiest Full-Season SOS, 32 = Hardest"),
+                "wr_sos_rank": st.column_config.NumberColumn("WR SOS", format="#%d", help="1 = Easiest Full-Season SOS, 32 = Hardest"),
+                "qb_sos_rank": st.column_config.NumberColumn("QB SOS", format="#%d", help="1 = Easiest Full-Season SOS, 32 = Hardest"),
+                "te_sos_rank": st.column_config.NumberColumn("TE SOS", format="#%d", help="1 = Easiest Full-Season SOS, 32 = Hardest"),
                 "shadow_intel": st.column_config.TextColumn("🛡️ WR Shadow CB Intel", width="large"),
                 "run_defense_intel": st.column_config.TextColumn("🛡️ RB Defense Front Intel", width="large"),
                 "playoff_summary": st.column_config.TextColumn("Playoff Roadmap Summary", width="large"),
