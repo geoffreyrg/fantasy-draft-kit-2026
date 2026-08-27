@@ -122,25 +122,16 @@ def render_strategy_card_html(
     return card_html
 
 def apply_draft_action(state_mgr: DraftStateManager, player_name: str, by_user: bool = False):
-    success = state_mgr.draft_player(player_name, by_user=by_user)
-    if success:
-        st.session_state["war_room_pick_input"] = state_mgr.current_pick
-        st.session_state["_last_pick_input_val"] = state_mgr.current_pick
+    return state_mgr.draft_player(player_name, by_user=by_user)
 
 def apply_undo_action(state_mgr: DraftStateManager):
-    state_mgr.undo_last_pick()
-    st.session_state["war_room_pick_input"] = state_mgr.current_pick
-    st.session_state["_last_pick_input_val"] = state_mgr.current_pick
+    return state_mgr.undo_last_pick()
 
 def apply_reset_action(state_mgr: DraftStateManager):
-    state_mgr.reset_draft()
-    st.session_state["war_room_pick_input"] = 1
-    st.session_state["_last_pick_input_val"] = 1
+    return state_mgr.reset_draft()
 
 def apply_next_pick_action(state_mgr: DraftStateManager):
     state_mgr.state["current_pick"] += 1
-    st.session_state["war_room_pick_input"] = state_mgr.current_pick
-    st.session_state["_last_pick_input_val"] = state_mgr.current_pick
 
 def render_tab_live_draft(df: pd.DataFrame):
     # Initialize Engine State Manager
@@ -153,12 +144,14 @@ def render_tab_live_draft(df: pd.DataFrame):
     if "war_room_plat_select" in st.session_state:
         state_mgr.set_platform(st.session_state["war_room_plat_select"].lower())
     
-    # Handle Draft Pick # input synchronization
+    # Handle Draft Pick # input synchronization BEFORE widget instantiation
     if "war_room_pick_input" in st.session_state:
-        if st.session_state.get("_last_pick_input_val") != st.session_state["war_room_pick_input"]:
+        # If the user typed a new number manually on the previous run, update state
+        if st.session_state.get("_last_pick_input_val") is not None and st.session_state["_last_pick_input_val"] != st.session_state["war_room_pick_input"]:
             state["current_pick"] = int(st.session_state["war_room_pick_input"])
             st.session_state["_last_pick_input_val"] = state["current_pick"]
         else:
+            # Sync widget key to current state pick BEFORE widget instantiation
             st.session_state["war_room_pick_input"] = state["current_pick"]
             st.session_state["_last_pick_input_val"] = state["current_pick"]
     else:
@@ -208,9 +201,10 @@ def render_tab_live_draft(df: pd.DataFrame):
     # Global Live Draft Controls Bar
     c1, c2, c3, c4, c5, c6 = st.columns([1.5, 1.2, 1.5, 1.3, 1.2, 1.3])
     with c1:
-        new_pick = st.number_input("Draft Pick #", min_value=1, max_value=200, value=cur_p, step=1, key="war_room_pick_input")
+        new_pick = st.number_input("Draft Pick #", min_value=1, max_value=200, step=1, key="war_room_pick_input")
         if new_pick != cur_p:
             state["current_pick"] = new_pick
+            st.session_state["_last_pick_input_val"] = new_pick
     with c2:
         slot_val = st.selectbox("My Slot", options=list(range(1, 13)), index=state.get("user_slot", 5) - 1, key="war_room_slot_select")
         if slot_val != state.get("user_slot", 5):
