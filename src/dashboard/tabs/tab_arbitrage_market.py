@@ -1,11 +1,13 @@
 """
 Tab 4: 🎯 Market Inefficiencies & Arbitrage Radar
-Filtered to the 12-Team 14-Round Draftable Universe (Top 180 Players / ADP <= 200).
+Platform-specific price differential models (Yahoo, ESPN, Sleeper, CBS),
+Gaussian pick survival probabilities, and rookie ML hit models.
 """
 
 import streamlit as st
 import pandas as pd
 from src.dashboard.ui_components import STANDARD_COLUMN_CONFIG, compute_tactical_edge
+from src.engine.survival_model import PickSurvivalModel
 
 def render_tab_arbitrage_market(df: pd.DataFrame):
     st.subheader("🎯 Market Inefficiencies, Platform Arbitrage & Sleeper Radar")
@@ -14,53 +16,70 @@ def render_tab_arbitrage_market(df: pd.DataFrame):
     """)
 
     sub_t1, sub_t2, sub_t3, sub_t4 = st.tabs([
-        "🟣 Yahoo Fantasy ADP Steals",
+        "⚡ Target Platform Value Steals",
         "🌐 Cross-Platform Arbitrage (Yahoo/ESPN/Sleeper/CBS)",
         "🚀 High-Upside Sleepers & Breakouts",
         "🎓 2026 Rookie Class ML Hit Model",
     ])
 
     # --------------------------------------------------------------------------
-    # SUBTAB 1: YAHOO SPECIFIC STEALS (DRAFTABLE UNIVERSE ONLY)
+    # SUBTAB 1: TARGET PLATFORM SPECIFIC STEALS
     # --------------------------------------------------------------------------
     with sub_t1:
-        st.markdown("### 🟣 Top Value Steals on Yahoo Fantasy (Tonight's Draft)")
+        st.markdown("### ⚡ Platform-Specific Value Steals & Edge Detector")
         st.markdown("""
-        These players are projected by our consensus model to outperform their **Yahoo ADP by multiple rounds**. 
-        Target these players 1 round before their Yahoo ADP to lock in massive surplus value!
+        Select your draft platform to isolate players where our composite model projects **massive surplus value** over default room ADP.
         """)
 
-        col_f1, col_f2 = st.columns([2, 2])
-        with col_f1:
-            max_rank = st.slider("Max Model Rank (Draft Window):", min_value=50, max_value=200, value=168, step=12, key="yahoo_steals_max_rank")
-        with col_f2:
-            min_delta = st.slider("Minimum Yahoo Edge (Picks Discounted):", min_value=2.0, max_value=25.0, value=4.0, step=1.0, key="yahoo_steals_min_delta")
+        col_p1, col_p2, col_p3 = st.columns([1.5, 1.5, 1.5])
+        with col_p1:
+            sel_plat = st.selectbox("Select Your Draft Platform:", ["Yahoo", "ESPN", "Sleeper", "CBS"], key="arb_target_platform")
+        with col_p2:
+            max_rank = st.slider("Max Model Rank (Draft Window):", min_value=50, max_value=200, value=168, step=12, key="plat_steals_max_rank")
+        with col_p3:
+            min_delta = st.slider("Minimum Platform Edge (Picks):", min_value=2.0, max_value=25.0, value=4.0, step=1.0, key="plat_steals_min_delta")
 
-        yahoo_steals = df[
+        plat_key = sel_plat.lower()
+        adp_col = f"adp_{plat_key}" if f"adp_{plat_key}" in df.columns else "adp_consensus"
+        delta_col = f"adp_delta_{plat_key}" if f"adp_delta_{plat_key}" in df.columns else "adp_arbitrage_spread"
+
+        # Filter
+        plat_steals = df[
             (df["composite_rank"] <= max_rank) & 
-            (df["adp_yahoo"] <= 200.0) & 
-            (df["adp_delta_yahoo"] >= min_delta)
-        ].sort_values(by="adp_delta_yahoo", ascending=False).copy()
+            (df[adp_col] <= 200.0) & 
+            (df[delta_col] >= min_delta)
+        ].sort_values(by=delta_col, ascending=False).copy()
 
-        if "upside_pct" in yahoo_steals.columns:
-            yahoo_steals["upside_pct_display"] = (yahoo_steals["upside_pct"] * 100.0).round(1) if yahoo_steals["upside_pct"].abs().max() <= 1.0 else yahoo_steals["upside_pct"].round(1)
+        # Compute Survival Probability to next round (e.g. +15 picks away)
+        plat_steals = PickSurvivalModel.apply_survival_probabilities(
+            plat_steals,
+            current_pick=20,
+            next_pick=35,
+            platform=plat_key
+        )
 
-        yahoo_steals["tactical_context"] = yahoo_steals.apply(compute_tactical_edge, axis=1)
+        plat_steals["tactical_context"] = plat_steals.apply(compute_tactical_edge, axis=1)
 
         disp_cols = [
             "composite_rank", "player_name", "position", "team", "composite_tier",
-            "master_designation", "adp_yahoo", "adp_delta_yahoo", "adjusted_vorp",
-            "adjusted_proj_pts", "tactical_context", "smyth_color_tag"
+            "master_designation", adp_col, delta_col, "survival_prob_pct", "snip_risk_tag",
+            "adjusted_vorp", "adjusted_proj_pts", "tactical_context"
         ]
 
+        plat_col_config = STANDARD_COLUMN_CONFIG.copy()
+        plat_col_config[adp_col] = st.column_config.NumberColumn(f"{sel_plat} ADP", format="%.1f")
+        plat_col_config[delta_col] = st.column_config.NumberColumn(f"{sel_plat} Edge", format="+%.1f")
+        plat_col_config["survival_prob_pct"] = st.column_config.ProgressColumn("Survival Prob (+15 Picks)", min_value=0.0, max_value=100.0, format="%.1f%%")
+        plat_col_config["snip_risk_tag"] = st.column_config.TextColumn("Snip Risk")
+
         st.dataframe(
-            yahoo_steals[[c for c in disp_cols if c in yahoo_steals.columns]],
+            plat_steals[[c for c in disp_cols if c in plat_steals.columns]],
             use_container_width=True,
             hide_index=True,
-            column_config=STANDARD_COLUMN_CONFIG
+            column_config=plat_col_config
         )
 
-        st.caption(f"Showing {len(yahoo_steals)} draftable value steals on Yahoo Fantasy within top {max_rank} picks.")
+        st.caption(f"Showing {len(plat_steals)} draftable value steals on {sel_plat} Fantasy within top {max_rank} picks.")
 
     # --------------------------------------------------------------------------
     # SUBTAB 2: CROSS-PLATFORM ARBITRAGE (DRAFTABLE UNIVERSE ONLY)

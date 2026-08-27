@@ -1,6 +1,7 @@
 """
 Tab 2: 🏆 Master Consensus Draft Board & Boris Chen Tiers
-Unified multi-source quantitative board with standardized columns, tactical context, round filtering, and GMM tiering.
+Unified multi-source quantitative board with standardized columns, tactical context,
+Live HUD (6-column quick view) vs Deep-Dive Scouting Table, and Boris Chen GMM tiering.
 """
 
 import streamlit as st
@@ -62,7 +63,11 @@ def render_tab_master_board(df: pd.DataFrame):
     Combines **Official Projections**, **Joel Smyth's 2026 Model**, **Duracell 2-WR & OL Schemes**, and **Boris Chen GMM Tiers**.
     """)
 
-    view_mode = st.radio("Select Board Display Format:", ["📋 Standard Master Table", "📊 Boris Chen GMM Tier Staircase Charts"], horizontal=True)
+    view_mode = st.radio(
+        "Select Board Display Format:",
+        ["⚡ Live HUD View (6 Essential Columns)", "📋 Full Scouting Deep-Dive Table", "📊 Boris Chen GMM Tier Staircase Charts"],
+        horizontal=True
+    )
 
     # Assign expected round label
     df_board = df.copy()
@@ -153,8 +158,29 @@ def render_tab_master_board(df: pd.DataFrame):
     # Compute comprehensive tactical context
     board_df["tactical_context"] = board_df.apply(ui_comp.compute_tactical_edge, axis=1)
 
-    if view_mode == "📋 Standard Master Table":
-        # Standardized Column Sequence: Rank -> Player -> Pos -> Team -> Tier -> Designation -> VORP -> Calib Proj -> Tactical Context -> Yahoo ADP -> Yahoo Edge -> Smyth Tag -> Contract Yr -> Injury
+    # --------------------------------------------------------------------------
+    # VIEW 1: LIVE HUD VIEW (6 ESSENTIAL COLUMNS)
+    # --------------------------------------------------------------------------
+    if view_mode == "⚡ Live HUD View (6 Essential Columns)":
+        st.markdown("##### ⚡ Live Decision HUD (Sub-5s Scannability)")
+        hud_cols = [
+            "composite_rank", "player_name", "position", "team", "composite_tier",
+            "adjusted_vorp", "adp_delta_yahoo", "master_designation"
+        ]
+        hud_df = board_df[[c for c in hud_cols if c in board_df.columns]].sort_values("composite_rank")
+
+        st.dataframe(
+            hud_df,
+            use_container_width=True,
+            hide_index=True,
+            column_config=ui_comp.STANDARD_COLUMN_CONFIG
+        )
+        st.caption(f"⚡ Live HUD Mode: Showing {len(hud_df)} players with zero horizontal scroll.")
+
+    # --------------------------------------------------------------------------
+    # VIEW 2: FULL SCOUTING DEEP-DIVE TABLE
+    # --------------------------------------------------------------------------
+    elif view_mode == "📋 Full Scouting Deep-Dive Table":
         display_cols = [
             "composite_rank", "player_name", "position", "team", "composite_tier",
             "master_designation", "adjusted_vorp", "adjusted_proj_pts",
@@ -172,9 +198,11 @@ def render_tab_master_board(df: pd.DataFrame):
             hide_index=True,
             column_config=column_config
         )
+        st.caption(f"Showing {len(disp_df)} scouted players. Complete multi-source analytical feature set.")
 
-        st.caption(f"Showing {len(disp_df)} scouted players. Pinned left: Rank, Player, Pos, Team, Tier, Designation.")
-
+    # --------------------------------------------------------------------------
+    # VIEW 3: BORIS CHEN GMM TIER STAIRCASE CHARTS
+    # --------------------------------------------------------------------------
     elif view_mode == "📊 Boris Chen GMM Tier Staircase Charts":
         st.markdown("### 📊 Boris Chen Gaussian Mixture Model (GMM) Tier Staircase")
         st.markdown("""
@@ -184,7 +212,6 @@ def render_tab_master_board(df: pd.DataFrame):
         - **Tier Colors**: Statistically separated Gaussian clusters. Target players near the top of their tier before a tier drop!
         """)
 
-        # Boris Chen charts dynamically reflect active filters (positions, focus, search, avoid exclusions)
         chart_base_df = board_df
 
         pos_tab1, pos_tab2, pos_tab3, pos_tab4, pos_tab5 = st.tabs(["🔥 Overall Top 100", "🏃 Running Backs (RB)", "⚡ Wide Receivers (WR)", "🎯 Quarterbacks (QB)", "🛡️ Tight Ends (TE)"])
