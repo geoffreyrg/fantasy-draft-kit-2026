@@ -34,24 +34,47 @@ TEAM_RZ_GL = {
 }
 
 def get_designation_emoji(r) -> str:
-    """Extracts thematic visual emoji for designation badges on Boris Chen charts."""
-    des = str(r.get("master_designation", ""))
-    if "Exodia" in des or "💥" in des or r.get("is_exodia") == 1:
+    """Extracts master designation emoji directly from the primary expert consensus designation."""
+    des = str(r.get("master_designation", "")).strip()
+    
+    # 1. Direct explicit emoji in Master Designation (HIGHEST PRIORITY)
+    if "🚫" in des:
+        return "🚫"
+    if "💥" in des:
         return "💥"
-    elif "Target" in des or "🎯" in des or r.get("smyth_color_tag") == "TARGET":
+    if "🎯" in des:
         return "🎯"
-    elif "Breakout" in des or "🔥" in des or r.get("has_breakout_catalyst") == 1:
-        return "🔥"
-    elif "Avoid" in des or "⚠️" in des or r.get("smyth_color_tag") == "AVOID":
-        return "⚠️"
-    elif "Hero" in des or "👑" in des or "Twelve" in des:
+    if "👑" in des:
         return "👑"
-    elif "Contract" in des or "💰" in des or r.get("is_contract_year") == 1:
-        return "💰"
-    elif "Value" in des or "⭐" in des or r.get("is_top_offense_undervalued") == 1:
+    if "🔥" in des:
+        return "🔥"
+    if "⭐" in des:
         return "⭐"
-    else:
-        return "●"
+    if "⚠️" in des:
+        return "⚠️"
+    if "💰" in des:
+        return "💰"
+        
+    # 2. Text keyword matching in Master Designation & Model Tags
+    des_lower = des.lower()
+    if "fade" in des_lower or "avoid" in des_lower or "overvalue" in des_lower or r.get("smyth_color_tag") == "AVOID":
+        return "🚫"
+    if "exodia" in des_lower or "must-have" in des_lower or r.get("is_exodia") == 1:
+        return "💥"
+    if "twelve" in des_lower or "guru" in des_lower or "hero" in des_lower:
+        return "👑"
+    if "target" in des_lower or r.get("smyth_color_tag") == "TARGET":
+        return "🎯"
+    if "catalyst" in des_lower or "breakout" in des_lower or r.get("has_breakout_catalyst") == 1:
+        return "🔥"
+    if "pass" in des_lower or r.get("smyth_color_tag") == "PASS":
+        return "⚠️"
+    if "contract" in des_lower or r.get("is_contract_year") == 1:
+        return "💰"
+    if "value" in des_lower or r.get("is_top_offense_undervalued") == 1:
+        return "⭐"
+        
+    return "●"
 
 def compute_tactical_edge(r) -> str:
     """Computes punchy, comprehensive position-specific contextual intelligence for fast draft decisions."""
@@ -166,7 +189,7 @@ STANDARD_COLUMN_CONFIG = {
 def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, is_positional: bool = False):
     """
     Renders calibrated Boris Chen Gaussian Mixture Model Staircase Chart and Data Table.
-    Uses master designation emojis (💥, 🎯, 👑, ⭐, 💰, 🔥, ⚠️) centered precisely inside the whiskers.
+    Uses master designation emojis (🚫 Fade, 💥 Exodia, 🎯 Target, 👑 Hero, ⭐ Value, 💰 Contract, 🔥 Catalyst, ⚠️ Risk).
     """
     if chart_data.empty:
         st.info(f"No player data available for {position_title}.")
@@ -242,7 +265,7 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, i
         color=alt.Color(f"{tier_col}:N", scale=tier_color_scale)
     )
 
-    # 5. Center Designation Emoji (💥 Exodia, 🎯 Target, 👑 Hero, ⭐ Value, 💰 Contract, 🔥 Catalyst, ⚠️ Avoid)
+    # 5. Center Designation Emoji (🚫 Fade, 💥 Exodia, 🎯 Target, 👑 Hero, ⭐ Value, 💰 Contract, 🔥 Catalyst, ⚠️ Avoid)
     center_emoji = alt.Chart(chart_df).mark_text(
         fontSize=14,
         baseline="middle",
