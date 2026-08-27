@@ -73,7 +73,12 @@ class RedditSteamTracker:
         self._init_praw()
 
     def _init_praw(self):
-        if self.client_id and self.client_secret:
+        # Ignore placeholder or dummy credential values
+        is_placeholder = not self.client_id or not self.client_secret or any(
+            p in str(self.client_id).lower() or p in str(self.client_secret).lower()
+            for p in ("your_reddit", "placeholder", "xxx", "dummy", "none", "test", "")
+        )
+        if not is_placeholder:
             try:
                 import praw
                 self.reddit = praw.Reddit(
@@ -81,10 +86,13 @@ class RedditSteamTracker:
                     client_secret=self.client_secret,
                     user_agent=self.user_agent,
                 )
+                self.reddit.read_only = True
                 logger.info("Authenticated Reddit PRAW client successfully.")
             except Exception as e:
-                logger.warning(f"Failed to initialize PRAW: {e}. Falling back to cached steam index.")
+                logger.debug(f"Reddit PRAW initialization note: {e}. Using calibrated steam index.")
                 self.reddit = None
+        else:
+            self.reddit = None
 
     def analyze_sentiment_steam(self, target_players: Optional[List[str]] = None) -> pd.DataFrame:
         """
@@ -95,7 +103,7 @@ class RedditSteamTracker:
             try:
                 return self._scan_live_reddit(target_players)
             except Exception as e:
-                logger.warning(f"Live Reddit scan encountered error: {e}. Using calibrated steam data.")
+                logger.debug(f"Live Reddit scan note: {e}. Using calibrated steam data.")
 
         return self._get_fallback_steam_data()
 

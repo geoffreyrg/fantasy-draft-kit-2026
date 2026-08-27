@@ -8,6 +8,7 @@ import pandas as pd
 from pathlib import Path
 from PIL import Image
 from src.analytics.schedule_matrix import TEAM_SCHEDULE_INTEL
+from src.analytics.scheme_matrix import SchemeEcosystemEngine
 
 def render_tab_team_schematics(df: pd.DataFrame):
     st.subheader("🛡️ Team Schematics, Offensive Lines & Matchup Intelligence")
@@ -56,8 +57,6 @@ def render_tab_team_schematics(df: pd.DataFrame):
         "TEN": {"rz_tendency": "Balanced RZ (Daboll)",       "gl_tendency": "Balanced GL (50/50 - Pollard/Spears)"},
         "NYG": {"rz_tendency": "Balanced RZ",                "gl_tendency": "👑 Run-Heavy GL (65% Run - Skattebo TDs)"},
     }
-
-from src.analytics.scheme_matrix import SchemeEcosystemEngine
 
     # --------------------------------------------------------------------------
     # SUBTAB 1: 32-TEAM OFFENSIVE MATRIX
