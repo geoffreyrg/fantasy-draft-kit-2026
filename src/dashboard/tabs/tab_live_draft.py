@@ -73,19 +73,16 @@ def render_tab_live_draft(df: pd.DataFrame):
         new_pick = st.number_input("Draft Pick #", min_value=1, max_value=200, value=cur_p, step=1, key="war_room_pick_input")
         if new_pick != cur_p:
             state["current_pick"] = new_pick
-            st.rerun()
     with c2:
         slot_val = st.selectbox("My Slot", options=list(range(1, 13)), index=state.get("user_slot", 5) - 1, key="war_room_slot_select")
         if slot_val != state.get("user_slot", 5):
             state_mgr.set_user_slot(slot_val)
-            st.rerun()
     with c3:
         plat_options = ["Yahoo", "ESPN", "Sleeper", "CBS"]
         plat_idx = plat_options.index(current_platform.capitalize()) if current_platform.capitalize() in plat_options else 0
         plat_val = st.selectbox("Draft Platform", options=plat_options, index=plat_idx, key="war_room_plat_select")
         if plat_val.lower() != state_mgr.platform:
             state_mgr.set_platform(plat_val.lower())
-            st.rerun()
     with c4:
         st.write("") # spacing
         if st.button("⏩ Next Pick (+1)", use_container_width=True):
@@ -141,7 +138,7 @@ def render_tab_live_draft(df: pd.DataFrame):
         "💰 Dynamic Salary Cap / Auction Mode",
         "🗺️ Round-by-Round Blueprint & Strategy",
         "📜 Draft Transaction Log & JSON Backup"
-    ], horizontal=True)
+    ], horizontal=True, key="war_room_view_mode")
 
     st.markdown("---")
 
