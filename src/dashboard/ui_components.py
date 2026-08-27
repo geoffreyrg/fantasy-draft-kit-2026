@@ -79,20 +79,19 @@ def get_designation_emoji(r) -> str:
 from src.analytics.schedule_matrix import ScheduleMatrixEngine, TEAM_ALIASES
 
 def compute_tactical_edge(r) -> str:
-    """Computes punchy, comprehensive position-specific contextual intelligence with playoff and matchup intel for fast draft decisions."""
+    """Computes punchy, comprehensive position-specific contextual intelligence with full season SOS, playoff SOS grades, and matchup intel for fast draft decisions."""
     pos = str(r.get("position", "")).strip().upper()
     raw_tm = str(r.get("team", "")).strip().upper()
     tm = TEAM_ALIASES.get(raw_tm, raw_tm)
     ol = r.get("duracell_ol_rank", 16)
     twowr = r.get("two_wr_set_pct", 35.0)
-    proe = r.get("duracell_proe", 0.0)
     coach = r.get("playcaller", "") or r.get("duracell_coach", "")
     gold = str(r.get("smyth_gold_mine", "")).strip()
     exodia = r.get("is_exodia", 0)
     is_top_eco = (tm in TOP_10_TEAMS) or (raw_tm in TOP_10_TEAMS) or (r.get("is_top_offense_undervalued", 0) == 1)
     cat = r.get("has_breakout_catalyst", 0)
     contract = r.get("is_contract_year", 0)
-    shadow_cb = r.get("wr_shadow_cb_count", None)
+    luck_lost = r.get("luck_points_lost", 0.0)
     
     parts = []
     
@@ -115,43 +114,15 @@ def compute_tactical_edge(r) -> str:
         elif pos in ["RB", "QB"]:
             parts.append(f"OL #{ol_int}")
             
-    # 3. Schedule, Playoff Runway & Defensive Matchup Intel
-    s_intel = ScheduleMatrixEngine.get_player_schedule_intel(tm, pos)
-    w17 = s_intel.get("playoff_w17_championship", "")
-    w17_short = w17.split("(")[0].strip() if w17 else ""
-
+    # 3. Role & Volume Security
     if pos == "RB":
-        sos_rk = s_intel.get("rb_sos_rank", 16)
-        sos_grd = s_intel.get("rb_sos_grade", "B")
-        if sos_rk <= 8:
-            parts.append(f"🟢 RB SOS #{sos_rk} ({sos_grd})")
-        elif sos_rk >= 25:
-            parts.append(f"⚠️ Tough RB SOS #{sos_rk}")
-
         if gold == "Gold Standard":
             parts.append("👑 3-Down Bellcow")
         elif gold == "Gold Diggers":
             parts.append("⚡ GL Anchor")
         elif gold == "Fool's Gold":
             parts.append("⚠️ Committee Trap")
-
-        if w17_short:
-            parts.append(f"🏆 W17 Champ: {w17_short}")
-
     elif pos in ["WR", "TE"]:
-        sos_rk = s_intel.get("wr_sos_rank", 16)
-        sos_grd = s_intel.get("wr_sos_grade", "B")
-        if sos_rk <= 8:
-            parts.append(f"🟢 WR SOS #{sos_rk} ({sos_grd})")
-        elif sos_rk >= 25:
-            parts.append(f"⚠️ Tough WR SOS #{sos_rk}")
-
-        shadow_risk = s_intel.get("shadow_cb_risk", "")
-        if "🟢 LOW" in shadow_risk or "LOW" in shadow_risk:
-            parts.append("🟢 Low Shadow CB Risk")
-        elif "HIGH" in shadow_risk or "Sauce" in shadow_risk or "Surtain" in shadow_risk:
-            parts.append("⚠️ Shadow CB Risk")
-
         if pd.notna(twowr):
             if twowr >= 45.0:
                 rank_val = r.get("composite_rank", 99)
@@ -161,23 +132,74 @@ def compute_tactical_edge(r) -> str:
                     parts.append(f"🚨 2-WR Bench Risk ({twowr:.0f}%)")
             elif twowr <= 28.0:
                 parts.append(f"⚡ 3-WR Slot Heavy ({twowr:.0f}%)")
-
-        if w17_short:
-            parts.append(f"🏆 W17 Champ: {w17_short}")
-
+        if exodia == 1 and pos == "TE":
+            parts.append("💥 TE1 Alpha")
     elif pos == "QB":
-        sos_rk = s_intel.get("qb_sos_rank", 16)
-        if sos_rk <= 8:
-            parts.append(f"🟢 QB SOS #{sos_rk}")
         if r.get("qb_runs", False):
             parts.append("⚡ Dual-Threat Floor")
-        if w17_short:
-            parts.append(f"🏆 W17 Champ: {w17_short}")
 
+    # 4. Season Positional SOS & Playoff Runway
+    s_intel = ScheduleMatrixEngine.get_player_schedule_intel(tm, pos)
+    
+    # Season Positional SOS
+    if pos == "RB":
+        sos_rk = s_intel.get("rb_sos_rank", 16)
+        sos_grd = s_intel.get("rb_sos_grade", "B")
+        if sos_rk <= 10:
+            parts.append(f"🟢 Season SOS #{sos_rk} ({sos_grd})")
+        elif sos_rk >= 23:
+            parts.append(f"⚠️ Tough Season SOS #{sos_rk} ({sos_grd})")
+    elif pos in ["WR", "TE"]:
+        sos_rk = s_intel.get("wr_sos_rank", 16)
+        sos_grd = s_intel.get("wr_sos_grade", "B")
+        if sos_rk <= 10:
+            parts.append(f"🟢 Season SOS #{sos_rk} ({sos_grd})")
+        elif sos_rk >= 23:
+            parts.append(f"⚠️ Tough Season SOS #{sos_rk} ({sos_grd})")
+    elif pos == "QB":
+        sos_rk = s_intel.get("qb_sos_rank", 16)
+        sos_grd = s_intel.get("qb_sos_grade", "B")
+        if sos_rk <= 10:
+            parts.append(f"🟢 Season SOS #{sos_rk} ({sos_grd})")
+        elif sos_rk >= 23:
+            parts.append(f"⚠️ Tough Season SOS #{sos_rk} ({sos_grd})")
+
+    # Playoff SOS Grade & Championship Spot
+    p_grade = s_intel.get("playoff_sos_grade", "")
+    w17 = s_intel.get("playoff_w17_championship", "")
+    w17_short = w17.split("(")[0].strip() if w17 else ""
+
+    stars = p_grade.split(" ")[0] if "⭐" in p_grade else ""
+    grade_desc = p_grade.replace(stars, "").strip() if stars else p_grade
+
+    if stars and stars.count("⭐") >= 4:
+        parts.append(f"🏆 Playoffs: {stars} ({grade_desc} • W17: {w17_short})")
+    elif "Tough" in p_grade or "Brutal" in p_grade or (stars and stars.count("⭐") <= 2):
+        parts.append(f"🏆 Playoffs: ⚠️ Tough Slate (W17: {w17_short})")
+    elif w17_short:
+        parts.append(f"🏆 Playoffs: {stars} (W17: {w17_short})" if stars else f"🏆 Playoff W17: {w17_short}")
+
+    # 5. Defensive Matchup Intel (Shadow CBs / Box Fronts)
+    if pos in ["WR", "TE"]:
+        shadow_risk = s_intel.get("shadow_cb_risk", "")
+        if "🟢 LOW" in shadow_risk or "LOW" in shadow_risk:
+            parts.append("🟢 Low Shadow CB Risk")
+        elif "HIGH" in shadow_risk or "Sauce" in shadow_risk or "Surtain" in shadow_risk:
+            parts.append("⚠️ Shadow CB Risk")
+    elif pos == "RB":
+        run_def = s_intel.get("run_defense_toughness", "")
+        if "WORKHORSE" in run_def or "DUAL-THREAT" in run_def or "LIGHT" in run_def or "SPEED" in run_def:
+            parts.append("🟢 Favorable Box Fronts")
+        elif "TOUGH" in run_def or "HEAVY" in run_def or "STOUT" in run_def:
+            parts.append("⚠️ Stout Run Fronts")
+
+    # 6. Hidden Catalysts & Luck Rebound
     if cat == 1:
         parts.append("🔥 Breakout Catalyst")
     if contract == 1:
         parts.append("💰 Contract Yr")
+    if luck_lost >= 20.0:
+        parts.append(f"🍀 Luck Rebound (+{luck_lost:.0f} Pts Lost)")
 
     return " • ".join(parts) if parts else "—"
 
