@@ -479,11 +479,17 @@ class ScheduleMatrixEngine:
     """Provides strength of schedule and matchup intelligence for all NFL players."""
 
     @classmethod
-    def get_player_schedule_intel(cls, team: str, position: str) -> Dict[str, Any]:
-        raw_tm = str(team).upper().strip()
+    def get_player_schedule_intel(cls, arg1: str, arg2: str = "RB", arg3: Optional[str] = None) -> Dict[str, Any]:
+        if arg3 is not None:
+            # Invoked as (player_name, position, team)
+            pos = str(arg2).upper().strip()
+            raw_tm = str(arg3).upper().strip()
+        else:
+            # Invoked as (team, position)
+            raw_tm = str(arg1).upper().strip()
+            pos = str(arg2).upper().strip()
+
         tm = TEAM_ALIASES.get(raw_tm, raw_tm)
-        pos = str(position).upper().strip()
-        
         intel = TEAM_SCHEDULE_INTEL.get(tm, TEAM_SCHEDULE_INTEL["FA"].copy())
         
         pos_key = pos.lower() if pos in ["QB", "RB", "WR", "TE"] else "rb"
@@ -493,6 +499,7 @@ class ScheduleMatrixEngine:
         return {
             "team": tm,
             "position": pos,
+            "sos_grade": intel.get("playoff_sos_grade", "⭐⭐⭐ Standard"),
             "pos_sos_rank": sos_rank,
             "pos_sos_grade": sos_grade,
             "playoff_sos_grade": intel.get("playoff_sos_grade", "⭐⭐⭐ Standard"),
