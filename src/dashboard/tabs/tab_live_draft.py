@@ -121,18 +121,49 @@ def render_strategy_card_html(
     )
     return card_html
 
+def apply_draft_action(state_mgr: DraftStateManager, player_name: str, by_user: bool = False):
+    success = state_mgr.draft_player(player_name, by_user=by_user)
+    if success:
+        st.session_state["war_room_pick_input"] = state_mgr.current_pick
+        st.session_state["_last_pick_input_val"] = state_mgr.current_pick
+
+def apply_undo_action(state_mgr: DraftStateManager):
+    state_mgr.undo_last_pick()
+    st.session_state["war_room_pick_input"] = state_mgr.current_pick
+    st.session_state["_last_pick_input_val"] = state_mgr.current_pick
+
+def apply_reset_action(state_mgr: DraftStateManager):
+    state_mgr.reset_draft()
+    st.session_state["war_room_pick_input"] = 1
+    st.session_state["_last_pick_input_val"] = 1
+
+def apply_next_pick_action(state_mgr: DraftStateManager):
+    state_mgr.state["current_pick"] += 1
+    st.session_state["war_room_pick_input"] = state_mgr.current_pick
+    st.session_state["_last_pick_input_val"] = state_mgr.current_pick
+
 def render_tab_live_draft(df: pd.DataFrame):
     # Initialize Engine State Manager
     state_mgr = DraftStateManager(master_df=df, league_size=12, user_slot=5, total_rounds=14)
     state = state_mgr.state
 
-    # Synchronize state from interactive widgets immediately
+    # Synchronize state from interactive widgets
     if "war_room_slot_select" in st.session_state:
         state_mgr.set_user_slot(int(st.session_state["war_room_slot_select"]))
     if "war_room_plat_select" in st.session_state:
         state_mgr.set_platform(st.session_state["war_room_plat_select"].lower())
+    
+    # Handle Draft Pick # input synchronization
     if "war_room_pick_input" in st.session_state:
-        state["current_pick"] = int(st.session_state["war_room_pick_input"])
+        if st.session_state.get("_last_pick_input_val") != st.session_state["war_room_pick_input"]:
+            state["current_pick"] = int(st.session_state["war_room_pick_input"])
+            st.session_state["_last_pick_input_val"] = state["current_pick"]
+        else:
+            st.session_state["war_room_pick_input"] = state["current_pick"]
+            st.session_state["_last_pick_input_val"] = state["current_pick"]
+    else:
+        st.session_state["war_room_pick_input"] = state["current_pick"]
+        st.session_state["_last_pick_input_val"] = state["current_pick"]
 
     # Top Telemetry Banner
     cur_p = state_mgr.current_pick
@@ -193,17 +224,17 @@ def render_tab_live_draft(df: pd.DataFrame):
     with c4:
         st.write("") # spacing
         if st.button("⏩ Next Pick (+1)", use_container_width=True):
-            state["current_pick"] += 1
+            apply_next_pick_action(state_mgr)
             st.rerun()
     with c5:
         st.write("") # spacing
         if st.button("⏪ Undo Pick", use_container_width=True):
-            state_mgr.undo_last_pick()
+            apply_undo_action(state_mgr)
             st.rerun()
     with c6:
         st.write("") # spacing
         if st.button("🔄 Reset Draft", use_container_width=True):
-            state_mgr.reset_draft()
+            apply_reset_action(state_mgr)
             st.rerun()
 
     # Calculate In-Draft Dynamic Models
@@ -361,7 +392,7 @@ def render_tab_live_draft(df: pd.DataFrame):
                 )
                 st.markdown(card1_html, unsafe_allow_html=True)
                 if st.button(f"⚡ DRAFT {bpa['player_name'].upper()} TO MY TEAM", key="btn_draft_bpa", use_container_width=True):
-                    state_mgr.draft_player(bpa["player_name"], by_user=True)
+                    apply_draft_action(state_mgr, bpa["player_name"], by_user=True)
                     st.rerun()
 
             # Card 2: Tier Cliff Safeguard
@@ -380,7 +411,7 @@ def render_tab_live_draft(df: pd.DataFrame):
                 )
                 st.markdown(card2_html, unsafe_allow_html=True)
                 if st.button(f"⚡ DRAFT {cliff['player_name'].upper()} (CLIFF DEFENSE)", key="btn_draft_cliff", use_container_width=True):
-                    state_mgr.draft_player(cliff["player_name"], by_user=True)
+                    apply_draft_action(state_mgr, cliff["player_name"], by_user=True)
                     st.rerun()
 
             # Card 3: Maximum Ceiling / Stacking Play
@@ -397,7 +428,7 @@ def render_tab_live_draft(df: pd.DataFrame):
                 )
                 st.markdown(card3_html, unsafe_allow_html=True)
                 if st.button(f"⚡ DRAFT {upside['player_name'].upper()} (CEILING)", key="btn_draft_upside", use_container_width=True):
-                    state_mgr.draft_player(upside["player_name"], by_user=True)
+                    apply_draft_action(state_mgr, upside["player_name"], by_user=True)
                     st.rerun()
 
         # ----------------------------------------------------------------------
@@ -422,7 +453,7 @@ def render_tab_live_draft(df: pd.DataFrame):
                     qc1, qc2 = st.columns([1, 1])
                     with qc1:
                         if st.button(f"⚡ Draft to Me", key=f"q_draft_{q_p['player_name']}", use_container_width=True):
-                            state_mgr.draft_player(q_p["player_name"], by_user=True)
+                            apply_draft_action(state_mgr, q_p["player_name"], by_user=True)
                             st.rerun()
                     with qc2:
                         if st.button(f"❌ Remove", key=f"q_rem_{q_p['player_name']}", use_container_width=True):
@@ -465,11 +496,11 @@ def render_tab_live_draft(df: pd.DataFrame):
                     """, unsafe_allow_html=True)
                 with fc_mine:
                     if st.button("Mine", key=f"mine_{f_name}", use_container_width=True):
-                        state_mgr.draft_player(f_name, by_user=True)
+                        apply_draft_action(state_mgr, f_name, by_user=True)
                         st.rerun()
                 with fc_taken:
                     if st.button("Taken", key=f"taken_{f_name}", use_container_width=True):
-                        state_mgr.draft_player(f_name, by_user=False)
+                        apply_draft_action(state_mgr, f_name, by_user=False)
                         st.rerun()
                 with fc_q:
                     q_icon = "⭐" if f_name not in state["queue"] else "★"
