@@ -65,7 +65,7 @@ def render_tab_master_board(df: pd.DataFrame):
 
     view_mode = st.radio(
         "Select Board Display Format:",
-        ["⚡ Live HUD View (6 Essential Columns)", "📋 Full Scouting Deep-Dive Table", "📊 Boris Chen GMM Tier Staircase Charts"],
+        ["⚡ Live Decision HUD & Tiebreaker Matrix", "📋 Full Scouting Deep-Dive Table", "📊 Boris Chen GMM Tier Staircase Charts"],
         horizontal=True
     )
 
@@ -158,24 +158,48 @@ def render_tab_master_board(df: pd.DataFrame):
     # Compute comprehensive tactical context
     board_df["tactical_context"] = board_df.apply(ui_comp.compute_tactical_edge, axis=1)
 
+    # Clean master_designation of markdown asterisks for crisp table rendering
+    if "master_designation" in board_df.columns:
+        board_df["master_designation"] = board_df["master_designation"].astype(str).str.replace("**", "", regex=False)
+
     # --------------------------------------------------------------------------
-    # VIEW 1: LIVE HUD VIEW (6 ESSENTIAL COLUMNS)
+    # VIEW 1: LIVE HUD VIEW (HIGH-DENSITY TIEBREAKER MATRIX)
     # --------------------------------------------------------------------------
-    if view_mode == "⚡ Live HUD View (6 Essential Columns)":
-        st.markdown("##### ⚡ Live Decision HUD (Sub-5s Scannability)")
+    if view_mode == "⚡ Live Decision HUD & Tiebreaker Matrix":
+        st.markdown("##### ⚡ Live Decision HUD & Tactical Tiebreaker Matrix (Sub-5s Scannability)")
         hud_cols = [
             "composite_rank", "player_name", "position", "team", "composite_tier",
-            "adjusted_vorp", "adp_delta_yahoo", "master_designation"
+            "master_designation", "adjusted_vorp", "adjusted_proj_pts",
+            "smyth_color_tag", "boris_tier_pos", "duracell_ol_rank",
+            "adp_yahoo", "adp_delta_yahoo", "tactical_context"
         ]
         hud_df = board_df[[c for c in hud_cols if c in board_df.columns]].sort_values("composite_rank")
+
+        column_config = ui_comp.STANDARD_COLUMN_CONFIG.copy()
+        column_config.update({
+            "composite_rank": st.column_config.NumberColumn("Rank", format="#%d", pinned=True),
+            "player_name": st.column_config.TextColumn("Player", pinned=True),
+            "position": st.column_config.TextColumn("Pos", pinned=True),
+            "team": st.column_config.TextColumn("Team", pinned=True),
+            "composite_tier": st.column_config.TextColumn("Tier", width="small"),
+            "master_designation": st.column_config.TextColumn("Designation", width="medium"),
+            "adjusted_vorp": st.column_config.NumberColumn("🏆 VORP", format="%.1f", help="Value Over Replacement Player"),
+            "adjusted_proj_pts": st.column_config.NumberColumn("🚀 Calib Proj", format="%.1f", help="Calibrated multi-source projections"),
+            "smyth_color_tag": st.column_config.TextColumn("🎯 Smyth Tag", width="small", help="Joel Smyth Big Board: 🎯 Target, 🟡 Pass, 🚫 Avoid, ⚪ Neutral"),
+            "boris_tier_pos": st.column_config.TextColumn("Boris Tier", width="small", help="Boris Chen Gaussian clustering positional tier"),
+            "duracell_ol_rank": st.column_config.NumberColumn("OL Rk", format="#%d", help="Consensus Offensive Line Rank (1 = Best, 32 = Worst)"),
+            "adp_yahoo": st.column_config.NumberColumn("Yahoo ADP", format="%.1f", help="Live Yahoo Fantasy ADP"),
+            "adp_delta_yahoo": st.column_config.NumberColumn("Yahoo Edge", format="%+.1f", help="Model Rank vs Yahoo ADP (Positive = Value/Steal on Yahoo)"),
+            "tactical_context": st.column_config.TextColumn("⚡ Key Tactical Tiebreaker Intel", width="large", help="Role, playcaller, OL rank, 2-WR usage %, PROE, red zone tendency, schedule, and shadow CB notes"),
+        })
 
         st.dataframe(
             hud_df,
             use_container_width=True,
             hide_index=True,
-            column_config=ui_comp.STANDARD_COLUMN_CONFIG
+            column_config=column_config
         )
-        st.caption(f"⚡ Live HUD Mode: Showing {len(hud_df)} players with zero horizontal scroll.")
+        st.caption(f"⚡ Live HUD Mode: Showing {len(hud_df)} players with comprehensive tiebreaker intelligence.")
 
     # --------------------------------------------------------------------------
     # VIEW 2: FULL SCOUTING DEEP-DIVE TABLE
