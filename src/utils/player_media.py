@@ -157,8 +157,12 @@ class PlayerMediaResolver:
             exp_str = "2026 Rookie"
         elif exp_years == 1:
             exp_str = "2nd Year Pro"
+        elif exp_years == 2:
+            exp_str = "3rd Year Pro"
+        elif exp_years == 3:
+            exp_str = "4th Year Veteran"
         else:
-            exp_str = f"{exp_years}th Year Veteran"
+            exp_str = f"{exp_years + 1}th Year Veteran"
 
         # Ownership percentage estimate
         owned_espn = float(meta.get("owned_espn") or 0.0)

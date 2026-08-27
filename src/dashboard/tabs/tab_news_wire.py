@@ -72,6 +72,14 @@ def render_tab_news_wire(df: pd.DataFrame):
 
             filtered_news.append(n)
 
+        # Prepare df copy with clean_name
+        df_news = df.copy()
+        if "clean_name" not in df_news.columns:
+            if "player_name" in df_news.columns:
+                df_news["clean_name"] = df_news["player_name"].apply(DataNormalizer.clean_player_name)
+            else:
+                df_news["clean_name"] = ""
+
         st.markdown(f"Showing **{len(filtered_news)}** breaking wire updates:")
 
         for item in filtered_news:
@@ -84,8 +92,9 @@ def render_tab_news_wire(df: pd.DataFrame):
             team_code = item.get("team_id", "FA")
             pos = "NFL"
             
-            # Look up player pos from df
-            match_row = df[df["clean_name"] == DataNormalizer.clean_player_name(player_name)]
+            # Look up player pos from df_news
+            c_pname = DataNormalizer.clean_player_name(player_name)
+            match_row = df_news[df_news["clean_name"] == c_pname]
             if not match_row.empty:
                 pos = match_row.iloc[0].get("position", "NFL")
                 team_code = match_row.iloc[0].get("team", team_code)
