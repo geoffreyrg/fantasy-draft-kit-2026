@@ -212,6 +212,26 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, i
         tier_col = "boris_tier_overall"
         x_title = "Overall Consensus Rank & Expert Uncertainty Range"
 
+    # Calculate robust scale bounds to prevent any extreme outlier expansion
+    max_rank_val = float(chart_df[mean_col].max()) if not chart_df.empty else 50.0
+    if is_positional:
+        if "Running Back" in position_title or "RB" in position_title:
+            x_max = min(max_rank_val + 6.0, 70.0)
+        elif "Wide Receiver" in position_title or "WR" in position_title:
+            x_max = min(max_rank_val + 8.0, 90.0)
+        elif "Quarterback" in position_title or "QB" in position_title or "Tight End" in position_title or "TE" in position_title:
+            x_max = min(max_rank_val + 5.0, 36.0)
+        else:
+            x_max = min(max_rank_val + 6.0, 60.0)
+    else:
+        x_max = min(max_rank_val + 15.0, 110.0)
+
+    chart_df[worst_col] = chart_df[worst_col].clip(upper=x_max)
+    chart_df[best_col] = chart_df[best_col].clip(lower=1.0, upper=x_max)
+    chart_df[mean_col] = chart_df[mean_col].clip(lower=1.0, upper=x_max)
+    
+    x_scale = alt.Scale(domain=[1, x_max], clamp=True)
+
     tier_color_scale = alt.Scale(
         domain=[f"Tier {i}" for i in range(1, 13)],
         range=[
@@ -246,7 +266,7 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, i
         size=3.5,
         opacity=0.85
     ).encode(
-        x=alt.X(f"{best_col}:Q", title=f"{x_title} (Narrower Bar = Higher Consensus)"),
+        x=alt.X(f"{best_col}:Q", scale=x_scale, title=f"{x_title} (Narrower Bar = Higher Consensus)"),
         x2=alt.X2(f"{worst_col}:Q"),
         color=alt.Color(f"{tier_col}:N", scale=tier_color_scale, legend=alt.Legend(title="Boris Chen Tier"))
     )
@@ -257,7 +277,7 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, i
         thickness=2.5,
         opacity=0.9
     ).encode(
-        x=alt.X(f"{best_col}:Q"),
+        x=alt.X(f"{best_col}:Q", scale=x_scale),
         color=alt.Color(f"{tier_col}:N", scale=tier_color_scale)
     )
 
@@ -267,7 +287,7 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, i
         thickness=2.5,
         opacity=0.9
     ).encode(
-        x=alt.X(f"{worst_col}:Q"),
+        x=alt.X(f"{worst_col}:Q", scale=x_scale),
         color=alt.Color(f"{tier_col}:N", scale=tier_color_scale)
     )
 
@@ -276,7 +296,7 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, i
         size=220,
         opacity=0.35
     ).encode(
-        x=alt.X(f"{mean_col}:Q"),
+        x=alt.X(f"{mean_col}:Q", scale=x_scale),
         color=alt.Color(f"{tier_col}:N", scale=tier_color_scale)
     )
 
@@ -286,7 +306,7 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, i
         baseline="middle",
         align="center"
     ).encode(
-        x=alt.X(f"{mean_col}:Q"),
+        x=alt.X(f"{mean_col}:Q", scale=x_scale),
         text=alt.Text("designation_emoji:N"),
         tooltip=[
             alt.Tooltip("player_name:N", title="Player"),

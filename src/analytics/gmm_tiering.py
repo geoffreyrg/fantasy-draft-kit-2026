@@ -173,14 +173,14 @@ class BorisChenGMMTierEngine:
             best_raw = _safe_float(row.get("best_rank"), None)
             worst_raw = _safe_float(row.get("worst_rank"), None)
             
-            # Check if best_raw / worst_raw are plausible overall ranks (and not positional ranks like QB1 / TE1)
-            if best_raw is not None and best_raw > 0 and (best_raw >= ecr_val * 0.45 or ecr_val <= 5.0) and (worst_raw is not None and worst_raw >= best_raw):
+            # Check if best_raw / worst_raw are plausible overall ranks (and not positional ranks or extreme outliers > 250)
+            if best_raw is not None and best_raw > 0 and (best_raw >= ecr_val * 0.45 or ecr_val <= 5.0) and (worst_raw is not None and worst_raw >= best_raw and worst_raw <= 220.0):
                 best_v = max(1.0, best_raw)
                 worst_v = worst_raw
             else:
-                spread = max(1.5, sd * 1.25)
+                spread = max(1.5, min(sd * 1.25, ecr_val * 0.25 + 5.0))
                 best_v = max(1.0, ecr_val - spread)
-                worst_v = ecr_val + spread
+                worst_v = min(ecr_val + spread, 220.0)
                 
             rng = round(worst_v - best_v, 1)
             tag = "⚡ High Variance (Boom/Bust Ceiling)" if rng >= 6.5 else ("⚖️ Moderate Variance" if rng >= 3.5 else "🎯 High Consensus (Safe Floor)")
@@ -190,6 +190,7 @@ class BorisChenGMMTierEngine:
         df[ov_cols] = df.apply(_get_overall_coords, axis=1)
 
         # 2. APPLY POSITIONAL TIERS AND COORDINATES
+        pos_caps = {"QB": 36, "RB": 70, "WR": 90, "TE": 36, "K": 24, "DST": 24}
         pos_frames = []
         for pos_name in ["QB", "RB", "WR", "TE", "K", "DST"]:
             pos_mask = df["position"].str.upper() == pos_name
@@ -206,24 +207,27 @@ class BorisChenGMMTierEngine:
 
             sub = sub.sort_values(by=["_extracted_num", "ecr"] if "ecr" in sub.columns else ["_extracted_num"]).reset_index(drop=True)
             sub["pos_ecr_num"] = np.arange(1.0, len(sub) + 1.0)
+            max_cap = pos_caps.get(pos_name, 60)
             
             def _get_pos_row(row):
-                pos_num = int(row["pos_ecr_num"])
-                t = cls.get_pos_tier(pos_name, pos_num)
+                pos_num = float(row["pos_ecr_num"])
+                t = cls.get_pos_tier(pos_name, int(pos_num))
                 
                 sd = _safe_float(row.get("std_dev"), 2.0)
-                best_raw = _safe_float(row.get("best_rank"), None)
-                worst_raw = _safe_float(row.get("worst_rank"), None)
+                best_raw = _safe_float(row.get("pos_best_rank", row.get("best_rank")), None)
+                worst_raw = _safe_float(row.get("pos_worst_rank", row.get("worst_rank")), None)
                 
-                if best_raw is not None and best_raw > 0:
-                    best_v = max(1.0, min(float(best_raw), float(pos_num)))
+                spread = max(1.0, min(sd * 0.75, pos_num * 0.20 + 2.5))
+                
+                if best_raw is not None and 0 < best_raw <= max_cap:
+                    best_v = max(1.0, min(float(best_raw), pos_num))
                 else:
-                    best_v = max(1.0, float(pos_num) - sd * 1.25)
+                    best_v = max(1.0, round(pos_num - spread, 1))
                     
-                if worst_raw is not None and worst_raw >= best_v:
-                    worst_v = max(float(worst_raw), float(pos_num))
+                if worst_raw is not None and worst_raw >= best_v and worst_raw <= max_cap:
+                    worst_v = max(float(worst_raw), pos_num)
                 else:
-                    worst_v = float(pos_num) + sd * 1.25
+                    worst_v = min(float(max_cap), round(pos_num + spread, 1))
                     
                 rng = round(worst_v - best_v, 1)
                 return pd.Series([t, float(pos_num), round(best_v, 1), round(worst_v, 1), rng])

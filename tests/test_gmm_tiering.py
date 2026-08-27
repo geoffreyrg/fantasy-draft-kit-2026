@@ -21,7 +21,7 @@ class TestGMMTiering(unittest.TestCase):
     def test_boris_chen_tier_application(self):
         sample_df = pd.DataFrame([
             {"player_name": "Jahmyr Gibbs", "position": "RB", "ecr": 1.0},
-            {"player_name": "Jonathon Brooks", "position": "RB", "ecr": 95.0},
+            {"player_name": "Jonathon Brooks", "position": "RB", "ecr": 95.0, "best_rank": 1.0},
             {"player_name": "Tony Pollard", "position": "RB", "ecr": 85.0},
             {"player_name": "Player C", "position": "WR", "ecr": 18.0},
         ])
