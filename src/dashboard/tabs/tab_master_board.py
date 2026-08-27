@@ -44,6 +44,18 @@ def _get_expected_round_label(r):
     else:
         return "Late / Free Agent"
 
+def _is_avoid_or_fade(row) -> bool:
+    des = str(row.get("master_designation", ""))
+    smyth = str(row.get("smyth_color_tag", "")).upper()
+    if "🚫" in des or "⚠️" in des:
+        return True
+    des_lower = des.lower()
+    if "fade" in des_lower or "avoid" in des_lower or "overvalue" in des_lower or "dirty 30" in des_lower:
+        return True
+    if smyth in ["AVOID", "PASS"]:
+        return True
+    return False
+
 def render_tab_master_board(df: pd.DataFrame):
     st.subheader("🏆 Master Consensus Draft Board & VORP Rankings (1/2 PPR 12-Team)")
     st.markdown("""
@@ -66,7 +78,7 @@ def render_tab_master_board(df: pd.DataFrame):
     with row1_col2:
         round_filter = st.multiselect("Filter Expected Round (Multi-Select)", all_rounds, default=all_rounds, key="mb_round_filter")
 
-    row2_col1, row2_col2, row2_col3 = st.columns([1.5, 2.3, 1.8])
+    row2_col1, row2_col2, row2_col3, row2_col4 = st.columns([1.2, 2.5, 1.5, 1.2])
     with row2_col1:
         tier_filter = st.multiselect("Filter Tiers", ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8"], default=["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8"], key="mb_tier_filter")
     with row2_col2:
@@ -78,19 +90,27 @@ def render_tab_master_board(df: pd.DataFrame):
                 "⭐ Top 10 Offense Assets",
                 "🎯 Joel Smyth Green Targets",
                 "👑 Guru 12 Targets",
-                "💰 Contract Year Assets"
+                "💰 Contract Year Assets",
+                "🚫 Red Fades & ⚠️ Avoids"
             ],
             default=[],
             key="mb_focus_multiselect"
         )
     with row2_col3:
         search_query = st.text_input("🔍 Search Player or Team", "", key="mb_search_query")
+    with row2_col4:
+        st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
+        hide_avoids = st.checkbox("🚫 Exclude Avoids", value=False, key="mb_hide_avoids", help="Instantly remove all 🚫 Fade and ⚠️ Avoid players from the board and staircase charts")
 
     board_df = df_board[
         df_board["position"].isin(pos_filter) & 
         df_board["composite_tier"].isin(tier_filter) &
         df_board["expected_round_label"].isin(round_filter)
     ].copy()
+
+    # Apply Exclude Avoids Toggle
+    if hide_avoids:
+        board_df = board_df[~board_df.apply(_is_avoid_or_fade, axis=1)]
 
     # Apply Multi-Select Focus Filters
     if focus_filters:
@@ -107,6 +127,8 @@ def render_tab_master_board(df: pd.DataFrame):
             masks.append(board_df["master_designation"].str.contains("Twelve|Guru", case=False, na=False))
         if "💰 Contract Year Assets" in focus_filters:
             masks.append(board_df["is_contract_year"] == 1)
+        if "🚫 Red Fades & ⚠️ Avoids" in focus_filters:
+            masks.append(board_df.apply(_is_avoid_or_fade, axis=1))
 
         if masks:
             combined_mask = masks[0]
@@ -157,13 +179,13 @@ def render_tab_master_board(df: pd.DataFrame):
         st.markdown("### 📊 Boris Chen Gaussian Mixture Model (GMM) Tier Staircase")
         st.markdown("""
         Each bar represents the **expert consensus ranking uncertainty range**.
-        - **Center Emoji Badge**: Master Player Designation (💥 Exodia, 🎯 Target, 👑 Hero, ⭐ Value, 💰 Contract, 🔥 Catalyst, ⚠️ Avoid).
+        - **Center Emoji Badge**: Master Player Designation (💥 Exodia, 🎯 Target, 👑 Hero, ⭐ Value, 💰 Contract, 🔥 Catalyst, ⚠️ Avoid / 🚫 Fade).
         - **Whiskers / Horizontal Line**: Expert High-to-Low rank spread.
         - **Tier Colors**: Statistically separated Gaussian clusters. Target players near the top of their tier before a tier drop!
         """)
 
-        # For Boris Chen positional charts, use full positional roster (or filtered if search is active)
-        chart_base_df = board_df if search_query else df_board
+        # Boris Chen charts dynamically reflect active filters (positions, focus, search, avoid exclusions)
+        chart_base_df = board_df
 
         pos_tab1, pos_tab2, pos_tab3, pos_tab4, pos_tab5 = st.tabs(["🔥 Overall Top 100", "🏃 Running Backs (RB)", "⚡ Wide Receivers (WR)", "🎯 Quarterbacks (QB)", "🛡️ Tight Ends (TE)"])
 
