@@ -169,7 +169,7 @@ def render_tab_master_board(df: pd.DataFrame):
         st.markdown("##### ⚡ Live Decision HUD & Tactical Tiebreaker Matrix (Sub-5s Scannability)")
         hud_cols = [
             "composite_rank", "player_name", "position", "team", "composite_tier",
-            "master_designation", "adjusted_vorp", "adjusted_proj_pts",
+            "master_designation", "ecr", "adjusted_vorp", "adjusted_proj_pts",
             "smyth_color_tag", "boris_tier_pos", "duracell_ol_rank",
             "adp_yahoo", "adp_delta_yahoo", "tactical_context"
         ]
@@ -183,14 +183,15 @@ def render_tab_master_board(df: pd.DataFrame):
             "team": st.column_config.TextColumn("Team", pinned=True),
             "composite_tier": st.column_config.TextColumn("Tier", width="small"),
             "master_designation": st.column_config.TextColumn("Designation", width="medium"),
+            "ecr": st.column_config.NumberColumn("ECR", format="%.1f", help="Consensus Expert Consensus Ranking (ECR)"),
             "adjusted_vorp": st.column_config.NumberColumn("🏆 VORP", format="%.1f", help="Value Over Replacement Player"),
             "adjusted_proj_pts": st.column_config.NumberColumn("🚀 Calib Proj", format="%.1f", help="Calibrated multi-source projections"),
-            "smyth_color_tag": st.column_config.TextColumn("🎯 Smyth Tag", width="small", help="Joel Smyth Big Board: 🎯 Target, 🟡 Pass, 🚫 Avoid, ⚪ Neutral"),
+            "smyth_color_tag": st.column_config.TextColumn("🎯 Smyth", width="small", help="Joel Smyth Big Board: 🎯 Target (+12), 🟡 Pass (-5), 🚫 Avoid (-15), ⚪ Neutral (0)"),
             "boris_tier_pos": st.column_config.TextColumn("Boris Tier", width="small", help="Boris Chen Gaussian clustering positional tier"),
             "duracell_ol_rank": st.column_config.NumberColumn("OL Rk", format="#%d", help="Consensus Offensive Line Rank (1 = Best, 32 = Worst)"),
             "adp_yahoo": st.column_config.NumberColumn("Yahoo ADP", format="%.1f", help="Live Yahoo Fantasy ADP"),
             "adp_delta_yahoo": st.column_config.NumberColumn("Yahoo Edge", format="%+.1f", help="Model Rank vs Yahoo ADP (Positive = Value/Steal on Yahoo)"),
-            "tactical_context": st.column_config.TextColumn("⚡ Key Tactical Tiebreaker Intel", width="large", help="Role, playcaller, OL rank, 2-WR usage %, PROE, red zone tendency, schedule, and shadow CB notes"),
+            "tactical_context": st.column_config.TextColumn("⚡ Key Tactical Tiebreaker Intel", width="large", help="Playoff W17 matchup, defense/shadow CB intel, playcaller, OL rank, 2-WR usage %, and goal-line roles"),
         })
 
         st.dataframe(

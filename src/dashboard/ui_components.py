@@ -76,17 +76,20 @@ def get_designation_emoji(r) -> str:
         
     return "●"
 
+from src.analytics.schedule_matrix import ScheduleMatrixEngine, TEAM_ALIASES
+
 def compute_tactical_edge(r) -> str:
-    """Computes punchy, comprehensive position-specific contextual intelligence for fast draft decisions."""
+    """Computes punchy, comprehensive position-specific contextual intelligence with playoff and matchup intel for fast draft decisions."""
     pos = str(r.get("position", "")).strip().upper()
-    tm = str(r.get("team", "")).strip().upper()
+    raw_tm = str(r.get("team", "")).strip().upper()
+    tm = TEAM_ALIASES.get(raw_tm, raw_tm)
     ol = r.get("duracell_ol_rank", 16)
     twowr = r.get("two_wr_set_pct", 35.0)
     proe = r.get("duracell_proe", 0.0)
     coach = r.get("playcaller", "") or r.get("duracell_coach", "")
     gold = str(r.get("smyth_gold_mine", "")).strip()
     exodia = r.get("is_exodia", 0)
-    is_top_eco = (tm in TOP_10_TEAMS) or (r.get("is_top_offense_undervalued", 0) == 1)
+    is_top_eco = (tm in TOP_10_TEAMS) or (raw_tm in TOP_10_TEAMS) or (r.get("is_top_offense_undervalued", 0) == 1)
     cat = r.get("has_breakout_catalyst", 0)
     contract = r.get("is_contract_year", 0)
     shadow_cb = r.get("wr_shadow_cb_count", None)
@@ -95,11 +98,11 @@ def compute_tactical_edge(r) -> str:
     
     # 1. Macro Ecosystem & Playcaller
     if is_top_eco:
-        if coach and coach != "—":
+        if coach and coach != "—" and str(coach) != "nan":
             parts.append(f"⭐ Top-10 Eco ({coach})")
         else:
             parts.append("⭐ Top-10 Eco")
-    elif coach and coach != "—":
+    elif coach and coach != "—" and str(coach) != "nan":
         parts.append(f"Scheme: {coach}")
         
     # 2. Offensive Line Rank
@@ -112,23 +115,43 @@ def compute_tactical_edge(r) -> str:
         elif pos in ["RB", "QB"]:
             parts.append(f"OL #{ol_int}")
             
-    # 3. Position-Specific Red Zone & Goal-Line Tendencies
-    rz_data = TEAM_RZ_GL.get(tm, {})
-    if pos in ["WR", "TE", "QB"] and "rz" in rz_data and "Pass" in rz_data["rz"]:
-        parts.append(rz_data["rz"])
-    elif pos == "RB" and "gl" in rz_data and "Run" in rz_data["gl"]:
-        parts.append(rz_data["gl"])
-        
-    # 4. Position-Specific Volume & Roles
+    # 3. Schedule, Playoff Runway & Defensive Matchup Intel
+    s_intel = ScheduleMatrixEngine.get_player_schedule_intel(tm, pos)
+    w17 = s_intel.get("playoff_w17_championship", "")
+    w17_short = w17.split("(")[0].strip() if w17 else ""
+
     if pos == "RB":
+        sos_rk = s_intel.get("rb_sos_rank", 16)
+        sos_grd = s_intel.get("rb_sos_grade", "B")
+        if sos_rk <= 8:
+            parts.append(f"🟢 RB SOS #{sos_rk} ({sos_grd})")
+        elif sos_rk >= 25:
+            parts.append(f"⚠️ Tough RB SOS #{sos_rk}")
+
         if gold == "Gold Standard":
             parts.append("👑 3-Down Bellcow")
         elif gold == "Gold Diggers":
-            parts.append("⚡ Goal-Line Anchor")
+            parts.append("⚡ GL Anchor")
         elif gold == "Fool's Gold":
             parts.append("⚠️ Committee Trap")
-            
-    elif pos == "WR":
+
+        if w17_short:
+            parts.append(f"🏆 W17 Champ: {w17_short}")
+
+    elif pos in ["WR", "TE"]:
+        sos_rk = s_intel.get("wr_sos_rank", 16)
+        sos_grd = s_intel.get("wr_sos_grade", "B")
+        if sos_rk <= 8:
+            parts.append(f"🟢 WR SOS #{sos_rk} ({sos_grd})")
+        elif sos_rk >= 25:
+            parts.append(f"⚠️ Tough WR SOS #{sos_rk}")
+
+        shadow_risk = s_intel.get("shadow_cb_risk", "")
+        if "🟢 LOW" in shadow_risk or "LOW" in shadow_risk:
+            parts.append("🟢 Low Shadow CB Risk")
+        elif "HIGH" in shadow_risk or "Sauce" in shadow_risk or "Surtain" in shadow_risk:
+            parts.append("⚠️ Shadow CB Risk")
+
         if pd.notna(twowr):
             if twowr >= 45.0:
                 rank_val = r.get("composite_rank", 99)
@@ -138,24 +161,24 @@ def compute_tactical_edge(r) -> str:
                     parts.append(f"🚨 2-WR Bench Risk ({twowr:.0f}%)")
             elif twowr <= 28.0:
                 parts.append(f"⚡ 3-WR Slot Heavy ({twowr:.0f}%)")
-        if pd.notna(shadow_cb) and shadow_cb <= 2.0 and shadow_cb >= 0:
-            parts.append("🟢 Green Schedule (≤2 Shadows)")
-            
+
+        if w17_short:
+            parts.append(f"🏆 W17 Champ: {w17_short}")
+
     elif pos == "QB":
+        sos_rk = s_intel.get("qb_sos_rank", 16)
+        if sos_rk <= 8:
+            parts.append(f"🟢 QB SOS #{sos_rk}")
         if r.get("qb_runs", False):
             parts.append("⚡ Dual-Threat Floor")
-            
-    elif pos == "TE":
-        if pd.notna(twowr) and twowr >= 40.0:
-            parts.append(f"🎯 90%+ Route Snaps ({twowr:.0f}% 12p)")
-        if exodia == 1:
-            parts.append("💥 TE1 Alpha")
-            
+        if w17_short:
+            parts.append(f"🏆 W17 Champ: {w17_short}")
+
     if cat == 1:
         parts.append("🔥 Breakout Catalyst")
     if contract == 1:
         parts.append("💰 Contract Yr")
-        
+
     return " • ".join(parts) if parts else "—"
 
 
@@ -169,13 +192,13 @@ STANDARD_COLUMN_CONFIG = {
     "master_designation": st.column_config.TextColumn("Designation", pinned=True, help="Primary Expert Badge (Exodia / Target / Value / Avoid)"),
     "adjusted_vorp": st.column_config.NumberColumn("🏆 VORP", format="%.1f", help="Value Over Replacement Player (12-Team 1/2 PPR Baseline)"),
     "adjusted_proj_pts": st.column_config.NumberColumn("🚀 Calib Proj", format="%.1f", help="Multi-source consensus projection scaled by expert upside model"),
-    "tactical_context": st.column_config.TextColumn("⚡ Key Tactical Context", width="large", help="Position-specific role, playcaller, OL rank, 2-WR usage %, PROE, red zone tendency, schedule and scheme flags"),
+    "tactical_context": st.column_config.TextColumn("⚡ Key Tactical Tiebreaker Intel", width="large", help="Position-specific role, playcaller, OL rank, 2-WR usage %, PROE, red zone tendency, playoff W17 spot, and shadow CB flags"),
     "adp_yahoo": st.column_config.NumberColumn("Yahoo ADP", format="%.1f", help="Current Live Yahoo Fantasy ADP"),
     "adp_delta_yahoo": st.column_config.NumberColumn("Yahoo Edge", format="%+.1f", help="Model Rank vs Yahoo ADP (Positive = Huge Value / Steal on Yahoo)"),
-    "smyth_color_tag": st.column_config.TextColumn("🎯 Smyth Tag", help="Joel Smyth Big Board: 🎯 Target (+12), 🟡 Pass (-5), 🚫 Avoid (-15), ⚪ Neutral (0)"),
+    "smyth_color_tag": st.column_config.TextColumn("🎯 Smyth", width="small", help="Joel Smyth Big Board: 🎯 Target (+12), 🟡 Pass (-5), 🚫 Avoid (-15), ⚪ Neutral (0)"),
     "upside_pct_display": st.column_config.NumberColumn("🎯 Upside Mod", format="%+.1f%%", help="Expert upside multiplier (-8% to +10%)"),
     "consensus_proj_pts": st.column_config.NumberColumn("📊 Proj Pts", format="%.1f"),
-    "ecr": st.column_config.NumberColumn("Consensus ECR", format="%.1f"),
+    "ecr": st.column_config.NumberColumn("ECR", format="%.1f", help="Consensus Expert Consensus Ranking (ECR)"),
     "adp_consensus": st.column_config.NumberColumn("Consensus ADP", format="%.1f"),
     "adp_delta_consensus": st.column_config.NumberColumn("Market Delta", format="%+.1f"),
     "duracell_ol_rank": st.column_config.NumberColumn("OL Rank", format="#%d"),

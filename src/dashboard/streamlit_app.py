@@ -148,7 +148,7 @@ def load_data():
         ("fp_pos_rank", ""),
         ("hansen_top200_rank", None),
         ("smyth_ecr", None),
-        ("smyth_color_tag", "⚪ Neutral"),
+        ("smyth_color_tag", "⚪"),
         ("smyth_gold_mine", "—"),
         ("upside_pct", 0.0),
         ("boris_tier_overall", "Tier 1"),

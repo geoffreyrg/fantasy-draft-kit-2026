@@ -26,7 +26,7 @@ class TestH2HComparison(unittest.TestCase):
                 "adp_delta_yahoo": 0.4,
                 "is_contract_year": 1,
                 "boris_tier_pos": "Tier 1",
-                "smyth_color_tag": "🎯 Target"
+                "smyth_color_tag": "🎯"
             },
             {
                 "player_name": "Bijan Robinson",
@@ -44,7 +44,7 @@ class TestH2HComparison(unittest.TestCase):
                 "adp_delta_yahoo": -0.1,
                 "is_contract_year": 0,
                 "boris_tier_pos": "Tier 1",
-                "smyth_color_tag": "🎯 Target"
+                "smyth_color_tag": "🎯"
             }
         ])
 

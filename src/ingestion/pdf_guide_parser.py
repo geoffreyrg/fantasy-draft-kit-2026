@@ -51,13 +51,13 @@ class PDFGuideParser:
             p_name = row["player_name"]
             c_name = _clean_player_name(p_name)
             if row["color"] == "Green":
-                tag_label = "🎯 Target"
+                tag_label = "🎯"
             elif row["color"] == "Yellow":
-                tag_label = "🟡 Pass"
+                tag_label = "🟡"
             elif row["color"] == "Red":
-                tag_label = "🚫 Avoid"
+                tag_label = "🚫"
             else:
-                tag_label = "⚪ Neutral"
+                tag_label = "⚪"
 
             players_dict[c_name] = {
                 "player_name": p_name,
@@ -90,7 +90,7 @@ class PDFGuideParser:
                         "clean_name": c_name,
                         "position": "RB",
                         "smyth_ecr": 999,
-                        "smyth_color_tag": "⚪ Neutral",
+                        "smyth_color_tag": "⚪",
                         "smyth_color": "Black",
                         "smyth_target": 0,
                         "smyth_pass": 0,
@@ -117,7 +117,7 @@ class PDFGuideParser:
                     "clean_name": c_name,
                     "position": "",
                     "smyth_ecr": 999,
-                    "smyth_color_tag": "⚪ Neutral",
+                    "smyth_color_tag": "⚪",
                     "smyth_color": "Black",
                     "smyth_target": 0,
                     "smyth_pass": 0,
@@ -143,7 +143,7 @@ class PDFGuideParser:
                     "clean_name": c_name,
                     "position": "",
                     "smyth_ecr": 999,
-                    "smyth_color_tag": "⚪ Neutral",
+                    "smyth_color_tag": "⚪",
                     "smyth_color": "Black",
                     "smyth_target": 0,
                     "smyth_pass": 0,
@@ -178,7 +178,7 @@ class PDFGuideParser:
                     "clean_name": c_name,
                     "position": "RB",
                     "smyth_ecr": 999,
-                    "smyth_color_tag": "⚪ Neutral",
+                    "smyth_color_tag": "⚪",
                     "smyth_color": "Black",
                     "smyth_target": 0,
                     "smyth_pass": 0,
