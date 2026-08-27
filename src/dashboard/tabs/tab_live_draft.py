@@ -439,34 +439,92 @@ def render_tab_live_draft(df: pd.DataFrame):
         )
 
     # ==========================================================================
-    # VIEW 3: ROUND-BY-ROUND BLUEPRINT & STRATEGY
+    # VIEW 3: ROUND-BY-ROUND BLUEPRINT & STRATEGY (DYNAMIC TO SELECTED SLOT)
     # ==========================================================================
     elif cockpit_view == "🗺️ Round-by-Round Blueprint & Strategy":
-        st.markdown("### 🗺️ Master Strategic Blueprint (Slot #5 / 12-Team 1/2 PPR)")
+        slot_num = state.get("user_slot", 5)
+        l_size = state.get("league_size", 12)
         
+        # Strategy Archetype Guidance
+        if slot_num <= 4:
+            arch_title = f"👑 Early-Slot Strategy (Draft Slot #{slot_num})"
+            arch_desc = "Anchor with a consensus Tier 1 workhorse RB or Alpha WR1 (Gibbs, Bijan, Chase). On the 2/3 turn, attack the WR/RB tier cliff before elite depth evaporates."
+        elif slot_num <= 8:
+            arch_title = f"⚖️ Mid-Slot Strategy (Draft Slot #{slot_num})"
+            arch_desc = "Optimal balance. Let elite value fall to you in Round 1 (Puka, JT, CMC), then exploit WR/TE tier cliffs in Rounds 2–3 without reaching."
+        else:
+            arch_title = f"⚡ Late-Slot / Turn Strategy (Draft Slot #{slot_num})"
+            arch_desc = "Double-Hero Turn Anchor. Execute rapid back-to-back picks to lock in two Top-15 studs (ARSB, Saquon, JSN) and dictate draft runs."
+
+        st.markdown(f"### 🗺️ Master Strategic Blueprint — Draft Slot #{slot_num} ({l_size}-Team 1/2 PPR)")
+        st.markdown(f"""
+        <div style="background: #F1F5F9; border-left: 4px solid #1E3A8A; padding: 10px 14px; border-radius: 6px; margin-bottom: 15px;">
+            <b style="color: #1E3A8A; font-size: 1.0rem;">{arch_title}:</b> {arch_desc}
+        </div>
+        """, unsafe_allow_html=True)
+
+        # Build dynamic round-by-round picks
+        skill_pool = df[df["position"].isin(["QB", "RB", "WR", "TE"])]
+        
+        rounds_data = []
+        for r in range(1, 15):
+            if r % 2 == 1:
+                p_num = (r - 1) * l_size + slot_num
+                in_r = slot_num
+            else:
+                p_num = (r - 1) * l_size + (l_size - slot_num + 1)
+                in_r = l_size - slot_num + 1
+
+            # Get target candidates near this pick number
+            t_pool = df if r >= 13 else skill_pool
+            cands = t_pool[
+                (t_pool["adp_consensus"].between(p_num - 8, p_num + 8)) |
+                (t_pool["composite_rank"].between(p_num - 8, p_num + 8))
+            ].sort_values("adjusted_vorp", ascending=False).head(3)
+
+            cand_items = []
+            for _, c in cands.iterrows():
+                emoji = get_designation_emoji(c)
+                cand_items.append(f"{emoji} **{c['player_name']}** ({c['position']}-{c['team']})")
+
+            cand_txt = " • ".join(cand_items) if cand_items else "Best Available Skill Player"
+            rounds_data.append({
+                "round": r,
+                "pick_num": p_num,
+                "in_round": in_r,
+                "targets_txt": cand_txt
+            })
+
         r_cols = st.columns(3)
         with r_cols[0]:
-            st.markdown("""
-            #### 🏆 Phase 1: Foundation (R1 - R3)
-            * **Pick 1.05 (#5)**: 💥 **Puka Nacua** or 💥 **Christian McCaffrey / Jahmyr Gibbs**. Anchor WR1 or elite workhorse RB.
-            * **Pick 2.08 (#20)**: 👑 **Jonathan Taylor / Nico Collins**. Lock in Hero RB or high-volume WR.
-            * **Pick 3.05 (#29)**: 🎯 **DeVonta Smith / Kenneth Walker / Trey McBride**. Secure elite pass-catcher or RB2.
-            """)
+            st.markdown("#### 🏆 Phase 1: Foundation (R1 - R3)")
+            for rd in rounds_data[:3]:
+                st.markdown(f"""
+                <div style="background: #F8FAFC; border-left: 3px solid #059669; padding: 6px 10px; border-radius: 4px; margin-bottom: 8px;">
+                    <span style="font-weight: 800; color: #065F46; font-size: 0.85rem;">Pick {rd['round']}.{rd['in_round']:02d} (#{rd['pick_num']}):</span><br/>
+                    <span style="font-size: 0.88rem; color: #1E293B;">{rd['targets_txt']}</span>
+                </div>
+                """, unsafe_allow_html=True)
+
         with r_cols[1]:
-            st.markdown("""
-            #### ⚡ Phase 2: Engine Room (R4 - R7)
-            * **Pick 4.08 (#44)**: 💰 **James Cook / Tee Higgins**. High-volume contract-year target.
-            * **Pick 5.05 (#53)**: 🔥 **George Pickens / Dalton Kincaid**. Dynamic flex anchor or elite TE.
-            * **Pick 6.08 (#68)**: 🎯 **D'Andre Swift / Jayden Daniels**. Dual-threat QB or RB anchor.
-            * **Pick 7.05 (#77)**: ⭐ **Xavier Worthy / Kyler Murray**. High-speed catalyst in top-scoring offense.
-            """)
+            st.markdown("#### ⚡ Phase 2: Engine Room (R4 - R7)")
+            for rd in rounds_data[3:7]:
+                st.markdown(f"""
+                <div style="background: #F8FAFC; border-left: 3px solid #0284C7; padding: 6px 10px; border-radius: 4px; margin-bottom: 8px;">
+                    <span style="font-weight: 800; color: #0369A1; font-size: 0.85rem;">Pick {rd['round']}.{rd['in_round']:02d} (#{rd['pick_num']}):</span><br/>
+                    <span style="font-size: 0.88rem; color: #1E293B;">{rd['targets_txt']}</span>
+                </div>
+                """, unsafe_allow_html=True)
+
         with r_cols[2]:
-            st.markdown("""
-            #### 🚀 Phase 3: Late Upside (R8 - R14)
-            * **Rounds 8–10**: Target vacated-volume WRs & high-upside rookie running backs (JoScho 80+ talent).
-            * **Rounds 11–12**: Value backup RBs with standalone work (Jaylen Wright, Tyjae Spears).
-            * **Rounds 13–14**: Top-5 scoring offense Kicker (KC/BUF/DET) & Week 1 streaming DST.
-            """)
+            st.markdown("#### 🚀 Phase 3: Late Upside (R8 - R14)")
+            for rd in rounds_data[7:]:
+                st.markdown(f"""
+                <div style="background: #F8FAFC; border-left: 3px solid #7C3AED; padding: 6px 10px; border-radius: 4px; margin-bottom: 8px;">
+                    <span style="font-weight: 800; color: #6D28D9; font-size: 0.85rem;">Pick {rd['round']}.{rd['in_round']:02d} (#{rd['pick_num']}):</span><br/>
+                    <span style="font-size: 0.88rem; color: #1E293B;">{rd['targets_txt']}</span>
+                </div>
+                """, unsafe_allow_html=True)
 
     # ==========================================================================
     # VIEW 4: DRAFT TRANSACTION LOG & JSON BACKUP
