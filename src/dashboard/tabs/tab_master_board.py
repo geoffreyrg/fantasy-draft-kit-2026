@@ -5,7 +5,7 @@ Unified multi-source quantitative board with standardized columns, tactical cont
 
 import streamlit as st
 import pandas as pd
-from src.dashboard.ui_components import STANDARD_COLUMN_CONFIG, render_boris_chen_staircase, compute_tactical_edge, TOP_10_TEAMS
+import src.dashboard.ui_components as ui_comp
 
 def _get_expected_round_label(r):
     rank = r.get("composite_rank", 999)
@@ -100,7 +100,7 @@ def render_tab_master_board(df: pd.DataFrame):
         if "🔥 Breakout Catalysts" in focus_filters:
             masks.append(board_df["has_breakout_catalyst"] == 1)
         if "⭐ Top 10 Offense Assets" in focus_filters:
-            masks.append((board_df["is_top_offense_undervalued"] == 1) | (board_df["team"].isin(TOP_10_TEAMS)))
+            masks.append((board_df["is_top_offense_undervalued"] == 1) | (board_df["team"].isin(ui_comp.TOP_10_TEAMS)))
         if "🎯 Joel Smyth Green Targets" in focus_filters:
             masks.append(board_df["smyth_color_tag"] == "TARGET")
         if "👑 Guru 12 Targets" in focus_filters:
@@ -129,7 +129,7 @@ def render_tab_master_board(df: pd.DataFrame):
             board_df["upside_pct_display"] = board_df["upside_pct"].round(1)
 
     # Compute comprehensive tactical context
-    board_df["tactical_context"] = board_df.apply(compute_tactical_edge, axis=1)
+    board_df["tactical_context"] = board_df.apply(ui_comp.compute_tactical_edge, axis=1)
 
     if view_mode == "📋 Standard Master Table":
         # Standardized Column Sequence: Rank -> Player -> Pos -> Team -> Tier -> Designation -> VORP -> Calib Proj -> Tactical Context -> Yahoo ADP -> Yahoo Edge -> Smyth Tag -> Contract Yr -> Injury
@@ -141,7 +141,7 @@ def render_tab_master_board(df: pd.DataFrame):
         ]
         disp_df = board_df[[c for c in display_cols if c in board_df.columns]].sort_values(by="composite_rank")
 
-        column_config = STANDARD_COLUMN_CONFIG.copy()
+        column_config = ui_comp.STANDARD_COLUMN_CONFIG.copy()
         column_config["expected_round_label"] = st.column_config.TextColumn("Exp Round", help="Expected Draft Round based on 12-team structure")
 
         st.dataframe(
@@ -162,15 +162,18 @@ def render_tab_master_board(df: pd.DataFrame):
         - **Tier Colors**: Statistically separated Gaussian clusters. Target players near the top of their tier before a tier drop!
         """)
 
+        # For Boris Chen positional charts, use full positional roster (or filtered if search is active)
+        chart_base_df = board_df if search_query else df_board
+
         pos_tab1, pos_tab2, pos_tab3, pos_tab4, pos_tab5 = st.tabs(["🔥 Overall Top 100", "🏃 Running Backs (RB)", "⚡ Wide Receivers (WR)", "🎯 Quarterbacks (QB)", "🛡️ Tight Ends (TE)"])
 
         with pos_tab1:
-            render_boris_chen_staircase(board_df.sort_values("boris_ecr_mean").head(75), "Overall Top 75", is_positional=False)
+            ui_comp.render_boris_chen_staircase(chart_base_df.sort_values("boris_ecr_mean").head(75), "Overall Top 75", is_positional=False)
         with pos_tab2:
-            render_boris_chen_staircase(board_df[board_df["position"] == "RB"].sort_values("pos_ecr_num").head(50), "Running Backs (RB)", is_positional=True)
+            ui_comp.render_boris_chen_staircase(chart_base_df[chart_base_df["position"] == "RB"].sort_values("pos_ecr_num").head(50), "Running Backs (RB)", is_positional=True)
         with pos_tab3:
-            render_boris_chen_staircase(board_df[board_df["position"] == "WR"].sort_values("pos_ecr_num").head(50), "Wide Receivers (WR)", is_positional=True)
+            ui_comp.render_boris_chen_staircase(chart_base_df[chart_base_df["position"] == "WR"].sort_values("pos_ecr_num").head(50), "Wide Receivers (WR)", is_positional=True)
         with pos_tab4:
-            render_boris_chen_staircase(board_df[board_df["position"] == "QB"].sort_values("pos_ecr_num").head(30), "Quarterbacks (QB)", is_positional=True)
+            ui_comp.render_boris_chen_staircase(chart_base_df[chart_base_df["position"] == "QB"].sort_values("pos_ecr_num").head(30), "Quarterbacks (QB)", is_positional=True)
         with pos_tab5:
-            render_boris_chen_staircase(board_df[board_df["position"] == "TE"].sort_values("pos_ecr_num").head(30), "Tight Ends (TE)", is_positional=True)
+            ui_comp.render_boris_chen_staircase(chart_base_df[chart_base_df["position"] == "TE"].sort_values("pos_ecr_num").head(30), "Tight Ends (TE)", is_positional=True)

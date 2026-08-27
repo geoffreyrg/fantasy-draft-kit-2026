@@ -81,7 +81,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-@st.cache_data
 def load_data():
     """Loads processed dataset or executes pipeline if not found."""
     export_csv = settings.paths.master_csv_path
@@ -94,6 +93,10 @@ def load_data():
     else:
         pipeline = AnalyticsPipeline()
         raw_df = pipeline.run()
+
+    # Dynamically apply Boris Chen GMM tiers to guarantee 100% fresh, monotonic tiers
+    from src.analytics.gmm_tiering import BorisChenGMMTierEngine
+    raw_df = BorisChenGMMTierEngine.apply_gmm_tiers(raw_df)
 
     if "adp_spread" not in raw_df.columns:
         raw_df["adp_spread"] = raw_df.get("adp_arbitrage_spread", 0.0)

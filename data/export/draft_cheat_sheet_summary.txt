@@ -19,14 +19,14 @@ Rank  Player                 Pos    Team   Comp Score   VORP     ECR    ADP
 🎯 TOP PLATFORM ADP ARBITRAGE STEALS (Drafted much later on platform than consensus):
 Player                 Pos    Team   Best Platform   ADP Delta  Spread  
 ---------------------------------------------------------------------------
-Jaleel McLaughlin      RB     DEN    ESPN            +307.0     37.1    
+Jaleel McLaughlin      RB     DEN    ESPN            +307.0     37.0    
 Jerome Ford            RB     WAS    ESPN            +304.0     36.6    
-Michael Carter         RB     TEN    ESPN            +300.0     39.6    
-Cedric Tillman         WR     CLE    ESPN            +298.0     25.6    
-Isaiah Davis           RB     NYJ    ESPN            +292.0     32.7    
-Oscar Delp             TE     NO     ESPN            +291.0     134.9   
-Trevor Etienne         RB     CAR    ESPN            +271.0     34.0    
-DeMario Douglas        WR     NE     ESPN            +271.0     23.8    
+Isaiah Davis           RB     NYJ    ESPN            +296.0     33.1    
+Cedric Tillman         WR     CLE    ESPN            +290.0     25.2    
+Michael Carter         RB     TEN    ESPN            +288.0     39.0    
+Trevor Etienne         RB     CAR    ESPN            +285.0     34.8    
+Oscar Delp             TE     NO     ESPN            +280.0     132.7   
+Chris Brazzell II      WR     CAR    ESPN            +266.0     137.3   
 
 🚀 TOP COMPOSITE SLEEPERS & BREAKOUT CANDIDATES:
 Player                 Pos    Team   Comp Rank    ADP      Sleeper Delta  Steam   
@@ -37,7 +37,7 @@ Cade Otton             TE     TB     #179         217.5    +38.5          0.0
 Brock Purdy            QB     SF     #81          110.5    +29.5          0.0     
 Dallas Goedert         TE     PHI    #84          113.0    +29.0          0.0     
 Juwan Johnson          TE     NO     #113         136.0    +23.0          0.0     
-Michael Pittman Jr.    WR     PIT    #79          100.0    +21.0          0.0     
+Michael Pittman Jr.    WR     PIT    #79          100.5    +21.5          0.0     
 Travis Kelce           TE     KC     #80          100.5    +20.5          -20.0   
 
 🍀 TOP POSITIVE LUCK REGRESSION BOUNCE-BACK CANDIDATES:

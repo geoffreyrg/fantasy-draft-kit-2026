@@ -221,57 +221,71 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, i
     )
 
     y_sort = alt.EncodingSortField(field=mean_col, order="ascending")
+    sorted_chart_df = chart_df.sort_values(by=mean_col, ascending=True)
+    player_names_order = sorted_chart_df["player_name"].tolist()
+
+    # Base chart defining the canonical Y axis and sort order
+    base_chart = alt.Chart(chart_df).encode(
+        y=alt.Y(
+            "player_name:N",
+            sort=y_sort,
+            title="Player (Ordered by Consensus Rank)",
+            axis=alt.Axis(
+                values=player_names_order,
+                labelLimit=250,
+                labelFontSize=11,
+                labelOverlap=False,
+                labelPadding=6,
+                ticks=True
+            )
+        )
+    )
 
     # 1. Whisker Range Line
-    whisker_line = alt.Chart(chart_df).mark_rule(
+    whisker_line = base_chart.mark_rule(
         size=3.5,
         opacity=0.85
     ).encode(
-        y=alt.Y("player_name:N", sort=y_sort, title="Player (Ordered by Consensus Rank)", axis=alt.Axis(labelLimit=200, labelFontSize=11)),
         x=alt.X(f"{best_col}:Q", title=f"{x_title} (Narrower Bar = Higher Consensus)"),
         x2=alt.X2(f"{worst_col}:Q"),
         color=alt.Color(f"{tier_col}:N", scale=tier_color_scale, legend=alt.Legend(title="Boris Chen Tier"))
     )
 
     # 2. Left Whisker Tick
-    tick_left = alt.Chart(chart_df).mark_tick(
+    tick_left = base_chart.mark_tick(
         size=14,
         thickness=2.5,
         opacity=0.9
     ).encode(
-        y=alt.Y("player_name:N", sort=y_sort),
         x=alt.X(f"{best_col}:Q"),
         color=alt.Color(f"{tier_col}:N", scale=tier_color_scale)
     )
 
     # 3. Right Whisker Tick
-    tick_right = alt.Chart(chart_df).mark_tick(
+    tick_right = base_chart.mark_tick(
         size=14,
         thickness=2.5,
         opacity=0.9
     ).encode(
-        y=alt.Y("player_name:N", sort=y_sort),
         x=alt.X(f"{worst_col}:Q"),
         color=alt.Color(f"{tier_col}:N", scale=tier_color_scale)
     )
 
     # 4. Center Circle Glow
-    center_glow = alt.Chart(chart_df).mark_circle(
+    center_glow = base_chart.mark_circle(
         size=220,
         opacity=0.35
     ).encode(
-        y=alt.Y("player_name:N", sort=y_sort),
         x=alt.X(f"{mean_col}:Q"),
         color=alt.Color(f"{tier_col}:N", scale=tier_color_scale)
     )
 
     # 5. Center Designation Emoji (🚫 Fade, 💥 Exodia, 🎯 Target, 👑 Hero, ⭐ Value, 💰 Contract, 🔥 Catalyst, ⚠️ Avoid)
-    center_emoji = alt.Chart(chart_df).mark_text(
+    center_emoji = base_chart.mark_text(
         fontSize=14,
         baseline="middle",
         align="center"
     ).encode(
-        y=alt.Y("player_name:N", sort=y_sort),
         x=alt.X(f"{mean_col}:Q"),
         text=alt.Text("designation_emoji:N"),
         tooltip=[
@@ -279,7 +293,7 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, i
             alt.Tooltip("position:N", title="Pos"),
             alt.Tooltip("team:N", title="Team"),
             alt.Tooltip("master_designation:N", title="Designation"),
-            alt.Tooltip(f"{tier_col}:N", title="GMM Tier"),
+            alt.Tooltip(f"{tier_col}:N", title="Boris Chen Tier"),
             alt.Tooltip(f"{mean_col}:Q", format=".1f", title="Consensus Mean Rank"),
             alt.Tooltip(f"{best_col}:Q", format=".1f", title="Expert High Rank"),
             alt.Tooltip(f"{worst_col}:Q", format=".1f", title="Expert Low Rank"),
@@ -292,9 +306,9 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, i
 
     staircase_chart = (whisker_line + tick_left + tick_right + center_glow + center_emoji).properties(
         width=850,
-        height=max(380, len(chart_df) * 23),
+        height=max(450, len(chart_df) * 28),
         title=f"📊 {position_title} — Boris Chen GMM Tiering & Uncertainty Ranges"
-    ).interactive()
+    ).configure_axisY(labelOverlap=False).interactive()
 
     st.altair_chart(staircase_chart, use_container_width=True)
 
