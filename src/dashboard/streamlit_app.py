@@ -38,6 +38,7 @@ import src.dashboard.tabs.tab_master_board as t_board
 import src.dashboard.tabs.tab_player_dossier as t_dossier
 import src.dashboard.tabs.tab_arbitrage_market as t_arb
 import src.dashboard.tabs.tab_team_schematics as t_schem
+import src.dashboard.tabs.tab_news_wire as t_news
 
 importlib.reload(e_state)
 importlib.reload(e_dvorp)
@@ -52,6 +53,7 @@ importlib.reload(t_board)
 importlib.reload(t_dossier)
 importlib.reload(t_arb)
 importlib.reload(t_schem)
+importlib.reload(t_news)
 
 # Set Streamlit page layout
 st.set_page_config(
@@ -238,14 +240,15 @@ with kpi6:
     st.metric("🎯 Smyth Green Targets", f"{target_count} Players", "+12.0 Upside Model")
 
 # ==============================================================================
-# MAIN 5-PILLAR ARCHITECTURE
+# MAIN 6-PILLAR ARCHITECTURE
 # ==============================================================================
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
     "⚡ Live Draft War Room",
     "🏆 Master Consensus Board & Tiers",
     "🔬 360° Player Scouting Dossier",
     "🎯 Market Arbitrage & Sleeper Radar",
     "🛡️ Team Schematics & Matchup Matrix",
+    "📰 Training Camp & Injury Wire",
 ])
 
 with tab1:
@@ -262,3 +265,6 @@ with tab4:
 
 with tab5:
     t_schem.render_tab_team_schematics(df)
+
+with tab6:
+    t_news.render_tab_news_wire(df)

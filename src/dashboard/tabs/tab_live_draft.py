@@ -21,9 +21,14 @@ from src.engine.survival_model import PickSurvivalModel
 from src.engine.correlation_engine import StackingCorrelationEngine
 from src.engine.recommendation_engine import RecommendationEngine
 from src.engine.auction_engine import DynamicAuctionEngine
+from src.utils.player_media import PlayerMediaResolver
+from src.analytics.normalizer import DataNormalizer
 
 def get_player_badges_html(p: pd.Series, platform: str = "yahoo") -> str:
     badges = []
+    inj = str(p.get("injury_status", "")).strip()
+    if inj and inj.lower() not in ("healthy", "nan", "—", "none", ""):
+        badges.append(f'<span style="background:#DC2626; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">🚨 {inj}</span>')
     if p.get("is_exodia") == 1:
         badges.append('<span style="background:#7C3AED; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">💥 EXODIA</span>')
     if p.get("is_hero") == 1:
@@ -70,8 +75,10 @@ def render_strategy_card_html(
 ) -> str:
     p_name = p["player_name"]
     p_pos = p["position"]
-    p_team = p["team"]
+    p_team = DataNormalizer.normalize_team(str(p["team"]))
     emoji = get_designation_emoji(p)
+    headshot_url = PlayerMediaResolver.get_headshot_url(p_name)
+    team_logo_url = PlayerMediaResolver.get_team_logo_url(p_team)
     
     proj_pts = float(p.get("adjusted_proj_pts", p.get("consensus_proj_pts", 0.0)))
     ppg = proj_pts / 17.0 if proj_pts > 0 else 0.0
@@ -104,9 +111,13 @@ def render_strategy_card_html(
         f'<span style="font-weight: 800; color: {title_color}; font-size: 0.92rem;">{strategy_title}</span>'
         f'<span style="background: {border_color}; color: white; padding: 2px 8px; border-radius: 12px; font-weight: 700; font-size: 0.75rem;">{strategy_pill}</span>'
         f'</div>'
-        f'<div style="display: flex; justify-content: space-between; align-items: baseline; margin: 4px 0;">'
-        f'<div style="font-size: 1.22rem; font-weight: 800; color: #0F172A;">{emoji} {p_name} <span style="font-size: 0.88rem; color: #475569; font-weight: 600;">({p_pos} - {p_team})</span></div>'
-        f'<div style="font-size: 0.95rem; font-weight: 800; color: #1E3A8A;">📊 <b>{proj_pts:.1f} pts</b> <span style="font-size: 0.78rem; color: #64748B; font-weight: 600;">({ppg:.1f}/G)</span></div>'
+        f'<div style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">'
+        f'<div style="display: flex; align-items: center; gap: 8px;">'
+        f'<img src="{headshot_url}" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1px solid #94A3B8; background: #0F172A;" />'
+        f'<div><div style="font-size: 1.15rem; font-weight: 800; color: #0F172A;">{emoji} {p_name}</div>'
+        f'<div style="font-size: 0.82rem; color: #475569; font-weight: 600; display: flex; align-items: center; gap: 4px;"><img src="{team_logo_url}" style="width: 12px; height: 12px;" /> {p_pos} - {p_team}</div></div>'
+        f'</div>'
+        f'<div style="font-size: 0.95rem; font-weight: 800; color: #1E3A8A; text-align: right;">📊 <b>{proj_pts:.1f} pts</b><br><span style="font-size: 0.78rem; color: #64748B; font-weight: 600;">({ppg:.1f}/G)</span></div>'
         f'</div>'
         f'<div style="font-size: 0.84rem; color: #334155; margin-bottom: 6px; line-height: 1.4;">'
         f'<b>DynVORP:</b> <span style="color: #059669; font-weight: 800;">+{dvorp:.1f}</span> • '
