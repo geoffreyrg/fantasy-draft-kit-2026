@@ -553,32 +553,39 @@ def render_tab_live_draft(df: pd.DataFrame):
     # ==========================================================================
     # VIEW 3: ROUND-BY-ROUND BLUEPRINT & STRATEGY (DYNAMIC TO SELECTED SLOT)
     # ==========================================================================
+    # VIEW 3: ROUND-BY-ROUND BLUEPRINT & STRATEGY (DYNAMIC TO SELECTED SLOT)
+    # ==========================================================================
     elif cockpit_view == "🗺️ Round-by-Round Blueprint & Strategy":
         slot_num = state.get("user_slot", 5)
         l_size = state.get("league_size", 12)
+        current_pick = state.get("current_pick", 1)
+        drafted_names = set(state.get("drafted", []))
+        user_roster = state.get("roster", [])
         
         # Strategy Archetype Guidance
         if slot_num <= 4:
-            arch_title = f"👑 Early-Slot Strategy (Draft Slot #{slot_num})"
-            arch_desc = "Anchor with a consensus Tier 1 workhorse RB or Alpha WR1 (Gibbs, Bijan, Chase). On the 2/3 turn, attack the WR/RB tier cliff before elite depth evaporates."
+            arch_title = f"👑 Early-Slot Anchor (Draft Slot #{slot_num})"
+            arch_desc = "Anchor with an elite Tier 1 Workhorse RB or Alpha WR1 (Gibbs, Bijan, Chase). On the 2/3 turn, attack the WR/RB tier cliff before elite depth evaporates."
         elif slot_num <= 8:
-            arch_title = f"⚖️ Mid-Slot Strategy (Draft Slot #{slot_num})"
-            arch_desc = "Optimal balance. Let elite value fall to you in Round 1 (Puka, JT, CMC), then exploit WR/TE tier cliffs in Rounds 2–3 without reaching."
+            arch_title = f"⚖️ Mid-Slot Balance (Draft Slot #{slot_num})"
+            arch_desc = "Optimal draft balance. Secure a falling Tier 1/2 stud (JT, Puka, CMC, Cook), then exploit positional tier cliffs in Rounds 2–3 without reaching."
         else:
-            arch_title = f"⚡ Late-Slot / Turn Strategy (Draft Slot #{slot_num})"
-            arch_desc = "Double-Hero Turn Anchor. Execute rapid back-to-back picks to lock in two Top-15 studs (ARSB, Saquon, JSN) and dictate draft runs."
+            arch_title = f"⚡ Late-Slot / Turn Attack (Draft Slot #{slot_num})"
+            arch_desc = "Double-Hero Turn Anchor. Execute rapid back-to-back picks to lock in two Top-15 studs (ARSB, Saquon, JSN, K-Walk) and dictate positional runs."
 
         st.markdown(f"### 🗺️ Master Strategic Blueprint — Draft Slot #{slot_num} ({l_size}-Team 1/2 PPR)")
         st.markdown(f"""
-        <div style="background: #F1F5F9; border-left: 4px solid #1E3A8A; padding: 10px 14px; border-radius: 6px; margin-bottom: 15px;">
-            <b style="color: #1E3A8A; font-size: 1.0rem;">{arch_title}:</b> {arch_desc}
+        <div style="background: rgba(30, 58, 138, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); border-left: 4px solid #3B82F6; padding: 12px 16px; border-radius: 6px; margin-bottom: 16px;">
+            <b style="color: #60A5FA; font-size: 1.0rem;">{arch_title}:</b> <span style="color: inherit; font-size: 0.95rem;">{arch_desc}</span>
         </div>
         """, unsafe_allow_html=True)
 
-        # Build dynamic round-by-round picks
+        # Build dynamic round-by-round picks with realistic availability & live drafted player tracking
         skill_pool = df[df["position"].isin(["QB", "RB", "WR", "TE"])]
         
         rounds_data = []
+        suggested_so_far = set()
+
         for r in range(1, 15):
             if r % 2 == 1:
                 p_num = (r - 1) * l_size + slot_num
@@ -587,54 +594,82 @@ def render_tab_live_draft(df: pd.DataFrame):
                 p_num = (r - 1) * l_size + (l_size - slot_num + 1)
                 in_r = l_size - slot_num + 1
 
-            # Get target candidates near this pick number
-            t_pool = df if r >= 13 else skill_pool
-            cands = t_pool[
-                (t_pool["adp_consensus"].between(p_num - 8, p_num + 8)) |
-                (t_pool["composite_rank"].between(p_num - 8, p_num + 8))
-            ].sort_values("adjusted_vorp", ascending=False).head(3)
+            # Check if this user pick was already executed in a live draft
+            user_pick_made = None
+            if len(user_roster) >= r:
+                user_pick_made = user_roster[r - 1]
 
-            cand_items = []
-            for _, c in cands.iterrows():
-                emoji = get_designation_emoji(c)
-                cand_items.append(f"{emoji} **{c['player_name']}** ({c['position']}-{c['team']})")
+            if user_pick_made:
+                p_info = df[df["player_name"] == user_pick_made]
+                pos_str = f" ({p_info['position'].iloc[0]}-{p_info['team'].iloc[0]})" if not p_info.empty else ""
+                cand_txt = f"<b style='color: #10B981;'>✅ Pick Executed:</b> <b>{user_pick_made}</b>{pos_str}"
+                is_completed = True
+            else:
+                is_completed = False
+                # Filter out already drafted & previously recommended players
+                avail = df[~df["player_name"].isin(drafted_names | suggested_so_far)]
+                t_pool = avail if r >= 13 else avail[avail["position"].isin(["QB", "RB", "WR", "TE"])]
 
-            cand_txt = " • ".join(cand_items) if cand_items else "Best Available Skill Player"
+                # Realistic target window: min ADP ensures we don't suggest players who are gone (e.g. Gibbs/Bijan at #8)
+                min_adp = max(1.0, p_num - 2.5) if p_num > 4 else 1.0
+                cands = t_pool[
+                    (t_pool["adp_consensus"] >= min_adp) &
+                    (t_pool["composite_rank"] <= p_num + 14)
+                ].sort_values("adjusted_vorp", ascending=False).head(3)
+
+                if len(cands) < 3:
+                    cands = t_pool[t_pool["composite_rank"] >= max(1, p_num - 3)].sort_values("composite_rank").head(3)
+
+                cand_items = []
+                for _, c in cands.iterrows():
+                    emoji = get_designation_emoji(c)
+                    cand_items.append(f"{emoji} <b>{c['player_name']}</b> ({c['position']}-{c['team']})")
+                    suggested_so_far.add(c["player_name"])
+
+                cand_txt = " • ".join(cand_items) if cand_items else "Best Available Value"
+
             rounds_data.append({
                 "round": r,
                 "pick_num": p_num,
                 "in_round": in_r,
-                "targets_txt": cand_txt
+                "targets_txt": cand_txt,
+                "is_completed": is_completed
             })
 
         r_cols = st.columns(3)
         with r_cols[0]:
             st.markdown("#### 🏆 Phase 1: Foundation (R1 - R3)")
             for rd in rounds_data[:3]:
+                border_color = "#10B981" if rd["is_completed"] else "#059669"
+                tag_color = "#10B981" if rd["is_completed"] else "#059669"
                 st.markdown(f"""
-                <div style="background: #F8FAFC; border-left: 3px solid #059669; padding: 6px 10px; border-radius: 4px; margin-bottom: 8px;">
-                    <span style="font-weight: 800; color: #065F46; font-size: 0.85rem;">Pick {rd['round']}.{rd['in_round']:02d} (#{rd['pick_num']}):</span><br/>
-                    <span style="font-size: 0.88rem; color: #1E293B;">{rd['targets_txt']}</span>
+                <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2); border-left: 4px solid {border_color}; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px;">
+                    <span style="font-weight: 800; color: {tag_color}; font-size: 0.88rem;">Pick {rd['round']}.{rd['in_round']:02d} (#{rd['pick_num']}):</span><br/>
+                    <span style="font-size: 0.90rem; line-height: 1.5;">{rd['targets_txt']}</span>
                 </div>
                 """, unsafe_allow_html=True)
 
         with r_cols[1]:
             st.markdown("#### ⚡ Phase 2: Engine Room (R4 - R7)")
             for rd in rounds_data[3:7]:
+                border_color = "#10B981" if rd["is_completed"] else "#0284C7"
+                tag_color = "#10B981" if rd["is_completed"] else "#38BDF8"
                 st.markdown(f"""
-                <div style="background: #F8FAFC; border-left: 3px solid #0284C7; padding: 6px 10px; border-radius: 4px; margin-bottom: 8px;">
-                    <span style="font-weight: 800; color: #0369A1; font-size: 0.85rem;">Pick {rd['round']}.{rd['in_round']:02d} (#{rd['pick_num']}):</span><br/>
-                    <span style="font-size: 0.88rem; color: #1E293B;">{rd['targets_txt']}</span>
+                <div style="background: rgba(2, 132, 199, 0.08); border: 1px solid rgba(2, 132, 199, 0.2); border-left: 4px solid {border_color}; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px;">
+                    <span style="font-weight: 800; color: {tag_color}; font-size: 0.88rem;">Pick {rd['round']}.{rd['in_round']:02d} (#{rd['pick_num']}):</span><br/>
+                    <span style="font-size: 0.90rem; line-height: 1.5;">{rd['targets_txt']}</span>
                 </div>
                 """, unsafe_allow_html=True)
 
         with r_cols[2]:
             st.markdown("#### 🚀 Phase 3: Late Upside (R8 - R14)")
             for rd in rounds_data[7:]:
+                border_color = "#10B981" if rd["is_completed"] else "#7C3AED"
+                tag_color = "#10B981" if rd["is_completed"] else "#A78BFA"
                 st.markdown(f"""
-                <div style="background: #F8FAFC; border-left: 3px solid #7C3AED; padding: 6px 10px; border-radius: 4px; margin-bottom: 8px;">
-                    <span style="font-weight: 800; color: #6D28D9; font-size: 0.85rem;">Pick {rd['round']}.{rd['in_round']:02d} (#{rd['pick_num']}):</span><br/>
-                    <span style="font-size: 0.88rem; color: #1E293B;">{rd['targets_txt']}</span>
+                <div style="background: rgba(124, 58, 237, 0.08); border: 1px solid rgba(124, 58, 237, 0.2); border-left: 4px solid {border_color}; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px;">
+                    <span style="font-weight: 800; color: {tag_color}; font-size: 0.88rem;">Pick {rd['round']}.{rd['in_round']:02d} (#{rd['pick_num']}):</span><br/>
+                    <span style="font-size: 0.90rem; line-height: 1.5;">{rd['targets_txt']}</span>
                 </div>
                 """, unsafe_allow_html=True)
 
