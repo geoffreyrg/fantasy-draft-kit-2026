@@ -63,9 +63,9 @@ TEAM_SCHEDULE_INTEL: Dict[str, Dict[str, Any]] = {
         "playoff_w15": "at DET (Elite Ford Field Mega-Shootout)",
         "playoff_w16": "vs NE (Division Title Clash)",
         "playoff_w17_championship": "vs NYJ (Defensive Front Test)",
-        "shadow_cb_risk": "🟡 MODERATE (Shakir & Coleman face Sauce Gardner in W17; Dalton Kincaid dominates over the middle)",
+        "shadow_cb_risk": "🟡 MODERATE (DJ Moore, Shakir & Coleman face Sauce Gardner in W17; Dalton Kincaid dominates over the middle)",
         "run_defense_toughness": "🟢 HIGH GL UPSIDE (Josh Allen power + James Cook dual red-zone presence)",
-        "playoff_summary": "Week 15 at Detroit is a 55-point mega-shootout; Kincaid & Cook have strong late-season volume."
+        "playoff_summary": "Week 15 at Detroit is a 55-point mega-shootout; DJ Moore, Dalton Kincaid & Cook have elite late-season scoring ceilings."
     },
     "CAR": {
         "team_name": "Carolina Panthers",
@@ -91,9 +91,9 @@ TEAM_SCHEDULE_INTEL: Dict[str, Dict[str, Any]] = {
         "playoff_w15": "at MIN (U.S. Bank Stadium Dome)",
         "playoff_w16": "vs DET (High-Scoring Soldier Field Clash)",
         "playoff_w17_championship": "at SF (Levi's Stadium Showdown)",
-        "shadow_cb_risk": "🟢 LOW (DJ Moore, Rome Odunze & Luther Burden create 3-headed coverage dilemmas)",
+        "shadow_cb_risk": "🟢 LOW (Rome Odunze, Luther Burden III & Colston Loveland create 3-headed coverage dilemmas)",
         "run_defense_toughness": "🟢 FAST ZONE EFFICIENCY (D'Andre Swift in Ben Johnson creative scheme)",
-        "playoff_summary": "Caleb Williams and his explosive receiving corps face high-total NFC North shootouts in Weeks 15 & 16."
+        "playoff_summary": "Caleb Williams and his explosive young receiving corps face high-total NFC North shootouts in Weeks 15 & 16."
     },
     "CIN": {
         "team_name": "Cincinnati Bengals",

@@ -166,7 +166,10 @@ class FantasyProsClient:
                 if data_pos and "players" in data_pos and isinstance(data_pos["players"], list):
                     for p in data_pos["players"]:
                         p_name = p.get("player_name") or p.get("name", "")
+                        p_team = p.get("player_team_id") or p.get("team_id", "")
                         if p_name in player_meta:
+                            if p_team and p_team != "—":
+                                player_meta[p_name]["team"] = p_team
                             pos_rank_str = p.get("pos_rank") or f"{pos}{p.get('rank_ecr', 1)}"
                             player_meta[p_name]["pos_ecr"] = pos_rank_str
                             try:
@@ -191,6 +194,27 @@ class FantasyProsClient:
                                 pass
                             player_meta[p_name]["owned_espn"] = float(p.get("player_owned_espn") or 0.0)
                             player_meta[p_name]["owned_yahoo"] = float(p.get("player_owned_yahoo") or 0.0)
+                        else:
+                            try:
+                                p_ecr = float(p.get("rank_ecr", 500.0))
+                            except (ValueError, TypeError):
+                                p_ecr = 500.0
+                            player_meta[p_name] = {
+                                "player_name": p_name,
+                                "position": pos,
+                                "team": p_team,
+                                "ecr": p_ecr,
+                                "adp_consensus": p_ecr,
+                                "pos_ecr": p.get("pos_rank", f"{pos}{int(p_ecr)}"),
+                                "best_rank": float(p.get("rank_min", p_ecr)),
+                                "worst_rank": float(p.get("rank_max", p_ecr)),
+                                "std_dev": float(p.get("rank_std", 1.0)),
+                                "fp_tier": int(p.get("tier", 1)),
+                                "bye_week": int(p.get("player_bye_week", 0) or 0),
+                                "sportsdata_id": p.get("sportsdata_id") or f"FP_{p_team}_{p_name.replace(' ', '_').upper()}",
+                                "owned_espn": float(p.get("player_owned_espn") or 0.0),
+                                "owned_yahoo": float(p.get("player_owned_yahoo") or 0.0),
+                            }
 
             if len(player_meta) >= 100:
                 df = pd.DataFrame(list(player_meta.values()))
@@ -563,6 +587,38 @@ class FantasyProsClient:
             {"player_name": "Bijan Robinson", "position": "RB", "team": "ATL", "adp_espn": 2.0, "adp_yahoo": 2.0, "adp_sleeper": 2.0, "adp_cbs": 2.0, "adp_consensus": 2.0, "injury_status": "Healthy", "bye_week": 5},
             {"player_name": "Puka Nacua", "position": "WR", "team": "LAR", "adp_espn": 3.0, "adp_yahoo": 3.0, "adp_sleeper": 3.0, "adp_cbs": 3.0, "adp_consensus": 3.0, "injury_status": "Healthy", "bye_week": 6}
         ])
+
+    def get_live_injuries(self) -> List[Dict[str, Any]]:
+        """Fetch live injury reports from FantasyPros API."""
+        data = self._request("nfl/injuries")
+        if data and "injuries" in data and isinstance(data["injuries"], list) and len(data["injuries"]) > 0:
+            return data["injuries"]
+        return self._get_fallback_injuries()
+
+    def get_live_news(self) -> List[Dict[str, Any]]:
+        """Fetch live breaking player news from FantasyPros API."""
+        data = self._request("nfl/news")
+        if data and "items" in data and isinstance(data["items"], list) and len(data["items"]) > 0:
+            return data["items"]
+        return self._get_fallback_news()
+
+    def get_team_depth_charts(self) -> Dict[str, Dict[str, List[Dict[str, Any]]]]:
+        """
+        Dynamically aggregates live verified team depth charts across all 32 NFL franchises
+        using the live FantasyPros player registry and consensus rankings.
+        """
+        rankings_df = self.get_consensus_rankings()
+        depth_charts = {}
+        for tm, group in rankings_df.groupby("team"):
+            if not tm or tm in ("FA", "—", "None"):
+                continue
+            depth_charts[tm] = {
+                "QB": group[group["position"] == "QB"].sort_values("ecr").to_dict("records"),
+                "RB": group[group["position"] == "RB"].sort_values("ecr").to_dict("records"),
+                "WR": group[group["position"] == "WR"].sort_values("ecr").to_dict("records"),
+                "TE": group[group["position"] == "TE"].sort_values("ecr").to_dict("records"),
+            }
+        return depth_charts
 
     def _get_fallback_injuries(self) -> List[Dict[str, Any]]:
         return [

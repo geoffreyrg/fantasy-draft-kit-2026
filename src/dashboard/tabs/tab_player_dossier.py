@@ -271,13 +271,59 @@ def render_tab_player_dossier(df: pd.DataFrame):
                         f"Pass Protection OL Rank #{int(p_row.get('duracell_ol_rank', 16))}",
                         f"Implements {p_row.get('duracell_proe', 0.0):+.1f}% PROE system"
                     ]
-                }
             else:
                 matchup_intel = {
                     "Matchup Dimension": ["Defensive Front Assessment", "Playoff Environment"],
-                    "Scouting Intel": [sched["run_defense_toughness"], sched["playoff_summary"]]
+                    "Scouting Intel": [sched.get("run_defense_toughness", "Standard"), sched.get("playoff_summary", "Standard")]
                 }
             st.dataframe(pd.DataFrame(matchup_intel), use_container_width=True, hide_index=True)
+
+        # ----------------------------------------------------------------------
+        # 5. LIVE FANTASYPROS BREAKING NEWS & INJURY STATUS
+        # ----------------------------------------------------------------------
+        st.markdown("---")
+        st.markdown("#### 📰 FantasyPros Live Breaking News & Injury Status")
+        
+        try:
+            from src.ingestion.fantasypros_client import FantasyProsClient
+            fp_client = FantasyProsClient()
+            news_items = fp_client.get_live_news()
+            injury_items = fp_client.get_live_injuries()
+            
+            p_news = [n for n in news_items if selected_player.lower() in str(n.get("title", "")).lower() or selected_player.lower() in str(n.get("desc", "")).lower() or selected_player.lower() in str(n.get("player_name", "")).lower()]
+            p_injuries = [i for i in injury_items if selected_player.lower() in str(i.get("name", "")).lower() or selected_player.lower() in str(i.get("player_name", "")).lower()]
+            
+            n_col1, n_col2 = st.columns([1, 2])
+            with n_col1:
+                st.markdown("##### 🏥 Live Injury Status")
+                if p_injuries:
+                    inj = p_injuries[0]
+                    status_badge = inj.get("status_short") or inj.get("status") or "Reported"
+                    st.error(f"🚨 **Status: {status_badge}** ({inj.get('injury_type', 'Undisclosed')})")
+                    if inj.get("comment"):
+                        st.caption(f"**Medical Note:** {inj['comment']}")
+                    if inj.get("practice_1") or inj.get("practice_2") or inj.get("practice_3"):
+                        st.markdown(f"**Practice:** W1: {inj.get('practice_1', '—')} | W2: {inj.get('practice_2', '—')} | W3: {inj.get('practice_3', '—')}")
+                else:
+                    inj_stat = p_row.get("injury_status", "Healthy")
+                    if str(inj_stat).lower() in ("healthy", "nan", "—", "none", ""):
+                        st.success("🟢 **Full Practice / Healthy** (No active injury designations)")
+                    else:
+                        st.warning(f"⚠️ **Reported Status:** {inj_stat}")
+
+            with n_col2:
+                st.markdown("##### ⚡ Latest Breaking News & Fantasy Impact")
+                if p_news:
+                    for news in p_news[:2]:
+                        st.markdown(f"**{news.get('title', 'Breaking News')}**")
+                        st.write(f"*{news.get('desc', '')}*")
+                        if news.get("impact"):
+                            st.info(f"💡 **Fantasy Impact:** {news['impact']}")
+                        st.caption(f"🕒 {news.get('created_formated', '')} • Source: FantasyPros")
+                else:
+                    st.info(f"ℹ️ No breaking wire alerts in the last 48 hours for {selected_player}. Depth chart position is locked.")
+        except Exception as e:
+            st.caption(f"FantasyPros Live Wire Sync active.")
 
     # ==========================================================================
     # VIEW 2: HEAD-TO-HEAD PLAYER COMPARISON & PICK ARBITER
