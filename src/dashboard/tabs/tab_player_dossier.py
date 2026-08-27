@@ -1,8 +1,8 @@
 """
 Tab 3: 🔬 360° Player Scouting Dossier & Head-to-Head Pick Arbiter
 Comprehensive multi-dimensional intelligence card for any player, including:
-- JoScho Film & Talent Analytics (0-100)
-- Joel Smyth Volume, Gold Mine & Luck Metrics
+- Position-tailored JoScho Film & Talent Analytics (0-100)
+- Position-tailored Joel Smyth Volume, Gold Mine & Luck Metrics
 - Duracell Offensive Ecosystem, PROE & OL Ratings
 - 2026 Strength of Schedule, Shadow CBs & Weeks 15-17 Playoff Runway
 - Interactive Head-to-Head Comparison (2-4 Players) with AI Pick Recommendation
@@ -20,8 +20,8 @@ from src.dashboard.ui_components import get_designation_emoji
 def render_tab_player_dossier(df: pd.DataFrame):
     st.subheader("🔬 360° Player Dossier & Head-to-Head Pick Arbiter")
     st.markdown("""
-    Multi-dimensional scouting intelligence: **Talent Grades (0-100)**, **Volume & Gold Mines**, **Ecosystems & OL**, 
-    **Strength of Schedule & Shadow CBs**, and **Head-to-Head Player Pick Arbitration**.
+    Multi-dimensional scouting intelligence: **Talent Grades (0-100)**, **Volume & Role Diagnostics**, **Ecosystems & OL**, 
+    **Strength of Schedule & Matchups**, and **Head-to-Head Player Pick Arbitration**.
     """)
 
     view_mode = st.radio("Select Dossier View Mode:", [
@@ -64,21 +64,21 @@ def render_tab_player_dossier(df: pd.DataFrame):
         emoji = get_designation_emoji(p_row)
 
         st.markdown(f"""
-        <div style="background: #F1F5F9; border-left: 6px solid #1E3A8A; padding: 18px 24px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+        <div style="background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%); border-left: 6px solid #3B82F6; padding: 18px 24px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
-                    <h2 style="margin: 0; color: #1E3A8A; font-size: 1.8rem; font-weight: 800;">{emoji} {selected_player} <span style="font-size: 1.1rem; color: #4B5563; font-weight: 600;">({pos} • {team})</span></h2>
-                    <div style="margin-top: 6px; font-size: 0.95rem; color: #374151;">
+                    <h2 style="margin: 0; color: #FFFFFF; font-size: 1.8rem; font-weight: 800;">{emoji} {selected_player} <span style="font-size: 1.1rem; color: #94A3B8; font-weight: 600;">({pos} • {team})</span></h2>
+                    <div style="margin-top: 6px; font-size: 0.95rem; color: #CBD5E1;">
                         <b>Model Rank:</b> #{rank} &nbsp;|&nbsp; <b>Tier:</b> {tier} &nbsp;|&nbsp; 
-                        <b>DynVORP:</b> <span style="color: #059669; font-weight: 700;">+{vorp:.1f} pts</span> &nbsp;|&nbsp; 
-                        <b>Projection:</b> 📊 <b>{proj_pts:.1f} pts</b> <span style="color: #64748B;">({ppg:.1f}/G)</span>
+                        <b>DynVORP:</b> <span style="color: #10B981; font-weight: 800;">+{vorp:.1f} pts</span> &nbsp;|&nbsp; 
+                        <b>Projection:</b> 📊 <b>{proj_pts:.1f} pts</b> <span style="color: #94A3B8;">({ppg:.1f}/G)</span>
                     </div>
                 </div>
                 <div style="text-align: right;">
-                    <div style="font-size: 1.15rem; font-weight: 800; color: {'#059669' if yahoo_edge >= 0 else '#DC2626'};">
+                    <div style="font-size: 1.15rem; font-weight: 800; color: {'#10B981' if yahoo_edge >= 0 else '#EF4444'};">
                         Yahoo ADP: #{f'{yahoo_adp:.1f}' if pd.notna(yahoo_adp) else '—'} ({f'{yahoo_edge:+.1f} Edge' if pd.notna(yahoo_edge) else '0.0'})
                     </div>
-                    <div style="font-size: 0.85rem; color: #6B7280; font-weight: 600;">12-Team 1/2 PPR Value</div>
+                    <div style="font-size: 0.85rem; color: #94A3B8; font-weight: 600;">12-Team 1/2 PPR Value</div>
                 </div>
             </div>
         </div>
@@ -87,47 +87,88 @@ def render_tab_player_dossier(df: pd.DataFrame):
         # 4 Detailed Pillar Cards
         card1, card2 = st.columns(2)
 
+        # ----------------------------------------------------------------------
+        # PILLAR 1: JOSCHO FILM & TALENT (POSITION-RELEVANT)
+        # ----------------------------------------------------------------------
         with card1:
             st.markdown("#### 🔬 JoScho Film & Talent Analytics (0-100)")
-            t_val = f"{talent:.1f} / 100" if pd.notna(talent) else "N/A"
+            t_val = f"{float(talent):.1f} / 100" if pd.notna(talent) and talent != "—" else "N/A"
             st.metric("Play-by-Play Talent Grade", t_val, help="JoScho Play-by-Play Per-Opportunity Efficiency Metric")
             
-            talent_metrics = {
-                "Metric / Skill Facet": ["NFL Talent Grade", "Target Separation Z-Score", "Contested Catch Rate Z", "YAC Over Expected Z", "Missed Tackles Forced (MTF)", "Dominator %", "Rookie ML Hit Prob"],
-                "Player Value": [
-                    f"{talent:.1f}" if pd.notna(talent) else "—",
-                    f"{p_row.get('z_avg_separation'):+.2f}" if pd.notna(p_row.get('z_avg_separation')) else "—",
-                    f"{p_row.get('z_contested_catch_rate'):+.2f}" if pd.notna(p_row.get('z_contested_catch_rate')) else "—",
-                    f"{p_row.get('z_YAC_over_expected'):+.2f}" if pd.notna(p_row.get('z_YAC_over_expected')) else "—",
-                    f"{p_row.get('z_MTF_rush'):+.2f}" if pd.notna(p_row.get('z_MTF_rush')) else "—",
-                    f"{p_row.get('rookie_dominator_pct'):.1f}%" if pd.notna(p_row.get('rookie_dominator_pct')) else "—",
-                    f"{p_row.get('rookie_hit_prob') * 100:.1f}%" if pd.notna(p_row.get('rookie_hit_prob')) else "—",
-                ]
-            }
-            st.dataframe(pd.DataFrame(talent_metrics), use_container_width=True, hide_index=True)
+            talent_rows = []
+            talent_rows.append(("NFL Talent Grade", f"{float(talent):.1f}/100" if pd.notna(talent) and talent != "—" else "—"))
 
+            if pos == "RB":
+                if pd.notna(p_row.get("z_MTF_rush")): talent_rows.append(("Missed Tackles Forced (MTF) Z", f"{float(p_row.get('z_MTF_rush')):+.2f}"))
+                if pd.notna(p_row.get("z_yards_after_contact")): talent_rows.append(("Yards After Contact Z-Score", f"{float(p_row.get('z_yards_after_contact')):+.2f}"))
+                if pd.notna(p_row.get("z_explosive_rush_rate")): talent_rows.append(("Explosive Rush Rate Z-Score", f"{float(p_row.get('z_explosive_rush_rate')):+.2f}"))
+                if pd.notna(p_row.get("z_designed_rushing")): talent_rows.append(("Designed Rush Efficiency Z", f"{float(p_row.get('z_designed_rushing')):+.2f}"))
+            elif pos in ["WR", "TE"]:
+                if pd.notna(p_row.get("z_avg_separation")): talent_rows.append(("Target Separation Z-Score", f"{float(p_row.get('z_avg_separation')):+.2f}"))
+                if pd.notna(p_row.get("z_contested_catch_rate")): talent_rows.append(("Contested Catch Rate Z", f"{float(p_row.get('z_contested_catch_rate')):+.2f}"))
+                if pd.notna(p_row.get("z_YAC_over_expected")): talent_rows.append(("YAC Over Expected Z-Score", f"{float(p_row.get('z_YAC_over_expected')):+.2f}"))
+                if pd.notna(p_row.get("z_yprr")): talent_rows.append(("Yards Per Route Run (YPRR) Z", f"{float(p_row.get('z_yprr')):+.2f}"))
+                if pd.notna(p_row.get("z_deep_explosive")): talent_rows.append(("Deep Ball Explosive Threat Z", f"{float(p_row.get('z_deep_explosive')):+.2f}"))
+            elif pos == "QB":
+                if pd.notna(p_row.get("z_cpoe")): talent_rows.append(("CPOE Z-Score", f"{float(p_row.get('z_cpoe')):+.2f}"))
+                if pd.notna(p_row.get("z_passing_grade")): talent_rows.append(("PFF Passing Grade Z-Score", f"{float(p_row.get('z_passing_grade')):+.2f}"))
+                if pd.notna(p_row.get("z_deep_explosive")): talent_rows.append(("Deep Ball Accuracy Z-Score", f"{float(p_row.get('z_deep_explosive')):+.2f}"))
+                if pd.notna(p_row.get("z_designed_rushing")): talent_rows.append(("Designed Rushing & Scramble Z", f"{float(p_row.get('z_designed_rushing')):+.2f}"))
+
+            if p_row.get("is_rookie") == 1:
+                if pd.notna(p_row.get("rookie_dominator_pct")): talent_rows.append(("College Dominator %", f"{float(p_row.get('rookie_dominator_pct')):.1f}%"))
+                if pd.notna(p_row.get("rookie_hit_prob")): talent_rows.append(("Rookie ML Hit Probability", f"{float(p_row.get('rookie_hit_prob')) * 100:.1f}%"))
+
+            talent_df = pd.DataFrame(talent_rows, columns=["Metric / Skill Facet", "Player Value"])
+            st.dataframe(talent_df, use_container_width=True, hide_index=True)
+
+        # ----------------------------------------------------------------------
+        # PILLAR 2: JOEL SMYTH VOLUME & ROLE (POSITION-RELEVANT)
+        # ----------------------------------------------------------------------
         with card2:
             st.markdown("#### 📈 Joel Smyth Volume & Role Matrix")
-            s_tag = p_row.get("smyth_color_tag", "Neutral")
+            s_tag = str(p_row.get("smyth_color_tag", "Neutral"))
             s_gold = p_row.get("smyth_gold_mine", "—")
-            st.metric("Joel Smyth Draft Tag", str(s_tag), f"Gold Mine: {s_gold}")
+            
+            # Position-specific metric badge
+            if pos == "RB" and pd.notna(s_gold) and s_gold != "—":
+                st.metric("Joel Smyth Draft Tag", s_tag, f"Gold Mine: {s_gold}")
+            elif pos in ["WR", "TE"] and pd.notna(p_row.get("smyth_wr_1d_rr_tier")):
+                st.metric("Joel Smyth Draft Tag", s_tag, f"1D/RR: {p_row.get('smyth_wr_1d_rr_tier')}")
+            elif pos == "QB" and pd.notna(p_row.get("smyth_qb_rush_tier")):
+                st.metric("Joel Smyth Draft Tag", s_tag, f"Rush Tier: {p_row.get('smyth_qb_rush_tier')}")
+            else:
+                st.metric("Joel Smyth Draft Tag", s_tag)
 
-            smyth_metrics = {
-                "Dimension": ["Smyth Big Board Tag", "RB Gold Mine Tier", "Smyth Adjusted PPG", "Smyth Overall Rank", "2025 Luck Lost", "2025 Luck Gained"],
-                "Details": [
-                    str(s_tag),
-                    str(s_gold),
-                    f"{p_row.get('adj_ppg_25'):.1f} PPG" if pd.notna(p_row.get('adj_ppg_25')) else "—",
-                    f"#{int(p_row.get('smyth_ecr'))}" if pd.notna(p_row.get('smyth_ecr')) else "—",
-                    f"{p_row.get('luck_points_lost', 0):.1f} pts" if p_row.get('luck_points_lost', 0) > 0 else "0.0",
-                    f"{p_row.get('luck_points_gained', 0):.1f} pts" if p_row.get('luck_points_gained', 0) > 0 else "0.0",
-                ]
-            }
-            st.dataframe(pd.DataFrame(smyth_metrics), use_container_width=True, hide_index=True)
+            smyth_rows = [
+                ("Smyth Big Board Tag", s_tag),
+                ("Smyth Adjusted PPG", f"{p_row.get('adj_ppg_25'):.1f} PPG" if pd.notna(p_row.get('adj_ppg_25')) else "—"),
+                ("Smyth Overall ECR", f"#{int(p_row.get('smyth_ecr'))}" if pd.notna(p_row.get('smyth_ecr')) else "—")
+            ]
+
+            if pos == "RB":
+                if pd.notna(s_gold) and s_gold != "—": smyth_rows.append(("RB Gold Mine Tier", str(s_gold)))
+                if pd.notna(p_row.get("smyth_rb_vol_proj")): smyth_rows.append(("RB Volume Projection", str(p_row.get("smyth_rb_vol_proj"))))
+                if pd.notna(p_row.get("smyth_rb_dream_qb_tier")): smyth_rows.append(("Dream QB Synergy", str(p_row.get("smyth_rb_dream_qb_tier"))))
+            elif pos in ["WR", "TE"]:
+                if pd.notna(p_row.get("smyth_wr_1d_rr_tier")): smyth_rows.append(("1st Down / Route Run Tier", str(p_row.get("smyth_wr_1d_rr_tier"))))
+                if pd.notna(p_row.get("smyth_adj_yprr")): smyth_rows.append(("Smyth Adjusted YPRR", f"{float(p_row.get('smyth_adj_yprr')):.2f}"))
+            elif pos == "QB":
+                if pd.notna(p_row.get("smyth_qb_vol_verdict")): smyth_rows.append(("QB Volume Verdict", str(p_row.get("smyth_qb_vol_verdict"))))
+                if pd.notna(p_row.get("smyth_qb_rush_tier")): smyth_rows.append(("QB Rushing Tier", str(p_row.get("smyth_qb_rush_tier"))))
+
+            smyth_rows.append(("2025 Luck Lost", f"{p_row.get('luck_points_lost', 0):.1f} pts" if p_row.get('luck_points_lost', 0) > 0 else "0.0"))
+            smyth_rows.append(("2025 Luck Gained", f"{p_row.get('luck_points_gained', 0):.1f} pts" if p_row.get('luck_points_gained', 0) > 0 else "0.0"))
+
+            smyth_df = pd.DataFrame(smyth_rows, columns=["Dimension", "Details"])
+            st.dataframe(smyth_df, use_container_width=True, hide_index=True)
 
         st.markdown("---")
         card3, card4 = st.columns(2)
 
+        # ----------------------------------------------------------------------
+        # PILLAR 3: TEAM ECOSYSTEM & DURACELL SCHEMATICS
+        # ----------------------------------------------------------------------
         with card3:
             st.markdown("#### 🛡️ Team Ecosystem & Duracell Schematics")
             eco_metrics = {
@@ -137,11 +178,14 @@ def render_tab_player_dossier(df: pd.DataFrame):
                     f"{p_row.get('two_wr_set_pct', 35.0):.1f}%",
                     f"{p_row.get('duracell_proe', 0.0):+.1f}%",
                     "✅ YES (Contract Year Incentive)" if p_row.get("is_contract_year") == 1 else "No",
-                    p_row.get("injury_status", "Healthy")
+                    str(p_row.get("injury_status", "Healthy"))
                 ]
             }
             st.dataframe(pd.DataFrame(eco_metrics), use_container_width=True, hide_index=True)
 
+        # ----------------------------------------------------------------------
+        # PILLAR 4: EXPERT BADGES & NARRATIVE
+        # ----------------------------------------------------------------------
         with card4:
             st.markdown("#### 💥 Expert Consensus & Qualitative Badges")
             badges = []
@@ -165,26 +209,23 @@ def render_tab_player_dossier(df: pd.DataFrame):
         # PILLAR 5: STRENGTH OF SCHEDULE & PLAYOFF MATCHUPS (WEEKS 15-17)
         # ----------------------------------------------------------------------
         st.markdown("---")
-        st.markdown("#### ⚔️ 2026 Strength of Schedule, Shadow CBs & Fantasy Playoff Runway (Weeks 15-17)")
+        st.markdown("#### ⚔️ 2026 Strength of Schedule, Matchups & Fantasy Playoff Runway (Weeks 15-17)")
         
         sched = ScheduleMatrixEngine.get_player_schedule_intel(team, pos)
         
-        s1, s2, s3, s4 = st.columns([1.2, 1.2, 1.3, 1.8])
+        s1, s2, s3 = st.columns(3)
         with s1:
-            st.metric(f"{pos} Season SOS Rank", f"#{sched['pos_sos_rank']} in NFL", f"Grade: {sched['pos_sos_grade']}")
+            st.metric(f"{pos} Full-Season SOS", f"#{sched['pos_sos_rank']} in NFL", f"Grade: {sched['pos_sos_grade']}")
         with s2:
             st.metric("Playoff Runway (W15-17)", sched["playoff_sos_grade"])
         with s3:
             st.metric("Week 17 Championship Matchup", sched["playoff_w17_championship"])
-        with s4:
-            st.markdown(f"""
-            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 8px 12px; border-radius: 6px; font-size: 0.84rem;">
-                <b>Playoff Slate Brief:</b> {sched['playoff_summary']}
-            </div>
-            """, unsafe_allow_html=True)
+
+        st.info(f"🏆 **Playoff Slate Intelligence:** {sched['playoff_summary']}")
 
         sc_tab1, sc_tab2 = st.columns(2)
         with sc_tab1:
+            st.markdown("##### 📅 Fantasy Playoff Schedule (Weeks 15-17)")
             sched_table = {
                 "Playoff Round": ["Week 15 (Quarterfinals)", "Week 16 (Semifinals)", "Week 17 (Championship)"],
                 "Opponent & Matchup Environment": [sched["playoff_w15"], sched["playoff_w16"], sched["playoff_w17_championship"]]
@@ -192,10 +233,36 @@ def render_tab_player_dossier(df: pd.DataFrame):
             st.dataframe(pd.DataFrame(sched_table), use_container_width=True, hide_index=True)
 
         with sc_tab2:
-            matchup_intel = {
-                "Defensive Matchup Dimension": ["Shadow CB / Coverage Difficulty", "Defensive Front / Box Count Push"],
-                "Scouting Intel": [sched["shadow_cb_risk"], sched["run_defense_toughness"]]
-            }
+            st.markdown("##### 🛡️ Position-Specific Defensive Matchup Intel")
+            if pos in ["WR", "TE"]:
+                matchup_intel = {
+                    "Matchup Dimension": ["Shadow CB & Coverage Difficulty", "Alignment & Target Consolidation"],
+                    "Scouting Intel": [
+                        sched["shadow_cb_risk"],
+                        f"{p_row.get('two_wr_set_pct', 35.0):.1f}% 2-WR sets (concentrated route participation)"
+                    ]
+                }
+            elif pos == "RB":
+                matchup_intel = {
+                    "Matchup Dimension": ["Run Defense Front & Box Count Leverage", "Goal-Line Script & Trench Push"],
+                    "Scouting Intel": [
+                        sched["run_defense_toughness"],
+                        f"Consensus OL Rank #{int(p_row.get('duracell_ol_rank', 16))} • {p_row.get('duracell_proe', 0.0):+.1f}% PROE"
+                    ]
+                }
+            elif pos == "QB":
+                matchup_intel = {
+                    "Matchup Dimension": ["Pass Protection & Pressure Rate", "Secondary Matchup Leverage"],
+                    "Scouting Intel": [
+                        f"Pass Protection OL Rank #{int(p_row.get('duracell_ol_rank', 16))}",
+                        f"Implements {p_row.get('duracell_proe', 0.0):+.1f}% PROE system"
+                    ]
+                }
+            else:
+                matchup_intel = {
+                    "Matchup Dimension": ["Defensive Front Assessment", "Playoff Environment"],
+                    "Scouting Intel": [sched["run_defense_toughness"], sched["playoff_summary"]]
+                }
             st.dataframe(pd.DataFrame(matchup_intel), use_container_width=True, hide_index=True)
 
     # ==========================================================================
@@ -274,31 +341,31 @@ def render_tab_player_dossier(df: pd.DataFrame):
         ac1, ac2, ac3 = st.columns(3)
         with ac1:
             st.markdown(f"""
-            <div style="border: 2px solid #059669; background: #ECFDF5; padding: 12px 14px; border-radius: 8px;">
-                <div style="font-weight: 800; color: #065F46; font-size: 0.88rem;">🛡️ SAFE FLOOR ANCHOR</div>
-                <div style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin: 3px 0;">{floor_p['player_name']}</div>
-                <div style="font-size: 0.80rem; color: #374151;">
+            <div style="border: 2px solid #059669; background: rgba(5, 150, 105, 0.1); padding: 12px 14px; border-radius: 8px;">
+                <div style="font-weight: 800; color: #10B981; font-size: 0.88rem;">🛡️ SAFE FLOOR ANCHOR</div>
+                <div style="font-size: 1.15rem; font-weight: 800; color: #FFFFFF; margin: 3px 0;">{floor_p['player_name']}</div>
+                <div style="font-size: 0.82rem; color: #94A3B8;">
                     <b>Opp Score:</b> {floor_p['opportunity_score']}/100 • <b>OL:</b> #{floor_p['ol_rank']}
                 </div>
             </div>
             """, unsafe_allow_html=True)
         with ac2:
             st.markdown(f"""
-            <div style="border: 2px solid #7C3AED; background: #F5F3FF; padding: 12px 14px; border-radius: 8px;">
-                <div style="font-weight: 800; color: #6D28D9; font-size: 0.88rem;">🚀 MAXIMUM CEILING STUD</div>
-                <div style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin: 3px 0;">{ceil_p['player_name']}</div>
-                <div style="font-size: 0.80rem; color: #374151;">
-                    <b>Talent:</b> {ceil_p['talent_score']}/100 • <b>Playoff SOS:</b> {ceil_p['sched_intel']['playoff_sos_grade']}
+            <div style="border: 2px solid #7C3AED; background: rgba(124, 58, 237, 0.1); padding: 12px 14px; border-radius: 8px;">
+                <div style="font-weight: 800; color: #A78BFA; font-size: 0.88rem;">🚀 MAXIMUM CEILING STUD</div>
+                <div style="font-size: 1.15rem; font-weight: 800; color: #FFFFFF; margin: 3px 0;">{ceil_p['player_name']}</div>
+                <div style="font-size: 0.82rem; color: #94A3B8;">
+                    <b>Talent:</b> {ceil_p['talent_score']}/100 • <b>Playoffs:</b> {ceil_p['sched_intel']['playoff_sos_grade']}
                 </div>
             </div>
             """, unsafe_allow_html=True)
         with ac3:
             st.markdown(f"""
-            <div style="border: 2px solid #4F46E5; background: #EEF2FF; padding: 12px 14px; border-radius: 8px;">
-                <div style="font-weight: 800; color: #3730A3; font-size: 0.88rem;">💎 BEST VALUE / ADP LEVERAGE</div>
-                <div style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin: 3px 0;">{val_p['player_name']}</div>
-                <div style="font-size: 0.80rem; color: #374151;">
-                    <b>Yahoo ADP:</b> #{val_p['adp']:.1f} • <span style="color: #059669; font-weight: 700;">+{val_p['adp_delta']:.1f} Value</span>
+            <div style="border: 2px solid #3B82F6; background: rgba(59, 130, 246, 0.1); padding: 12px 14px; border-radius: 8px;">
+                <div style="font-weight: 800; color: #60A5FA; font-size: 0.88rem;">💎 BEST VALUE / ADP LEVERAGE</div>
+                <div style="font-size: 1.15rem; font-weight: 800; color: #FFFFFF; margin: 3px 0;">{val_p['player_name']}</div>
+                <div style="font-size: 0.82rem; color: #94A3B8;">
+                    <b>Yahoo ADP:</b> #{val_p['adp']:.1f} • <span style="color: #10B981; font-weight: 700;">+{val_p['adp_delta']:.1f} Value</span>
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -351,7 +418,7 @@ def render_tab_player_dossier(df: pd.DataFrame):
             ("Full Season SOS Grade", lambda p: f"#{p['sched_intel']['pos_sos_rank']} ({p['sched_intel']['pos_sos_grade']})"),
             ("Playoff Runway (W15-17)", lambda p: p['sched_intel']['playoff_sos_grade']),
             ("Week 17 Championship Game", lambda p: p['sched_intel']['playoff_w17_championship']),
-            ("Shadow CB / Box Intel", lambda p: f"{p['sched_intel']['shadow_cb_risk']}"),
+            ("Defensive Matchup Intel", lambda p: f"{p['sched_intel']['shadow_cb_risk'] if p['position'] in ['WR', 'TE'] else p['sched_intel']['run_defense_toughness']}"),
             ("Yahoo ADP & Value", lambda p: f"#{p['adp']:.1f} ({p['adp_delta']:+.1f})"),
             ("Contract Year Incentive", lambda p: "✅ YES" if p['row_data'].get('is_contract_year') == 1 else "No")
         ]
