@@ -109,12 +109,12 @@ def render_tab_master_board(df: pd.DataFrame):
         pos_tab1, pos_tab2, pos_tab3, pos_tab4, pos_tab5 = st.tabs(["🔥 Overall Top 100", "🏃 Running Backs (RB)", "⚡ Wide Receivers (WR)", "🎯 Quarterbacks (QB)", "🛡️ Tight Ends (TE)"])
 
         with pos_tab1:
-            render_boris_chen_staircase(board_df.sort_values("composite_rank").head(75), "Overall Top 75")
+            render_boris_chen_staircase(board_df.sort_values("boris_ecr_mean").head(75), "Overall Top 75", is_positional=False)
         with pos_tab2:
-            render_boris_chen_staircase(board_df[board_df["position"] == "RB"].sort_values("composite_rank").head(50), "Running Backs (RB)")
+            render_boris_chen_staircase(board_df[board_df["position"] == "RB"].sort_values("pos_ecr_num").head(50), "Running Backs (RB)", is_positional=True)
         with pos_tab3:
-            render_boris_chen_staircase(board_df[board_df["position"] == "WR"].sort_values("composite_rank").head(50), "Wide Receivers (WR)")
+            render_boris_chen_staircase(board_df[board_df["position"] == "WR"].sort_values("pos_ecr_num").head(50), "Wide Receivers (WR)", is_positional=True)
         with pos_tab4:
-            render_boris_chen_staircase(board_df[board_df["position"] == "QB"].sort_values("composite_rank").head(30), "Quarterbacks (QB)")
+            render_boris_chen_staircase(board_df[board_df["position"] == "QB"].sort_values("pos_ecr_num").head(30), "Quarterbacks (QB)", is_positional=True)
         with pos_tab5:
-            render_boris_chen_staircase(board_df[board_df["position"] == "TE"].sort_values("composite_rank").head(30), "Tight Ends (TE)")
+            render_boris_chen_staircase(board_df[board_df["position"] == "TE"].sort_values("pos_ecr_num").head(30), "Tight Ends (TE)", is_positional=True)

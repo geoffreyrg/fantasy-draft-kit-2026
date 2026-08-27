@@ -143,11 +143,28 @@ STANDARD_COLUMN_CONFIG = {
 }
 
 
-def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str):
-    """Renders calibrated Boris Chen Gaussian Mixture Model Staircase Chart and Data Table."""
+def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, is_positional: bool = False):
+    """
+    Renders calibrated Boris Chen Gaussian Mixture Model Staircase Chart and Data Table.
+    Aligns the mean consensus dot precisely inside the high/low expert uncertainty whiskers.
+    """
     if chart_data.empty:
         st.info(f"No player data available for {position_title}.")
         return
+
+    # Select coordinate fields based on Overall vs Positional view
+    if is_positional:
+        mean_col = "pos_ecr_num"
+        best_col = "pos_best_rank"
+        worst_col = "pos_worst_rank"
+        tier_col = "boris_tier_pos"
+        x_title = f"{position_title} Positional Rank & Expert Uncertainty Range"
+    else:
+        mean_col = "boris_ecr_mean"
+        best_col = "boris_best_rank"
+        worst_col = "boris_worst_rank"
+        tier_col = "boris_tier_overall"
+        x_title = "Overall Consensus Rank & Expert Uncertainty Range"
 
     tier_color_scale = alt.Scale(
         domain=[f"Tier {i}" for i in range(1, 13)],
@@ -157,17 +174,17 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str):
         ]
     )
 
-    y_sort = alt.EncodingSortField(field="composite_rank", order="ascending")
+    y_sort = alt.EncodingSortField(field=mean_col, order="ascending")
 
     # 1. Whisker Range Line
     whisker_line = alt.Chart(chart_data).mark_rule(
         size=3.5,
         opacity=0.85
     ).encode(
-        y=alt.Y("player_name:N", sort=y_sort, title="Player (Ordered by Model Rank)", axis=alt.Axis(labelLimit=200, labelFontSize=11)),
-        x=alt.X("boris_best_rank:Q", title="Model Rank & Expert Uncertainty Range (Narrower Bar = Higher Consensus)"),
-        x2=alt.X2("boris_worst_rank:Q"),
-        color=alt.Color("boris_tier_pos:N", scale=tier_color_scale, legend=alt.Legend(title="Boris Chen Tier"))
+        y=alt.Y("player_name:N", sort=y_sort, title="Player (Ordered by Consensus Rank)", axis=alt.Axis(labelLimit=200, labelFontSize=11)),
+        x=alt.X(f"{best_col}:Q", title=f"{x_title} (Narrower Bar = Higher Consensus)"),
+        x2=alt.X2(f"{worst_col}:Q"),
+        color=alt.Color(f"{tier_col}:N", scale=tier_color_scale, legend=alt.Legend(title="Boris Chen Tier"))
     )
 
     # 2. Left Whisker Tick
@@ -177,8 +194,8 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str):
         opacity=0.9
     ).encode(
         y=alt.Y("player_name:N", sort=y_sort),
-        x=alt.X("boris_best_rank:Q"),
-        color=alt.Color("boris_tier_pos:N", scale=tier_color_scale)
+        x=alt.X(f"{best_col}:Q"),
+        color=alt.Color(f"{tier_col}:N", scale=tier_color_scale)
     )
 
     # 3. Right Whisker Tick
@@ -188,28 +205,29 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str):
         opacity=0.9
     ).encode(
         y=alt.Y("player_name:N", sort=y_sort),
-        x=alt.X("boris_worst_rank:Q"),
-        color=alt.Color("boris_tier_pos:N", scale=tier_color_scale)
+        x=alt.X(f"{worst_col}:Q"),
+        color=alt.Color(f"{tier_col}:N", scale=tier_color_scale)
     )
 
-    # 4. Center Model Rank Point
+    # 4. Center Consensus Dot (Guaranteed inside the whiskers!)
     center_point = alt.Chart(chart_data).mark_circle(
         size=90,
         opacity=1.0
     ).encode(
         y=alt.Y("player_name:N", sort=y_sort),
-        x=alt.X("composite_rank:Q"),
-        color=alt.Color("boris_tier_pos:N", scale=tier_color_scale),
+        x=alt.X(f"{mean_col}:Q"),
+        color=alt.Color(f"{tier_col}:N", scale=tier_color_scale),
         tooltip=[
             alt.Tooltip("player_name:N", title="Player"),
             alt.Tooltip("position:N", title="Pos"),
             alt.Tooltip("team:N", title="Team"),
-            alt.Tooltip("boris_tier_pos:N", title="Tier"),
-            alt.Tooltip("composite_rank:Q", title="Model Rank"),
-            alt.Tooltip("boris_best_rank:Q", format=".1f", title="Expert High Rank"),
-            alt.Tooltip("boris_worst_rank:Q", format=".1f", title="Expert Low Rank"),
-            alt.Tooltip("boris_rank_range:Q", format=".1f", title="Spread Range"),
-            alt.Tooltip("adjusted_proj_pts:Q", format=".1f", title="Calibrated Proj"),
+            alt.Tooltip(f"{tier_col}:N", title="GMM Tier"),
+            alt.Tooltip(f"{mean_col}:Q", format=".1f", title="Consensus Mean Rank"),
+            alt.Tooltip(f"{best_col}:Q", format=".1f", title="Expert High Rank"),
+            alt.Tooltip(f"{worst_col}:Q", format=".1f", title="Expert Low Rank"),
+            alt.Tooltip("boris_rank_range:Q", format=".1f", title="Spread Uncertainty"),
+            alt.Tooltip("composite_rank:Q", title="Our Model Rank"),
+            alt.Tooltip("adjusted_proj_pts:Q", format=".1f", title="Calib Proj"),
             alt.Tooltip("adjusted_vorp:Q", format=".1f", title="VORP")
         ]
     )
@@ -226,8 +244,8 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str):
     with st.expander(f"📋 View Statistical Tier Breakdown Table ({position_title})", expanded=False):
         st.dataframe(
             chart_data[[
-                "composite_rank", "player_name", "position", "team", "boris_tier_pos",
-                "boris_best_rank", "boris_worst_rank", "boris_rank_range",
+                "composite_rank", "player_name", "position", "team", tier_col,
+                mean_col, best_col, worst_col, "boris_rank_range",
                 "boris_variance_tag", "adjusted_proj_pts", "adjusted_vorp"
             ]],
             use_container_width=True,
@@ -237,9 +255,10 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str):
                 "player_name": st.column_config.TextColumn("Player", pinned=True),
                 "position": st.column_config.TextColumn("Pos", pinned=True),
                 "team": st.column_config.TextColumn("Team", pinned=True),
-                "boris_tier_pos": st.column_config.TextColumn("GMM Tier", pinned=True),
-                "boris_best_rank": st.column_config.NumberColumn("Expert High", format="%.1f"),
-                "boris_worst_rank": st.column_config.NumberColumn("Expert Low", format="%.1f"),
+                tier_col: st.column_config.TextColumn("GMM Tier", pinned=True),
+                mean_col: st.column_config.NumberColumn("Consensus Mean", format="%.1f"),
+                best_col: st.column_config.NumberColumn("Expert High", format="%.1f"),
+                worst_col: st.column_config.NumberColumn("Expert Low", format="%.1f"),
                 "boris_rank_range": st.column_config.NumberColumn("Spread Range", format="%.1f", help="Narrower = High Consensus Confidence"),
                 "boris_variance_tag": st.column_config.TextColumn("Consensus Confidence"),
                 "adjusted_proj_pts": st.column_config.NumberColumn("Calib Proj", format="%.1f"),
