@@ -49,6 +49,15 @@ def get_player_badges_html(p: pd.Series, platform: str = "yahoo") -> str:
 
     return " ".join(badges)
 
+import re
+
+def clean_html_text(text: str) -> str:
+    if not text:
+        return ""
+    text = re.sub(r"\*\*(.*?)\*\*", r"<b>\1</b>", str(text))
+    text = re.sub(r"\*(.*?)\*", r"<i>\1</i>", text)
+    return text.strip()
+
 def render_strategy_card_html(
     strategy_title: str,
     strategy_pill: str,
@@ -82,38 +91,35 @@ def render_strategy_card_html(
     snip_c = "#DC2626" if snip_pct >= 75.0 else ("#D97706" if snip_pct >= 40.0 else "#059669")
     
     badges_html = get_player_badges_html(p, platform=platform)
+    badge_div = f'<div style="margin-bottom: 6px;">{badges_html}</div>' if badges_html else ""
     
     sub_txt = custom_subtitle or p.get("master_designation", compute_tactical_edge(p))
     if p.get("stack_tag"):
         sub_txt = f"{p['stack_tag']} • {sub_txt}"
+    cleaned_sub = clean_html_text(sub_txt)
 
-    return f"""
-    <div style="border: 2px solid {border_color}; background-color: {bg_color}; padding: 12px 14px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-            <span style="font-weight: 800; color: {title_color}; font-size: 0.92rem;">{strategy_title}</span>
-            <span style="background: {border_color}; color: white; padding: 2px 8px; border-radius: 12px; font-weight: 700; font-size: 0.75rem;">{strategy_pill}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; align-items: baseline; margin: 4px 0;">
-            <div style="font-size: 1.22rem; font-weight: 800; color: #0F172A;">
-                {emoji} {p_name} <span style="font-size: 0.88rem; color: #475569; font-weight: 600;">({p_pos} - {p_team})</span>
-            </div>
-            <div style="font-size: 0.95rem; font-weight: 800; color: #1E3A8A;">
-                📊 <b>{proj_pts:.1f} pts</b> <span style="font-size: 0.78rem; color: #64748B; font-weight: 600;">({ppg:.1f}/G)</span>
-            </div>
-        </div>
-        <div style="font-size: 0.84rem; color: #334155; margin-bottom: 6px; line-height: 1.4;">
-            <b>DynVORP:</b> <span style="color: #059669; font-weight: 800;">+{dvorp:.1f}</span> • 
-            <b>Tier:</b> <span style="font-weight: 700;">{tier}</span> • 
-            <b>Talent:</b> <span style="font-weight: 700;">{talent_str}</span> • 
-            <b>{platform.capitalize()} ADP:</b> {adp_str} <span style="color:#059669; font-weight:700;">({delta_str})</span> • 
-            <b>Snip:</b> <span style="color: {snip_c}; font-weight: 800;">{snip_pct:.0f}% ({snip_tag})</span>
-        </div>
-        {f'<div style="margin-bottom: 6px;">{badges_html}</div>' if badges_html else ''}
-        <div style="font-size: 0.80rem; color: #475569; font-style: italic; border-top: 1px dashed rgba(0,0,0,0.12); padding-top: 5px;">
-            {sub_txt}
-        </div>
-    </div>
-    """
+    card_html = (
+        f'<div style="border: 2px solid {border_color}; background-color: {bg_color}; padding: 12px 14px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">'
+        f'<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">'
+        f'<span style="font-weight: 800; color: {title_color}; font-size: 0.92rem;">{strategy_title}</span>'
+        f'<span style="background: {border_color}; color: white; padding: 2px 8px; border-radius: 12px; font-weight: 700; font-size: 0.75rem;">{strategy_pill}</span>'
+        f'</div>'
+        f'<div style="display: flex; justify-content: space-between; align-items: baseline; margin: 4px 0;">'
+        f'<div style="font-size: 1.22rem; font-weight: 800; color: #0F172A;">{emoji} {p_name} <span style="font-size: 0.88rem; color: #475569; font-weight: 600;">({p_pos} - {p_team})</span></div>'
+        f'<div style="font-size: 0.95rem; font-weight: 800; color: #1E3A8A;">📊 <b>{proj_pts:.1f} pts</b> <span style="font-size: 0.78rem; color: #64748B; font-weight: 600;">({ppg:.1f}/G)</span></div>'
+        f'</div>'
+        f'<div style="font-size: 0.84rem; color: #334155; margin-bottom: 6px; line-height: 1.4;">'
+        f'<b>DynVORP:</b> <span style="color: #059669; font-weight: 800;">+{dvorp:.1f}</span> • '
+        f'<b>Tier:</b> <span style="font-weight: 700;">{tier}</span> • '
+        f'<b>Talent:</b> <span style="font-weight: 700;">{talent_str}</span> • '
+        f'<b>{platform.capitalize()} ADP:</b> {adp_str} <span style="color:#059669; font-weight:700;">({delta_str})</span> • '
+        f'<b>Snip:</b> <span style="color: {snip_c}; font-weight: 800;">{snip_pct:.0f}% ({snip_tag})</span>'
+        f'</div>'
+        f'{badge_div}'
+        f'<div style="font-size: 0.80rem; color: #475569; font-style: italic; border-top: 1px dashed rgba(0,0,0,0.12); padding-top: 5px;">{cleaned_sub}</div>'
+        f'</div>'
+    )
+    return card_html
 
 def render_tab_live_draft(df: pd.DataFrame):
     # Initialize Engine State Manager
