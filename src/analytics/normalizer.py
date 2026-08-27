@@ -14,23 +14,41 @@ logger = logging.getLogger(__name__)
 
 # Canonical team mappings
 TEAM_MAP = {
-    "WSH": "WAS", "WASHINGTON": "WAS",
-    "JAC": "JAX", "JACKSONVILLE": "JAX",
-    "OAK": "LV", "LAS VEGAS": "LV", "RAIDERS": "LV",
-    "SD": "LAC", "SAN DIEGO": "LAC", "CHARGERS": "LAC",
-    "STL": "LAR", "ST. LOUIS": "LAR", "RAMS": "LAR",
-    "KAN": "KC", "KANSAS CITY": "KC", "CHIEFS": "KC",
-    "GNB": "GB", "GREEN BAY": "GB", "PACKERS": "GB",
-    "NWE": "NE", "NEW ENGLAND": "NE", "PATRIOTS": "NE",
-    "NOR": "NO", "NEW ORLEANS": "NO", "SAINTS": "NO",
-    "SFO": "SF", "SAN FRANCISCO": "SF", "49ERS": "SF",
-    "TAM": "TB", "TAMPA BAY": "TB", "BUCCANEERS": "TB",
-    "ARI": "ARI", "ATL": "ATL", "BAL": "BAL", "BUF": "BUF",
-    "CAR": "CAR", "CHI": "CHI", "CIN": "CIN", "CLE": "CLE",
-    "DAL": "DAL", "DEN": "DEN", "DET": "DET", "HOU": "HOU",
-    "IND": "IND", "MIA": "MIA", "MIN": "MIN", "NYG": "NYG",
-    "NYJ": "NYJ", "PHI": "PHI", "PIT": "PIT", "SEA": "SEA",
-    "TEN": "TEN",
+    # Washington
+    "WSH": "WAS", "WAS": "WAS", "WASHINGTON": "WAS", "COMMANDERS": "WAS",
+    # Jacksonville
+    "JAC": "JAX", "JAX": "JAX", "JACKSONVILLE": "JAX", "JAGUARS": "JAX",
+    # Baltimore
+    "BLT": "BAL", "BAL": "BAL", "BALTIMORE": "BAL", "RAVENS": "BAL",
+    # Cleveland
+    "CLV": "CLE", "CLE": "CLE", "CLEVELAND": "CLE", "BROWNS": "CLE",
+    # Arizona
+    "ARZ": "ARI", "ARI": "ARI", "ARIZONA": "ARI", "CARDINALS": "ARI",
+    # Houston
+    "HST": "HOU", "HOU": "HOU", "HOUSTON": "HOU", "TEXANS": "HOU",
+    # Las Vegas / Oakland
+    "OAK": "LV", "LV": "LV", "LVR": "LV", "LAS VEGAS": "LV", "RAIDERS": "LV",
+    # Los Angeles Chargers / San Diego
+    "SD": "LAC", "SDG": "LAC", "LAC": "LAC", "SAN DIEGO": "LAC", "CHARGERS": "LAC", "LOS ANGELES CHARGERS": "LAC",
+    # Los Angeles Rams / St. Louis
+    "STL": "LAR", "LA": "LAR", "LAR": "LAR", "RAMS": "LAR", "ST. LOUIS": "LAR", "LOS ANGELES RAMS": "LAR",
+    # Kansas City
+    "KAN": "KC", "KC": "KC", "KANSAS CITY": "KC", "CHIEFS": "KC",
+    # Green Bay
+    "GNB": "GB", "GB": "GB", "GREEN BAY": "GB", "PACKERS": "GB",
+    # New England
+    "NWE": "NE", "NE": "NE", "NEW ENGLAND": "NE", "PATRIOTS": "NE",
+    # New Orleans
+    "NOR": "NO", "NO": "NO", "NEW ORLEANS": "NO", "SAINTS": "NO",
+    # San Francisco
+    "SFO": "SF", "SF": "SF", "SAN FRANCISCO": "SF", "49ERS": "SF",
+    # Tampa Bay
+    "TAM": "TB", "TB": "TB", "TAMPA BAY": "TB", "BUCCANEERS": "TB",
+    # Others
+    "ATL": "ATL", "BUF": "BUF", "CAR": "CAR", "CHI": "CHI", "CIN": "CIN",
+    "DAL": "DAL", "DEN": "DEN", "DET": "DET", "IND": "IND", "MIA": "MIA",
+    "MIN": "MIN", "NYG": "NYG", "NYJ": "NYJ", "PHI": "PHI", "PIT": "PIT",
+    "SEA": "SEA", "TEN": "TEN", "FA": "FA", "FREE AGENT": "FA"
 }
 
 # Known aliases / nickname mappings

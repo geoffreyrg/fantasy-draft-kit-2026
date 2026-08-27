@@ -47,6 +47,7 @@ def render_tab_team_schematics(df: pd.DataFrame):
         "CHI": {"rz_tendency": "🎯 Pass-Heavy RZ (Ben Johnson)", "gl_tendency": "👑 High-Efficiency GL (64% Run - Swift/Burden)"},
         "WAS": {"rz_tendency": "Balanced RZ",                "gl_tendency": "⚡ Dual-Threat GL (Daniels/Robinson)"},
         "DEN": {"rz_tendency": "🎯 Pass-Funnel RZ (Sean Payton)", "gl_tendency": "Balanced GL (50/50 - Waddle/Sutton)"},
+        "JAX": {"rz_tendency": "🎯 Pass-Heavy RZ (Liam Coen)", "gl_tendency": "Balanced GL (50/50 - Lawrence/Etienne)"},
         "JAC": {"rz_tendency": "🎯 Pass-Heavy RZ (Liam Coen)", "gl_tendency": "Balanced GL (50/50 - Lawrence/Etienne)"},
         "ARI": {"rz_tendency": "Balanced RZ",                "gl_tendency": "⚡ Kyler Rushing GL + Conner TDs"},
         "NYJ": {"rz_tendency": "Balanced RZ",                "gl_tendency": "👑 Run-Heavy GL (62% Run - Hall TDs)"},
@@ -73,20 +74,51 @@ def render_tab_team_schematics(df: pd.DataFrame):
             key="team_tree_filter"
         )
 
+        from src.analytics.normalizer import DataNormalizer
+
         team_names = {
-            "ARI": "Arizona Cardinals", "ATL": "Atlanta Falcons", "BAL": "Baltimore Ravens", "BUF": "Buffalo Bills",
-            "CAR": "Carolina Panthers", "CHI": "Chicago Bears", "CIN": "Cincinnati Bengals", "CLE": "Cleveland Browns",
-            "DAL": "Dallas Cowboys", "DEN": "Denver Broncos", "DET": "Detroit Lions", "GB": "Green Bay Packers",
-            "HOU": "Houston Texans", "IND": "Indianapolis Colts", "JAC": "Jacksonville Jaguars", "KC": "Kansas City Chiefs",
-            "LAC": "Los Angeles Chargers", "LAR": "Los Angeles Rams", "LV": "Las Vegas Raiders", "MIA": "Miami Dolphins",
-            "MIN": "Minnesota Vikings", "NE": "New England Patriots", "NO": "New Orleans Saints", "NYG": "New York Giants",
-            "NYJ": "New York Jets", "PHI": "Philadelphia Eagles", "PIT": "Pittsburgh Steelers", "SEA": "Seattle Seahawks",
-            "SF": "San Francisco 49ers", "TB": "Tampa Bay Buccaneers", "TEN": "Tennessee Titans", "WAS": "Washington Commanders"
+            "ARI": "Arizona Cardinals", "ARZ": "Arizona Cardinals",
+            "ATL": "Atlanta Falcons",
+            "BAL": "Baltimore Ravens", "BLT": "Baltimore Ravens",
+            "BUF": "Buffalo Bills",
+            "CAR": "Carolina Panthers",
+            "CHI": "Chicago Bears",
+            "CIN": "Cincinnati Bengals",
+            "CLE": "Cleveland Browns", "CLV": "Cleveland Browns",
+            "DAL": "Dallas Cowboys",
+            "DEN": "Denver Broncos",
+            "DET": "Detroit Lions",
+            "GB": "Green Bay Packers", "GNB": "Green Bay Packers",
+            "HOU": "Houston Texans", "HST": "Houston Texans",
+            "IND": "Indianapolis Colts",
+            "JAX": "Jacksonville Jaguars", "JAC": "Jacksonville Jaguars",
+            "KC": "Kansas City Chiefs", "KAN": "Kansas City Chiefs",
+            "LAC": "Los Angeles Chargers", "SD": "Los Angeles Chargers", "SDG": "Los Angeles Chargers",
+            "LAR": "Los Angeles Rams", "LA": "Los Angeles Rams", "STL": "Los Angeles Rams",
+            "LV": "Las Vegas Raiders", "OAK": "Las Vegas Raiders", "LVR": "Las Vegas Raiders",
+            "MIA": "Miami Dolphins",
+            "MIN": "Minnesota Vikings",
+            "NE": "New England Patriots", "NWE": "New England Patriots",
+            "NO": "New Orleans Saints", "NOR": "New Orleans Saints",
+            "NYG": "New York Giants",
+            "NYJ": "New York Jets",
+            "PHI": "Philadelphia Eagles",
+            "PIT": "Pittsburgh Steelers",
+            "SEA": "Seattle Seahawks",
+            "SF": "San Francisco 49ers", "SFO": "San Francisco 49ers",
+            "TB": "Tampa Bay Buccaneers", "TAM": "Tampa Bay Buccaneers",
+            "TEN": "Tennessee Titans",
+            "WAS": "Washington Commanders", "WSH": "Washington Commanders",
         }
 
+        # Normalize df team column for grouping
+        df_schem = df.copy()
+        if "team" in df_schem.columns:
+            df_schem["team"] = df_schem["team"].apply(DataNormalizer.normalize_team)
+
         team_rows = []
-        for tm, g in df.groupby("team"):
-            if tm == "FA":
+        for tm, g in df_schem.groupby("team"):
+            if tm == "FA" or not tm or tm in ("—", "None", "nan"):
                 continue
             ol = g["duracell_ol_rank"].iloc[0] if "duracell_ol_rank" in g.columns and pd.notna(g["duracell_ol_rank"].iloc[0]) else 16
             twowr = g["two_wr_set_pct"].iloc[0] if "two_wr_set_pct" in g.columns and pd.notna(g["two_wr_set_pct"].iloc[0]) else 35.0
@@ -97,14 +129,14 @@ def render_tab_team_schematics(df: pd.DataFrame):
             top_players = g.sort_values("composite_rank").head(4)["player_name"].tolist()
             asset_str = ", ".join(top_players)
             
-            rz_info = team_rz_gl.get(tm, {"rz_tendency": "Balanced RZ", "gl_tendency": "Balanced GL"})
+            rz_info = team_rz_gl.get(tm, team_rz_gl.get(DataNormalizer.normalize_team(tm), {"rz_tendency": "Balanced RZ", "gl_tendency": "Balanced GL"}))
             sch_intel = SchemeEcosystemEngine.get_scheme_intel(tm)
 
             personnel_label = "High 12P/21P (2-WR Heavy)" if twowr >= 45.0 else ("High 11P (3-WR Heavy)" if twowr <= 28.0 else "Balanced Personnel")
             
             team_rows.append({
                 "team": tm,
-                "team_name": team_names.get(tm, tm),
+                "team_name": team_names.get(tm, team_names.get(DataNormalizer.normalize_team(tm), tm)),
                 "duracell_ol_rank": int(ol),
                 "tree_label": sch_intel.get("tree_label", f"Scheme: {coach}"),
                 "mentor_tree": sch_intel.get("mentor_tree", "Standard Scheme"),

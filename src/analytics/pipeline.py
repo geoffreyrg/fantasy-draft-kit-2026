@@ -557,6 +557,9 @@ class AnalyticsPipeline:
         from src.analytics.gmm_tiering import BorisChenGMMTierEngine
         master = BorisChenGMMTierEngine.apply_gmm_tiers(master)
 
+        # Ensure canonical team normalization across entire dataset
+        master["team"] = master["team"].apply(DataNormalizer.normalize_team)
+
         # 5. Output Organization & Sorting
         logger.info("Step 5/5: Sorting and finalizing master draft board...")
         master = master.sort_values(by="composite_score", ascending=False).reset_index(drop=True)
