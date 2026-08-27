@@ -229,12 +229,18 @@ def render_tab_live_draft(df: pd.DataFrame):
     cliffs = DynamicVORPEngine.detect_positional_tier_cliffs(dyn_available_df, picks_away=picks_away)
 
     # 3. MRU Scoring & Tri-Strategy Recommendations (with Bayesian Opponent Need)
+    # Decision Horizon: If on the clock, look ahead to SUBSEQUENT pick (e.g. Pick 5 -> Pick 20)
+    # If waiting for turn, look ahead to upcoming pick (e.g. Pick 1 -> Pick 5)
+    all_user_picks = state_mgr.get_user_picks()
+    subsequent_picks = [p for p in all_user_picks if p > cur_p]
+    decision_target_pick = subsequent_picks[0] if (is_my_turn and subsequent_picks) else (next_user_p if next_user_p > cur_p else cur_p + state.get("league_size", 12))
+
     scored_df = RecommendationEngine.calculate_marginal_roster_utility(
         available_df=dyn_available_df,
         user_roster_df=user_roster_df,
         roster_counts=roster_counts,
         current_pick=cur_p,
-        next_pick=next_user_p,
+        next_pick=decision_target_pick,
         platform=state_mgr.platform
     )
     tri_cards = RecommendationEngine.get_tri_strategy_recommendations(scored_df, cliffs)
@@ -361,7 +367,7 @@ def render_tab_live_draft(df: pd.DataFrame):
             # Card 2: Tier Cliff Safeguard
             cliff = tri_cards.get("cliff")
             if cliff is not None:
-                cliff_warn_note = f"⚠️ Critical tier drop-off if missed before pick #{next_user_p}."
+                cliff_warn_note = f"⚠️ Critical tier drop-off if missed before pick #{decision_target_pick}."
                 card2_html = render_strategy_card_html(
                     strategy_title="🚨 STRATEGY 2: TIER CLIFF SAFEGUARD",
                     strategy_pill="CLIFF DEFENSE",

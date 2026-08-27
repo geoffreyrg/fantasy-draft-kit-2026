@@ -157,10 +157,17 @@ class RecommendationEngine:
             )
 
         # 3. High Upside / Ceiling / Stack Play
-        upside_candidates = scored_df[
-            (scored_df["player_name"] != bpa_card["player_name"]) &
-            (scored_df["player_name"] != cliff_cand["player_name"])
+        # Filter to top 25 viable candidate pool to prevent reaching for late-round veterans
+        viable_pool = scored_df.head(25)
+        upside_candidates = viable_pool[
+            (viable_pool["player_name"] != bpa_card["player_name"]) &
+            (viable_pool["player_name"] != cliff_cand["player_name"])
         ]
+        if upside_candidates.empty:
+            upside_candidates = scored_df[
+                (scored_df["player_name"] != bpa_card["player_name"]) &
+                (scored_df["player_name"] != cliff_cand["player_name"])
+            ]
         
         upside_card = None
         if not upside_candidates.empty:
@@ -169,9 +176,12 @@ class RecommendationEngine:
             if not stacks.empty:
                 upside_card = stacks.iloc[0]
             else:
-                # Check for high JoScho talent or Exodia
+                # Select top upside talent among viable options
                 if "nfl_talent_score" in upside_candidates.columns:
-                    top_talent = upside_candidates.sort_values("nfl_talent_score", ascending=False)
+                    top_talent = upside_candidates.sort_values(
+                        by=["nfl_talent_score", "dynamic_vorp"],
+                        ascending=[False, False]
+                    )
                     upside_card = top_talent.iloc[0]
                 else:
                     upside_card = upside_candidates.iloc[0]
