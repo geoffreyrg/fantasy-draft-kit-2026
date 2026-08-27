@@ -127,7 +127,7 @@ def render_tab_master_board(df: pd.DataFrame):
         if "⭐ Top 10 Offense Assets" in focus_filters:
             masks.append((board_df["is_top_offense_undervalued"] == 1) | (board_df["team"].isin(ui_comp.TOP_10_TEAMS)))
         if "🎯 Joel Smyth Green Targets" in focus_filters:
-            masks.append(board_df["smyth_color_tag"] == "TARGET")
+            masks.append(board_df["smyth_color_tag"].str.contains("Target", case=False, na=False))
         if "👑 Guru 12 Targets" in focus_filters:
             masks.append(board_df["master_designation"].str.contains("Twelve|Guru", case=False, na=False))
         if "💰 Contract Year Assets" in focus_filters:

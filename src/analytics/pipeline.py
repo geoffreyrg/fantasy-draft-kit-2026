@@ -292,7 +292,7 @@ class AnalyticsPipeline:
             ("is_mcshanahan", 0),
             ("barrett_pos_rank", "—"),
             ("barrett_tier", "—"),
-            ("smyth_color_tag", "Neutral"),
+            ("smyth_color_tag", "⚪ Neutral"),
             ("smyth_color", "Black"),
             ("smyth_target", 0),
             ("smyth_pass", 0),

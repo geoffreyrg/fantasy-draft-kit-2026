@@ -312,6 +312,6 @@ def render_tab_team_schematics(df: pd.DataFrame):
                 "luck_pct_gained": st.column_config.NumberColumn("Luck Gained %", format="%.1f%%"),
                 "adjusted_vorp": st.column_config.NumberColumn("VORP", format="%.1f"),
                 "adjusted_proj_pts": st.column_config.NumberColumn("2026 Proj", format="%.1f"),
-                "smyth_color_tag": st.column_config.TextColumn("Smyth Tag"),
+                "smyth_color_tag": st.column_config.TextColumn("🎯 Smyth Tag"),
             }
         )

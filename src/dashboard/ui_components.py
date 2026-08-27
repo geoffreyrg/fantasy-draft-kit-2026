@@ -172,7 +172,7 @@ STANDARD_COLUMN_CONFIG = {
     "tactical_context": st.column_config.TextColumn("⚡ Key Tactical Context", width="large", help="Position-specific role, playcaller, OL rank, 2-WR usage %, PROE, red zone tendency, schedule and scheme flags"),
     "adp_yahoo": st.column_config.NumberColumn("Yahoo ADP", format="%.1f", help="Current Live Yahoo Fantasy ADP"),
     "adp_delta_yahoo": st.column_config.NumberColumn("Yahoo Edge", format="%+.1f", help="Model Rank vs Yahoo ADP (Positive = Huge Value / Steal on Yahoo)"),
-    "smyth_color_tag": st.column_config.TextColumn("🎯 Smyth Tag", help="Joel Smyth Big Board: Green=Target (+12), Yellow=Pass (-5), Red=Avoid (-15)"),
+    "smyth_color_tag": st.column_config.TextColumn("🎯 Smyth Tag", help="Joel Smyth Big Board: 🎯 Target (+12), 🟡 Pass (-5), 🚫 Avoid (-15), ⚪ Neutral (0)"),
     "upside_pct_display": st.column_config.NumberColumn("🎯 Upside Mod", format="%+.1f%%", help="Expert upside multiplier (-8% to +10%)"),
     "consensus_proj_pts": st.column_config.NumberColumn("📊 Proj Pts", format="%.1f"),
     "ecr": st.column_config.NumberColumn("Consensus ECR", format="%.1f"),
