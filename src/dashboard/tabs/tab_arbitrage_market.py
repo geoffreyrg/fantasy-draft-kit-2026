@@ -152,10 +152,34 @@ def render_tab_arbitrage_market(df: pd.DataFrame):
     # --------------------------------------------------------------------------
     with sub_t4:
         st.markdown("### 🎓 2026 Rookie Class ML Hit Model (JoScho Analytics)")
-        rookie_df = df[
-            (df["is_rookie"] == 1) & 
-            (df["composite_rank"] <= 180)
-        ].sort_values(by="rookie_hit_prob", ascending=False).copy()
+        st.markdown("""
+        Machine-learning hit probabilities, college production metrics, speed scores, and market valuation across the entire **2026 Rookie Class (30 Scouted Prospects)**.
+        """)
+
+        rc1, rc2 = st.columns([2, 3])
+        with rc1:
+            rookie_pos = st.multiselect("Filter Position:", options=["All", "RB", "WR", "TE", "QB"], default=["All"], key="rookie_pos_filter")
+        with rc2:
+            rookie_sort = st.selectbox("Sort By:", [
+                "ML Hit Probability (High to Low)",
+                "College Talent Score (High to Low)",
+                "Dominator % (High to Low)",
+                "Composite Model Rank"
+            ], key="rookie_sort_select")
+
+        rookie_df = df[df["is_rookie"] == 1].copy()
+
+        if "All" not in rookie_pos and len(rookie_pos) > 0:
+            rookie_df = rookie_df[rookie_df["position"].isin(rookie_pos)]
+
+        if rookie_sort == "ML Hit Probability (High to Low)":
+            rookie_df = rookie_df.sort_values(by="rookie_hit_prob", ascending=False)
+        elif rookie_sort == "College Talent Score (High to Low)":
+            rookie_df = rookie_df.sort_values(by="college_talent_score", ascending=False)
+        elif rookie_sort == "Dominator % (High to Low)":
+            rookie_df = rookie_df.sort_values(by="rookie_dominator_pct", ascending=False)
+        else:
+            rookie_df = rookie_df.sort_values(by="composite_rank", ascending=True)
 
         if not rookie_df.empty:
             st.dataframe(
@@ -181,4 +205,4 @@ def render_tab_arbitrage_market(df: pd.DataFrame):
                 }
             )
         else:
-            st.info("No rookie data available in draftable range.")
+            st.info("No rookie data available for the selected filters.")

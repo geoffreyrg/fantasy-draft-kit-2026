@@ -1,21 +1,23 @@
 """
 Tab 5: 🛡️ Team Schematics, OL & Matchup Matrix
-32-Team offensive environments, Red Zone / Goal Line tendencies, visual scouting charts, and Joel Smyth Luck/Regression metrics.
+32-Team offensive environments, Red Zone / Goal Line tendencies, 32-team Playoff Runway & Week 15-17 Championship Matrix, visual charts, and Joel Smyth Luck/Regression metrics.
 """
 
 import streamlit as st
 import pandas as pd
 from pathlib import Path
 from PIL import Image
+from src.analytics.schedule_matrix import TEAM_SCHEDULE_INTEL
 
 def render_tab_team_schematics(df: pd.DataFrame):
     st.subheader("🛡️ Team Schematics, Offensive Lines & Matchup Intelligence")
     st.markdown("""
-    Macro-level team ecosystems: **Consensus Offensive Line Grades**, **Red Zone & Goal-Line Pass/Run Tendencies**, **Personnel Schemes (11p vs 12p/21p/13p)**, **Visual Scouting Charts**, and **2025 Luck / Regression Metrics**.
+    Macro-level team ecosystems: **Consensus Offensive Line Grades**, **32-Team Playoff Runway (Weeks 15-17)**, **Red Zone & Goal-Line Pass/Run Tendencies**, **Personnel Schemes (11p vs 12p/21p/13p)**, **Visual Charts**, and **2025 Luck Metrics**.
     """)
 
-    sub1, sub2, sub3 = st.tabs([
+    sub1, sub2, sub3, sub4 = st.tabs([
         "🏛️ 32-Team Offensive Matrix & Red Zone Tendencies",
+        "⚔️ 32-Team Playoff Runway & Week 15-17 Matchup Matrix",
         "📊 2026 Visual Scouting & Schematic Charts",
         "🍀 Joel Smyth 2025 Luck & Regression",
     ])
@@ -67,13 +69,15 @@ def render_tab_team_schematics(df: pd.DataFrame):
             "DAL": "Dallas Cowboys", "DEN": "Denver Broncos", "DET": "Detroit Lions", "GB": "Green Bay Packers",
             "HOU": "Houston Texans", "IND": "Indianapolis Colts", "JAC": "Jacksonville Jaguars", "KC": "Kansas City Chiefs",
             "LAC": "Los Angeles Chargers", "LAR": "Los Angeles Rams", "LV": "Las Vegas Raiders", "MIA": "Miami Dolphins",
-            "MIN": "Minnesota Vikings", "NE": "New England Patriots", "NO": "New Saints", "NYG": "New York Giants",
+            "MIN": "Minnesota Vikings", "NE": "New England Patriots", "NO": "New Orleans Saints", "NYG": "New York Giants",
             "NYJ": "New York Jets", "PHI": "Philadelphia Eagles", "PIT": "Pittsburgh Steelers", "SEA": "Seattle Seahawks",
             "SF": "San Francisco 49ers", "TB": "Tampa Bay Buccaneers", "TEN": "Tennessee Titans", "WAS": "Washington Commanders"
         }
 
         team_rows = []
         for tm, g in df.groupby("team"):
+            if tm == "FA":
+                continue
             ol = g["duracell_ol_rank"].iloc[0] if "duracell_ol_rank" in g.columns and pd.notna(g["duracell_ol_rank"].iloc[0]) else 16
             twowr = g["two_wr_set_pct"].iloc[0] if "two_wr_set_pct" in g.columns and pd.notna(g["two_wr_set_pct"].iloc[0]) else 35.0
             proe = g["duracell_proe"].iloc[0] if "duracell_proe" in g.columns and pd.notna(g["duracell_proe"].iloc[0]) else 0.0
@@ -123,9 +127,97 @@ def render_tab_team_schematics(df: pd.DataFrame):
         )
 
     # --------------------------------------------------------------------------
-    # SUBTAB 2: VISUAL SCOUTING & SCHEMATIC CHARTS
+    # SUBTAB 2: 32-TEAM PLAYOFF RUNWAY & MATCHUP MATRIX (WEEKS 15-17)
     # --------------------------------------------------------------------------
     with sub2:
+        st.markdown("### ⚔️ 32-Team Strength of Schedule & Fantasy Playoff Runway (Weeks 15-17)")
+        st.markdown("""
+        Comprehensive cross-team fantasy playoff schedule environments: **Week 15 (Quarterfinals)**, **Week 16 (Semifinals)**, and **Week 17 (Championship Matchup)**, alongside position-specific SOS grades and shadow cornerback notes.
+        """)
+
+        # Filter & Sort controls
+        f_col1, f_col2 = st.columns([2, 3])
+        with f_col1:
+            sos_sort = st.selectbox("Sort Table By:", [
+                "Playoff Runway Grade (Best to Worst)",
+                "RB Strength of Schedule (Easiest First)",
+                "WR Strength of Schedule (Easiest First)",
+                "QB Strength of Schedule (Easiest First)",
+                "TE Strength of Schedule (Easiest First)",
+                "Alphabetical by Team Name"
+            ], key="sos_matrix_sort")
+        with f_col2:
+            st.info("💡 **Championship Week 17 Shootout Spots**: MIN @ DET (52-Pt Dome), CIN vs KC, ARI @ LAR, BAL @ HOU.")
+
+        sched_rows = []
+        for tm, intel in TEAM_SCHEDULE_INTEL.items():
+            if tm == "FA":
+                continue
+            sched_rows.append({
+                "team": tm,
+                "team_name": intel.get("team_name", tm),
+                "playoff_grade": intel.get("playoff_sos_grade", "⭐⭐⭐ Standard"),
+                "w15": intel.get("playoff_w15", "Competitive"),
+                "w16": intel.get("playoff_w16", "Competitive"),
+                "w17_champ": intel.get("playoff_w17_championship", "Championship"),
+                "rb_sos": f"#{intel.get('rb_sos_rank', 16)} ({intel.get('rb_sos_grade', 'B')})",
+                "wr_sos": f"#{intel.get('wr_sos_rank', 16)} ({intel.get('wr_sos_grade', 'B')})",
+                "qb_sos": f"#{intel.get('qb_sos_rank', 16)} ({intel.get('qb_sos_grade', 'B')})",
+                "te_sos": f"#{intel.get('te_sos_rank', 16)} ({intel.get('te_sos_grade', 'B')})",
+                "rb_rank_num": intel.get("rb_sos_rank", 16),
+                "wr_rank_num": intel.get("wr_sos_rank", 16),
+                "qb_rank_num": intel.get("qb_sos_rank", 16),
+                "te_rank_num": intel.get("te_sos_rank", 16),
+                "shadow_intel": intel.get("shadow_cb_risk", "Standard"),
+                "run_defense_intel": intel.get("run_defense_toughness", "Standard"),
+                "playoff_summary": intel.get("playoff_summary", "Standard slate.")
+            })
+
+        sched_df = pd.DataFrame(sched_rows)
+
+        if sos_sort == "RB Strength of Schedule (Easiest First)":
+            sched_df = sched_df.sort_values("rb_rank_num", ascending=True)
+        elif sos_sort == "WR Strength of Schedule (Easiest First)":
+            sched_df = sched_df.sort_values("wr_rank_num", ascending=True)
+        elif sos_sort == "QB Strength of Schedule (Easiest First)":
+            sched_df = sched_df.sort_values("qb_rank_num", ascending=True)
+        elif sos_sort == "TE Strength of Schedule (Easiest First)":
+            sched_df = sched_df.sort_values("te_rank_num", ascending=True)
+        elif sos_sort == "Alphabetical by Team Name":
+            sched_df = sched_df.sort_values("team_name", ascending=True)
+        else:
+            # Sort by star count in playoff_grade
+            sched_df["star_count"] = sched_df["playoff_grade"].apply(lambda s: s.count("⭐"))
+            sched_df = sched_df.sort_values("star_count", ascending=False)
+
+        st.dataframe(
+            sched_df[[
+                "team", "team_name", "playoff_grade", "w15", "w16", "w17_champ",
+                "rb_sos", "wr_sos", "qb_sos", "te_sos", "shadow_intel", "run_defense_intel", "playoff_summary"
+            ]],
+            use_container_width=True,
+            hide_index=True,
+            column_config={
+                "team": st.column_config.TextColumn("Team", pinned=True),
+                "team_name": st.column_config.TextColumn("Full Name", pinned=True),
+                "playoff_grade": st.column_config.TextColumn("Playoff Runway Grade", width="medium"),
+                "w15": st.column_config.TextColumn("📅 Week 15 (Quarterfinals)", width="medium"),
+                "w16": st.column_config.TextColumn("📅 Week 16 (Semifinals)", width="medium"),
+                "w17_champ": st.column_config.TextColumn("🏆 Week 17 (Championship)", width="large"),
+                "rb_sos": st.column_config.TextColumn("RB SOS"),
+                "wr_sos": st.column_config.TextColumn("WR SOS"),
+                "qb_sos": st.column_config.TextColumn("QB SOS"),
+                "te_sos": st.column_config.TextColumn("TE SOS"),
+                "shadow_intel": st.column_config.TextColumn("🛡️ WR Shadow CB Intel", width="large"),
+                "run_defense_intel": st.column_config.TextColumn("🛡️ RB Defense Front Intel", width="large"),
+                "playoff_summary": st.column_config.TextColumn("Playoff Roadmap Summary", width="large"),
+            }
+        )
+
+    # --------------------------------------------------------------------------
+    # SUBTAB 3: VISUAL SCOUTING & SCHEMATIC CHARTS
+    # --------------------------------------------------------------------------
+    with sub3:
         st.markdown("### 📊 2026 Visual Scouting & Schematic Charts")
         st.markdown("Comprehensive chart gallery synthesizing **Joel Smyth's Draft Guide** and **Duracell's Schematic Breakdowns**.")
 
@@ -178,9 +270,9 @@ def render_tab_team_schematics(df: pd.DataFrame):
                 st.warning(f"Chart file {selected_file} not found.")
 
     # --------------------------------------------------------------------------
-    # SUBTAB 3: JOEL SMYTH LUCK & REGRESSION METRICS (LOST + GAINED)
+    # SUBTAB 4: JOEL SMYTH LUCK & REGRESSION METRICS (LOST + GAINED)
     # --------------------------------------------------------------------------
-    with sub3:
+    with sub4:
         st.markdown("### 🍀 Joel Smyth 2025 Luck & Regression Intelligence")
         st.markdown("""
         Evaluates touchdown and yardage variance from 2025 to isolate prime regression candidates:
