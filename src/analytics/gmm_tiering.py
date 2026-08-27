@@ -167,18 +167,20 @@ class BorisChenGMMTierEngine:
             t = cls.get_overall_tier(ecr_val)
             
             sd = _safe_float(row.get("std_dev"), 2.5)
+            if sd < 0.5:
+                sd = max(2.0, ecr_val * 0.08)
+                
             best_raw = _safe_float(row.get("best_rank"), None)
             worst_raw = _safe_float(row.get("worst_rank"), None)
             
-            if best_raw is not None and best_raw > 0:
+            # Check if best_raw / worst_raw are plausible overall ranks (and not positional ranks like QB1 / TE1)
+            if best_raw is not None and best_raw > 0 and (best_raw >= ecr_val * 0.45 or ecr_val <= 5.0) and (worst_raw is not None and worst_raw >= best_raw):
                 best_v = max(1.0, best_raw)
-            else:
-                best_v = max(1.0, ecr_val - sd * 1.25)
-                
-            if worst_raw is not None and worst_raw >= best_v:
                 worst_v = worst_raw
             else:
-                worst_v = ecr_val + sd * 1.25
+                spread = max(1.5, sd * 1.25)
+                best_v = max(1.0, ecr_val - spread)
+                worst_v = ecr_val + spread
                 
             rng = round(worst_v - best_v, 1)
             tag = "⚡ High Variance (Boom/Bust Ceiling)" if rng >= 6.5 else ("⚖️ Moderate Variance" if rng >= 3.5 else "🎯 High Consensus (Safe Floor)")
