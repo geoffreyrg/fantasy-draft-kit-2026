@@ -210,16 +210,30 @@ def render_tab_player_dossier(df: pd.DataFrame):
         # ----------------------------------------------------------------------
         st.markdown("---")
         st.markdown("#### ⚔️ 2026 Strength of Schedule, Matchups & Fantasy Playoff Runway (Weeks 15-17)")
-        
         sched = ScheduleMatrixEngine.get_player_schedule_intel(team, pos)
         
-        s1, s2, s3 = st.columns(3)
-        with s1:
-            st.metric(f"{pos} Full-Season SOS", f"#{sched['pos_sos_rank']} in NFL", f"Grade: {sched['pos_sos_grade']}")
-        with s2:
-            st.metric("Playoff Runway (W15-17)", sched["playoff_sos_grade"])
-        with s3:
-            st.metric("Week 17 Championship Matchup", sched["playoff_w17_championship"])
+        st.markdown(f"""
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 12px 0 16px 0;">
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 12px 16px;">
+                <div style="font-size: 0.78rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.5px;">{pos} Full-Season SOS</div>
+                <div style="font-size: 1.25rem; font-weight: 800; color: #F8FAFC; margin-top: 2px;">
+                    #{sched['pos_sos_rank']} in NFL <span style="font-size: 0.90rem; color: #10B981; font-weight: 700;">(Grade: {sched['pos_sos_grade']})</span>
+                </div>
+            </div>
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 12px 16px;">
+                <div style="font-size: 0.78rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.5px;">Playoff Runway (W15-17)</div>
+                <div style="font-size: 1.05rem; font-weight: 700; color: #F8FAFC; margin-top: 4px;">
+                    {sched['playoff_sos_grade']}
+                </div>
+            </div>
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 12px 16px;">
+                <div style="font-size: 0.78rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.5px;">Week 17 Championship Matchup</div>
+                <div style="font-size: 1.02rem; font-weight: 700; color: #38BDF8; margin-top: 4px;">
+                    {sched['playoff_w17_championship']}
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
         st.info(f"🏆 **Playoff Slate Intelligence:** {sched['playoff_summary']}")
 
