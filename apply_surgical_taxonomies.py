@@ -4,12 +4,12 @@ from src.dashboard.ui_components import compute_tactical_edge
 
 df = pd.read_csv('data/export/master_draft_kit_2026.csv')
 
-# Exact surgical designation logic
 def get_surgical_designation(r):
     p = str(r['player_name']).strip()
     smyth = str(r.get('smyth_color_tag', '')).strip()
     des = str(r.get('master_designation', ''))
     exodia = r.get('is_exodia', 0)
+    dirty_30 = r.get('is_dirty_30', 0)
     guru = 'Twelve' in des or 'Guru' in des
     cat = r.get('has_breakout_catalyst', 0)
     contract = r.get('is_contract_year', 0)
@@ -25,11 +25,15 @@ def get_surgical_designation(r):
     ]:
         return '🚫 **Fade / Avoid**', '🚫[AVOID/FADE]', 'AVOID', '🚫'
         
-    # 2. PASS / YELLOW / RISK (Caution / Overpriced)
+    # 2. CMC & DIRTY 30 AGE/INJURY RISKS (Hansen Dirty 30 vs FP Conflict)
+    if p == 'Christian McCaffrey':
+        return '⚠️ **Dirty 30 / Age Risk**', '⚠️[DIRTY 30 AGE/CALF RISK]', '', '⚠️'
+        
+    # 3. PASS / YELLOW / RISK (Caution / Overpriced / Regression)
     if 'Pass' in smyth or p in ['Justin Jefferson', 'Rashee Rice', 'Marvin Harrison', 'RJ Harvey']:
         return '⚠️ **Pass / Caution**', '⚠️[PASS/CAUTION]', 'AVOID', '⚠️'
         
-    # 3. EXODIA CORE (League Winners)
+    # 4. EXODIA CORE (League Winners)
     if exodia == 1 or 'Exodia' in des or p in [
         'Kenneth Walker', 'Chase Brown', 'Omarion Hampton', 'Ashton Jeanty',
         'Breece Hall', 'Brock Bowers', 'Drake London', 'Cam Skattebo',
@@ -38,36 +42,36 @@ def get_surgical_designation(r):
     ]:
         return '💥 **Exodia Core**', '💥[EXODIA MUST-HAVE]', 'TARGET', '💥'
         
-    # 4. GURU 12 / THE TWELVE
+    # 5. GURU 12 / THE TWELVE
     if guru or p in ['Zay Flowers', 'Javonte Williams']:
         return '👑 **The Twelve**', '👑[THE TWELVE]', 'TARGET', '👑'
         
-    # 5. SMYTH GREEN SMASH TARGETS (Strictly verified top anchors)
-    if 'Target' in smyth or p in [
+    # 6. SMYTH GREEN SMASH TARGETS (Strictly verified top anchors with clean profiles)
+    if ('Target' in smyth and dirty_30 != 1) or p in [
         'Jahmyr Gibbs', 'Bijan Robinson', 'Jonathan Taylor', 'Puka Nacua',
-        "Ja'Marr Chase", 'Christian McCaffrey', 'James Cook', 'Jaxon Smith-Njigba',
+        "Ja'Marr Chase", 'James Cook', 'Jaxon Smith-Njigba',
         'Amon-Ra St. Brown', 'Saquon Barkley', 'DeVonta Smith', 'Rhamondre Stevenson',
         'Garrett Wilson'
     ]:
         return '🎯 **Smash Target**', '🎯[SMASH TARGET]', 'TARGET', '🎯'
         
-    # 6. YAHOO MARKET STEAL (Arbitrage: Drafted much later on Yahoo)
+    # 7. YAHOO MARKET STEAL (Arbitrage: Drafted much later on Yahoo)
     if adp_delta >= 8.0 and rk <= 140:
         return '🟣 **Yahoo Steal**', f'🟣[YAHOO STEAL: +{adp_delta:.0f} PICKS]', 'SLEEPER', '🟣'
         
-    # 7. BREAKOUT CATALYST
+    # 8. BREAKOUT CATALYST
     if cat == 1 and rk <= 120:
         return '🔥 **Breakout Catalyst**', '🔥[BREAKOUT CATALYST]', 'SLEEPER', '🔥'
         
-    # 8. TOP-10 OFFENSE VALUE
+    # 9. TOP-10 OFFENSE VALUE
     if r.get('is_top_offense_undervalued', 0) == 1:
         return '⭐ **Top 10 Eco Value**', '⭐[TOP-10 ECO VALUE]', 'SLEEPER', '⭐'
         
-    # 9. CONTRACT YEAR INCENTIVE
+    # 10. CONTRACT YEAR INCENTIVE
     if contract == 1 and rk <= 120:
         return '💰 **Contract Year**', '💰[CONTRACT YR]', 'SLEEPER', '💰'
         
-    # 10. NEUTRAL STANDARD STARTERS
+    # 11. NEUTRAL STANDARD STARTERS
     return '— Standard', '', '', '●'
 
 surgical_res = df.apply(get_surgical_designation, axis=1)
@@ -144,7 +148,7 @@ for idx, r in df.iterrows():
 upload_df = pd.DataFrame(upload_rows)
 upload_df.to_csv('data/export/fantasypros_cheatsheet_upload.csv', index=False)
 
-print("Applied surgical designations successfully!")
-print("\n--- SAMPLE NOTES (FIRST 15 PLAYERS) ---")
-for l in lines[:15]:
+print("Updated CMC and all player designations!")
+print("\n--- FIRST 10 PLAYERS ---")
+for l in lines[:10]:
     print(l)
