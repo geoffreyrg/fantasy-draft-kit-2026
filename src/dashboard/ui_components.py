@@ -33,6 +33,26 @@ TEAM_RZ_GL = {
     "GB":  {"rz": "Balanced RZ",     "gl": "👑 Elite GL Run (67% Run - Jacobs TDs)"},
 }
 
+def get_designation_emoji(r) -> str:
+    """Extracts thematic visual emoji for designation badges on Boris Chen charts."""
+    des = str(r.get("master_designation", ""))
+    if "Exodia" in des or "💥" in des or r.get("is_exodia") == 1:
+        return "💥"
+    elif "Target" in des or "🎯" in des or r.get("smyth_color_tag") == "TARGET":
+        return "🎯"
+    elif "Breakout" in des or "🔥" in des or r.get("has_breakout_catalyst") == 1:
+        return "🔥"
+    elif "Avoid" in des or "⚠️" in des or r.get("smyth_color_tag") == "AVOID":
+        return "⚠️"
+    elif "Hero" in des or "👑" in des or "Twelve" in des:
+        return "👑"
+    elif "Contract" in des or "💰" in des or r.get("is_contract_year") == 1:
+        return "💰"
+    elif "Value" in des or "⭐" in des or r.get("is_top_offense_undervalued") == 1:
+        return "⭐"
+    else:
+        return "●"
+
 def compute_tactical_edge(r) -> str:
     """Computes punchy, comprehensive position-specific contextual intelligence for fast draft decisions."""
     pos = str(r.get("position", "")).strip().upper()
@@ -146,11 +166,14 @@ STANDARD_COLUMN_CONFIG = {
 def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, is_positional: bool = False):
     """
     Renders calibrated Boris Chen Gaussian Mixture Model Staircase Chart and Data Table.
-    Aligns the mean consensus dot precisely inside the high/low expert uncertainty whiskers.
+    Uses master designation emojis (💥, 🎯, 👑, ⭐, 💰, 🔥, ⚠️) centered precisely inside the whiskers.
     """
     if chart_data.empty:
         st.info(f"No player data available for {position_title}.")
         return
+
+    chart_df = chart_data.copy()
+    chart_df["designation_emoji"] = chart_df.apply(get_designation_emoji, axis=1)
 
     # Select coordinate fields based on Overall vs Positional view
     if is_positional:
@@ -177,7 +200,7 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, i
     y_sort = alt.EncodingSortField(field=mean_col, order="ascending")
 
     # 1. Whisker Range Line
-    whisker_line = alt.Chart(chart_data).mark_rule(
+    whisker_line = alt.Chart(chart_df).mark_rule(
         size=3.5,
         opacity=0.85
     ).encode(
@@ -188,7 +211,7 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, i
     )
 
     # 2. Left Whisker Tick
-    tick_left = alt.Chart(chart_data).mark_tick(
+    tick_left = alt.Chart(chart_df).mark_tick(
         size=14,
         thickness=2.5,
         opacity=0.9
@@ -199,7 +222,7 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, i
     )
 
     # 3. Right Whisker Tick
-    tick_right = alt.Chart(chart_data).mark_tick(
+    tick_right = alt.Chart(chart_df).mark_tick(
         size=14,
         thickness=2.5,
         opacity=0.9
@@ -209,18 +232,30 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, i
         color=alt.Color(f"{tier_col}:N", scale=tier_color_scale)
     )
 
-    # 4. Center Consensus Dot (Guaranteed inside the whiskers!)
-    center_point = alt.Chart(chart_data).mark_circle(
-        size=90,
-        opacity=1.0
+    # 4. Center Circle Glow
+    center_glow = alt.Chart(chart_df).mark_circle(
+        size=220,
+        opacity=0.35
     ).encode(
         y=alt.Y("player_name:N", sort=y_sort),
         x=alt.X(f"{mean_col}:Q"),
-        color=alt.Color(f"{tier_col}:N", scale=tier_color_scale),
+        color=alt.Color(f"{tier_col}:N", scale=tier_color_scale)
+    )
+
+    # 5. Center Designation Emoji (💥 Exodia, 🎯 Target, 👑 Hero, ⭐ Value, 💰 Contract, 🔥 Catalyst, ⚠️ Avoid)
+    center_emoji = alt.Chart(chart_df).mark_text(
+        fontSize=14,
+        baseline="middle",
+        align="center"
+    ).encode(
+        y=alt.Y("player_name:N", sort=y_sort),
+        x=alt.X(f"{mean_col}:Q"),
+        text=alt.Text("designation_emoji:N"),
         tooltip=[
             alt.Tooltip("player_name:N", title="Player"),
             alt.Tooltip("position:N", title="Pos"),
             alt.Tooltip("team:N", title="Team"),
+            alt.Tooltip("master_designation:N", title="Designation"),
             alt.Tooltip(f"{tier_col}:N", title="GMM Tier"),
             alt.Tooltip(f"{mean_col}:Q", format=".1f", title="Consensus Mean Rank"),
             alt.Tooltip(f"{best_col}:Q", format=".1f", title="Expert High Rank"),
@@ -232,9 +267,9 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, i
         ]
     )
 
-    staircase_chart = (whisker_line + tick_left + tick_right + center_point).properties(
+    staircase_chart = (whisker_line + tick_left + tick_right + center_glow + center_emoji).properties(
         width=850,
-        height=max(380, len(chart_data) * 23),
+        height=max(380, len(chart_df) * 23),
         title=f"📊 {position_title} — Boris Chen GMM Tiering & Uncertainty Ranges"
     ).interactive()
 
@@ -243,8 +278,8 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, i
     # Statistical GMM Breakdown Table below chart
     with st.expander(f"📋 View Statistical Tier Breakdown Table ({position_title})", expanded=False):
         st.dataframe(
-            chart_data[[
-                "composite_rank", "player_name", "position", "team", tier_col,
+            chart_df[[
+                "composite_rank", "player_name", "position", "team", "master_designation", tier_col,
                 mean_col, best_col, worst_col, "boris_rank_range",
                 "boris_variance_tag", "adjusted_proj_pts", "adjusted_vorp"
             ]],
@@ -255,6 +290,7 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, i
                 "player_name": st.column_config.TextColumn("Player", pinned=True),
                 "position": st.column_config.TextColumn("Pos", pinned=True),
                 "team": st.column_config.TextColumn("Team", pinned=True),
+                "master_designation": st.column_config.TextColumn("Designation", pinned=True),
                 tier_col: st.column_config.TextColumn("GMM Tier", pinned=True),
                 mean_col: st.column_config.NumberColumn("Consensus Mean", format="%.1f"),
                 best_col: st.column_config.NumberColumn("Expert High", format="%.1f"),

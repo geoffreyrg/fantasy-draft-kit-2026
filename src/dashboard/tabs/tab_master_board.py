@@ -1,11 +1,48 @@
 """
 Tab 2: 🏆 Master Consensus Draft Board & Boris Chen Tiers
-Unified multi-source quantitative board with standardized columns, tactical context, and GMM tiering.
+Unified multi-source quantitative board with standardized columns, tactical context, round filtering, and GMM tiering.
 """
 
 import streamlit as st
 import pandas as pd
 from src.dashboard.ui_components import STANDARD_COLUMN_CONFIG, render_boris_chen_staircase, compute_tactical_edge, TOP_10_TEAMS
+
+def _get_expected_round_label(r):
+    rank = r.get("composite_rank", 999)
+    try:
+        rk = int(rank)
+    except Exception:
+        rk = 999
+    if rk <= 12:
+        return "Round 1"
+    elif rk <= 24:
+        return "Round 2"
+    elif rk <= 36:
+        return "Round 3"
+    elif rk <= 48:
+        return "Round 4"
+    elif rk <= 60:
+        return "Round 5"
+    elif rk <= 72:
+        return "Round 6"
+    elif rk <= 84:
+        return "Round 7"
+    elif rk <= 96:
+        return "Round 8"
+    elif rk <= 108:
+        return "Round 9"
+    elif rk <= 120:
+        return "Round 10"
+    elif rk <= 132:
+        return "Round 11"
+    elif rk <= 144:
+        return "Round 12"
+    elif rk <= 156:
+        return "Round 13"
+    elif rk <= 168:
+        return "Round 14"
+    else:
+        return "Late / Free Agent"
 
 def render_tab_master_board(df: pd.DataFrame):
     st.subheader("🏆 Master Consensus Draft Board & VORP Rankings (1/2 PPR 12-Team)")
@@ -15,12 +52,24 @@ def render_tab_master_board(df: pd.DataFrame):
 
     view_mode = st.radio("Select Board Display Format:", ["📋 Standard Master Table", "📊 Boris Chen GMM Tier Staircase Charts"], horizontal=True)
 
-    f_col1, f_col2, f_col3, f_col4 = st.columns([1.5, 1.5, 2.2, 1.8])
-    with f_col1:
+    # Assign expected round label
+    df_board = df.copy()
+    if "expected_round_label" not in df_board.columns:
+        df_board["expected_round_label"] = df_board.apply(_get_expected_round_label, axis=1)
+
+    all_rounds = [f"Round {i}" for i in range(1, 15)] + ["Late / Free Agent"]
+
+    # Multi-Filter Matrix
+    row1_col1, row1_col2 = st.columns([1.5, 3.5])
+    with row1_col1:
         pos_filter = st.multiselect("Filter Position", ["QB", "RB", "WR", "TE", "K", "DST"], default=["QB", "RB", "WR", "TE"], key="mb_pos_filter")
-    with f_col2:
+    with row1_col2:
+        round_filter = st.multiselect("Filter Expected Round (Multi-Select)", all_rounds, default=all_rounds, key="mb_round_filter")
+
+    row2_col1, row2_col2, row2_col3 = st.columns([1.5, 2.3, 1.8])
+    with row2_col1:
         tier_filter = st.multiselect("Filter Tiers", ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8"], default=["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8"], key="mb_tier_filter")
-    with f_col3:
+    with row2_col2:
         focus_filters = st.multiselect(
             "Focus Filters (Multi-Select)",
             [
@@ -34,10 +83,14 @@ def render_tab_master_board(df: pd.DataFrame):
             default=[],
             key="mb_focus_multiselect"
         )
-    with f_col4:
+    with row2_col3:
         search_query = st.text_input("🔍 Search Player or Team", "", key="mb_search_query")
 
-    board_df = df[df["position"].isin(pos_filter) & df["composite_tier"].isin(tier_filter)].copy()
+    board_df = df_board[
+        df_board["position"].isin(pos_filter) & 
+        df_board["composite_tier"].isin(tier_filter) &
+        df_board["expected_round_label"].isin(round_filter)
+    ].copy()
 
     # Apply Multi-Select Focus Filters
     if focus_filters:
@@ -83,16 +136,19 @@ def render_tab_master_board(df: pd.DataFrame):
         display_cols = [
             "composite_rank", "player_name", "position", "team", "composite_tier",
             "master_designation", "adjusted_vorp", "adjusted_proj_pts",
-            "tactical_context", "adp_yahoo", "adp_delta_yahoo",
+            "tactical_context", "expected_round_label", "adp_yahoo", "adp_delta_yahoo",
             "smyth_color_tag", "upside_pct_display", "is_contract_year", "injury_status"
         ]
         disp_df = board_df[[c for c in display_cols if c in board_df.columns]].sort_values(by="composite_rank")
+
+        column_config = STANDARD_COLUMN_CONFIG.copy()
+        column_config["expected_round_label"] = st.column_config.TextColumn("Exp Round", help="Expected Draft Round based on 12-team structure")
 
         st.dataframe(
             disp_df,
             use_container_width=True,
             hide_index=True,
-            column_config=STANDARD_COLUMN_CONFIG
+            column_config=column_config
         )
 
         st.caption(f"Showing {len(disp_df)} scouted players. Pinned left: Rank, Player, Pos, Team, Tier, Designation.")
@@ -101,7 +157,7 @@ def render_tab_master_board(df: pd.DataFrame):
         st.markdown("### 📊 Boris Chen Gaussian Mixture Model (GMM) Tier Staircase")
         st.markdown("""
         Each bar represents the **expert consensus ranking uncertainty range**.
-        - **Solid Dot**: Model Calibrated Rank.
+        - **Center Emoji Badge**: Master Player Designation (💥 Exodia, 🎯 Target, 👑 Hero, ⭐ Value, 💰 Contract, 🔥 Catalyst, ⚠️ Avoid).
         - **Whiskers / Horizontal Line**: Expert High-to-Low rank spread.
         - **Tier Colors**: Statistically separated Gaussian clusters. Target players near the top of their tier before a tier drop!
         """)
