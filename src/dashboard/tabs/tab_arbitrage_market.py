@@ -168,6 +168,7 @@ def render_tab_arbitrage_market(df: pd.DataFrame):
             ], key="rookie_sort_select")
 
         rookie_df = df[df["is_rookie"] == 1].copy()
+        rookie_df["master_designation"] = rookie_df["master_designation"].astype(str).str.replace("**", "", regex=False)
 
         if "All" not in rookie_pos and len(rookie_pos) > 0:
             rookie_df = rookie_df[rookie_df["position"].isin(rookie_pos)]
@@ -190,13 +191,14 @@ def render_tab_arbitrage_market(df: pd.DataFrame):
                 ]],
                 use_container_width=True,
                 hide_index=True,
+                key=f"rookie_grid_{rookie_sort}_{'_'.join(rookie_pos)}",
                 column_config={
                     "composite_rank": st.column_config.NumberColumn("Rank", format="#%d", pinned=True),
                     "player_name": st.column_config.TextColumn("Player", pinned=True),
                     "position": st.column_config.TextColumn("Pos", pinned=True),
                     "team": st.column_config.TextColumn("Team", pinned=True),
                     "master_designation": st.column_config.TextColumn("Designation", pinned=True),
-                    "rookie_hit_prob": st.column_config.ProgressColumn("ML Hit Prob", min_value=0.0, max_value=1.0, format="%.1%"),
+                    "rookie_hit_prob": st.column_config.ProgressColumn("ML Hit Prob", min_value=0.0, max_value=100.0, format="%.1f%%"),
                     "rookie_speed_score": st.column_config.NumberColumn("Speed Score", format="%.1f"),
                     "rookie_dominator_pct": st.column_config.NumberColumn("Dominator %", format="%.1f%%"),
                     "college_talent_score": st.column_config.NumberColumn("College Talent (0-100)", format="%.1f"),
