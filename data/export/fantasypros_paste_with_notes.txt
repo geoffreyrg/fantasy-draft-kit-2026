@@ -1,11 +1,8 @@
-Tier 1
 Jahmyr Gibbs	[Tier 1] | 🎯[SMASH TARGET] | VORP: +189.2 | Proj: 335.5pts | ⭐ Top-10 Eco (Drew Petzing) • OL #16 • 👑 Elite GL Run (74% Run - Gibbs/Monty TDs) • 👑 3-Down Bellcow • 💰 Contract Yr
 Bijan Robinson	[Tier 1] | 🎯[SMASH TARGET] | VORP: +174.3 | Proj: 320.7pts | Scheme: Kevin Stefanski/Rees • OL #11 • 👑 Elite GL Run (70% Run - Bijan TDs) • 👑 3-Down Bellcow • 💰 Contract Yr
 Jonathan Taylor	[Tier 1] | 🎯[SMASH TARGET] | VORP: +137.2 | Proj: 283.5pts | Scheme: Shane Steichen • OL #10 • 👑 Elite GL Run (69% Run - JT TDs) • ⚡ Goal-Line Anchor
 Puka Nacua	[Tier 1] | 🎯[SMASH TARGET] | VORP: +130.1 | Proj: 268.8pts | ⭐ Top-10 Eco (Sean McVay) • 🛡️ Top-5 OL (#3) • 🎯 Pass-Funnel RZ (58% Pass) • 🟢 Green Schedule (≤2 Shadows) • 💰 Contract Yr
 Ja'Marr Chase	[Tier 1] | 🎯[SMASH TARGET] | VORP: +123.4 | Proj: 262.1pts | ⭐ Top-10 Eco (Zac Taylor) • ⚠️ Bad OL (#28) • 🎯 Pass-Funnel RZ (65% Pass)
-
-Tier 2
 Christian McCaffrey	[Tier 2] | ⚠️[DIRTY 30 AGE/CALF RISK] | VORP: +112.1 | Proj: 258.4pts | ⭐ Top-10 Eco (Kyle Shanahan) • OL #6 • 👑 Elite GL Run (68% Run - CMC TDs)
 James Cook	[Tier 2] | 🎯[SMASH TARGET] | VORP: +110.6 | Proj: 256.9pts | ⭐ Top-10 Eco (Joe Brady) • OL #7
 Jaxon Smith-Njigba	[Tier 2] | 🎯[SMASH TARGET] | VORP: +105.3 | Proj: 244.0pts | Scheme: Brian Fleury • 🎯 Target Funnel (47% 2-WR)
@@ -17,8 +14,6 @@ Derrick Henry	[Tier 2] | VORP: +88.7 | Proj: 235.1pts | ⭐ Top-10 Eco (Declan D
 Chase Brown	[Tier 2] | 💥[EXODIA MUST-HAVE] | VORP: +88.7 | Proj: 235.0pts | ⭐ Top-10 Eco (Zac Taylor) • ⚠️ Bad OL (#28) • 👑 3-Down Bellcow
 Omarion Hampton	[Tier 2] | 💥[EXODIA MUST-HAVE] | VORP: +88.2 | Proj: 234.5pts | Scheme: Mike McDaniel • OL #9 • 👑 Elite GL Run (71% Run - Hampton TDs) • 👑 3-Down Bellcow
 Ashton Jeanty	[Tier 2] | 💥[EXODIA MUST-HAVE] | VORP: +85.6 | Proj: 232.0pts | Scheme: Klint Kubiak • OL #24 • 👑 3-Down Bellcow
-
-Tier 3
 CeeDee Lamb	[Tier 3] | VORP: +78.0 | Proj: 216.8pts | ⭐ Top-10 Eco (Brian Schottenheimer) • 🎯 Pass-Funnel RZ (61% Pass) • ⚡ 3-WR Slot Heavy (26%)
 Josh Jacobs	[Tier 3] | VORP: +73.4 | Proj: 219.8pts | ⭐ Top-10 Eco (Matt LaFleur) • ⚠️ Bad OL (#27) • 👑 Elite GL Run (67% Run - Jacobs TDs) • ⚡ Goal-Line Anchor
 Breece Hall	[Tier 3] | 💥[EXODIA MUST-HAVE] | VORP: +72.6 | Proj: 218.9pts | Scheme: Frank Reich • OL #17
@@ -35,8 +30,6 @@ DeVonta Smith	[Tier 3] | 🎯[SMASH TARGET] | VORP: +52.2 | Proj: 190.9pts | ⭐
 Javonte Williams	[Tier 3] | 👑[THE TWELVE] | VORP: +51.1 | Proj: 197.5pts | ⭐ Top-10 Eco (Brian Schottenheimer) • OL #15
 George Pickens	[Tier 3] | VORP: +50.9 | Proj: 189.7pts | ⭐ Top-10 Eco (Brian Schottenheimer) • 🎯 Pass-Funnel RZ (61% Pass) • ⚡ 3-WR Slot Heavy (26%)
 Josh Allen	[Tier 3] | VORP: +49.2 | Proj: 339.7pts | ⭐ Top-10 Eco (Joe Brady) • OL #7 • 🎯 Pass-Funnel RZ (58% Pass) • ⚡ Dual-Threat Floor
-
-Tier 4
 Cam Skattebo	[Tier 4] | 💥[EXODIA MUST-HAVE] | VORP: +48.9 | Proj: 195.2pts | Scheme: Matt Nagy • OL #18 • 👑 3-Down Bellcow • 🔥 Breakout Catalyst
 Ladd McConkey	[Tier 4] | 🔥[BREAKOUT CATALYST] | VORP: +46.7 | Proj: 185.5pts | Scheme: Mike McDaniel • ⚡ 3-WR Slot Heavy (19%) • 🔥 Breakout Catalyst
 David Montgomery	[Tier 4] | 💥[EXODIA MUST-HAVE] | VORP: +46.7 | Proj: 193.0pts | ⭐ Top-10 Eco (Nick Caley) • ⚠️ Bad OL (#29) • 🔥 Breakout Catalyst
@@ -59,8 +52,6 @@ Jeremiyah Love	[Tier 4] | 🚫[AVOID/FADE] | VORP: +28.2 | Proj: 174.5pts | Sche
 Davante Adams	[Tier 4] | VORP: +28.2 | Proj: 167.0pts | ⭐ Top-10 Eco (Sean McVay) • 🛡️ Top-5 OL (#3) • 🎯 Pass-Funnel RZ (58% Pass)
 Emeka Egbuka	[Tier 4] | 🚫[AVOID/FADE] | VORP: +27.5 | Proj: 166.3pts | Scheme: Zac Robinson • 🛡️ Top-5 OL (#5) • 🎯 Pass-Funnel RZ (60% Pass) • ⚡ 3-WR Slot Heavy (27%) • 🔥 Breakout Catalyst
 Drake Maye	[Tier 4] | 🔥[BREAKOUT CATALYST] | VORP: +27.1 | Proj: 310.2pts | Scheme: Josh McDaniels • OL #13 • 🔥 Breakout Catalyst
-
-Tier 5
 Christian Watson	[Tier 5] | 💥[EXODIA MUST-HAVE] | VORP: +27.0 | Proj: 165.8pts | ⭐ Top-10 Eco (Matt LaFleur) • ⚠️ Bad OL (#27)
 Bhayshul Tuten	[Tier 5] | 💥[EXODIA MUST-HAVE] | VORP: +26.2 | Proj: 172.6pts | Scheme: Liam Coen • OL #23 • 🔥 Breakout Catalyst
 Tetairoa McMillan	[Tier 5] | 🚫[AVOID/FADE] | VORP: +25.1 | Proj: 163.9pts | Scheme: Dave Canales/Idzik
@@ -83,8 +74,6 @@ George Kittle	[Tier 5] | VORP: +11.6 | Proj: 135.2pts | ⭐ Top-10 Eco (Kyle Sha
 DK Metcalf	[Tier 5] | 🚫[AVOID/FADE] | VORP: +11.2 | Proj: 150.0pts | Scheme: Mike McCarthy
 Justin Herbert	[Tier 5] | 👑[THE TWELVE] | VORP: +10.2 | Proj: 287.7pts | Scheme: Mike McDaniel • OL #9
 TreVeyon Henderson	[Tier 5] | 🚫[AVOID/FADE] | VORP: +9.9 | Proj: 156.3pts | Scheme: Josh McDaniels • OL #13 • ⚠️ Committee Trap
-
-Tier 6
 Trevor Lawrence	[Tier 6] | 👑[THE TWELVE] | VORP: +9.7 | Proj: 287.1pts | Scheme: Liam Coen • OL #23 • 🎯 Pass-Heavy RZ (Liam Coen) • ⚡ Dual-Threat Floor • 🔥 Breakout Catalyst
 Mark Andrews	[Tier 6] | 🔥[BREAKOUT CATALYST] | VORP: +9.6 | Proj: 132.9pts | ⭐ Top-10 Eco (Declan Doyle) • ⚠️ Bad OL (#26) • 🎯 90%+ Route Snaps (60% 12p) • 🔥 Breakout Catalyst
 Michael Pittman	[Tier 6] | ⚠️[PASS/CAUTION] | VORP: +7.5 | Proj: 146.3pts | Scheme: Mike McCarthy
@@ -117,8 +106,6 @@ Josh Downs	[Tier 6] | 💥[EXODIA MUST-HAVE] | VORP: -4.7 | Proj: 134.1pts | Sch
 Hunter Henry	[Tier 6] | VORP: -5.1 | Proj: 115.5pts | Scheme: Josh McDaniels
 Romeo Doubs	[Tier 6] | 🎯[SMASH TARGET] | VORP: -5.8 | Proj: 132.9pts | Scheme: Josh McDaniels
 Jared Goff	[Tier 6] | ⭐[TOP-10 ECO VALUE] | VORP: -6.1 | Proj: 266.0pts | ⭐ Top-10 Eco (Drew Petzing) • OL #16
-
-Tier 7
 Kenny Gainwell	[Tier 7] | 🚫[AVOID/FADE] | VORP: -7.9 | Proj: 138.4pts | Scheme: Zac Robinson • 🛡️ Top-5 OL (#5)
 Jayden Reed	[Tier 7] | 🟣[YAHOO STEAL: +12 PICKS] | VORP: -8.0 | Proj: 130.8pts | ⭐ Top-10 Eco (Matt LaFleur) • ⚠️ Bad OL (#27)
 Dalton Schultz	[Tier 7] | VORP: -8.6 | Proj: 111.5pts | ⭐ Top-10 Eco (Nick Caley) • ⚠️ Bad OL (#29) • 🎯 Pass-Funnel RZ (57% Pass)
@@ -155,8 +142,6 @@ J.K. Dobbins	[Tier 7] | 🚫[AVOID/FADE] | VORP: -26.2 | Proj: 120.1pts | Scheme
 Keenan Allen	[Tier 7] | VORP: -26.9 | Proj: 111.9pts | Scheme: Shane Steichen
 Kenyon Sadiq	[Tier 7] | VORP: -26.9 | Proj: 89.9pts | Scheme: Frank Reich • 🔥 Breakout Catalyst
 Evan Engram	[Tier 7] | VORP: -27.3 | Proj: 89.4pts | Scheme: Sean Payton/Webb • 🛡️ Top-5 OL (#1) • 🎯 Pass-Funnel RZ (Sean Payton)
-
-Tier 8
 Rachaad White	[Tier 8] | 🚫[AVOID/FADE] | VORP: -27.6 | Proj: 118.7pts | Scheme: David Blough • ⚠️ Bad OL (#25)
 Gunnar Helm	[Tier 8] | VORP: -28.2 | Proj: 88.4pts | Scheme: Brian Daboll • ⚠️ Bad OL (#31)
 Ryan Flournoy	[Tier 8] | VORP: -28.8 | Proj: 110.0pts | ⭐ Top-10 Eco (Brian Schottenheimer) • 🎯 Pass-Funnel RZ (61% Pass) • ⚡ 3-WR Slot Heavy (26%)
