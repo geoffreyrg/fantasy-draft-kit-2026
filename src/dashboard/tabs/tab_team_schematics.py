@@ -57,11 +57,22 @@ def render_tab_team_schematics(df: pd.DataFrame):
         "NYG": {"rz_tendency": "Balanced RZ",                "gl_tendency": "👑 Run-Heavy GL (65% Run - Skattebo TDs)"},
     }
 
+from src.analytics.scheme_matrix import SchemeEcosystemEngine
+
     # --------------------------------------------------------------------------
     # SUBTAB 1: 32-TEAM OFFENSIVE MATRIX
     # --------------------------------------------------------------------------
     with sub1:
-        st.markdown("### 🏛️ 32 NFL Teams: Offensive Environment, OL & Red Zone Schemes")
+        st.markdown("### 🏛️ 32 NFL Teams: Offensive Environment, OL & Coaching Tree Lineage")
+        st.markdown("""
+        Comprehensive 32-team schematic architectures: **Coaching Tree Lineage (Shanahan / McVay / Reid Systems)**, **Consensus OL Ranks**, **Pre-Snap Motion & Tendencies**, **Red Zone / Goal-Line Run/Pass Distributions**, and **Personnel Groupings (11p vs 12p/21p)**.
+        """)
+
+        tree_filter = st.selectbox(
+            "Filter by Coaching Tree Lineage:",
+            ["All 32 Coaching Trees", "👑 Shanahan & McVay Trees (Outside Zone / High Motion)", "🚀 Pass-Heavy Spread Trees (Andy Reid / Air Raid)", "⚡ Power RPO & Read-Option Trees"],
+            key="team_tree_filter"
+        )
 
         team_names = {
             "ARI": "Arizona Cardinals", "ATL": "Atlanta Falcons", "BAL": "Baltimore Ravens", "BUF": "Buffalo Bills",
@@ -88,6 +99,7 @@ def render_tab_team_schematics(df: pd.DataFrame):
             asset_str = ", ".join(top_players)
             
             rz_info = team_rz_gl.get(tm, {"rz_tendency": "Balanced RZ", "gl_tendency": "Balanced GL"})
+            sch_intel = SchemeEcosystemEngine.get_scheme_intel(tm)
 
             personnel_label = "High 12P/21P (2-WR Heavy)" if twowr >= 45.0 else ("High 11P (3-WR Heavy)" if twowr <= 28.0 else "Balanced Personnel")
             
@@ -95,6 +107,10 @@ def render_tab_team_schematics(df: pd.DataFrame):
                 "team": tm,
                 "team_name": team_names.get(tm, tm),
                 "duracell_ol_rank": int(ol),
+                "tree_label": sch_intel.get("tree_label", f"Scheme: {coach}"),
+                "mentor_tree": sch_intel.get("mentor_tree", "Standard Scheme"),
+                "is_shanahan": sch_intel.get("is_shanahan_tree", False),
+                "primary_tendency": sch_intel.get("primary_tendency", "Standard Tendencies"),
                 "coach": coach if coach and coach != "—" else "Staff",
                 "two_wr_set_pct": twowr,
                 "personnel_label": personnel_label,
@@ -107,6 +123,14 @@ def render_tab_team_schematics(df: pd.DataFrame):
 
         team_table = pd.DataFrame(team_rows).sort_values("duracell_ol_rank")
 
+        # Apply Tree Filters
+        if "Shanahan & McVay" in tree_filter:
+            team_table = team_table[team_table["is_shanahan"] == True]
+        elif "Pass-Heavy Spread" in tree_filter:
+            team_table = team_table[team_table["duracell_proe"] >= 0.02]
+        elif "Power RPO" in tree_filter:
+            team_table = team_table[team_table["tree_label"].str.contains("RPO|Pistol|Option|Power", case=False, na=False)]
+
         st.dataframe(
             team_table,
             use_container_width=True,
@@ -115,6 +139,8 @@ def render_tab_team_schematics(df: pd.DataFrame):
                 "team": st.column_config.TextColumn("Team", pinned=True),
                 "team_name": st.column_config.TextColumn("Full Name", pinned=True),
                 "duracell_ol_rank": st.column_config.NumberColumn("Consensus OL Rank", format="#%d"),
+                "tree_label": st.column_config.TextColumn("👑 Coaching Tree & Scheme Archetype", width="large", help="System lineage: Shanahan Wide Zone, McVay 11-Personnel, Reid Pass Spread, etc."),
+                "primary_tendency": st.column_config.TextColumn("⚡ Scheme Tendencies & Motion Profile", width="large", help="Pre-snap motion rank, YAC creation, and target consolidation"),
                 "coach": st.column_config.TextColumn("Playcaller / HC"),
                 "two_wr_set_pct": st.column_config.NumberColumn("2-WR Set %", format="%.1f%%", help="Snaps in 12, 21, or 13 personnel"),
                 "personnel_label": st.column_config.TextColumn("Personnel Tendency"),
