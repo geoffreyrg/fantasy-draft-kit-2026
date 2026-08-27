@@ -241,7 +241,7 @@ with kpi6:
 # MAIN 5-PILLAR ARCHITECTURE
 # ==============================================================================
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
-    "⚡ 1.05 Yahoo Draft War Room",
+    "⚡ Live Draft War Room",
     "🏆 Master Consensus Board & Tiers",
     "🔬 360° Player Scouting Dossier",
     "🎯 Market Arbitrage & Sleeper Radar",

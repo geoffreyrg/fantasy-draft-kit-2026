@@ -27,6 +27,14 @@ def render_tab_live_draft(df: pd.DataFrame):
     state_mgr = DraftStateManager(master_df=df, league_size=12, user_slot=5, total_rounds=14)
     state = state_mgr.state
 
+    # Synchronize state from interactive widgets immediately
+    if "war_room_slot_select" in st.session_state:
+        state_mgr.set_user_slot(int(st.session_state["war_room_slot_select"]))
+    if "war_room_plat_select" in st.session_state:
+        state_mgr.set_platform(st.session_state["war_room_plat_select"].lower())
+    if "war_room_pick_input" in st.session_state:
+        state["current_pick"] = int(st.session_state["war_room_pick_input"])
+
     # Top Telemetry Banner
     cur_p = state_mgr.current_pick
     next_user_p, picks_away = state_mgr.get_next_user_pick()
