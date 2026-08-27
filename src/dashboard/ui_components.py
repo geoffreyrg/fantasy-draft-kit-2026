@@ -9,6 +9,30 @@ import altair as alt
 
 TOP_10_TEAMS = {"DET", "LAR", "SF", "KC", "BUF", "PHI", "CIN", "BAL", "GB", "HOU", "DAL", "MIA"}
 
+TEAM_RZ_GL = {
+    "CIN": {"rz": "🎯 Pass-Funnel RZ (65% Pass)", "gl": "🎯 Heavy Pass GL (62% Pass - Burrow/Chase TDs)"},
+    "KC":  {"rz": "🎯 Pass-Funnel RZ (63% Pass)", "gl": "🎯 Heavy Pass GL (58% Pass - Mahomes/Kelce TDs)"},
+    "DAL": {"rz": "🎯 Pass-Funnel RZ (61% Pass)", "gl": "🎯 High Pass GL (55% Pass - Dak/Lamb TDs)"},
+    "TB":  {"rz": "🎯 Pass-Funnel RZ (60% Pass)", "gl": "🎯 High Pass GL (54% Pass - Evans/Godwin TDs)"},
+    "MIA": {"rz": "🎯 Pass-Funnel RZ (59% Pass)", "gl": "Balanced GL"},
+    "BUF": {"rz": "🎯 Pass-Funnel RZ (58% Pass)", "gl": "⚡ Josh Allen Power + Cook TDs"},
+    "LAR": {"rz": "🎯 Pass-Funnel RZ (58% Pass)", "gl": "Balanced GL"},
+    "HOU": {"rz": "🎯 Pass-Funnel RZ (57% Pass)", "gl": "Balanced GL"},
+    "MIN": {"rz": "🎯 Pass-Funnel RZ (58% Pass)", "gl": "Balanced GL"},
+    "CHI": {"rz": "🎯 Pass-Heavy RZ (Ben Johnson)", "gl": "👑 High-Efficiency GL"},
+    "JAC": {"rz": "🎯 Pass-Heavy RZ (Liam Coen)", "gl": "Balanced GL"},
+    "DEN": {"rz": "🎯 Pass-Funnel RZ (Sean Payton)", "gl": "Balanced GL"},
+    "NO":  {"rz": "🎯 High-Pace RZ (Kellen Moore)", "gl": "Balanced GL"},
+    "DET": {"rz": "👑 Balanced High-Scoring RZ", "gl": "👑 Elite GL Run (74% Run - Gibbs/Monty TDs)"},
+    "PHI": {"rz": "👑 Ground-Heavy RZ",   "gl": "👑 Elite GL Run (78% Run - Saquon/Hurts TDs)"},
+    "BAL": {"rz": "🏃 Run-Heavy RZ",   "gl": "👑 Elite GL Run (72% Run - Henry/Lamar TDs)"},
+    "IND": {"rz": "🏃 Run-Heavy RZ",   "gl": "👑 Elite GL Run (69% Run - JT TDs)"},
+    "ATL": {"rz": "🏃 Run-Heavy RZ",   "gl": "👑 Elite GL Run (70% Run - Bijan TDs)"},
+    "SF":  {"rz": "👑 Elite Balanced RZ", "gl": "👑 Elite GL Run (68% Run - CMC TDs)"},
+    "LAC": {"rz": "🏃 Run-Heavy RZ",   "gl": "👑 Elite GL Run (71% Run - Hampton TDs)"},
+    "GB":  {"rz": "Balanced RZ",     "gl": "👑 Elite GL Run (67% Run - Jacobs TDs)"},
+}
+
 def compute_tactical_edge(r) -> str:
     """Computes punchy, comprehensive position-specific contextual intelligence for fast draft decisions."""
     pos = str(r.get("position", "")).strip().upper()
@@ -45,7 +69,14 @@ def compute_tactical_edge(r) -> str:
         elif pos in ["RB", "QB"]:
             parts.append(f"OL #{ol_int}")
             
-    # 3. Position-Specific Volume & Roles
+    # 3. Position-Specific Red Zone & Goal-Line Tendencies
+    rz_data = TEAM_RZ_GL.get(tm, {})
+    if pos in ["WR", "TE", "QB"] and "rz" in rz_data and "Pass" in rz_data["rz"]:
+        parts.append(rz_data["rz"])
+    elif pos == "RB" and "gl" in rz_data and "Run" in rz_data["gl"]:
+        parts.append(rz_data["gl"])
+        
+    # 4. Position-Specific Volume & Roles
     if pos == "RB":
         if gold == "Gold Standard":
             parts.append("👑 3-Down Bellcow")
@@ -53,8 +84,6 @@ def compute_tactical_edge(r) -> str:
             parts.append("⚡ Goal-Line Anchor")
         elif gold == "Fool's Gold":
             parts.append("⚠️ Committee Trap")
-        if pd.notna(proe) and proe <= -3.0:
-            parts.append("🏃 Run-Heavy Vol")
             
     elif pos == "WR":
         if pd.notna(twowr):
@@ -66,17 +95,10 @@ def compute_tactical_edge(r) -> str:
                     parts.append(f"🚨 2-WR Bench Risk ({twowr:.0f}%)")
             elif twowr <= 28.0:
                 parts.append(f"⚡ 3-WR Slot Heavy ({twowr:.0f}%)")
-        if pd.notna(proe):
-            if proe >= 3.0:
-                parts.append(f"🚀 Pass-Funnel (+{proe:.1f}%)")
-            elif proe <= -3.0:
-                parts.append(f"⚠️ Run-Cap ({proe:.1f}%)")
         if pd.notna(shadow_cb) and shadow_cb <= 2.0 and shadow_cb >= 0:
             parts.append("🟢 Green Schedule (≤2 Shadows)")
             
     elif pos == "QB":
-        if pd.notna(proe) and proe >= 3.0:
-            parts.append(f"🚀 High Pass Vol (+{proe:.1f}%)")
         if r.get("qb_runs", False):
             parts.append("⚡ Dual-Threat Floor")
             
@@ -104,7 +126,7 @@ STANDARD_COLUMN_CONFIG = {
     "master_designation": st.column_config.TextColumn("Designation", pinned=True, help="Primary Expert Badge (Exodia / Target / Value / Avoid)"),
     "adjusted_vorp": st.column_config.NumberColumn("🏆 VORP", format="%.1f", help="Value Over Replacement Player (12-Team 1/2 PPR Baseline)"),
     "adjusted_proj_pts": st.column_config.NumberColumn("🚀 Calib Proj", format="%.1f", help="Multi-source consensus projection scaled by expert upside model"),
-    "tactical_context": st.column_config.TextColumn("⚡ Key Tactical Context", width="large", help="Position-specific role, playcaller, OL rank, 2-WR usage %, PROE, schedule and scheme flags"),
+    "tactical_context": st.column_config.TextColumn("⚡ Key Tactical Context", width="large", help="Position-specific role, playcaller, OL rank, 2-WR usage %, PROE, red zone tendency, schedule and scheme flags"),
     "adp_yahoo": st.column_config.NumberColumn("Yahoo ADP", format="%.1f", help="Current Live Yahoo Fantasy ADP"),
     "adp_delta_yahoo": st.column_config.NumberColumn("Yahoo Edge", format="%+.1f", help="Model Rank vs Yahoo ADP (Positive = Huge Value / Steal on Yahoo)"),
     "smyth_color_tag": st.column_config.TextColumn("🎯 Smyth Tag", help="Joel Smyth Big Board: Green=Target (+12), Yellow=Pass (-5), Red=Avoid (-15)"),
