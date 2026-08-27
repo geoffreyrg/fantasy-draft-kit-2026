@@ -3,9 +3,9 @@ Streamlit Live Interactive Draft Kit & Scouting Intelligence Engine 2026.
 Unified Production Architecture (5 Strategic Pillars):
 - ⚡ Pillar 1: 1.05 Yahoo Draft Blueprint & Live 45s War Room
 - 🏆 Pillar 2: Master Consensus Board & Boris Chen Tiers
-- 🔬 Pillar 3: 360° Player Scouting Dossier
+- 🔬 Pillar 3: 360° Player Scouting Dossier & Pick Arbiter
 - 🎯 Pillar 4: Market Inefficiencies, Platform Arbitrage & Sleeper Radar
-- 🛡️ Pillar 5: Team Schematics, Offensive Lines & Matchup Intelligence
+- 🛡️ Pillar 5: Team Schematics, Offensive Lines & 32-Team Playoff Runway
 """
 
 import sys
