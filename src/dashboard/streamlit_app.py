@@ -211,8 +211,8 @@ with kpi3:
     elite_talent_cnt = len(df[df["nfl_talent_score"] >= 90.0]) if "nfl_talent_score" in df.columns else 0
     st.metric("🔬 JoScho 90+ Talent Elite", f"{elite_talent_cnt} Players", "PBP Per-Opp Score")
 with kpi4:
-    yahoo_steals_cnt = len(df[df["adp_delta_yahoo"] >= 5.0]) if "adp_delta_yahoo" in df.columns else 0
-    st.metric("🟣 Yahoo ADP Steals", f"{yahoo_steals_cnt} Targets", "Delta ≥ +5.0 on Yahoo")
+    yahoo_steals_cnt = len(df[(df["adp_delta_yahoo"] >= 5.0) & (df["composite_rank"] <= 180) & (df["adp_yahoo"] <= 200)])
+    st.metric("🟣 Yahoo ADP Steals", f"{yahoo_steals_cnt} Targets", "Draftable Steals (Top 180)")
 with kpi5:
     rookie_cnt = int(df["is_rookie"].sum()) if "is_rookie" in df.columns else 0
     st.metric("🎓 2026 Rookie Class", f"{rookie_cnt} Rookies", "ML Hit Prob Model")

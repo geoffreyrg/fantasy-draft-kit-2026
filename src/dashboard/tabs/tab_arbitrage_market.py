@@ -1,6 +1,6 @@
 """
 Tab 4: 🎯 Market Inefficiencies & Arbitrage Radar
-Cross-platform pricing discounts (Yahoo/ESPN/Sleeper/CBS), Sleepers, Rookie ML Hit, and Reddit Steam.
+Filtered to the 12-Team 14-Round Draftable Universe (Top 180 Players / ADP <= 200).
 """
 
 import streamlit as st
@@ -10,7 +10,7 @@ from src.dashboard.ui_components import STANDARD_COLUMN_CONFIG, compute_tactical
 def render_tab_arbitrage_market(df: pd.DataFrame):
     st.subheader("🎯 Market Inefficiencies, Platform Arbitrage & Sleeper Radar")
     st.markdown("""
-    Capitalize on platform-specific pricing blindspots where draft platforms rank players rounds below their true multi-source quantitative value.
+    Capitalize on platform-specific pricing blindspots in your **12-Team (14-Round / 168-Pick)** draft. Filtered exclusively to **draftable players (Rank ≤ 180 & ADP ≤ 200)**.
     """)
 
     sub_t1, sub_t2, sub_t3, sub_t4 = st.tabs([
@@ -21,13 +21,27 @@ def render_tab_arbitrage_market(df: pd.DataFrame):
     ])
 
     # --------------------------------------------------------------------------
-    # SUBTAB 1: YAHOO SPECIFIC STEALS
+    # SUBTAB 1: YAHOO SPECIFIC STEALS (DRAFTABLE UNIVERSE ONLY)
     # --------------------------------------------------------------------------
     with sub_t1:
         st.markdown("### 🟣 Top Value Steals on Yahoo Fantasy (Tonight's Draft)")
-        st.markdown("These players are being drafted **significantly later on Yahoo** than their Model Calibrated VORP rank. Target these players 1 round before their Yahoo ADP to lock in massive value!")
+        st.markdown("""
+        These players are projected by our consensus model to outperform their **Yahoo ADP by multiple rounds**. 
+        Target these players 1 round before their Yahoo ADP to lock in massive surplus value!
+        """)
 
-        yahoo_steals = df[df["adp_delta_yahoo"] >= 4.0].sort_values(by="adp_delta_yahoo", ascending=False).copy()
+        col_f1, col_f2 = st.columns([2, 2])
+        with col_f1:
+            max_rank = st.slider("Max Model Rank (Draft Window):", min_value=50, max_value=200, value=168, step=12, key="yahoo_steals_max_rank")
+        with col_f2:
+            min_delta = st.slider("Minimum Yahoo Edge (Picks Discounted):", min_value=2.0, max_value=25.0, value=4.0, step=1.0, key="yahoo_steals_min_delta")
+
+        yahoo_steals = df[
+            (df["composite_rank"] <= max_rank) & 
+            (df["adp_yahoo"] <= 200.0) & 
+            (df["adp_delta_yahoo"] >= min_delta)
+        ].sort_values(by="adp_delta_yahoo", ascending=False).copy()
+
         if "upside_pct" in yahoo_steals.columns:
             yahoo_steals["upside_pct_display"] = (yahoo_steals["upside_pct"] * 100.0).round(1) if yahoo_steals["upside_pct"].abs().max() <= 1.0 else yahoo_steals["upside_pct"].round(1)
 
@@ -46,13 +60,20 @@ def render_tab_arbitrage_market(df: pd.DataFrame):
             column_config=STANDARD_COLUMN_CONFIG
         )
 
+        st.caption(f"Showing {len(yahoo_steals)} draftable value steals on Yahoo Fantasy within top {max_rank} picks.")
+
     # --------------------------------------------------------------------------
-    # SUBTAB 2: CROSS-PLATFORM ARBITRAGE
+    # SUBTAB 2: CROSS-PLATFORM ARBITRAGE (DRAFTABLE UNIVERSE ONLY)
     # --------------------------------------------------------------------------
     with sub_t2:
         st.markdown("### 🌐 Cross-Platform Pricing Spread (Yahoo vs ESPN vs Sleeper vs CBS)")
-        
-        arb_df = df[df["adp_spread"] >= 6.0].sort_values(by="adp_spread", ascending=False).copy()
+        st.markdown("Identifies players with severe cross-platform pricing discrepancies across the industry.")
+
+        arb_df = df[
+            (df["composite_rank"] <= 180) & 
+            (df["cheapest_adp"] <= 200.0) & 
+            (df["adp_spread"] >= 5.0)
+        ].sort_values(by="adp_spread", ascending=False).copy()
         
         arb_cols = [
             "composite_rank", "player_name", "position", "team", "master_designation", "adp_spread",
@@ -82,11 +103,14 @@ def render_tab_arbitrage_market(df: pd.DataFrame):
         )
 
     # --------------------------------------------------------------------------
-    # SUBTAB 3: SLEEPERS & BREAKOUTS
+    # SUBTAB 3: SLEEPERS & BREAKOUTS (ROUNDS 7-14)
     # --------------------------------------------------------------------------
     with sub_t3:
-        st.markdown("### 🚀 Late-Round High-Upside Sleepers (Picks 80+)")
-        sleepers_df = df[(df["composite_rank"] >= 80) & (df["adjusted_vorp"] >= -15.0)].sort_values(by="composite_rank").copy()
+        st.markdown("### 🚀 Late-Round High-Upside Sleepers (Rounds 7–14 / Picks 75–168)")
+        sleepers_df = df[
+            (df["composite_rank"].between(70, 175)) & 
+            (df["adp_consensus"] <= 200.0)
+        ].sort_values(by="composite_rank").copy()
 
         if "upside_pct" in sleepers_df.columns:
             sleepers_df["upside_pct_display"] = (sleepers_df["upside_pct"] * 100.0).round(1) if sleepers_df["upside_pct"].abs().max() <= 1.0 else sleepers_df["upside_pct"].round(1)
@@ -109,7 +133,10 @@ def render_tab_arbitrage_market(df: pd.DataFrame):
     # --------------------------------------------------------------------------
     with sub_t4:
         st.markdown("### 🎓 2026 Rookie Class ML Hit Model (JoScho Analytics)")
-        rookie_df = df[df["is_rookie"] == 1].sort_values(by="rookie_hit_prob", ascending=False).copy()
+        rookie_df = df[
+            (df["is_rookie"] == 1) & 
+            (df["composite_rank"] <= 180)
+        ].sort_values(by="rookie_hit_prob", ascending=False).copy()
 
         if not rookie_df.empty:
             st.dataframe(
@@ -135,4 +162,4 @@ def render_tab_arbitrage_market(df: pd.DataFrame):
                 }
             )
         else:
-            st.info("No rookie data available.")
+            st.info("No rookie data available in draftable range.")
