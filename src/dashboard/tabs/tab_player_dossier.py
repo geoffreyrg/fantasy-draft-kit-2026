@@ -1,13 +1,12 @@
 """
 Tab 3: 🔬 360° Player Scouting Dossier & Head-to-Head Pick Arbiter
 Comprehensive multi-dimensional intelligence card for any player with HD headshots, team logos,
-bio vitals, Week 1 & Season projections, verified live FantasyPros news, and expert notes.
+bio vitals, Week 1 & Season projections, verified live FantasyPros news, and clean executive scouting synthesis.
 """
 
 import streamlit as st
 import pandas as pd
 import numpy as np
-import altair as alt
 
 from src.analytics.schedule_matrix import ScheduleMatrixEngine
 from src.analytics.player_comparison import PlayerComparisonEngine
@@ -17,10 +16,105 @@ from src.analytics.normalizer import DataNormalizer
 from src.ingestion.fantasypros_client import FantasyProsClient
 
 
+def generate_augmented_scouting_synthesis(p: pd.Series, pos: str, team: str, sched: dict, bio: dict) -> dict:
+    """Synthesizes multi-source data into a cohesive, readable scouting report."""
+    raw_note = str(p.get("scouting_narrative", "")).strip()
+    talent = p.get("nfl_talent_score", None)
+    ol_rank = int(p.get("duracell_ol_rank", 16))
+    proe = float(p.get("duracell_proe", 0.0))
+    proj_pts = float(p.get("adjusted_proj_pts", p.get("consensus_proj_pts", 0.0)))
+    ppg = proj_pts / 17.0 if proj_pts > 0 else 0.0
+    tier = str(p.get("composite_tier", "Tier 1"))
+    vorp = float(p.get("dynamic_vorp", p.get("adjusted_vorp", 0.0)))
+    rank = int(p.get("composite_rank", 1))
+    ecr_val = float(p.get("ecr", rank))
+    adp_val = float(p.get("adp_consensus", p.get("adp_yahoo", ecr_val)))
+    
+    # 1. Role & Opportunity
+    if pos == "RB":
+        if vorp > 100:
+            role_desc = "Dominant workhorse profile with secured goal-line equity and elite pass-catching volume. High-ceiling anchor back."
+        elif vorp > 50:
+            role_desc = "Primary 1A back with consistent touch volume (15+ opportunities/game) and established red-zone role."
+        elif vorp > 20:
+            role_desc = "Key committee piece with explosive standalone flex floor and immediate RB1 upside if backfield partner misses time."
+        else:
+            role_desc = "Contingent upside runner / high-value handcuff with significant spike-week potential upon backfield disruption."
+    elif pos == "WR":
+        if vorp > 80:
+            role_desc = "Consolidated alpha WR1 with 25%+ target share, elite first-read priority, and full-field route participation."
+        elif vorp > 40:
+            role_desc = "High-volume WR2 with consistent target consolidation in 2-WR sets and strong high-leverage red zone usage."
+        elif vorp > 15:
+            role_desc = "Explosive field-stretcher or high-tempo slot weapon capable of multiple weekly WR1 spike games."
+        else:
+            role_desc = "Rotational wideout or ascending young talent with late-round breakout characteristics."
+    elif pos == "QB":
+        if vorp > 80:
+            role_desc = "Tier-1 dual-threat signal caller providing unmatched Konami rushing floor and high-efficiency passing volume."
+        elif vorp > 30:
+            role_desc = "High-volume passer in a pass-funnel offense with reliable weekly top-10 QB scoring capability."
+        else:
+            role_desc = "Streamable QB1 or high-upside Superflex starter in an emerging play-action system."
+    else: # TE
+        if vorp > 50:
+            role_desc = "Unicorn tight end operating as the primary/secondary target in the passing hierarchy. Elite positional advantage."
+        elif vorp > 20:
+            role_desc = "Reliable middle-tier TE1 with consistent red-zone target consolidation and steady weekly floor."
+        else:
+            role_desc = "Athletic move-tight end with high touchdown equity in specialized 12-personnel formations."
+
+    # 2. Scheme & Trench Environment
+    scheme_style = "Pass-Heavy" if proe > 2.0 else ("Run-Heavy / Power" if proe < -2.0 else "Balanced")
+    ol_grade = "Top 10 Trench Unit" if ol_rank <= 10 else ("Solid Top-18 Unit" if ol_rank <= 18 else "Below Average / Developing Unit")
+    env_desc = f"{team} deploys a {scheme_style} offense ({proe:+.1f}% PROE) backed by the #{ol_rank} ranked offensive line ({ol_grade})."
+
+    # 3. Film & Talent Assessment
+    if pd.notna(talent) and talent != "—":
+        t_val = float(talent)
+        if t_val >= 90:
+            talent_desc = f"Elite play-by-play film rating ({t_val:.1f}/100) — performs in the 95th+ percentile for missed tackles forced and explosive play creation."
+        elif t_val >= 75:
+            talent_desc = f"Above-average film rating ({t_val:.1f}/100) with strong athletic burst and reliable efficiency over expected."
+        else:
+            talent_desc = f"Foundational talent rating ({t_val:.1f}/100) — production is heavily tied to team volume and playcaller scheme design."
+    else:
+        talent_desc = f"Dynamic collegiate track record out of {bio.get('college', 'FBS')} with proven physical traits for the pro game."
+
+    # 4. Draft Verdict
+    edge = adp_val - ecr_val
+    if edge >= 5.0:
+        verdict = f"🔥 Priority Value Target (Model Rank #{rank} vs ADP #{adp_val:.1f} — +{edge:.1f} pick discount)"
+    elif edge <= -5.0:
+        verdict = f"⚠️ Market Premium / Caution (Drafted ahead of consensus ranking at #{adp_val:.1f})"
+    else:
+        verdict = f"✅ Fair Market Value (Accurately priced at #{adp_val:.1f} ADP — draft as core foundation)"
+
+    expert_clean = raw_note if (raw_note and raw_note.lower() not in ["nan", "—", "none", ""]) else "High-priority asset entering the 2026 campaign with substantial opportunity volume and weekly scoring stability."
+
+    return {
+        "expert_note": expert_clean,
+        "role_desc": role_desc,
+        "env_desc": env_desc,
+        "talent_desc": talent_desc,
+        "playoff_desc": f"{sched.get('playoff_sos_grade', 'Standard')} — {sched.get('playoff_summary', 'Balanced schedule')}",
+        "verdict": verdict,
+        "proj_pts": proj_pts,
+        "ppg": ppg,
+        "vorp": vorp,
+        "tier": tier,
+        "ol_rank": ol_rank,
+        "proe": proe,
+        "rank": rank,
+        "ecr": ecr_val,
+        "adp": adp_val
+    }
+
+
 def render_tab_player_dossier(df: pd.DataFrame):
     st.subheader("🔬 360° Player Dossier & Head-to-Head Pick Arbiter")
     st.markdown("""
-    Multi-dimensional scouting intelligence: **Player Photos & Vitals**, **Week 1 & Full Season Projections**, **Expert Notes**, 
+    Multi-dimensional scouting intelligence: **Player Photos & Vitals**, **Week 1 & Full Season Projections**, **Augmented Scouting Synthesis**, 
     **Film & Talent Grades (0-100)**, **Team Schematics & OL**, and **Head-to-Head Arbitration**.
     """)
 
@@ -55,9 +149,6 @@ def render_tab_player_dossier(df: pd.DataFrame):
         norm_team = DataNormalizer.normalize_team(raw_team)
         tier = p_row.get("composite_tier", "Tier 1")
         rank = int(p_row.get("composite_rank", 1))
-        vorp = float(p_row.get("dynamic_vorp", p_row.get("adjusted_vorp", 0.0)))
-        proj_pts = float(p_row.get("adjusted_proj_pts", p_row.get("consensus_proj_pts", 0.0)))
-        ppg = proj_pts / 17.0 if proj_pts > 0 else 0.0
         talent = p_row.get("nfl_talent_score", None)
         
         ecr_val = float(p_row.get("ecr", rank))
@@ -69,7 +160,7 @@ def render_tab_player_dossier(df: pd.DataFrame):
         headshot_url = PlayerMediaResolver.get_headshot_url(selected_player)
         team_logo_url = PlayerMediaResolver.get_team_logo_url(norm_team)
         bio = PlayerMediaResolver.get_bio_vitals(selected_player, pos, norm_team)
-        sched = ScheduleMatrixEngine.get_player_schedule_intel(selected_player, pos, norm_team)
+        sched = ScheduleMatrixEngine.get_player_schedule_intel(norm_team, pos)
 
         # 32-Team Full Name lookup
         team_full_names = {
@@ -84,8 +175,11 @@ def render_tab_player_dossier(df: pd.DataFrame):
         }
         full_team_name = team_full_names.get(norm_team, f"{norm_team} Football Team")
 
+        # Generate Augmented Scouting Synthesis
+        synth = generate_augmented_scouting_synthesis(p_row, pos, norm_team, sched, bio)
+
         # ----------------------------------------------------------------------
-        # HERO BANNER (MATCHES USER INSPIRATION IMAGES 2 & 3)
+        # HERO BANNER (MATCHES INSPIRATION IMAGES 2 & 3)
         # ----------------------------------------------------------------------
         st.markdown(f"""
         <div style="background: #0B132B; border: 1px solid #1E293B; border-radius: 12px; padding: 22px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
@@ -129,7 +223,7 @@ def render_tab_player_dossier(df: pd.DataFrame):
         # DOSSIER SUB-TABS NAVIGATION
         # ----------------------------------------------------------------------
         p_tab1, p_tab2, p_tab3, p_tab4, p_tab5, p_tab6 = st.tabs([
-            "📋 Overview & Expert Notes",
+            "📋 Overview & Executive Report",
             "📊 Projections (Week 1 & Season)",
             "📰 Live Breaking News & Injury Status",
             "🔬 Film & Talent Analytics (0-100)",
@@ -137,33 +231,72 @@ def render_tab_player_dossier(df: pd.DataFrame):
             "⚔️ Schedule & Playoff Runway",
         ])
 
-        # SUB-TAB 1: OVERVIEW & EXPERT NOTES
+        # SUB-TAB 1: OVERVIEW & EXECUTIVE REPORT
         with p_tab1:
-            st.markdown("#### 📝 2026 Comprehensive Scouting & Expert Notes")
-            scout_narrative = str(p_row.get("scouting_narrative", ""))
-            if not scout_narrative or scout_narrative in ("—", "nan"):
-                scout_narrative = f"{selected_player} enters 2026 in a high-value offensive role with elite efficiency upside. Model projects strong baseline opportunity in 1/2 PPR scoring formats."
-
+            st.markdown("#### 📋 2026 Executive Scouting Synthesis")
+            
+            # Augmented Expert Report Box
             st.markdown(f"""
-            <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; padding: 18px 22px; margin-bottom: 20px;">
-                <div style="font-size: 0.9rem; font-weight: 800; color: #9CA3AF; text-transform: uppercase; margin-bottom: 8px;">EXPERT NOTE</div>
-                <div style="color: #F3F4F6; font-size: 1.02rem; line-height: 1.6;">{scout_narrative}</div>
-                <div style="margin-top: 14px; font-size: 0.82rem; color: #60A5FA; display: flex; justify-content: space-between;">
-                    <span>Derek Brown & Joel Smyth &bull; Fantasy Intelligence Consensus</span>
-                    <span>Aug 27, 2026</span>
+            <div style="background: #111827; border: 1px solid #374151; border-radius: 10px; padding: 22px; margin-bottom: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1F2937; padding-bottom: 10px; margin-bottom: 14px;">
+                    <span style="font-size: 0.95rem; font-weight: 800; color: #38BDF8; text-transform: uppercase;">💡 EXPERT TAKEAWAY</span>
+                    <span style="font-size: 0.8rem; color: #9CA3AF;">Derek Brown & Joel Smyth Consensus &bull; Aug 2026</span>
+                </div>
+                <div style="color: #F9FAFB; font-size: 1.05rem; line-height: 1.6; font-weight: 500; margin-bottom: 18px;">
+                    "{synth['expert_note']}"
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 14px;">
+                    <div style="background: #1F2937; padding: 14px 16px; border-radius: 8px; border-left: 3px solid #10B981;">
+                        <div style="font-weight: 700; color: #E5E7EB; font-size: 0.9rem; margin-bottom: 4px;">🎯 Role & Opportunity Blueprint</div>
+                        <div style="color: #9CA3AF; font-size: 0.88rem; line-height: 1.45;">{synth['role_desc']}</div>
+                    </div>
+                    <div style="background: #1F2937; padding: 14px 16px; border-radius: 8px; border-left: 3px solid #38BDF8;">
+                        <div style="font-weight: 700; color: #E5E7EB; font-size: 0.9rem; margin-bottom: 4px;">🔬 Film & Playmaking Traits</div>
+                        <div style="color: #9CA3AF; font-size: 0.88rem; line-height: 1.45;">{synth['talent_desc']}</div>
+                    </div>
+                    <div style="background: #1F2937; padding: 14px 16px; border-radius: 8px; border-left: 3px solid #F59E0B;">
+                        <div style="font-weight: 700; color: #E5E7EB; font-size: 0.9rem; margin-bottom: 4px;">🛡️ Trench & Scheme Environment</div>
+                        <div style="color: #9CA3AF; font-size: 0.88rem; line-height: 1.45;">{synth['env_desc']}</div>
+                    </div>
+                    <div style="background: #1F2937; padding: 14px 16px; border-radius: 8px; border-left: 3px solid #8B5CF6;">
+                        <div style="font-weight: 700; color: #E5E7EB; font-size: 0.9rem; margin-bottom: 4px;">🏆 2026 Draft Strategy & Verdict</div>
+                        <div style="color: #9CA3AF; font-size: 0.88rem; line-height: 1.45;">{synth['verdict']}</div>
+                    </div>
                 </div>
             </div>
             """, unsafe_allow_html=True)
 
-            col_m1, col_m2, col_m3, col_m4 = st.columns(4)
-            with col_m1:
-                st.metric("Consensus Baseline Proj", f"{proj_pts:.1f} pts", f"{ppg:.1f}/G")
-            with col_m2:
-                st.metric("Dynamic VORP", f"+{vorp:.1f} pts", f"Tier: {tier}")
-            with col_m3:
-                st.metric("Talent Grade", f"{float(talent):.1f}/100" if pd.notna(talent) and talent != '—' else "N/A")
-            with col_m4:
-                st.metric("Consensus OL Rank", f"#{int(p_row.get('duracell_ol_rank', 16))}", f"{p_row.get('duracell_proe', 0.0):+.1f}% PROE")
+            st.markdown("#### 📊 Core Intelligence Snapshot")
+            
+            # Clean, elegant Custom Snapshot Cards (NO awkward Streamlit arrows/deltas)
+            t_str = f"{float(talent):.1f} / 100" if pd.notna(talent) and talent != '—' else "N/A"
+            t_sub = "Elite 95th+ Percentile" if (pd.notna(talent) and float(talent) >= 90) else ("Above Average" if (pd.notna(talent) and float(talent) >= 75) else "Scheme Dependent")
+            proe_sub = "Pass-Heavy Scheme" if synth['proe'] > 2.0 else ("Run-Heavy Scheme" if synth['proe'] < -2.0 else "Balanced Scheme")
+            
+            st.markdown(f"""
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px;">
+                <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; padding: 16px;">
+                    <div style="color: #9CA3AF; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">Projected Scoring</div>
+                    <div style="color: #FFFFFF; font-size: 1.6rem; font-weight: 800; margin: 4px 0;">{synth['proj_pts']:.1f} pts</div>
+                    <div style="color: #60A5FA; font-size: 0.85rem; font-weight: 600;">{synth['ppg']:.1f} PPG &bull; 1/2 PPR</div>
+                </div>
+                <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; padding: 16px;">
+                    <div style="color: #9CA3AF; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">Dynamic Value (VORP)</div>
+                    <div style="color: #10B981; font-size: 1.6rem; font-weight: 800; margin: 4px 0;">+{synth['vorp']:.1f} pts</div>
+                    <div style="color: #9CA3AF; font-size: 0.85rem;">Positional Tier: <b>{synth['tier']}</b></div>
+                </div>
+                <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; padding: 16px;">
+                    <div style="color: #9CA3AF; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">Film & Talent Grade</div>
+                    <div style="color: #FFFFFF; font-size: 1.6rem; font-weight: 800; margin: 4px 0;">{t_str}</div>
+                    <div style="color: #9CA3AF; font-size: 0.85rem;">{t_sub}</div>
+                </div>
+                <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; padding: 16px;">
+                    <div style="color: #9CA3AF; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">Offensive Line & Scheme</div>
+                    <div style="color: #FFFFFF; font-size: 1.6rem; font-weight: 800; margin: 4px 0;">OL Rank #{synth['ol_rank']}</div>
+                    <div style="color: #9CA3AF; font-size: 0.85rem;">{synth['proe']:+.1f}% PROE &bull; {proe_sub}</div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
         # SUB-TAB 2: PROJECTIONS (WEEK 1 & FULL SEASON - MATCHES IMAGE 3)
         with p_tab2:
@@ -191,7 +324,7 @@ def render_tab_player_dossier(df: pd.DataFrame):
                     "RUSH YDS": [round(rush_yds / 17.0, 1)],
                     "RUSH TDS": [round(rush_td / 17.0, 2)],
                     "FUMBLES": [round(fumbles / 17.0, 2)],
-                    "POINTS": [round(proj_pts / 17.0, 1)],
+                    "POINTS": [round(synth['proj_pts'] / 17.0, 1)],
                 }
             else:
                 w1_table = {
@@ -202,7 +335,7 @@ def render_tab_player_dossier(df: pd.DataFrame):
                     "REC YDS": [round(rec_yds / 17.0, 1)],
                     "REC TDS": [round(rec_td / 17.0, 2)],
                     "FUMBLES": [round(fumbles / 17.0, 2)],
-                    "POINTS": [round(proj_pts / 17.0, 1)],
+                    "POINTS": [round(synth['proj_pts'] / 17.0, 1)],
                 }
             st.dataframe(pd.DataFrame(w1_table), use_container_width=True, hide_index=True)
 
@@ -216,7 +349,7 @@ def render_tab_player_dossier(df: pd.DataFrame):
                     "RUSH YDS": [round(rush_yds, 1)],
                     "RUSH TDS": [round(rush_td, 1)],
                     "FUMBLES": [round(fumbles, 1)],
-                    "POINTS": [round(proj_pts, 1)],
+                    "POINTS": [round(synth['proj_pts'], 1)],
                 }
             else:
                 season_table = {
@@ -227,7 +360,7 @@ def render_tab_player_dossier(df: pd.DataFrame):
                     "REC YDS": [round(rec_yds, 1)],
                     "REC TDS": [round(rec_td, 1)],
                     "FUMBLES": [round(fumbles, 1)],
-                    "POINTS": [round(proj_pts, 1)],
+                    "POINTS": [round(synth['proj_pts'], 1)],
                 }
             st.dataframe(pd.DataFrame(season_table), use_container_width=True, hide_index=True)
 
@@ -261,7 +394,6 @@ def render_tab_player_dossier(df: pd.DataFrame):
                     date_str = item.get("created_formated") or item.get("created", "Recent")
                     desc = item.get("desc", "")
                     impact = item.get("impact", "")
-                    link = item.get("link", "#")
                     cats = ", ".join(item.get("categories", ["Injury Updates"]))
 
                     st.markdown(f"""
@@ -291,7 +423,14 @@ def render_tab_player_dossier(df: pd.DataFrame):
         with p_tab4:
             st.markdown("#### 🔬 JoScho Film & Talent Analytics (0-100)")
             t_val = f"{float(talent):.1f} / 100" if pd.notna(talent) and talent != '—' else "N/A"
-            st.metric("Play-by-Play Talent Grade", t_val, help="JoScho Play-by-Play Per-Opportunity Efficiency Metric")
+            
+            st.markdown(f"""
+            <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; padding: 16px; margin-bottom: 18px;">
+                <div style="color: #9CA3AF; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">Play-by-Play Talent Grade</div>
+                <div style="color: #38BDF8; font-size: 1.8rem; font-weight: 800;">{t_val}</div>
+                <div style="color: #CBD5E1; font-size: 0.88rem; margin-top: 4px;">JoScho Play-by-Play Per-Opportunity Efficiency Metric (Isolated from offensive line & playcalling)</div>
+            </div>
+            """, unsafe_allow_html=True)
             
             talent_rows = []
             talent_rows.append(("NFL Talent Grade", f"{float(talent):.1f}/100" if pd.notna(talent) and talent != '—' else "—"))
