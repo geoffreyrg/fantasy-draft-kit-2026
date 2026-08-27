@@ -77,32 +77,28 @@ def get_designation_emoji(r) -> str:
     return "●"
 
 from src.analytics.schedule_matrix import ScheduleMatrixEngine, TEAM_ALIASES
+from src.analytics.scheme_matrix import SchemeEcosystemEngine
 
 def compute_tactical_edge(r) -> str:
-    """Computes punchy, comprehensive position-specific contextual intelligence with full season SOS, playoff SOS grades, and matchup intel for fast draft decisions."""
+    """Computes punchy, comprehensive position-specific contextual intelligence with coaching tree lineage, full season SOS, and playoff SOS grades for fast draft decisions."""
     pos = str(r.get("position", "")).strip().upper()
     raw_tm = str(r.get("team", "")).strip().upper()
     tm = TEAM_ALIASES.get(raw_tm, raw_tm)
     ol = r.get("duracell_ol_rank", 16)
     twowr = r.get("two_wr_set_pct", 35.0)
-    coach = r.get("playcaller", "") or r.get("duracell_coach", "")
     gold = str(r.get("smyth_gold_mine", "")).strip()
     exodia = r.get("is_exodia", 0)
-    is_top_eco = (tm in TOP_10_TEAMS) or (raw_tm in TOP_10_TEAMS) or (r.get("is_top_offense_undervalued", 0) == 1)
     cat = r.get("has_breakout_catalyst", 0)
     contract = r.get("is_contract_year", 0)
     luck_lost = r.get("luck_points_lost", 0.0)
     
     parts = []
     
-    # 1. Macro Ecosystem & Playcaller
-    if is_top_eco:
-        if coach and coach != "—" and str(coach) != "nan":
-            parts.append(f"⭐ Top-10 Eco ({coach})")
-        else:
-            parts.append("⭐ Top-10 Eco")
-    elif coach and coach != "—" and str(coach) != "nan":
-        parts.append(f"Scheme: {coach}")
+    # 1. High-Value Scheme Lineage & Coaching Tree Architecture
+    sch_intel = SchemeEcosystemEngine.get_scheme_intel(tm)
+    tree_lbl = sch_intel.get("tree_label", "")
+    if tree_lbl and tree_lbl != "—":
+        parts.append(tree_lbl)
         
     # 2. Offensive Line Rank
     if pd.notna(ol):
