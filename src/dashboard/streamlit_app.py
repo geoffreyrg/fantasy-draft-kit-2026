@@ -24,13 +24,27 @@ from config.settings import settings
 from src.analytics.pipeline import AnalyticsPipeline
 from src.dashboard.sheets_sync import GoogleSheetsSync
 
-# Force reload of UI and Tab modules
+# Force reload of Engine, UI and Tab modules
+import src.engine.draft_state as e_state
+import src.engine.dynamic_vorp as e_dvorp
+import src.engine.survival_model as e_surv
+import src.engine.correlation_engine as e_corr
+import src.engine.recommendation_engine as e_rec
+import src.engine.auction_engine as e_auc
+
 import src.dashboard.ui_components as ui_comp
 import src.dashboard.tabs.tab_live_draft as t_live
 import src.dashboard.tabs.tab_master_board as t_board
 import src.dashboard.tabs.tab_player_dossier as t_dossier
 import src.dashboard.tabs.tab_arbitrage_market as t_arb
 import src.dashboard.tabs.tab_team_schematics as t_schem
+
+importlib.reload(e_state)
+importlib.reload(e_dvorp)
+importlib.reload(e_surv)
+importlib.reload(e_corr)
+importlib.reload(e_rec)
+importlib.reload(e_auc)
 
 importlib.reload(ui_comp)
 importlib.reload(t_live)
@@ -220,7 +234,7 @@ with kpi5:
     rookie_cnt = int(df["is_rookie"].sum()) if "is_rookie" in df.columns else 0
     st.metric("🎓 2026 Rookie Class", f"{rookie_cnt} Rookies", "ML Hit Prob Model")
 with kpi6:
-    target_count = len(df[df["smyth_color_tag"] == "TARGET"]) if "smyth_color_tag" in df.columns else 0
+    target_count = len(df[df["smyth_color_tag"].str.contains("Target|Green", case=False, na=False)]) if "smyth_color_tag" in df.columns else 0
     st.metric("🎯 Smyth Green Targets", f"{target_count} Players", "+12.0 Upside Model")
 
 # ==============================================================================

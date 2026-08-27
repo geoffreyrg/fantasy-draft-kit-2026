@@ -54,7 +54,10 @@ def render_tab_live_draft(df: pd.DataFrame):
 
     # Positional Run / Velocity Check
     recent_picks = state.get("history", [])
-    run_velocities = DynamicVORPEngine.calculate_positional_run_velocity(recent_picks, window_size=5)
+    if hasattr(DynamicVORPEngine, "calculate_positional_run_velocity"):
+        run_velocities = DynamicVORPEngine.calculate_positional_run_velocity(recent_picks, window_size=5)
+    else:
+        run_velocities = {}
     active_runs = [v["tag"] for k, v in run_velocities.items() if v.get("is_run")]
     if active_runs:
         run_alert_txt = " • ".join(active_runs)
