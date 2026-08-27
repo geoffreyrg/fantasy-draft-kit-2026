@@ -271,6 +271,7 @@ def render_tab_player_dossier(df: pd.DataFrame):
                         f"Pass Protection OL Rank #{int(p_row.get('duracell_ol_rank', 16))}",
                         f"Implements {p_row.get('duracell_proe', 0.0):+.1f}% PROE system"
                     ]
+                }
             else:
                 matchup_intel = {
                     "Matchup Dimension": ["Defensive Front Assessment", "Playoff Environment"],
