@@ -279,31 +279,35 @@ def render_tab_player_dossier(df: pd.DataFrame):
         - 💎 **Market Arbitrage & Platform ADP Discount**
         """)
 
+        all_players = df.sort_values("composite_rank")["player_name"].tolist()
+
+        # Initialize session state for comparison if not set or empty
+        if "h2h_compare_multiselect" not in st.session_state or not st.session_state["h2h_compare_multiselect"]:
+            st.session_state["h2h_compare_multiselect"] = ["Jahmyr Gibbs", "Bijan Robinson"]
+
         # Quick Preset Buttons
         st.markdown("#### ⚡ Quick Showdown Presets:")
         preset_cols = st.columns(4)
-        preset_choice = None
         with preset_cols[0]:
-            if st.button("🏃 Tier 1 Hero RBs", use_container_width=True):
-                preset_choice = ["Jahmyr Gibbs", "Bijan Robinson", "Saquon Barkley"]
+            if st.button("🏃 Tier 1 Hero RBs", key="btn_preset_rbs", use_container_width=True):
+                st.session_state["h2h_compare_multiselect"] = ["Jahmyr Gibbs", "Bijan Robinson", "Saquon Barkley"]
+                st.rerun()
         with preset_cols[1]:
-            if st.button("⚡ Alpha WR1 Showdown", use_container_width=True):
-                preset_choice = ["Ja'Marr Chase", "Justin Jefferson", "CeeDee Lamb", "Puka Nacua"]
+            if st.button("⚡ Alpha WR1 Showdown", key="btn_preset_wrs", use_container_width=True):
+                st.session_state["h2h_compare_multiselect"] = ["Ja'Marr Chase", "Justin Jefferson", "CeeDee Lamb", "Puka Nacua"]
+                st.rerun()
         with preset_cols[2]:
-            if st.button("🛡️ Elite TE Tier 1 Duel", use_container_width=True):
-                preset_choice = ["Brock Bowers", "Trey McBride", "George Kittle"]
+            if st.button("🛡️ Elite TE Tier 1 Duel", key="btn_preset_tes", use_container_width=True):
+                st.session_state["h2h_compare_multiselect"] = ["Brock Bowers", "Trey McBride", "George Kittle"]
+                st.rerun()
         with preset_cols[3]:
-            if st.button("🎯 Top QB1 Arbitrage", use_container_width=True):
-                preset_choice = ["Josh Allen", "Lamar Jackson", "Jalen Hurts"]
-
-        all_players = df.sort_values("composite_rank")["player_name"].tolist()
-        default_selection = preset_choice if preset_choice else ["Jahmyr Gibbs", "Bijan Robinson"]
-        default_valid = [p for p in default_selection if p in all_players]
+            if st.button("🎯 Top QB1 Arbitrage", key="btn_preset_qbs", use_container_width=True):
+                st.session_state["h2h_compare_multiselect"] = ["Josh Allen", "Lamar Jackson", "Jalen Hurts"]
+                st.rerun()
 
         selected_compare_players = st.multiselect(
             "Select 2 to 4 Players to Compare:",
             options=all_players,
-            default=default_valid,
             max_selections=4,
             key="h2h_compare_multiselect"
         )
