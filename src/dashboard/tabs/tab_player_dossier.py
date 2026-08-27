@@ -1,134 +1,364 @@
 """
-Tab 3: 🔬 360° Player Scouting Dossier
-Comprehensive multi-dimensional intelligence card for any selected player.
+Tab 3: 🔬 360° Player Scouting Dossier & Head-to-Head Pick Arbiter
+Comprehensive multi-dimensional intelligence card for any player, including:
+- JoScho Film & Talent Analytics (0-100)
+- Joel Smyth Volume, Gold Mine & Luck Metrics
+- Duracell Offensive Ecosystem, PROE & OL Ratings
+- 2026 Strength of Schedule, Shadow CBs & Weeks 15-17 Playoff Runway
+- Interactive Head-to-Head Comparison (2-4 Players) with AI Pick Recommendation
 """
 
 import streamlit as st
 import pandas as pd
 import numpy as np
+import altair as alt
+
+from src.analytics.schedule_matrix import ScheduleMatrixEngine
+from src.analytics.player_comparison import PlayerComparisonEngine
+from src.dashboard.ui_components import get_designation_emoji
 
 def render_tab_player_dossier(df: pd.DataFrame):
-    st.subheader("🔬 360° Player Scouting Dossier")
-    st.markdown("Search and select ANY player to inspect their complete cross-source quantitative and scouting profile.")
+    st.subheader("🔬 360° Player Dossier & Head-to-Head Pick Arbiter")
+    st.markdown("""
+    Multi-dimensional scouting intelligence: **Talent Grades (0-100)**, **Volume & Gold Mines**, **Ecosystems & OL**, 
+    **Strength of Schedule & Shadow CBs**, and **Head-to-Head Player Pick Arbitration**.
+    """)
 
-    # Player Selection Bar
-    player_list = df.sort_values("composite_rank")["player_name"].tolist()
-    
-    col_sel1, col_sel2 = st.columns([3, 1])
-    with col_sel1:
-        selected_player = st.selectbox("Select Player to Inspect:", player_list, index=0, key="dossier_player_sel")
-    with col_sel2:
-        quick_find = st.text_input("🔍 Filter Player List", "", key="dossier_filter_txt")
-        if quick_find:
-            matched = [p for p in player_list if quick_find.lower() in p.lower()]
-            if matched:
-                selected_player = matched[0]
-
-    p_row = df[df["player_name"] == selected_player].iloc[0]
-
-    # Header Card
-    pos = p_row.get("position", "")
-    team = p_row.get("team", "")
-    tier = p_row.get("composite_tier", "Tier 1")
-    rank = int(p_row.get("composite_rank", 1))
-    vorp = float(p_row.get("adjusted_vorp", 0.0))
-    proj_pts = float(p_row.get("adjusted_proj_pts", 0.0))
-    talent = p_row.get("nfl_talent_score", None)
-    yahoo_adp = p_row.get("adp_yahoo", None)
-    yahoo_edge = p_row.get("adp_delta_yahoo", 0.0)
-
-    st.markdown(f"""
-    <div style="background: #F1F5F9; border-left: 6px solid #1E3A8A; padding: 18px 24px; border-radius: 8px; margin-bottom: 20px;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div>
-                <h2 style="margin: 0; color: #1E3A8A; font-size: 1.8rem; font-weight: 800;">{selected_player} <span style="font-size: 1.1rem; color: #4B5563; font-weight: 600;">({pos} • {team})</span></h2>
-                <div style="margin-top: 6px; font-size: 0.95rem; color: #374151;">
-                    <b>Model Rank:</b> #{rank} &nbsp;|&nbsp; <b>Tier:</b> {tier} &nbsp;|&nbsp; <b>Calibrated VORP:</b> +{vorp:.1f} pts &nbsp;|&nbsp; <b>Calibrated Proj:</b> {proj_pts:.1f} pts
-                </div>
-            </div>
-            <div style="text-align: right;">
-                <div style="font-size: 1.1rem; font-weight: 800; color: {'#059669' if yahoo_edge >= 0 else '#DC2626'};">
-                    Yahoo ADP: {f'{yahoo_adp:.1f}' if pd.notna(yahoo_adp) else '—'} ({f'{yahoo_edge:+.1f} Edge' if pd.notna(yahoo_edge) else '—'})
-                </div>
-                <div style="font-size: 0.85rem; color: #6B7280;">12-Team 1/2 PPR Value</div>
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # 4 Detailed Pillar Cards
-    card1, card2 = st.columns(2)
-
-    with card1:
-        st.markdown("#### 🔬 JoScho Film & Talent Analytics (0-100)")
-        t_val = f"{talent:.1f} / 100" if pd.notna(talent) else "N/A"
-        st.metric("Play-by-Play Talent Grade", t_val, help="JoScho Play-by-Play Per-Opportunity Efficiency Metric")
-        
-        talent_metrics = {
-            "Metric / Skill Facet": ["NFL Talent Grade", "Target Separation Z-Score", "Contested Catch Rate Z", "YAC Over Expected Z", "Missed Tackles Forced (MTF)", "Dominator %", "Rookie ML Hit Prob"],
-            "Player Value": [
-                f"{talent:.1f}" if pd.notna(talent) else "—",
-                f"{p_row.get('z_avg_separation'):+.2f}" if pd.notna(p_row.get('z_avg_separation')) else "—",
-                f"{p_row.get('z_contested_catch_rate'):+.2f}" if pd.notna(p_row.get('z_contested_catch_rate')) else "—",
-                f"{p_row.get('z_YAC_over_expected'):+.2f}" if pd.notna(p_row.get('z_YAC_over_expected')) else "—",
-                f"{p_row.get('z_MTF_rush'):+.2f}" if pd.notna(p_row.get('z_MTF_rush')) else "—",
-                f"{p_row.get('rookie_dominator_pct'):.1f}%" if pd.notna(p_row.get('rookie_dominator_pct')) else "—",
-                f"{p_row.get('rookie_hit_prob') * 100:.1f}%" if pd.notna(p_row.get('rookie_hit_prob')) else "—",
-            ]
-        }
-        st.dataframe(pd.DataFrame(talent_metrics), use_container_width=True, hide_index=True)
-
-    with card2:
-        st.markdown("#### 📈 Joel Smyth Volume & Role Matrix")
-        s_tag = p_row.get("smyth_color_tag", "Neutral")
-        s_gold = p_row.get("smyth_gold_mine", "—")
-        st.metric("Joel Smyth Draft Tag", s_tag, f"Gold Mine: {s_gold}")
-
-        smyth_metrics = {
-            "Dimension": ["Smyth Big Board Tag", "RB Gold Mine Tier", "Smyth Adjusted PPG", "Smyth Overall Rank", "2025 Luck Lost", "2025 Luck Gained"],
-            "Details": [
-                s_tag,
-                s_gold,
-                f"{p_row.get('adj_ppg_25'):.1f} PPG" if pd.notna(p_row.get('adj_ppg_25')) else "—",
-                f"#{int(p_row.get('smyth_ecr'))}" if pd.notna(p_row.get('smyth_ecr')) else "—",
-                f"{p_row.get('luck_points_lost', 0):.1f} pts" if p_row.get('luck_points_lost', 0) > 0 else "0.0",
-                f"{p_row.get('luck_points_gained', 0):.1f} pts" if p_row.get('luck_points_gained', 0) > 0 else "0.0",
-            ]
-        }
-        st.dataframe(pd.DataFrame(smyth_metrics), use_container_width=True, hide_index=True)
+    view_mode = st.radio("Select Dossier View Mode:", [
+        "🔍 360° Individual Player Dossier",
+        "⚔️ Head-to-Head Player Comparison & Pick Arbiter (2-4 Players)"
+    ], horizontal=True, key="dossier_view_mode_select")
 
     st.markdown("---")
-    card3, card4 = st.columns(2)
 
-    with card3:
-        st.markdown("#### 🛡️ Team Ecosystem & Duracell Schematics")
-        eco_metrics = {
-            "Ecosystem Factor": ["Consensus OL Rank", "2-WR Personnel Set %", "Playcaller PROE %", "Contract Year", "Injury Status"],
-            "Metric": [
-                f"#{int(p_row.get('duracell_ol_rank', 16))}",
-                f"{p_row.get('two_wr_set_pct', 35.0):.1f}%",
-                f"{p_row.get('duracell_proe', 0.0):+.1f}%",
-                "✅ YES (Contract Year Incentive)" if p_row.get("is_contract_year") == 1 else "No",
-                p_row.get("injury_status", "Healthy")
-            ]
-        }
-        st.dataframe(pd.DataFrame(eco_metrics), use_container_width=True, hide_index=True)
-
-    with card4:
-        st.markdown("#### 💥 Expert Consensus & Qualitative Badges")
+    # ==========================================================================
+    # VIEW 1: 360° INDIVIDUAL PLAYER DOSSIER
+    # ==========================================================================
+    if view_mode == "🔍 360° Individual Player Dossier":
+        # Player Selection Bar
+        player_list = df.sort_values("composite_rank")["player_name"].tolist()
         
-        badges = []
-        if p_row.get("is_exodia") == 1: badges.append("💥 EXODIA LEAGUE-WINNER (Scott Barrett)")
-        if p_row.get("has_breakout_catalyst") == 1: badges.append(f"🔥 BREAKOUT CATALYST: {p_row.get('breakout_catalyst')}")
-        if p_row.get("is_top_offense_undervalued") == 1: badges.append(f"⭐ TOP 10 OFFENSE ASSET: {p_row.get('top_offense_note')}")
-        if pd.notna(p_row.get("hansen_top200_rank")): badges.append(f"👑 JOHN HANSEN TOP 200: #{int(p_row.get('hansen_top200_rank'))}")
-        if p_row.get("master_designation") != "—": badges.append(f"📋 CHEAT SHEET: {p_row.get('master_designation')}")
+        col_sel1, col_sel2 = st.columns([3, 1])
+        with col_sel1:
+            selected_player = st.selectbox("Select Player to Inspect:", player_list, index=0, key="dossier_player_sel")
+        with col_sel2:
+            quick_find = st.text_input("🔍 Filter Player List", "", key="dossier_filter_txt")
+            if quick_find:
+                matched = [p for p in player_list if quick_find.lower() in p.lower()]
+                if matched:
+                    selected_player = matched[0]
 
-        if badges:
-            for b in badges:
-                st.markdown(f"- **{b}**")
-        else:
-            st.info("No qualitative flags or warnings for this player.")
+        p_row = df[df["player_name"] == selected_player].iloc[0]
 
-        if pd.notna(p_row.get("scouting_narrative")) and p_row.get("scouting_narrative") != "—":
-            st.markdown(f"**Detailed Scouting Narrative:** *{p_row.get('scouting_narrative')}*")
+        # Header Card
+        pos = str(p_row.get("position", "")).upper()
+        team = str(p_row.get("team", "")).upper()
+        tier = p_row.get("composite_tier", "Tier 1")
+        rank = int(p_row.get("composite_rank", 1))
+        vorp = float(p_row.get("dynamic_vorp", p_row.get("adjusted_vorp", 0.0)))
+        proj_pts = float(p_row.get("adjusted_proj_pts", p_row.get("consensus_proj_pts", 0.0)))
+        ppg = proj_pts / 17.0 if proj_pts > 0 else 0.0
+        talent = p_row.get("nfl_talent_score", None)
+        yahoo_adp = p_row.get("adp_yahoo", None)
+        yahoo_edge = p_row.get("adp_delta_yahoo", 0.0)
+        emoji = get_designation_emoji(p_row)
+
+        st.markdown(f"""
+        <div style="background: #F1F5F9; border-left: 6px solid #1E3A8A; padding: 18px 24px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h2 style="margin: 0; color: #1E3A8A; font-size: 1.8rem; font-weight: 800;">{emoji} {selected_player} <span style="font-size: 1.1rem; color: #4B5563; font-weight: 600;">({pos} • {team})</span></h2>
+                    <div style="margin-top: 6px; font-size: 0.95rem; color: #374151;">
+                        <b>Model Rank:</b> #{rank} &nbsp;|&nbsp; <b>Tier:</b> {tier} &nbsp;|&nbsp; 
+                        <b>DynVORP:</b> <span style="color: #059669; font-weight: 700;">+{vorp:.1f} pts</span> &nbsp;|&nbsp; 
+                        <b>Projection:</b> 📊 <b>{proj_pts:.1f} pts</b> <span style="color: #64748B;">({ppg:.1f}/G)</span>
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 1.15rem; font-weight: 800; color: {'#059669' if yahoo_edge >= 0 else '#DC2626'};">
+                        Yahoo ADP: #{f'{yahoo_adp:.1f}' if pd.notna(yahoo_adp) else '—'} ({f'{yahoo_edge:+.1f} Edge' if pd.notna(yahoo_edge) else '0.0'})
+                    </div>
+                    <div style="font-size: 0.85rem; color: #6B7280; font-weight: 600;">12-Team 1/2 PPR Value</div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # 4 Detailed Pillar Cards
+        card1, card2 = st.columns(2)
+
+        with card1:
+            st.markdown("#### 🔬 JoScho Film & Talent Analytics (0-100)")
+            t_val = f"{talent:.1f} / 100" if pd.notna(talent) else "N/A"
+            st.metric("Play-by-Play Talent Grade", t_val, help="JoScho Play-by-Play Per-Opportunity Efficiency Metric")
+            
+            talent_metrics = {
+                "Metric / Skill Facet": ["NFL Talent Grade", "Target Separation Z-Score", "Contested Catch Rate Z", "YAC Over Expected Z", "Missed Tackles Forced (MTF)", "Dominator %", "Rookie ML Hit Prob"],
+                "Player Value": [
+                    f"{talent:.1f}" if pd.notna(talent) else "—",
+                    f"{p_row.get('z_avg_separation'):+.2f}" if pd.notna(p_row.get('z_avg_separation')) else "—",
+                    f"{p_row.get('z_contested_catch_rate'):+.2f}" if pd.notna(p_row.get('z_contested_catch_rate')) else "—",
+                    f"{p_row.get('z_YAC_over_expected'):+.2f}" if pd.notna(p_row.get('z_YAC_over_expected')) else "—",
+                    f"{p_row.get('z_MTF_rush'):+.2f}" if pd.notna(p_row.get('z_MTF_rush')) else "—",
+                    f"{p_row.get('rookie_dominator_pct'):.1f}%" if pd.notna(p_row.get('rookie_dominator_pct')) else "—",
+                    f"{p_row.get('rookie_hit_prob') * 100:.1f}%" if pd.notna(p_row.get('rookie_hit_prob')) else "—",
+                ]
+            }
+            st.dataframe(pd.DataFrame(talent_metrics), use_container_width=True, hide_index=True)
+
+        with card2:
+            st.markdown("#### 📈 Joel Smyth Volume & Role Matrix")
+            s_tag = p_row.get("smyth_color_tag", "Neutral")
+            s_gold = p_row.get("smyth_gold_mine", "—")
+            st.metric("Joel Smyth Draft Tag", str(s_tag), f"Gold Mine: {s_gold}")
+
+            smyth_metrics = {
+                "Dimension": ["Smyth Big Board Tag", "RB Gold Mine Tier", "Smyth Adjusted PPG", "Smyth Overall Rank", "2025 Luck Lost", "2025 Luck Gained"],
+                "Details": [
+                    str(s_tag),
+                    str(s_gold),
+                    f"{p_row.get('adj_ppg_25'):.1f} PPG" if pd.notna(p_row.get('adj_ppg_25')) else "—",
+                    f"#{int(p_row.get('smyth_ecr'))}" if pd.notna(p_row.get('smyth_ecr')) else "—",
+                    f"{p_row.get('luck_points_lost', 0):.1f} pts" if p_row.get('luck_points_lost', 0) > 0 else "0.0",
+                    f"{p_row.get('luck_points_gained', 0):.1f} pts" if p_row.get('luck_points_gained', 0) > 0 else "0.0",
+                ]
+            }
+            st.dataframe(pd.DataFrame(smyth_metrics), use_container_width=True, hide_index=True)
+
+        st.markdown("---")
+        card3, card4 = st.columns(2)
+
+        with card3:
+            st.markdown("#### 🛡️ Team Ecosystem & Duracell Schematics")
+            eco_metrics = {
+                "Ecosystem Factor": ["Consensus OL Rank", "2-WR Personnel Set %", "Playcaller PROE %", "Contract Year", "Injury Status"],
+                "Metric": [
+                    f"#{int(p_row.get('duracell_ol_rank', 16))}",
+                    f"{p_row.get('two_wr_set_pct', 35.0):.1f}%",
+                    f"{p_row.get('duracell_proe', 0.0):+.1f}%",
+                    "✅ YES (Contract Year Incentive)" if p_row.get("is_contract_year") == 1 else "No",
+                    p_row.get("injury_status", "Healthy")
+                ]
+            }
+            st.dataframe(pd.DataFrame(eco_metrics), use_container_width=True, hide_index=True)
+
+        with card4:
+            st.markdown("#### 💥 Expert Consensus & Qualitative Badges")
+            badges = []
+            if p_row.get("is_exodia") == 1: badges.append("💥 EXODIA LEAGUE-WINNER (Scott Barrett)")
+            if p_row.get("is_hero") == 1: badges.append("👑 HERO ANCHOR CORNERSTONE")
+            if p_row.get("has_breakout_catalyst") == 1: badges.append(f"🔥 BREAKOUT CATALYST: {p_row.get('breakout_catalyst')}")
+            if p_row.get("is_top_offense_undervalued") == 1: badges.append(f"⭐ TOP 10 OFFENSE ASSET: {p_row.get('top_offense_note')}")
+            if pd.notna(p_row.get("hansen_top200_rank")): badges.append(f"👑 JOHN HANSEN TOP 200: #{int(p_row.get('hansen_top200_rank'))}")
+            if p_row.get("master_designation") and p_row.get("master_designation") != "—": badges.append(f"📋 CHEAT SHEET: {p_row.get('master_designation')}")
+
+            if badges:
+                for b in badges:
+                    st.markdown(f"- **{b}**")
+            else:
+                st.info("No qualitative flags or warnings for this player.")
+
+            if pd.notna(p_row.get("scouting_narrative")) and p_row.get("scouting_narrative") != "—":
+                st.markdown(f"**Detailed Scouting Narrative:** *{p_row.get('scouting_narrative')}*")
+
+        # ----------------------------------------------------------------------
+        # PILLAR 5: STRENGTH OF SCHEDULE & PLAYOFF MATCHUPS (WEEKS 15-17)
+        # ----------------------------------------------------------------------
+        st.markdown("---")
+        st.markdown("#### ⚔️ 2026 Strength of Schedule, Shadow CBs & Fantasy Playoff Runway (Weeks 15-17)")
+        
+        sched = ScheduleMatrixEngine.get_player_schedule_intel(team, pos)
+        
+        s1, s2, s3, s4 = st.columns([1.2, 1.2, 1.3, 1.8])
+        with s1:
+            st.metric(f"{pos} Season SOS Rank", f"#{sched['pos_sos_rank']} in NFL", f"Grade: {sched['pos_sos_grade']}")
+        with s2:
+            st.metric("Playoff Runway (W15-17)", sched["playoff_sos_grade"])
+        with s3:
+            st.metric("Week 17 Championship Matchup", sched["playoff_w17_championship"])
+        with s4:
+            st.markdown(f"""
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 8px 12px; border-radius: 6px; font-size: 0.84rem;">
+                <b>Playoff Slate Brief:</b> {sched['playoff_summary']}
+            </div>
+            """, unsafe_allow_html=True)
+
+        sc_tab1, sc_tab2 = st.columns(2)
+        with sc_tab1:
+            sched_table = {
+                "Playoff Round": ["Week 15 (Quarterfinals)", "Week 16 (Semifinals)", "Week 17 (Championship)"],
+                "Opponent & Matchup Environment": [sched["playoff_w15"], sched["playoff_w16"], sched["playoff_w17_championship"]]
+            }
+            st.dataframe(pd.DataFrame(sched_table), use_container_width=True, hide_index=True)
+
+        with sc_tab2:
+            matchup_intel = {
+                "Defensive Matchup Dimension": ["Shadow CB / Coverage Difficulty", "Defensive Front / Box Count Push"],
+                "Scouting Intel": [sched["shadow_cb_risk"], sched["run_defense_toughness"]]
+            }
+            st.dataframe(pd.DataFrame(matchup_intel), use_container_width=True, hide_index=True)
+
+    # ==========================================================================
+    # VIEW 2: HEAD-TO-HEAD PLAYER COMPARISON & PICK ARBITER
+    # ==========================================================================
+    elif view_mode == "⚔️ Head-to-Head Player Comparison & Pick Arbiter (2-4 Players)":
+        st.markdown("### ⚔️ Head-to-Head Player Comparison & Pick Arbiter")
+        st.markdown("""
+        Select **2 to 4 players** to run a comprehensive cross-source comparison. The **AI Pick Arbiter** evaluates:
+        - 🔬 **Play-by-Play Talent & Athletic Efficiency (0-100)**
+        - 📈 **Opportunity & High-Value Touch Projection**
+        - 🛡️ **Offensive Line Push & Playcaller Ecosystem**
+        - ⚔️ **Strength of Schedule & Week 15-17 Playoff Runway**
+        - 💎 **Market Arbitrage & Platform ADP Discount**
+        """)
+
+        # Quick Preset Buttons
+        st.markdown("#### ⚡ Quick Showdown Presets:")
+        preset_cols = st.columns(4)
+        preset_choice = None
+        with preset_cols[0]:
+            if st.button("🏃 Tier 1 Hero RBs", use_container_width=True):
+                preset_choice = ["Jahmyr Gibbs", "Bijan Robinson", "Saquon Barkley"]
+        with preset_cols[1]:
+            if st.button("⚡ Alpha WR1 Showdown", use_container_width=True):
+                preset_choice = ["Ja'Marr Chase", "Justin Jefferson", "CeeDee Lamb", "Puka Nacua"]
+        with preset_cols[2]:
+            if st.button("🛡️ Elite TE Tier 1 Duel", use_container_width=True):
+                preset_choice = ["Brock Bowers", "Trey McBride", "George Kittle"]
+        with preset_cols[3]:
+            if st.button("🎯 Top QB1 Arbitrage", use_container_width=True):
+                preset_choice = ["Josh Allen", "Lamar Jackson", "Jalen Hurts"]
+
+        all_players = df.sort_values("composite_rank")["player_name"].tolist()
+        default_selection = preset_choice if preset_choice else ["Jahmyr Gibbs", "Bijan Robinson"]
+        default_valid = [p for p in default_selection if p in all_players]
+
+        selected_compare_players = st.multiselect(
+            "Select 2 to 4 Players to Compare:",
+            options=all_players,
+            default=default_valid,
+            max_selections=4,
+            key="h2h_compare_multiselect"
+        )
+
+        if len(selected_compare_players) < 2:
+            st.warning("⚠️ Please select at least 2 players (up to 4) to run the Head-to-Head Comparison.")
+            return
+
+        compare_df = df[df["player_name"].isin(selected_compare_players)].copy()
+        eval_res = PlayerComparisonEngine.evaluate_head_to_head(compare_df, platform="yahoo")
+
+        winner = eval_res["winner"]
+        floor_p = eval_res["floor_pick"]
+        ceil_p = eval_res["ceiling_pick"]
+        val_p = eval_res["value_pick"]
+
+        # ----------------------------------------------------------------------
+        # 1. THE ARBITER DECISION & WINNER BANNER
+        # ----------------------------------------------------------------------
+        st.markdown(f"""
+        <div style="background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%); color: white; padding: 20px 24px; border-radius: 10px; margin: 16px 0 20px 0; box-shadow: 0 4px 6px rgba(0,0,0,0.15);">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; margin-bottom: 12px;">
+                <span style="font-weight: 800; font-size: 1.3rem; letter-spacing: 0.5px;">🏆 AI PICK ARBITER VERDICT</span>
+                <span style="background: #10B981; color: white; padding: 4px 12px; border-radius: 16px; font-weight: 800; font-size: 0.9rem;">
+                    RECOMMENDED PICK: {winner['player_name'].upper()}
+                </span>
+            </div>
+            <div style="font-size: 1.05rem; line-height: 1.6; color: #F8FAFC;">
+                {eval_res['verdict_text']}
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # 3 Strategic Archetype Highlight Cards
+        ac1, ac2, ac3 = st.columns(3)
+        with ac1:
+            st.markdown(f"""
+            <div style="border: 2px solid #059669; background: #ECFDF5; padding: 12px 14px; border-radius: 8px;">
+                <div style="font-weight: 800; color: #065F46; font-size: 0.88rem;">🛡️ SAFE FLOOR ANCHOR</div>
+                <div style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin: 3px 0;">{floor_p['player_name']}</div>
+                <div style="font-size: 0.80rem; color: #374151;">
+                    <b>Opp Score:</b> {floor_p['opportunity_score']}/100 • <b>OL:</b> #{floor_p['ol_rank']}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        with ac2:
+            st.markdown(f"""
+            <div style="border: 2px solid #7C3AED; background: #F5F3FF; padding: 12px 14px; border-radius: 8px;">
+                <div style="font-weight: 800; color: #6D28D9; font-size: 0.88rem;">🚀 MAXIMUM CEILING STUD</div>
+                <div style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin: 3px 0;">{ceil_p['player_name']}</div>
+                <div style="font-size: 0.80rem; color: #374151;">
+                    <b>Talent:</b> {ceil_p['talent_score']}/100 • <b>Playoff SOS:</b> {ceil_p['sched_intel']['playoff_sos_grade']}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        with ac3:
+            st.markdown(f"""
+            <div style="border: 2px solid #4F46E5; background: #EEF2FF; padding: 12px 14px; border-radius: 8px;">
+                <div style="font-weight: 800; color: #3730A3; font-size: 0.88rem;">💎 BEST VALUE / ADP LEVERAGE</div>
+                <div style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin: 3px 0;">{val_p['player_name']}</div>
+                <div style="font-size: 0.80rem; color: #374151;">
+                    <b>Yahoo ADP:</b> #{val_p['adp']:.1f} • <span style="color: #059669; font-weight: 700;">+{val_p['adp_delta']:.1f} Value</span>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+        st.markdown("---")
+
+        # ----------------------------------------------------------------------
+        # 2. 5-PILLAR VISUAL BAR COMPARISON CHART
+        # ----------------------------------------------------------------------
+        st.markdown("#### 📊 5-Pillar Metric Comparison Chart (0-100 Scales)")
+        
+        chart_rows = []
+        for p in eval_res["players_analysis"]:
+            chart_rows.append({"Player": p["player_name"], "Dimension": "1. Talent (JoScho)", "Score": p["talent_score"]})
+            chart_rows.append({"Player": p["player_name"], "Dimension": "2. Opportunity / Proj", "Score": p["opportunity_score"]})
+            chart_rows.append({"Player": p["player_name"], "Dimension": "3. Ecosystem & OL", "Score": p["ecosystem_score"]})
+            chart_rows.append({"Player": p["player_name"], "Dimension": "4. Playoff Schedule", "Score": p["schedule_score"]})
+            chart_rows.append({"Player": p["player_name"], "Dimension": "5. Market Value", "Score": p["market_score"]})
+            chart_rows.append({"Player": p["player_name"], "Dimension": "🏆 Composite Arbiter", "Score": p["composite_arbiter"]})
+
+        chart_df = pd.DataFrame(chart_rows)
+        
+        bar_chart = alt.Chart(chart_df).mark_bar().encode(
+            x=alt.X("Score:Q", scale=alt.Scale(domain=[0, 100]), title="Pillar Score (0-100)"),
+            y=alt.Y("Dimension:N", sort=None, title=""),
+            color=alt.Color("Player:N", legend=alt.Legend(title="Player")),
+            yOffset="Player:N",
+            tooltip=["Player", "Dimension", "Score"]
+        ).properties(height=360, width=800)
+
+        st.altair_chart(bar_chart, use_container_width=True)
+
+        # ----------------------------------------------------------------------
+        # 3. SIDE-BY-SIDE COMPREHENSIVE COMPARISON MATRIX TABLE
+        # ----------------------------------------------------------------------
+        st.markdown("#### 📋 Detailed Head-to-Head Comparison Matrix")
+        
+        matrix_rows = []
+        dimensions = [
+            ("Composite Arbiter Score", lambda p: f"🏆 {p['composite_arbiter']} / 100"),
+            ("Model Rank & Tier", lambda p: f"Rank #{int(p['row_data'].get('composite_rank', 1))} ({p['row_data'].get('composite_tier', 'Tier 1')})"),
+            ("Boris Chen Pos Tier", lambda p: p['tier']),
+            ("Calibrated VORP", lambda p: f"+{p['vorp_pts']:.1f} pts"),
+            ("Calibrated Projection", lambda p: f"{p['proj_pts']:.1f} pts ({p['proj_pts']/17.0:.1f}/G)"),
+            ("JoScho Talent Grade", lambda p: f"{p['talent_score']}/100"),
+            ("Joel Smyth Tag", lambda p: str(p['smyth_tag'])),
+            ("Consensus OL Rank", lambda p: f"#{p['ol_rank']}"),
+            ("2-WR Personnel Set %", lambda p: f"{p['row_data'].get('two_wr_set_pct', 35.0):.1f}%"),
+            ("Playcaller PROE %", lambda p: f"{p['row_data'].get('duracell_proe', 0.0):+.1f}%"),
+            ("Full Season SOS Grade", lambda p: f"#{p['sched_intel']['pos_sos_rank']} ({p['sched_intel']['pos_sos_grade']})"),
+            ("Playoff Runway (W15-17)", lambda p: p['sched_intel']['playoff_sos_grade']),
+            ("Week 17 Championship Game", lambda p: p['sched_intel']['playoff_w17_championship']),
+            ("Shadow CB / Box Intel", lambda p: f"{p['sched_intel']['shadow_cb_risk']}"),
+            ("Yahoo ADP & Value", lambda p: f"#{p['adp']:.1f} ({p['adp_delta']:+.1f})"),
+            ("Contract Year Incentive", lambda p: "✅ YES" if p['row_data'].get('is_contract_year') == 1 else "No")
+        ]
+
+        table_data = {"Scouting Dimension": [d[0] for d in dimensions]}
+        for p in eval_res["players_analysis"]:
+            table_data[p["player_name"]] = [d[1](p) for d in dimensions]
+
+        h2h_table = pd.DataFrame(table_data)
+        st.dataframe(h2h_table, use_container_width=True, hide_index=True)
