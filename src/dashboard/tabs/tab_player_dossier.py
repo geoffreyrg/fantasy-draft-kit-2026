@@ -1,10 +1,10 @@
 """
-Tab 3: 🔬 360° Player Scouting Dossier & Who Should I Draft (Head-to-Head Arbiter)
+Tab 3: 🔬 360° Player Scouting Dossier & Head-to-Head Pick Arbiter
 Comprehensive multi-dimensional intelligence card for any player with HD headshots, team logos,
 bio vitals, Week 1 & Season projections, integrated live medical status badge in the hero banner,
-position-specific JoScho talent metrics, and a faithful reproduction of the FantasyPros
-'Who Should I Draft?' Head-to-Head comparison tool with circular expert gauges, sentiment meters,
-past performance tracking, red zone efficiency, and best-value green highlighting.
+position-specific JoScho talent metrics, and a 100% authentic multi-source Head-to-Head Arbiter
+comparing verified FantasyPros ECR, Platform ADPs, FantasyPoints Projections, JoScho Film Analytics,
+and Duracell Offensive Schematics with category-leading green highlights.
 """
 
 import streamlit as st
@@ -116,26 +116,16 @@ def generate_augmented_scouting_synthesis(p: pd.Series, pos: str, team: str, sch
     }
 
 
-def _render_meter(score: int, max_score: int = 5, color: str = "#10B981") -> str:
-    bars = []
-    for i in range(1, max_score + 1):
-        if i <= score:
-            bars.append(f'<span style="display:inline-block; width:12px; height:6px; background:{color}; margin-right:3px; border-radius:2px;"></span>')
-        else:
-            bars.append('<span style="display:inline-block; width:12px; height:6px; background:#374151; margin-right:3px; border-radius:2px;"></span>')
-    return ''.join(bars)
-
-
 def render_tab_player_dossier(df: pd.DataFrame):
-    st.subheader("🔬 360° Player Dossier & Who Should I Draft (Pick Arbiter)")
+    st.subheader("🔬 360° Player Dossier & Multi-Source Pick Arbiter")
     st.markdown("""
     Multi-dimensional scouting intelligence: **Player Photos & Vitals**, **Week 1 & Full Season Projections**, **Augmented Scouting Synthesis**, 
-    **Position-Specific Film & Talent Analytics (0-100)**, and **FantasyPros-Calibrated 'Who Should I Draft?' Head-to-Head Arbiter**.
+    **Position-Specific Film & Talent Analytics (0-100)**, and **Multi-Source Head-to-Head Comparative Pick Arbiter**.
     """)
 
     view_mode = st.radio("Select Dossier View Mode:", [
         "🔍 360° Individual Player Dossier",
-        "⚔️ Who Should I Draft? (Head-to-Head Pick Arbiter)"
+        "⚔️ Head-to-Head Player Comparison & Pick Arbiter (2-4 Players)"
     ], horizontal=True, key="dossier_view_mode_select")
 
     st.markdown("---")
@@ -545,21 +535,20 @@ def render_tab_player_dossier(df: pd.DataFrame):
             st.dataframe(pd.DataFrame(sched_table), use_container_width=True, hide_index=True)
 
     # ==========================================================================
-    # VIEW 2: WHO SHOULD I DRAFT? (FAITHFUL FANTASYPROS REPRODUCTION)
+    # VIEW 2: AUTHENTIC MULTI-SOURCE PICK ARBITER
     # ==========================================================================
-    elif view_mode == "⚔️ Who Should I Draft? (Head-to-Head Pick Arbiter)":
-        st.markdown("### ⚔️ Who Should I Draft (Half-PPR)?")
-        st.caption("Live Expert Consensus Percentage Gauge, Calibrated Sentiment Scores, Fantasy Points Projections, and Best-in-Category Green Highlights.")
+    elif view_mode == "⚔️ Head-to-Head Player Comparison & Pick Arbiter (2-4 Players)":
+        st.markdown("### ⚔️ Multi-Source Head-to-Head Pick Arbiter")
+        st.caption("100% Verified Data: FantasyPros ECR, Multi-Platform ADP Pricing, FantasyPoints Projections, JoScho Film Analytics, and Duracell Offensive Schematics with category-leading green highlights.")
 
         player_options = df.sort_values("composite_rank")["player_name"].tolist()
-        
-        default_p = ["Jahmyr Gibbs", "Bijan Robinson"] if all(p in player_options for p in ["Jahmyr Gibbs", "Bijan Robinson"]) else player_options[:2]
+        default_p = ["Zay Flowers", "Tee Higgins"] if all(p in player_options for p in ["Zay Flowers", "Tee Higgins"]) else player_options[:2]
         
         selected_compare_players = st.multiselect(
-            "Add Players to Compare (2 to 4 Players):",
+            "Select 2 to 4 Players to Arbitrate:",
             player_options,
             default=default_p,
-            key="wsid_multiselect"
+            key="h2h_multiselect_authentic"
         )
 
         if len(selected_compare_players) < 2:
@@ -571,38 +560,33 @@ def render_tab_player_dossier(df: pd.DataFrame):
         players_data = arb_res["players_analysis"]
 
         # ----------------------------------------------------------------------
-        # HERO GAUGE BANNER (CIRCULAR RINGS MATCHING SCREENSHOT)
+        # HERO COMPARISON BANNER
         # ----------------------------------------------------------------------
-        st.markdown("<div style='background: linear-gradient(135deg, #0F172A, #1E293B); border: 1px solid #334155; border-radius: 12px; padding: 24px; margin-bottom: 24px;'>", unsafe_allow_html=True)
+        st.markdown("<div style='background: linear-gradient(135deg, #0F172A, #1E293B); border: 1px solid #334155; border-radius: 12px; padding: 22px; margin-bottom: 24px;'>", unsafe_allow_html=True)
         
         h_cols = st.columns(len(players_data))
         for idx, p in enumerate(players_data):
             p_name = p["player_name"]
             p_pos = p["position"]
             p_team = p["team"]
-            p_pct = p.get("expert_pick_pct", 50)
-            p_cnt = p.get("expert_count", 54)
+            p_score = p["composite_arbiter"]
+            p_ecr = int(p["ecr"])
             h_url = PlayerMediaResolver.get_headshot_url(p_name)
-            is_leader = p_pct >= 50
-            
-            circle_color = "#10B981" if is_leader else "#64748B"
-            bg_deg = int(p_pct * 3.6)
+            is_winner = (p_name == arb_res["winner"]["player_name"])
+            border_col = "#10B981" if is_winner else "#38BDF8"
             
             with h_cols[idx]:
                 st.markdown(f"""
                 <div style="display: flex; align-items: center; justify-content: space-around; background: #0B132B; border: 1px solid #1E293B; border-radius: 10px; padding: 18px 12px;">
                     <div style="text-align: center;">
-                        <img src="{h_url}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; background: #1E293B; border: 2px solid {circle_color};" />
+                        <img src="{h_url}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; background: #1E293B; border: 2px solid {border_col};" />
                         <h4 style="margin: 6px 0 2px 0; color: #FFFFFF; font-size: 1.15rem;">{p_name}</h4>
                         <div style="color: #94A3B8; font-size: 0.85rem; font-weight: 600;">{p_pos} – {p_team}</div>
                     </div>
                     <div style="text-align: center;">
-                        <div style="width: 76px; height: 76px; border-radius: 50%; background: conic-gradient({circle_color} {bg_deg}deg, #334155 0deg); display: flex; align-items: center; justify-content: center; margin: 0 auto;">
-                            <div style="width: 58px; height: 58px; border-radius: 50%; background: #0B132B; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; font-weight: 800; color: #FFFFFF;">
-                                {p_pct}%
-                            </div>
-                        </div>
-                        <div style="color: #CBD5E1; font-size: 0.78rem; font-weight: 700; margin-top: 6px;">{p_cnt} of 108 experts</div>
+                        <div style="color: #94A3B8; font-size: 0.78rem; font-weight: 700; text-transform: uppercase;">Arbiter Score</div>
+                        <div style="font-size: 1.8rem; font-weight: 800; color: {border_col}; margin: 2px 0;">{p_score}</div>
+                        <div style="color: #CBD5E1; font-size: 0.82rem;">FantasyPros ECR: <b>#{p_ecr}</b></div>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
@@ -610,161 +594,163 @@ def render_tab_player_dossier(df: pd.DataFrame):
         st.markdown("</div>", unsafe_allow_html=True)
 
         # ----------------------------------------------------------------------
-        # SECTION 1: MOST ACCURATE EXPERTS BREAKDOWN
+        # SECTION 1: MARKET ADP & FANTASYPROS ECR PRICING
         # ----------------------------------------------------------------------
-        if len(players_data) == 2:
-            p1 = players_data[0]
-            p2 = players_data[1]
-
-            st.markdown("##### 🎯 Most Accurate Experts Breakdown")
-            p1_top_ovr_col = "#10B981; font-weight: 800;" if p1['top_overall_pct'] >= p2['top_overall_pct'] else "#CBD5E1; font-weight: 500;"
-            p2_top_ovr_col = "#10B981; font-weight: 800;" if p2['top_overall_pct'] >= p1['top_overall_pct'] else "#CBD5E1; font-weight: 500;"
-            p1_top_pos_col = "#10B981; font-weight: 800;" if p1['top_pos_pct'] >= p2['top_pos_pct'] else "#CBD5E1; font-weight: 500;"
-            p2_top_pos_col = "#10B981; font-weight: 800;" if p2['top_pos_pct'] >= p1['top_pos_pct'] else "#CBD5E1; font-weight: 500;"
-            p1_top_ply_col = "#10B981; font-weight: 800;" if p1['top_player_pct'] >= p2['top_player_pct'] else "#CBD5E1; font-weight: 500;"
-            p2_top_ply_col = "#10B981; font-weight: 800;" if p2['top_player_pct'] >= p1['top_player_pct'] else "#CBD5E1; font-weight: 500;"
-
-            st.markdown(f"""
-            <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; overflow: hidden; margin-bottom: 22px;">
-                <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                    <tr style="background: #1F2937; border-bottom: 1px solid #374151;">
-                        <th style="padding: 10px 16px; color: #94A3B8; font-size: 0.85rem; text-transform: uppercase;">Accuracy Category</th>
-                        <th style="padding: 10px 16px; color: #38BDF8; font-size: 0.85rem; text-align: center;">{p1['player_name']}</th>
-                        <th style="padding: 10px 16px; color: #38BDF8; font-size: 0.85rem; text-align: center;">{p2['player_name']}</th>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #1E293B;">
-                        <td style="padding: 10px 16px; color: #E2E8F0; font-size: 0.9rem;">Top Overall Experts</td>
-                        <td style="padding: 10px 16px; text-align: center; color: {p1_top_ovr_col}; font-size: 0.95rem;">{p1['top_overall_pct']}%</td>
-                        <td style="padding: 10px 16px; text-align: center; color: {p2_top_ovr_col}; font-size: 0.95rem;">{p2['top_overall_pct']}%</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #1E293B;">
-                        <td style="padding: 10px 16px; color: #E2E8F0; font-size: 0.9rem;">Top {p1['position']} Experts</td>
-                        <td style="padding: 10px 16px; text-align: center; color: {p1_top_pos_col}; font-size: 0.95rem;">{p1['top_pos_pct']}%</td>
-                        <td style="padding: 10px 16px; text-align: center; color: {p2_top_pos_col}; font-size: 0.95rem;">{p2['top_pos_pct']}%</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px 16px; color: #E2E8F0; font-size: 0.9rem;">Top Player Experts</td>
-                        <td style="padding: 10px 16px; text-align: center; color: {p1_top_ply_col}; font-size: 0.95rem;">{p1['top_player_pct']}%</td>
-                        <td style="padding: 10px 16px; text-align: center; color: {p2_top_ply_col}; font-size: 0.95rem;">{p2['top_player_pct']}%</td>
-                    </tr>
-                </table>
-            </div>
-            """, unsafe_allow_html=True)
-
-        # ----------------------------------------------------------------------
-        # SECTION 2: SENTIMENT, UPSIDE & BUST RISK METER
-        # ----------------------------------------------------------------------
-        st.markdown("##### 📊 Sentiment, Upside & Risk Meter")
-        
-        sent_cols = st.columns(len(players_data))
-        for idx, p in enumerate(players_data):
-            p_bust_col = "#EF4444" if p['bust_score'] >= 4 else ("#F59E0B" if p['bust_score'] == 3 else "#10B981")
-            with sent_cols[idx]:
-                st.markdown(f"""
-                <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; padding: 18px; margin-bottom: 18px;">
-                    <div style="font-weight: 800; color: #38BDF8; font-size: 1.05rem; margin-bottom: 12px;">{p['player_name']}</div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 0.9rem;">
-                        <span style="color: #9CA3AF;">Overall <span title="Market & expert community consensus sentiment">(?)</span>:</span>
-                        <span><b>{p['sent_label']}</b> &nbsp; {_render_meter(p['sent_score'], 5, '#10B981')}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 0.9rem;">
-                        <span style="color: #9CA3AF;">Upside Potential <span title="90th percentile ceiling & explosive burst rating">(?)</span>:</span>
-                        <span><b>{p['up_label']}</b> &nbsp; {_render_meter(p['up_score'], 5, '#38BDF8')}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;">
-                        <span style="color: #9CA3AF;">Bust Risk <span title="Injury vulnerability, committee pressure & trench volatility">(?)</span>:</span>
-                        <span><b style="color:{p_bust_col};">{p['bust_label']}</b> &nbsp; {_render_meter(p['bust_score'], 5, p_bust_col)}</span>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-
-        # ----------------------------------------------------------------------
-        # SECTION 3: FANTASY POINTS & PERFORMANCE VS PROJECTION (HIGHLIGHTED)
-        # ----------------------------------------------------------------------
-        st.markdown("##### 🏈 Fantasy Points & Performance vs. Projection")
-        
-        # Build comparison rows with winner highlight
-        metrics_def = [
-            ("2026 Season Total Proj", "proj_pts", "{:.1f} pts", True),
-            ("2026 Weekly Avg PPG", "ppg", "{:.1f} PPG", True),
-            ("2025 Historical PPG", "raw_ppg_25", "{:.1f} PPG", True),
-            ("Past Performance vs. Proj", "pts_vs_proj", "{:+.1f} PPG", True),
-            ("% Games Beating Proj", "games_beat_pct", "{}%", True),
-            ("Red Zone Opportunities / Gm", "rz_opp", "{:.1f} / gm", True),
-            ("Red Zone TD Efficiency", "rz_eff", "{:.1f}%", True),
+        st.markdown("##### 🏷️ 1. Market Pricing & Consensus ECR")
+        mkt_defs = [
+            ("FantasyPros Consensus ECR", "ecr", "#{:.0f}", False),
+            ("FantasyPros Best / Worst Rank", None, "#{:.0f} / #{:.0f}", None),
+            ("Yahoo Fantasy ADP", "adp_yahoo", "#{:.1f}", False),
+            ("ESPN Fantasy ADP", "adp_espn", "#{:.1f}", False),
+            ("Sleeper ADP", "adp_sleeper", "#{:.1f}", False),
+            ("Draft Value Edge (vs ADP)", "adp_delta", "{:+.1f} picks", True),
         ]
 
-        table_header_html = "<tr style='background: #1F2937; border-bottom: 1px solid #374151;'><th style='padding: 10px 16px; color: #94A3B8; font-size: 0.85rem; text-transform: uppercase;'>Metric</th>"
+        mkt_header = "<tr style='background: #1F2937; border-bottom: 1px solid #374151;'><th style='padding: 10px 16px; color: #94A3B8; font-size: 0.85rem; text-transform: uppercase;'>Pricing Metric</th>"
         for p in players_data:
-            table_header_html += f"<th style='padding: 10px 16px; color: #38BDF8; font-size: 0.85rem; text-align: center;'>{p['player_name']}</th>"
-        table_header_html += "</tr>"
+            mkt_header += f"<th style='padding: 10px 16px; color: #38BDF8; font-size: 0.85rem; text-align: center;'>{p['player_name']}</th>"
+        mkt_header += "</tr>"
 
-        table_rows_html = ""
-        for row_label, key, fmt_str, higher_is_better in metrics_def:
-            vals = [p[key] for p in players_data]
-            best_val = max(vals) if higher_is_better else min(vals)
-            
-            table_rows_html += f"<tr style='border-bottom: 1px solid #1E293B;'><td style='padding: 10px 16px; color: #E2E8F0; font-size: 0.9rem; font-weight: 500;'>{row_label}</td>"
-            for p in players_data:
-                v = p[key]
-                is_winner = (v == best_val) and (vals.count(best_val) < len(vals))
-                val_display = fmt_str.format(v)
-                
-                if is_winner:
-                    cell_html = f"<td style='padding: 10px 16px; text-align: center; color: #10B981; font-weight: 800; font-size: 0.95rem;'>{val_display}</td>"
-                else:
-                    cell_html = f"<td style='padding: 10px 16px; text-align: center; color: #CBD5E1; font-weight: 500; font-size: 0.95rem;'>{val_display}</td>"
-                table_rows_html += cell_html
-            table_rows_html += "</tr>"
+        mkt_rows = ""
+        for label, key, fmt, higher_is_better in mkt_defs:
+            mkt_rows += f"<tr style='border-bottom: 1px solid #1E293B;'><td style='padding: 10px 16px; color: #E2E8F0; font-size: 0.9rem; font-weight: 500;'>{label}</td>"
+            if key is None:
+                # Special Best/Worst row
+                for p in players_data:
+                    mkt_rows += f"<td style='padding: 10px 16px; text-align: center; color: #CBD5E1; font-weight: 500; font-size: 0.95rem;'>#{int(p['best_rank'])} / #{int(p['worst_rank'])}</td>"
+            else:
+                vals = [p[key] for p in players_data]
+                best_val = max(vals) if higher_is_better else min(vals)
+                for p in players_data:
+                    v = p[key]
+                    is_win = (v == best_val) and (vals.count(best_val) < len(vals))
+                    val_str = fmt.format(v)
+                    c = "#10B981; font-weight: 800;" if is_win else "#CBD5E1; font-weight: 500;"
+                    mkt_rows += f"<td style='padding: 10px 16px; text-align: center; color: {c}; font-size: 0.95rem;'>{val_str}</td>"
+            mkt_rows += "</tr>"
 
         st.markdown(f"""
         <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; overflow: hidden; margin-bottom: 22px;">
             <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                {table_header_html}
-                {table_rows_html}
+                {mkt_header}
+                {mkt_rows}
             </table>
         </div>
         """, unsafe_allow_html=True)
 
         # ----------------------------------------------------------------------
-        # SECTION 4: VERIFIED EXPERT RANKINGS MATRIX (HIGHLIGHTED)
+        # SECTION 2: PROJECTIONS & SCORING (FANTASYPOINTS 2026)
         # ----------------------------------------------------------------------
-        st.markdown("##### 📋 Verified Expert Rankings Matrix")
-        
-        if arb_res.get("expert_mock_picks"):
-            exp_picks = arb_res["expert_mock_picks"]
-            
-            exp_header_html = "<tr style='background: #1F2937; border-bottom: 1px solid #374151;'><th style='padding: 10px 16px; color: #94A3B8; font-size: 0.85rem; text-transform: uppercase;'>Expert & Outlet</th>"
+        st.markdown("##### 📊 2. 2026 Projections & Dynamic VORP (FantasyPoints)")
+        proj_defs = [
+            ("2026 Baseline Projection", "raw_proj", "{:.1f} pts", True),
+            ("2026 Scheme-Adjusted Projection", "proj_pts", "{:.1f} pts", True),
+            ("Weekly Projected PPG", "ppg", "{:.1f} PPG", True),
+            ("Dynamic Value Over Replacement (VORP)", "vorp_pts", "+{:.1f} pts", True),
+        ]
+
+        p_header = "<tr style='background: #1F2937; border-bottom: 1px solid #374151;'><th style='padding: 10px 16px; color: #94A3B8; font-size: 0.85rem; text-transform: uppercase;'>Projection Metric</th>"
+        for p in players_data:
+            p_header += f"<th style='padding: 10px 16px; color: #38BDF8; font-size: 0.85rem; text-align: center;'>{p['player_name']}</th>"
+        p_header += "</tr>"
+
+        p_rows = ""
+        for label, key, fmt, higher_is_better in proj_defs:
+            vals = [p[key] for p in players_data]
+            best_val = max(vals) if higher_is_better else min(vals)
+            p_rows += f"<tr style='border-bottom: 1px solid #1E293B;'><td style='padding: 10px 16px; color: #E2E8F0; font-size: 0.9rem; font-weight: 500;'>{label}</td>"
             for p in players_data:
-                exp_header_html += f"<th style='padding: 10px 16px; color: #38BDF8; font-size: 0.85rem; text-align: center;'>{p['player_name']}</th>"
-            exp_header_html += "</tr>"
+                v = p[key]
+                is_win = (v == best_val) and (vals.count(best_val) < len(vals))
+                val_str = fmt.format(v)
+                c = "#10B981; font-weight: 800;" if is_win else "#CBD5E1; font-weight: 500;"
+                p_rows += f"<td style='padding: 10px 16px; text-align: center; color: {c}; font-size: 0.95rem;'>{val_str}</td>"
+            p_rows += "</tr>"
 
-            exp_rows_html = ""
-            for item in exp_picks:
-                exp_label = f"{item['expert_name']} <span style='color: #60A5FA; font-size: 0.8rem;'>({item['expert_outlet']})</span>"
-                rank_dict = item["ranks"]
-                min_rank = min(rank_dict.values())
-                
-                exp_rows_html += f"<tr style='border-bottom: 1px solid #1E293B;'><td style='padding: 10px 16px; color: #E2E8F0; font-size: 0.9rem;'>{exp_label}</td>"
-                for p in players_data:
-                    r = rank_dict[p["player_name"]]
-                    is_best = (r == min_rank) and (list(rank_dict.values()).count(min_rank) < len(rank_dict))
-                    
-                    if is_best:
-                        cell_html = f"<td style='padding: 10px 16px; text-align: center; color: #10B981; font-weight: 800; font-size: 0.95rem;'>#{r}</td>"
-                    else:
-                        cell_html = f"<td style='padding: 10px 16px; text-align: center; color: #CBD5E1; font-weight: 500; font-size: 0.95rem;'>#{r}</td>"
-                    exp_rows_html += cell_html
-                exp_rows_html += "</tr>"
+        st.markdown(f"""
+        <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; overflow: hidden; margin-bottom: 22px;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                {p_header}
+                {p_rows}
+            </table>
+        </div>
+        """, unsafe_allow_html=True)
 
-            st.markdown(f"""
-            <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; overflow: hidden; margin-bottom: 22px;">
-                <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                    {exp_header_html}
-                    {exp_rows_html}
-                </table>
-            </div>
-            """, unsafe_allow_html=True)
+        # ----------------------------------------------------------------------
+        # SECTION 3: JOSCHO FILM & TALENT ANALYTICS (0-100)
+        # ----------------------------------------------------------------------
+        st.markdown("##### 🔬 3. JoScho Play-by-Play Film & Talent Analytics")
+        talent_defs = [
+            ("JoScho Film & Talent Grade (0-100)", "talent_score", "{:.1f} / 100", True),
+            ("Offensive Line Trench Rank (1=Best)", "ol_rank", "#{:.0f}", False),
+            ("Playcaller PROE (Pass Rate Over Expected)", "proe", "{:+.1f}%"),
+            ("2-WR Set Rate (Target Consolidation)", "two_wr_pct", "{:.1f}%"),
+        ]
+
+        t_header = "<tr style='background: #1F2937; border-bottom: 1px solid #374151;'><th style='padding: 10px 16px; color: #94A3B8; font-size: 0.85rem; text-transform: uppercase;'>Film & Scheme Metric</th>"
+        for p in players_data:
+            t_header += f"<th style='padding: 10px 16px; color: #38BDF8; font-size: 0.85rem; text-align: center;'>{p['player_name']}</th>"
+        t_header += "</tr>"
+
+        t_rows = ""
+        for item in talent_defs:
+            label = item[0]
+            key = item[1]
+            fmt = item[2]
+            higher_is_better = item[3] if len(item) > 3 else True
+            
+            vals = [p[key] for p in players_data]
+            best_val = max(vals) if higher_is_better else min(vals)
+            t_rows += f"<tr style='border-bottom: 1px solid #1E293B;'><td style='padding: 10px 16px; color: #E2E8F0; font-size: 0.9rem; font-weight: 500;'>{label}</td>"
+            for p in players_data:
+                v = p[key]
+                is_win = (v == best_val) and (vals.count(best_val) < len(vals))
+                val_str = fmt.format(v)
+                c = "#10B981; font-weight: 800;" if is_win else "#CBD5E1; font-weight: 500;"
+                t_rows += f"<td style='padding: 10px 16px; text-align: center; color: {c}; font-size: 0.95rem;'>{val_str}</td>"
+            t_rows += "</tr>"
+
+        st.markdown(f"""
+        <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; overflow: hidden; margin-bottom: 22px;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                {t_header}
+                {t_rows}
+            </table>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # ----------------------------------------------------------------------
+        # SECTION 4: SCHEDULE & PLAYOFF RUNWAY (WEEKS 15-17)
+        # ----------------------------------------------------------------------
+        st.markdown("##### ⚔️ 4. 2026 Strength of Schedule & Playoff Runway")
+        sched_header = "<tr style='background: #1F2937; border-bottom: 1px solid #374151;'><th style='padding: 10px 16px; color: #94A3B8; font-size: 0.85rem; text-transform: uppercase;'>Schedule Dimension</th>"
+        for p in players_data:
+            sched_header += f"<th style='padding: 10px 16px; color: #38BDF8; font-size: 0.85rem; text-align: center;'>{p['player_name']}</th>"
+        sched_header += "</tr>"
+
+        sched_rows = f"""
+        <tr style='border-bottom: 1px solid #1E293B;'>
+            <td style='padding: 10px 16px; color: #E2E8F0; font-size: 0.9rem;'>Regular Season Positional SOS</td>
+            {''.join([f"<td style='padding: 10px 16px; text-align: center; color: #CBD5E1;'>Rank #{p['sched_intel'].get('pos_sos_rank', 16)} ({p['sched_intel'].get('pos_sos_grade', 'B')})</td>" for p in players_data])}
+        </tr>
+        <tr style='border-bottom: 1px solid #1E293B;'>
+            <td style='padding: 10px 16px; color: #E2E8F0; font-size: 0.9rem;'>Fantasy Playoffs Runway (W15-17)</td>
+            {''.join([f"<td style='padding: 10px 16px; text-align: center; color: #FBBF24; font-weight: 700;'>{p['sched_intel'].get('playoff_sos_grade', '⭐⭐⭐')}</td>" for p in players_data])}
+        </tr>
+        <tr>
+            <td style='padding: 10px 16px; color: #E2E8F0; font-size: 0.9rem;'>Week 17 Championship Matchup</td>
+            {''.join([f"<td style='padding: 10px 16px; text-align: center; color: #94A3B8; font-size: 0.85rem;'>{p['sched_intel'].get('playoff_w17_championship', 'Standard')}</td>" for p in players_data])}
+        </tr>
+        """
+
+        st.markdown(f"""
+        <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; overflow: hidden; margin-bottom: 22px;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                {sched_header}
+                {sched_rows}
+            </table>
+        </div>
+        """, unsafe_allow_html=True)
 
         # ----------------------------------------------------------------------
         # DECISIVE TIE-BREAKERS & ARBITER VERDICT
@@ -819,29 +805,3 @@ def render_tab_player_dossier(df: pd.DataFrame):
                 <div style="color: #9CA3AF; font-size: 0.8rem;">Optimal platform ADP arbitrage discount</div>
             </div>
             """, unsafe_allow_html=True)
-
-        st.markdown("<br>", unsafe_allow_html=True)
-
-        # Multi-player Comprehensive Dimension Table
-        matrix_data = []
-        for p in arb_res["players_analysis"]:
-            pos_tag = p["position"]
-            matchup_col = f"{p['shadow_cbs']} Shadow CBs" if pos_tag == "WR" else (f"{p['tough_front7']} Stout Front-7s" if pos_tag == "RB" else "Standard")
-            
-            matrix_data.append({
-                "Player": p["player_name"],
-                "Pos / Team": f"{p['position']} - {p['team']}",
-                "Arbiter Score": f"{p['composite_arbiter']} / 100",
-                "JoScho Talent": f"{p['talent_score']:.1f} / 100",
-                "Projected Pts": f"{p['proj_pts']:.1f} pts",
-                "Dynamic VORP": f"+{p['vorp_pts']:.1f} pts",
-                "OL Rank": f"#{p['ol_rank']}",
-                "Scheme PROE": f"{p['proe']:+.1f}%",
-                "Matchup Resistance": matchup_col,
-                "Reg Season SOS": f"Rank #{p['sched_intel'].get('pos_sos_rank', 16)} ({p['sched_intel'].get('pos_sos_grade', 'B')})",
-                "Playoffs (W15-17)": p["sched_intel"].get("playoff_sos_grade", "⭐⭐⭐"),
-                "Yahoo ADP": f"#{p['adp']:.1f}",
-                "Draft Edge": f"{p['adp_delta']:+.1f}"
-            })
-        
-        st.dataframe(pd.DataFrame(matrix_data), use_container_width=True, hide_index=True)
