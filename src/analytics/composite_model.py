@@ -322,7 +322,53 @@ class CompositeModelEngine:
 
         df["adjusted_vorp"] = df.apply(_calc_vorp, axis=1)
         df["vorp"] = df["adjusted_vorp"]
-        df["composite_score"] = df["adjusted_vorp"]
+
+        # Calculate multi-model holistic composite score
+        def _calc_composite_score(row):
+            pos = str(row.get("position", "")).upper()
+            if pos in ("K", "DST"):
+                return round(-100.0 + float(row.get("adjusted_vorp", 0.0)) * 0.1, 2)
+            
+            vorp = float(row.get("adjusted_vorp", 0.0))
+            
+            # Exodia must-have bonus (+12)
+            is_ex = _safe_int(row.get("is_exodia"), 0) == 1
+            ex_bonus = 12.0 if is_ex else 0.0
+            
+            # Smyth color tag (+8 for Green, -14 for Red/Avoid)
+            s_tag = str(row.get("smyth_color_tag", ""))
+            s_color = str(row.get("smyth_color", "")).strip().title()
+            des = str(row.get("master_designation", "")).lower()
+            s_bonus = 0.0
+            if "🎯" in s_tag or s_color == "Green" or "target" in des:
+                s_bonus = 8.0
+            elif "🚫" in s_tag or s_color == "Red" or "avoid" in des or "fade" in des:
+                s_bonus = -14.0
+            elif "🟡" in s_tag or s_color == "Yellow":
+                s_bonus = -4.0
+                
+            # Dirty 30 / Cheat sheet fade penalty
+            fade_pen = 0.0
+            if _safe_int(row.get("is_dirty_30"), 0) == 1 or _safe_int(row.get("is_cheat_sheet_fade"), 0) == 1:
+                fade_pen = -12.0
+                
+            # Hansen Top 12 target bonus
+            h_bonus = 5.0 if _safe_int(row.get("is_hansen_twelve"), 0) == 1 else 0.0
+            
+            # Contract year bonus
+            c_bonus = 3.0 if _safe_int(row.get("is_contract_year"), 0) == 1 else 0.0
+            
+            # Breakout catalyst bonus
+            cat_bonus = 3.0 if _safe_int(row.get("has_breakout_catalyst"), 0) == 1 else 0.0
+            
+            # Duracell tier adjustment
+            d_tier = _safe_float(row.get("duracell_tier"), 5.0)
+            d_adj = (5.0 - d_tier) * 2.5
+            
+            total = vorp + ex_bonus + s_bonus + fade_pen + h_bonus + c_bonus + cat_bonus + d_adj
+            return round(total, 2)
+
+        df["composite_score"] = df.apply(_calc_composite_score, axis=1)
 
         # 6. Composite Overall & Positional Rankings
         df["composite_rank"] = df["composite_score"].rank(ascending=False, method="min").astype(int)
