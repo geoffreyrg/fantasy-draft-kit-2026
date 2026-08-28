@@ -31,14 +31,14 @@ Riley Patterson        K      MIA    ESPN            +753.0     0.0
 🚀 TOP COMPOSITE SLEEPERS & BREAKOUT CANDIDATES:
 Player                 Pos    Team   Comp Rank    ADP      Sleeper Delta  Steam   
 ---------------------------------------------------------------------------
-Brock Purdy            QB     SF     #70          121.3    +51.3          0.0     
-Dallas Goedert         TE     PHI    #77          123.5    +46.5          0.0     
-Rhamondre Stevenson    RB     NE     #44          81.0     +37.0          0.0     
-Trevor Lawrence        QB     JAX    #64          100.8    +36.8          0.0     
-Quentin Johnston       WR     LAC    #75          111.1    +36.1          0.0     
-Malik Willis           QB     MIA    #161         194.2    +33.2          0.0     
-Juwan Johnson          TE     NO     #159         189.1    +30.1          0.0     
-David Montgomery       RB     HOU    #21          49.8     +28.8          34.0    
+Charlie Kolar          TE     LAC    #118         999.0    +881.0         0.0     
+Evan Engram            TE     DEN    #142         999.0    +857.0         -2.5    
+Geno Smith             QB     NYJ    #143         999.0    +856.0         0.0     
+Dontayvion Wicks       WR     PHI    #150         999.0    +849.0         0.0     
+Michael Mayer          TE     LV     #157         999.0    +842.0         0.0     
+Mike Gesicki           TE     CIN    #166         999.0    +833.0         0.0     
+Dawson Knox            TE     BUF    #170         999.0    +829.0         0.0     
+Cole Kmet              TE     CHI    #171         999.0    +828.0         0.0     
 
 🍀 TOP POSITIVE LUCK REGRESSION BOUNCE-BACK CANDIDATES:
 Player                 Pos    Team   2025 Adj PPG   Luck Pts Lost   Unlucky Flag

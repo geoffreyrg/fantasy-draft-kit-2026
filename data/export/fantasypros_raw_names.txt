@@ -16,12 +16,12 @@ Justin Jefferson
 Josh Jacobs
 Chase Brown
 Breece Hall
-Josh Allen
 Omarion Hampton
 David Montgomery
 Javonte Williams
 Drake London
 Kyren Williams
+Josh Allen
 Ashton Jeanty
 Brock Bowers
 Rashee Rice
@@ -38,24 +38,24 @@ Zay Flowers
 Garrett Wilson
 Jeremiyah Love
 DeVonta Smith
+Trey McBride
 Lamar Jackson
 Jayden Daniels
-Trey McBride
 Rhamondre Stevenson
 Davante Adams
 Ladd McConkey
 Travis Etienne Jr.
-Drake Maye
-Jalen Hurts
 Colston Loveland
+Drake Maye
 Malik Nabers
+Jalen Hurts
 Jameson Williams
 Tyler Warren
-Dak Prescott
 Mike Evans
-Joe Burrow
+Dak Prescott
 Terry McLaurin
 Emeka Egbuka
+Joe Burrow
 Christian Watson
 Jaylen Waddle
 Cam Skattebo
@@ -64,9 +64,9 @@ Tetairoa McMillan
 Trevor Lawrence
 Rome Odunze
 Jaylen Warren
-Justin Herbert
 Sam LaPorta
 Kyle Pitts
+Justin Herbert
 Brock Purdy
 DJ Moore
 Luther Burden III
@@ -75,91 +75,27 @@ Brian Thomas Jr.
 Quentin Johnston
 Travis Kelce
 Dallas Goedert
-Caleb Williams
 DK Metcalf
-Brandon Aubrey
-Los Angeles Rams
-Houston Texans
-Jake Bates
+Caleb Williams
 TreVeyon Henderson
-Seattle Seahawks
 George Kittle
 Tucker Kraft
-Denver Broncos
 Harold Fannin Jr.
-Philadelphia Eagles
-Harrison Mevis
-Jacksonville Jaguars
-Cairo Santos
 Rico Dowdle
 Jake Ferguson
 Jakobi Meyers
-Minnesota Vikings
-Eddy Pineiro
-Tyler Bass
-Jason Myers
-Cameron Dicker
-Ka'imi Fairbairn
-Kansas City Chiefs
-Spencer Shrader
-New England Patriots
 Courtland Sutton
-Tyler Loop
-Harrison Butker
 Jaxson Dart
-Los Angeles Chargers
-Green Bay Packers
-Jadarian Price
-New Orleans Saints
-Pittsburgh Steelers
 Matthew Stafford
-Stefon Diggs
+Jadarian Price
 Mark Andrews
-Cam Little
-Chase McLaughlin
-Jake Elliott
-Buffalo Bills
-Trey Smack
-Baltimore Ravens
-Carolina Panthers
-Nick Folk
-Indianapolis Colts
-San Francisco 49ers
-Evan McPherson
-Atlanta Falcons
+Stefon Diggs
 Patrick Mahomes
-Wil Lutz
 Bo Nix
-Detroit Lions
-Charlie Smyth
-Will Reichard
-Tampa Bay Buccaneers
-Andy Borregales
-Chicago Bears
-New York Giants
-Washington Commanders
-Las Vegas Raiders
-Drew Stevens
-Miami Dolphins
-Chad Ryland
-Chris Boswell
-Cleveland Browns
-Tennessee Titans
-Dallas Cowboys
 Michael Pittman
-Matt Gay
-Dominic Zvada
-Cincinnati Bengals
-Joey Slye
-Arizona Cardinals
 Chuba Hubbard
-Cade York
-New York Jets
-Riley Patterson
-Juwan Johnson
-Ryan Fitzgerald
 Malik Willis
-Andre Szmyt
+Juwan Johnson
 Tyler Shough
 Brenton Strange
 Jared Goff
@@ -169,25 +105,25 @@ Jordan Addison
 Carnell Tate
 Aaron Jones
 Jayden Reed
-Dalton Kincaid
 Jordan Love
+Dalton Kincaid
 Dalton Schultz
-Hunter Henry
 Baker Mayfield
+Hunter Henry
 Romeo Doubs
+Sam Darnold
 Chris Godwin Jr.
 T.J. Hockenson
-Sam Darnold
+CJ Stroud
 Charlie Kolar
 Marvin Harrison Jr.
 Isaiah Likely
-CJ Stroud
 Blake Corum
 Cade Otton
+Daniel Jones
 Deebo Samuel Sr.
 Cooper Kupp
 Josh Downs
-Daniel Jones
 Ricky Pearsall
 AJ Barner
 Xavier Worthy
@@ -198,3 +134,67 @@ Chig Okonkwo
 RJ Harvey
 Matthew Golden
 Jacoby Brissett
+Pat Freiermuth
+Alec Pierce
+Jalen Coker
+Gunnar Helm
+Rachaad White
+Evan Engram
+Geno Smith
+Makai Lemon
+Khalil Shakir
+Tre Tucker
+Jayden Higgins
+Jalen McMillan
+Ryan Flournoy
+Dontayvion Wicks
+Keenan Allen
+Greg Dulcich
+Jalen Nailor
+Wan'Dale Robinson
+Bryce Young
+Isiah Pacheco
+Michael Mayer
+Rashid Shaheed
+Kenyon Sadiq
+Aaron Rodgers
+Colby Parkinson
+Jerry Jeudy
+Cam Ward
+Tyjae Spears
+Mason Taylor
+Mike Gesicki
+Theo Johnson
+J.K. Dobbins
+Adonai Mitchell
+Dawson Knox
+Cole Kmet
+KC Concepcion
+Darnell Washington
+Jacory Croskey-Merritt
+Rashod Bateman
+Jauan Jennings
+Keaton Mitchell
+Caleb Douglas
+Calvin Ridley
+Devaughn Vele
+Brandon Aiyuk
+Deshaun Watson
+David Njoku
+KaVontae Turpin
+Kayshon Boutte
+Justice Hill
+Terrance Ferguson
+Tyler Higbee
+Denzel Boston
+Jordyn Tyson
+Darren Waller
+Jaylin Noel
+Dylan Sampson
+Tre Harris
+Oronde Gadsden II
+Noah Fant
+Noah Gray
+Marvin Mims Jr.
+Malik Washington
+Ty Johnson

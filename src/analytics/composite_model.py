@@ -310,13 +310,14 @@ class CompositeModelEngine:
             raw_diff = pts - base_pts
 
             if pos == "QB":
-                return round(raw_diff * 0.75, 2)
+                return round(raw_diff * 0.70, 2)
             elif pos in ("RB", "WR"):
                 return round(raw_diff, 2)
             elif pos == "TE":
                 return round(raw_diff * 0.85, 2)
             elif pos in ("K", "DST"):
-                return round(raw_diff * 0.25, 2)
+                # Kickers and Defenses belong strictly in late rounds (Rank 160+)
+                return round(raw_diff * 0.05 - 100.0, 2)
             return round(raw_diff, 2)
 
         df["adjusted_vorp"] = df.apply(_calc_vorp, axis=1)
