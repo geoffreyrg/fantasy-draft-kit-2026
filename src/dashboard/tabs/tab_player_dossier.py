@@ -2,7 +2,7 @@
 Tab 3: 🔬 360° Player Scouting Dossier & Head-to-Head Pick Arbiter
 Comprehensive multi-dimensional intelligence card for any player with HD headshots, team logos,
 bio vitals, Week 1 & Season projections, integrated live medical status badge in the hero banner,
-position-specific JoScho talent metrics, and fixed Head-to-Head AI Pick Arbiter.
+position-specific JoScho talent metrics, and deep Head-to-Head AI Pick Arbiter with SOS & Coverage Tie-Breakers.
 """
 
 import streamlit as st
@@ -319,7 +319,7 @@ def render_tab_player_dossier(df: pd.DataFrame):
             </div>
             """, unsafe_allow_html=True)
 
-        # SUB-TAB 2: PROJECTIONS (WEEK 1 & FULL SEASON - MATCHES IMAGE 3)
+        # SUB-TAB 2: PROJECTIONS (WEEK 1 & FULL SEASON)
         with p_tab2:
             st.markdown("#### 📊 Projections Engine")
             rush_att = float(p_row.get("proj_rush_att", 0.0))
@@ -383,7 +383,7 @@ def render_tab_player_dossier(df: pd.DataFrame):
                 }
             st.dataframe(pd.DataFrame(season_table), use_container_width=True, hide_index=True)
 
-        # SUB-TAB 3: LIVE BREAKING WIRE & BEAT REPORTS (CLEAN & COMPACT)
+        # SUB-TAB 3: LIVE BREAKING WIRE & BEAT REPORTS
         with p_tab3:
             st.markdown("#### 📰 Verified FantasyPros Breaking Wire")
             
@@ -539,16 +539,17 @@ def render_tab_player_dossier(df: pd.DataFrame):
             st.dataframe(pd.DataFrame(sched_table), use_container_width=True, hide_index=True)
 
     # ==========================================================================
-    # VIEW 2: HEAD-TO-HEAD PLAYER COMPARISON & PICK ARBITER (FIXED)
+    # VIEW 2: HEAD-TO-HEAD PLAYER COMPARISON & PICK ARBITER (UPGRADED)
     # ==========================================================================
     elif view_mode == "⚔️ Head-to-Head Player Comparison & Pick Arbiter (2-4 Players)":
         st.markdown("### ⚔️ Head-to-Head Player Comparison & Pick Arbiter")
         st.markdown("""
         Select **2 to 4 players** to run an automated multi-pillar arbitration. The engine evaluates:
-        - 🔬 **Play-by-Play Talent & Athletic Efficiency (0-100)**
+        - 🔬 **Play-by-Play Talent & Athletic Burst (0-100 JoScho)**
         - 📈 **Opportunity & High-Value Touch Projection (Pts & Dynamic VORP)**
-        - 🛡️ **Offensive Line Push & Playcaller Environment**
-        - ⚔️ **Strength of Schedule & Week 15-17 Playoff Runway**
+        - 🛡️ **Offensive Line Push & Playcaller Environment (OL Rank & PROE)**
+        - 🎯 **Defensive Matchups & Coverage (Shadow CBs, Tough Front-7s & Reg Season SOS)**
+        - ⚔️ **Fantasy Playoff Runway (Weeks 15-17 Championship Environments)**
         - 💎 **Market Arbitrage & Platform ADP Discount**
         """)
 
@@ -598,34 +599,76 @@ def render_tab_player_dossier(df: pd.DataFrame):
         arb_res = PlayerComparisonEngine.evaluate_head_to_head(cand_df, platform="yahoo")
         
         # Display AI Decision Verdict
+        winner_name = arb_res["winner"]["player_name"]
+        winner_pos = arb_res["winner"]["position"]
+        winner_tm = arb_res["winner"]["team"]
+        
         st.markdown(f"""
         <div style="background: #111827; border: 1px solid #374151; border-left: 5px solid #10B981; border-radius: 8px; padding: 18px; margin: 16px 0;">
-            <div style="color: #10B981; font-weight: 800; font-size: 1.15rem; margin-bottom: 6px;">🏆 THE PICK: {arb_res['winner']['player_name']} ({arb_res['winner']['position']} - {arb_res['winner']['team']})</div>
+            <div style="color: #10B981; font-weight: 800; font-size: 1.15rem; margin-bottom: 6px;">🏆 THE PICK: {winner_name} ({winner_pos} – {winner_tm})</div>
             <div style="color: #F3F4F6; font-size: 0.95rem; line-height: 1.5;">{arb_res['verdict_text']}</div>
         </div>
         """, unsafe_allow_html=True)
 
-        # Highlight Pillars
+        # Tactical Tie-Breakers Bullet Points
+        if arb_res.get("tiebreaker_notes"):
+            st.markdown("##### 🎯 Decisive Tie-Breaker Breakdown")
+            for note in arb_res["tiebreaker_notes"]:
+                st.markdown(f"- {note}")
+
+        # Highlight Archetype Cards
         col_h1, col_h2, col_h3 = st.columns(3)
+        floor_name = arb_res["floor_pick"]["player_name"]
+        ceiling_name = arb_res["ceiling_pick"]["player_name"]
+        value_name = arb_res["value_pick"]["player_name"]
+        
         with col_h1:
-            st.markdown(f"**🛡️ Safest Floor:** ")
+            st.markdown(f"""
+            <div style="background: #1F2937; border-left: 4px solid #3B82F6; padding: 12px 14px; border-radius: 6px;">
+                <div style="color: #93C5FD; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">🛡️ Safest Floor Anchor</div>
+                <div style="color: #FFFFFF; font-size: 1.05rem; font-weight: 800; margin-top: 2px;">{floor_name}</div>
+                <div style="color: #9CA3AF; font-size: 0.8rem;">Secured touch volume & elite trench push</div>
+            </div>
+            """, unsafe_allow_html=True)
+            
         with col_h2:
-            st.markdown(f"**🚀 Highest Ceiling:** ")
+            st.markdown(f"""
+            <div style="background: #1F2937; border-left: 4px solid #F59E0B; padding: 12px 14px; border-radius: 6px;">
+                <div style="color: #FCD34D; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">🚀 Highest Ceiling Play</div>
+                <div style="color: #FFFFFF; font-size: 1.05rem; font-weight: 800; margin-top: 2px;">{ceiling_name}</div>
+                <div style="color: #9CA3AF; font-size: 0.8rem;">Explosive JoScho burst & shootout schedule</div>
+            </div>
+            """, unsafe_allow_html=True)
+            
         with col_h3:
-            st.markdown(f"**💎 Best Draft Value:** ")
+            st.markdown(f"""
+            <div style="background: #1F2937; border-left: 4px solid #10B981; padding: 12px 14px; border-radius: 6px;">
+                <div style="color: #6EE7B7; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">💎 Best Draft Value Steal</div>
+                <div style="color: #FFFFFF; font-size: 1.05rem; font-weight: 800; margin-top: 2px;">{value_name}</div>
+                <div style="color: #9CA3AF; font-size: 0.8rem;">Optimal platform ADP arbitrage discount</div>
+            </div>
+            """, unsafe_allow_html=True)
+
+        st.markdown("<br>", unsafe_allow_html=True)
 
         # Comparative Data Matrix
         matrix_data = []
         for p in arb_res["players_analysis"]:
+            pos_tag = p["position"]
+            matchup_col = f"{p['shadow_cbs']} Shadow CBs" if pos_tag == "WR" else (f"{p['tough_front7']} Stout Front-7s" if pos_tag == "RB" else "Standard")
+            
             matrix_data.append({
                 "Player": p["player_name"],
-                "Position / Team": f"{p['position']} - {p['team']}",
-                "Arbiter Score (0-100)": f"{p['composite_arbiter']} / 100",
-                "JoScho Talent (0-100)": f"{p['talent_score']:.1f} / 100",
+                "Pos / Team": f"{p['position']} - {p['team']}",
+                "Arbiter Score": f"{p['composite_arbiter']} / 100",
+                "JoScho Talent": f"{p['talent_score']:.1f} / 100",
                 "Projected Pts": f"{p['proj_pts']:.1f} pts",
                 "Dynamic VORP": f"+{p['vorp_pts']:.1f} pts",
                 "OL Rank": f"#{p['ol_rank']}",
-                "Playoff SOS": p["sched_intel"].get("playoff_sos_grade", "⭐⭐⭐"),
+                "Scheme PROE": f"{p['proe']:+.1f}%",
+                "Matchup Resistance": matchup_col,
+                "Reg Season SOS": f"Rank #{p['sched_intel'].get('pos_sos_rank', 16)} ({p['sched_intel'].get('pos_sos_grade', 'B')})",
+                "Playoffs (W15-17)": p["sched_intel"].get("playoff_sos_grade", "⭐⭐⭐"),
                 "Yahoo ADP": f"#{p['adp']:.1f}",
                 "Draft Edge": f"{p['adp_delta']:+.1f}"
             })
