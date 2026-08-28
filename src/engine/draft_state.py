@@ -38,8 +38,25 @@ class DraftStateManager:
         "DST": 1
     }
 
-    def __init__(self, master_df: pd.DataFrame, league_size: int = 12, user_slot: int = 5, total_rounds: int = 14):
-        self.master_df = master_df
+    def __init__(self, master_df: Optional[pd.DataFrame] = None, league_size: int = 12, user_slot: int = 5, total_rounds: int = 14):
+        if master_df is not None:
+            self.master_df = master_df
+            st.session_state["master_draft_df"] = master_df
+        elif "master_draft_df" in st.session_state:
+            self.master_df = st.session_state["master_draft_df"]
+        else:
+            try:
+                from config.settings import settings
+                if settings.paths.master_csv_path.exists():
+                    self.master_df = pd.read_csv(settings.paths.master_csv_path)
+                elif (settings.paths.processed_data_dir / "master_processed.csv").exists():
+                    self.master_df = pd.read_csv(settings.paths.processed_data_dir / "master_processed.csv")
+                else:
+                    self.master_df = pd.DataFrame()
+            except Exception:
+                self.master_df = pd.DataFrame()
+            st.session_state["master_draft_df"] = self.master_df
+
         self.league_size = league_size
         self.user_slot = user_slot
         self.total_rounds = total_rounds

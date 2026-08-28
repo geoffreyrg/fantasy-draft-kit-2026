@@ -132,13 +132,19 @@ class DuracellParser:
         contract_match = re.search(r'(\[\{name:\"[^\"]+\",pos:\"[^\"]+\",ppg:[^,]+,value:(!0|!1)\}(?:,\{name:\"[^\"]+\",pos:\"[^\"]+\",ppg:[^,]+,value:(!0|!1)\}){3,}\])', text)
         if contract_match:
             items = re.findall(r'\{name:\"([^\"]+)\",pos:\"([^\"]+)\",ppg:([^,]+),value:(!0|!1)\}', contract_match.group(1))
+            # 2023 1st round picks have 5th-year options and are not walk-year free agents in 2026
+            non_walk_years = {
+                "jahmyr gibbs", "bijan robinson", "cj stroud", "bryce young",
+                "dalton kincaid", "jordan addison", "zay flowers", "quentin johnston"
+            }
             for name, pos, ppg, val in items:
                 k = clean_name_key(name)
+                is_true_cy = 1 if (val == "!0" and k not in non_walk_years) else 0
                 contract_players[k] = {
                     "raw_name": name,
                     "pos": pos,
-                    "is_contract_year": 1,
-                    "contract_year_value": 1 if val == "!0" else 0,
+                    "is_contract_year": is_true_cy,
+                    "contract_year_value": 1 if (val == "!0" and k not in non_walk_years) else 0,
                     "contract_prev_ppg": float(ppg) if ppg != "null" else None,
                 }
 
@@ -283,13 +289,10 @@ class DuracellParser:
 
     def _fallback_players(self) -> pd.DataFrame:
         contracts = {
-            "cj stroud": (1, 0, 14.9), "bryce young": (1, 0, 13.5), "devon achane": (1, 0, 20.2),
-            "jahmyr gibbs": (1, 1, 21.6), "bijan robinson": (1, 1, 21.7), "dalton kincaid": (1, 0, 10.5),
-            "tucker kraft": (1, 0, 14.7), "sam laporta": (1, 1, 11.9), "jordan addison": (1, 0, 9.7),
-            "aj brown": (1, 0, 14.7), "tank dell": (1, 0, None), "josh downs": (1, 1, 8.5),
-            "zay flowers": (1, 0, 14.3), "quentin johnston": (1, 1, 12.2), "puka nacua": (1, 1, 23.4),
-            "rashee rice": (1, 0, 18.5), "parker washington": (1, 0, 11.5), "michael wilson": (1, 0, 13.0),
-            "drake london": (1, 1, 16.7), "chris olave": (1, 1, 16.8)
+            "devon achane": (1, 1, 20.2), "puka nacua": (1, 1, 23.4), "sam laporta": (1, 1, 11.9),
+            "josh downs": (1, 1, 8.5), "rashee rice": (1, 1, 18.5), "tank dell": (1, 1, None),
+            "tucker kraft": (1, 1, 14.7), "drake london": (1, 1, 16.7), "chris olave": (1, 1, 16.8),
+            "parker washington": (1, 0, 11.5), "michael wilson": (1, 0, 13.0)
         }
 
         rb_sched = {

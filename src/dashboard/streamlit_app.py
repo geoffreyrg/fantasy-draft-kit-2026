@@ -39,6 +39,7 @@ import src.dashboard.tabs.tab_player_dossier as t_dossier
 import src.dashboard.tabs.tab_arbitrage_market as t_arb
 import src.dashboard.tabs.tab_team_schematics as t_schem
 import src.dashboard.tabs.tab_news_wire as t_news
+import src.dashboard.tabs.tab_platform_sync as t_sync
 
 importlib.reload(e_state)
 importlib.reload(e_dvorp)
@@ -54,6 +55,7 @@ importlib.reload(t_dossier)
 importlib.reload(t_arb)
 importlib.reload(t_schem)
 importlib.reload(t_news)
+importlib.reload(t_sync)
 
 # Set Streamlit page layout
 st.set_page_config(
@@ -262,15 +264,16 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # ==============================================================================
-# MAIN 6-PILLAR ARCHITECTURE
+# MAIN 7-PILLAR ARCHITECTURE
 # ==============================================================================
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
     "⚡ Live Draft War Room",
     "🏆 Master Consensus Board & Tiers",
     "🔬 360° Player Scouting Dossier",
     "🎯 Market Arbitrage & Sleeper Radar",
     "🛡️ Team Schematics & Matchup Matrix",
     "📰 Training Camp & Injury Wire",
+    "🎮 Platform Sync (Sleeper & Yahoo)",
 ])
 
 with tab1:
@@ -290,3 +293,6 @@ with tab5:
 
 with tab6:
     t_news.render_tab_news_wire(df)
+
+with tab7:
+    t_sync.render_tab_platform_sync(df)

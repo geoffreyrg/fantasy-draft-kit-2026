@@ -124,41 +124,91 @@ class RecommendationEngine:
         cliffs: Dict[str, Dict]
     ) -> Dict[str, Optional[pd.Series]]:
         """
-        Extracts the 3 strategic recommendation cards:
-        1. 'bpa': Best Value Available
-        2. 'cliff': Tier Cliff Safeguard
-        3. 'upside': Maximum Ceiling Play
+        Extracts 3 distinct strategic recommendation cards:
+        1. 'bpa': Best Value Available (highest MRU / Dynamic VORP)
+        2. 'cliff': Positional Cliff Safeguard (defends imminent tier cliff across other positions)
+        3. 'upside': Maximum Ceiling / Stacking Play (correlation synergy or explosive alpha weapon)
         """
         if scored_df.empty:
             return {"bpa": None, "cliff": None, "upside": None}
 
-        # 1. Best Value Available (highest MRU)
-        bpa_card = scored_df.iloc[0]
+        # ----------------------------------------------------------------------
+        # 1. BEST VALUE AVAILABLE (BPA)
+        # ----------------------------------------------------------------------
+        bpa_raw = scored_df.iloc[0].copy()
+        bpa_pos = bpa_raw.get("position", "RB")
+        bpa_dvorp = float(bpa_raw.get("dynamic_vorp", 0.0))
+        bpa_pts = float(bpa_raw.get("adjusted_proj_pts", bpa_raw.get("consensus_proj_pts", 0.0)))
+        bpa_ppg = bpa_pts / 17.0 if bpa_pts > 0 else 0.0
+        
+        bpa_raw["strategy_rationale"] = (
+            f"👑 <b>Optimal Value Anchor:</b> Generates <b>+{bpa_dvorp:.1f} DynVORP</b> ({bpa_ppg:.1f} PPG). "
+            f"Mathematically highest overall marginal utility on the board."
+        )
+        bpa_card = bpa_raw
 
-        # 2. Tier Cliff Safeguard
+        # ----------------------------------------------------------------------
+        # 2. TIER CLIFF SAFEGUARD (Cross-Positional Defense)
+        # ----------------------------------------------------------------------
         cliff_cand = None
-        # Find position with highest cliff drop
-        cliff_positions = sorted(
-            [p for p, c in cliffs.items() if c.get("is_cliff", False)],
+        # Prioritize positions DIFFERENT from BPA that are facing an imminent tier cliff
+        other_cliff_positions = sorted(
+            [p for p, c in cliffs.items() if c.get("is_cliff", False) and p != bpa_pos],
             key=lambda p: cliffs[p].get("vorp_drop", 0.0),
             reverse=True
         )
-        if cliff_positions:
-            target_pos = cliff_positions[0]
-            pos_matches = scored_df[scored_df["position"] == target_pos]
-            if not pos_matches.empty:
-                cliff_cand = pos_matches.iloc[0]
-        
-        if cliff_cand is None:
-            # Fallback to second best MRU or high snip risk
-            high_snip = scored_df[scored_df["snip_risk_pct"] >= 70.0]
-            cliff_cand = high_snip.iloc[0] if not high_snip.empty else (
-                scored_df.iloc[1] if len(scored_df) > 1 else bpa_card
-            )
 
-        # 3. High Upside / Ceiling / Stack Play
-        # Filter to top 25 viable candidate pool to prevent reaching for late-round veterans
-        viable_pool = scored_df.head(25)
+        if other_cliff_positions:
+            for target_pos in other_cliff_positions:
+                pos_matches = scored_df[
+                    (scored_df["position"] == target_pos) &
+                    (scored_df["player_name"] != bpa_card["player_name"])
+                ]
+                if not pos_matches.empty:
+                    cliff_raw = pos_matches.iloc[0].copy()
+                    c_info = cliffs.get(target_pos, {})
+                    v_drop = c_info.get("vorp_drop", 20.0)
+                    rem = c_info.get("remaining_in_tier", 1)
+                    t_name = cliff_raw.get("boris_tier_pos", "Tier 1")
+                    cliff_raw["strategy_rationale"] = (
+                        f"🚨 <b>Cliff Defense:</b> Only {rem} {target_pos} remaining in {t_name} before a "
+                        f"<b>-{v_drop:.1f} VORP tier cliff</b>. Secures an elite {target_pos} anchor."
+                    )
+                    cliff_cand = cliff_raw
+                    break
+
+        # If no cross-position cliff, check if BPA position has a distinct secondary cliff target
+        if cliff_cand is None and cliffs.get(bpa_pos, {}).get("is_cliff", False):
+            same_pos_matches = scored_df[
+                (scored_df["position"] == bpa_pos) &
+                (scored_df["player_name"] != bpa_card["player_name"])
+            ]
+            if not same_pos_matches.empty:
+                cliff_raw = same_pos_matches.iloc[0].copy()
+                c_info = cliffs.get(bpa_pos, {})
+                v_drop = c_info.get("vorp_drop", 20.0)
+                cliff_raw["strategy_rationale"] = (
+                    f"🚨 <b>Positional Run Defense:</b> Secures the final remaining {bpa_pos} in this tier "
+                    f"before a <b>-{v_drop:.1f} VORP drop</b>."
+                )
+                cliff_cand = cliff_raw
+
+        # Fallback to second best distinct overall candidate
+        if cliff_cand is None:
+            distinct_pool = scored_df[scored_df["player_name"] != bpa_card["player_name"]]
+            if not distinct_pool.empty:
+                cliff_raw = distinct_pool.iloc[0].copy()
+                cliff_raw["strategy_rationale"] = (
+                    f"🛡️ <b>Roster Balance:</b> Top alternative asset to maintain positional flexibility."
+                )
+                cliff_cand = cliff_raw
+            else:
+                cliff_cand = bpa_card
+
+        # ----------------------------------------------------------------------
+        # 3. HIGH UPSIDE / CEILING / STACK PLAY
+        # ----------------------------------------------------------------------
+        viable_pool = scored_df.head(30)
         upside_candidates = viable_pool[
             (viable_pool["player_name"] != bpa_card["player_name"]) &
             (viable_pool["player_name"] != cliff_cand["player_name"])
@@ -168,23 +218,31 @@ class RecommendationEngine:
                 (scored_df["player_name"] != bpa_card["player_name"]) &
                 (scored_df["player_name"] != cliff_cand["player_name"])
             ]
-        
+
         upside_card = None
         if not upside_candidates.empty:
-            # Check for stack matches first
+            # Check for stack correlation matches first
             stacks = upside_candidates[upside_candidates["stack_mult"] > 1.0]
             if not stacks.empty:
-                upside_card = stacks.iloc[0]
+                upside_raw = stacks.iloc[0].copy()
+                stk_tag = upside_raw.get("stack_tag", "Team Stack")
+                upside_raw["strategy_rationale"] = (
+                    f"⚡ <b>{stk_tag}:</b> Direct QB correlation bonus (+15% ceiling multiplier) "
+                    f"to maximize weekly tournament boom upside."
+                )
+                upside_card = upside_raw
             else:
-                # Select top upside talent among viable options
-                if "nfl_talent_score" in upside_candidates.columns:
-                    top_talent = upside_candidates.sort_values(
-                        by=["nfl_talent_score", "dynamic_vorp"],
-                        ascending=[False, False]
-                    )
-                    upside_card = top_talent.iloc[0]
-                else:
-                    upside_card = upside_candidates.iloc[0]
+                # Prioritize top talent score / scheme catalyst / explosive ceiling
+                sort_cols = ["nfl_talent_score", "dynamic_vorp"] if "nfl_talent_score" in upside_candidates.columns else ["dynamic_vorp"]
+                top_talent = upside_candidates.sort_values(by=sort_cols, ascending=[False] * len(sort_cols))
+                upside_raw = top_talent.iloc[0].copy()
+                talent_val = upside_raw.get("nfl_talent_score", 95)
+                talent_disp = f"{float(talent_val):.1f}/100" if pd.notnull(talent_val) and str(talent_val) != "—" else "Elite"
+                upside_raw["strategy_rationale"] = (
+                    f"🚀 <b>Max-Ceiling Weapon:</b> Grade-A <b>{talent_disp} Talent</b> profile with "
+                    f"explosive 25+ PPG weekly ceiling."
+                )
+                upside_card = upside_raw
         else:
             upside_card = bpa_card
 

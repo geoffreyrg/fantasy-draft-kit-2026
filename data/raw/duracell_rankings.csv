@@ -1,6 +1,6 @@
 player_name,clean_name,duracell_ecr,duracell_tier,duracell_tier_tag,risk_rating,volatility_index,is_contract_year,contract_year_value,contract_prev_ppg,rb_tough_matchups,rb_playoff_toughness,wr_shadow_cb_count,wr_coverage_score
-Jahmyr Gibbs,jahmyr gibbs,1,1,guy,1.6,Low (High Floor Alpha),1,1,21.6,1.0,1.0,,
-Bijan Robinson,bijan robinson,2,1,guy,1.6,Low (High Floor Alpha),1,1,21.7,1.0,1.0,,
+Jahmyr Gibbs,jahmyr gibbs,1,1,guy,1.6,Low (High Floor Alpha),0,0,21.6,1.0,1.0,,
+Bijan Robinson,bijan robinson,2,1,guy,1.6,Low (High Floor Alpha),0,0,21.7,1.0,1.0,,
 Ja'Marr Chase,jamarr chase,3,1,consensus,2.5,Medium,0,0,,,,6.0,0.0
 Puka Nacua,puka nacua,4,1,consensus,2.5,Medium,1,1,23.4,,,2.0,2.0
 Jonathan Taylor,jonathan taylor,5,1,dragon,3.8,High (Elite Ceiling),0,0,,4.0,0.0,,
@@ -14,17 +14,17 @@ Justin Jefferson,justin jefferson,12,1,consensus,2.5,Medium,0,0,,,,4.0,3.0
 Omarion Hampton,omarion hampton,13,2,guy,1.6,Low (High Floor Alpha),0,0,,5.0,0.0,,
 CeeDee Lamb,ceedee lamb,14,2,fade,4.2,High (Overpriced Bust Risk),0,0,,,,5.0,1.0
 Drake London,drake london,15,2,guy,1.6,Low (High Floor Alpha),1,1,16.7,,,4.0,0.0
-De'Von Achane,devon achane,16,2,fade,4.2,High (Overpriced Bust Risk),1,0,20.2,2.0,0.0,,
+De'Von Achane,devon achane,16,2,fade,4.2,High (Overpriced Bust Risk),0,0,20.2,2.0,0.0,,
 Brock Bowers,brock bowers,17,2,dragon,3.8,High (Elite Ceiling),0,0,,,,,
 Nico Collins,nico collins,18,2,consensus,2.5,Medium,0,0,,,,5.0,3.0
 Kenneth Walker III,kenneth walker iii,19,2,guy,1.6,Low (High Floor Alpha),0,0,,4.0,1.0,,
-A.J. Brown,aj brown,20,2,consensus,2.5,Medium,1,0,14.7,,,3.0,2.0
+A.J. Brown,aj brown,20,2,consensus,2.5,Medium,0,0,14.7,,,3.0,2.0
 Derrick Henry,derrick henry,21,2,consensus,2.5,Medium,0,0,,2.0,0.0,,
 Trey McBride,trey mcbride,22,2,fade,4.2,High (Overpriced Bust Risk),0,0,,,,,
 George Pickens,george pickens,23,2,consensus,2.5,Medium,0,0,,,,,
 Jeremiyah Love,jeremiyah love,24,2,consensus,2.5,Medium,0,0,,3.0,1.0,,
 Chase Brown,chase brown,25,3,consensus,2.5,Medium,0,0,,4.0,1.0,,
-Rashee Rice,rashee rice,26,3,consensus,2.5,Medium,1,0,18.5,,,5.0,0.0
+Rashee Rice,rashee rice,26,3,consensus,2.5,Medium,0,0,18.5,,,5.0,0.0
 Chris Olave,chris olave,27,3,consensus,2.5,Medium,1,1,16.8,,,5.0,2.0
 Josh Jacobs,josh jacobs,28,3,consensus,2.5,Medium,0,0,,2.0,1.0,,
 Josh Allen,josh allen,29,3,consensus,2.5,Medium,0,0,,,,,
@@ -38,7 +38,7 @@ Breece Hall,breece hall,36,3,fade,4.2,High (Overpriced Bust Risk),0,0,,3.0,1.0,,
 Tee Higgins,tee higgins,37,4,consensus,2.5,Medium,0,0,,,,,
 Terry McLaurin,terry mclaurin,38,4,consensus,2.5,Medium,0,0,,,,5.0,4.0
 Davante Adams,davante adams,39,4,consensus,2.5,Medium,0,0,,,,,
-Zay Flowers,zay flowers,40,4,consensus,2.5,Medium,1,0,14.3,,,6.0,0.0
+Zay Flowers,zay flowers,40,4,consensus,2.5,Medium,0,0,14.3,,,6.0,0.0
 Jayden Daniels,jayden daniels,41,4,guy,1.6,Low (High Floor Alpha),0,0,,,,,
 D'Andre Swift,dandre swift,42,4,guy,1.6,Low (High Floor Alpha),0,0,,3.0,1.0,,
 Travis Etienne Jr.,travis etienne,43,4,consensus,2.5,Medium,0,0,,1.0,1.0,,
@@ -57,7 +57,7 @@ Jaylen Waddle,jaylen waddle,55,5,fade,4.2,High (Overpriced Bust Risk),0,0,,,,4.0
 Carnell Tate,carnell tate,56,5,consensus,2.5,Medium,0,0,,,,6.0,
 Rome Odunze,rome odunze,57,5,consensus,2.5,Medium,0,0,,,,3.0,4.0
 Alec Pierce,alec pierce,58,5,guy,1.6,Low (High Floor Alpha),0,0,,,,5.0,0.0
-Tucker Kraft,tucker kraft,59,5,guy,1.6,Low (High Floor Alpha),1,0,14.7,,,,
+Tucker Kraft,tucker kraft,59,5,guy,1.6,Low (High Floor Alpha),0,0,14.7,,,,
 Bhayshul Tuten,bhayshul tuten,60,5,fade,4.2,High (Overpriced Bust Risk),0,0,,5.0,1.0,,
 Jalen Hurts,jalen hurts,61,5,guy,1.6,Low (High Floor Alpha),0,0,,,,,
 Bucky Irving,bucky irving,62,5,fade,4.2,High (Overpriced Bust Risk),0,0,,1.0,1.0,,
@@ -83,18 +83,18 @@ Brock Purdy,brock purdy,81,6,guy,1.6,Low (High Floor Alpha),0,0,,,,,
 Josh Downs,josh downs,82,6,dragon,3.8,High (Elite Ceiling),1,1,8.5,,,,
 Marvin Harrison Jr.,marvin harrison jr,83,6,fade,4.2,High (Overpriced Bust Risk),0,0,,,,4.0,2.0
 Kenny Gainwell,kenny gainwell,84,6,consensus,2.5,Medium,0,0,,,,,
-Michael Wilson,michael wilson,85,6,consensus,2.5,Medium,1,0,13.0,,,,
+Michael Wilson,michael wilson,85,6,consensus,2.5,Medium,0,0,13.0,,,,
 Ricky Pearsall,ricky pearsall,86,6,consensus,2.5,Medium,0,0,,,,,
 Courtland Sutton,courtland sutton,87,6,consensus,2.5,Medium,0,0,,,,,
 Makai Lemon,makai lemon,88,6,consensus,2.5,Medium,0,0,,,,,
-Quentin Johnston,quentin johnston,89,6,dragon,3.8,High (Elite Ceiling),1,1,12.2,,,,
+Quentin Johnston,quentin johnston,89,6,dragon,3.8,High (Elite Ceiling),0,0,12.2,,,,
 JK Dobbins,jk dobbins,90,6,consensus,2.5,Medium,0,0,,3.0,1.0,,
 Wan'Dale Robinson,wandale robinson,91,6,consensus,2.5,Medium,0,0,,,,,2.0
 Jakobi Meyers,jakobi meyers,92,6,consensus,2.5,Medium,0,0,,,,,
 Chuba Hubbard,chuba hubbard,93,6,fade,4.2,High (Overpriced Bust Risk),0,0,,3.0,1.0,,
 RJ Harvey,rj harvey,94,6,fade,4.2,High (Overpriced Bust Risk),0,0,,,,,
 Rico Dowdle,rico dowdle,95,6,consensus,2.5,Medium,0,0,,,,,
-Parker Washington,parker washington,96,6,consensus,2.5,Medium,1,0,11.5,,,,
+Parker Washington,parker washington,96,6,consensus,2.5,Medium,0,0,11.5,,,,
 Brian Thomas Jr.,brian thomas jr,97,6,consensus,2.5,Medium,0,0,,,,,2.0
 Justin Herbert,justin herbert,98,6,guy,1.6,Low (High Floor Alpha),0,0,,,,,
 Chris Godwin Jr.,chris godwin jr,99,6,consensus,2.5,Medium,0,0,,,,,
@@ -102,7 +102,7 @@ Xavier Worthy,xavier worthy,100,6,consensus,2.5,Medium,0,0,,,,,
 Dak Prescott,dak prescott,101,7,consensus,2.5,Medium,0,0,,,,,
 Jonathon Brooks,jonathon brooks,102,7,guy,1.6,Low (High Floor Alpha),0,0,,,,,
 Caleb Williams,caleb williams,103,7,consensus,2.5,Medium,0,0,,,,,
-Jordan Addison,jordan addison,104,7,consensus,2.5,Medium,1,0,9.7,,,,
+Jordan Addison,jordan addison,104,7,consensus,2.5,Medium,0,0,9.7,,,,
 Matthew Golden,matthew golden,105,7,consensus,2.5,Medium,0,0,,,,,
 Romeo Doubs,romeo doubs,106,7,consensus,2.5,Medium,0,0,,,,,
 Tyler Shough,tyler shough,107,7,dragon,3.8,High (Elite Ceiling),0,0,,,,,
@@ -144,13 +144,13 @@ Malik Willis,malik willis,142,7,consensus,2.5,Medium,0,0,,,,,
 Woody Marks,woody marks,143,7,consensus,2.5,Medium,0,0,,,,,
 Rashid Shaheed,rashid shaheed,144,7,consensus,2.5,Medium,0,0,,,,,
 Jayden Higgins,jayden higgins,145,7,consensus,2.5,Medium,0,0,,,,,
-Dalton Kincaid,dalton kincaid,146,7,fade,4.2,High (Overpriced Bust Risk),1,0,10.5,,,,
+Dalton Kincaid,dalton kincaid,146,7,fade,4.2,High (Overpriced Bust Risk),0,0,10.5,,,,
 Greg Dulcich,greg dulcich,147,7,guy,1.6,Low (High Floor Alpha),0,0,,,,,
 Aaron Rodgers,aaron rodgers,148,7,consensus,2.5,Medium,0,0,,,,,
 Isiah Pacheco,isiah pacheco,149,7,consensus,2.5,Medium,0,0,,,,,
 Brian Robinson Jr.,brian robinson jr,150,7,consensus,2.5,Medium,0,0,,,,,
-CJ Stroud,cj stroud,150,6,consensus,2.5,Medium,1,0,14.9,,,,
-Bryce Young,bryce young,150,6,consensus,2.5,Medium,1,0,13.5,,,,
 James Cook,james cook,150,6,consensus,2.5,Medium,0,0,,5.0,1.0,,
-Tank Dell,tank dell,150,6,consensus,2.5,Medium,1,0,,,,,
+CJ Stroud,cj stroud,150,6,consensus,2.5,Medium,0,0,14.9,,,,
+Bryce Young,bryce young,150,6,consensus,2.5,Medium,0,0,13.5,,,,
+Tank Dell,tank dell,150,6,consensus,2.5,Medium,0,0,,,,,
 Jauan Jennings,jauan jennings,151,7,fade,4.2,High (Overpriced Bust Risk),0,0,,,,,

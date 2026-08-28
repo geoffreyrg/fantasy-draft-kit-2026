@@ -16,7 +16,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "Heavy Pre-Snap Motion • Elite YAC Creation • 68% GL Run Funnel",
         "playcaller": "Kyle Shanahan",
         "motion_rank": 2,
-        "proe_tag": "Balanced / Efficiency (+1.2%)",
+        "proe_tag": "Balanced Efficiency (-1.9%)",
         "personnel_tag": "Condensed 21/11p",
     },
     "LAR": {
@@ -27,7 +27,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "Top-3 Motion • Elite Target Consolidation (Puka/Kupp) • 11-Personnel",
         "playcaller": "Sean McVay",
         "motion_rank": 3,
-        "proe_tag": "Pass-Heavy (+3.8%)",
+        "proe_tag": "Balanced Pass (+0.3%)",
         "personnel_tag": "88% 11 Personnel (3-WR)",
     },
     "MIA": {
@@ -38,7 +38,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "Fastest Motion in NFL (#1) • Perimeter Speed Zone • Play-Action",
         "playcaller": "Bobby Slowik / Mike McDaniel",
         "motion_rank": 1,
-        "proe_tag": "Pass-Leaning (+2.5%)",
+        "proe_tag": "Balanced Pass (+0.3%)",
         "personnel_tag": "21/11 Personnel",
     },
     "DET": {
@@ -49,7 +49,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "Top-3 Scoring Eco • 74% GL Run Funnel (Gibbs/Monty) • Elite Play-Action",
         "playcaller": "Drew Petzing",
         "motion_rank": 4,
-        "proe_tag": "Balanced Power (+0.5%)",
+        "proe_tag": "Balanced Ground (-1.1%)",
         "personnel_tag": "12/21 Personnel",
     },
     "KC": {
@@ -57,10 +57,10 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "mentor_tree": "Reid / Holmgren Tree",
         "is_shanahan_tree": False,
         "is_top_eco": True,
-        "primary_tendency": "Top-5 PROE (+6.1%) • Pre-Snap Motion & Screen Master • RZ Pass Funnel",
+        "primary_tendency": "Top-5 Pass PROE (+6.4%) • Pre-Snap Motion & Screen Master • RZ Pass Funnel",
         "playcaller": "Andy Reid",
         "motion_rank": 5,
-        "proe_tag": "Extreme Pass-Heavy (+6.1%)",
+        "proe_tag": "Extreme Pass-Heavy (+6.4%)",
         "personnel_tag": "11/12 Personnel Spread",
     },
     "ATL": {
@@ -71,7 +71,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "Heavy Motion • 3-Down Workhorse Funnel (Bijan) • 70% GL Run",
         "playcaller": "Kevin Stefanski / Zac Robinson",
         "motion_rank": 6,
-        "proe_tag": "Balanced Zone (-0.8%)",
+        "proe_tag": "Ground-Heavy Zone (-4.2%)",
         "personnel_tag": "11/12 Personnel",
     },
     "CIN": {
@@ -79,10 +79,10 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "mentor_tree": "McVay Tree",
         "is_shanahan_tree": True,
         "is_top_eco": True,
-        "primary_tendency": "Pass-Heavy (+5.4% PROE) • Empty Backfield Sets • 65% RZ Pass Funnel",
+        "primary_tendency": "Pass-Heavy (+3.6% PROE) • Empty Backfield Sets • 65% RZ Pass Funnel",
         "playcaller": "Zac Taylor",
         "motion_rank": 14,
-        "proe_tag": "Pass-Heavy (+5.4%)",
+        "proe_tag": "Pass-Heavy (+3.6%)",
         "personnel_tag": "85% 11 Personnel (3-WR)",
     },
     "IND": {
@@ -93,7 +93,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "Top-5 Neutral Pace • 69% GL Run Funnel (JT) • Mobile QB Option",
         "playcaller": "Shane Steichen",
         "motion_rank": 18,
-        "proe_tag": "Run-Leaning RPO (-2.1%)",
+        "proe_tag": "Run-Leaning RPO (-3.5%)",
         "personnel_tag": "11 Personnel",
     },
     "PHI": {
@@ -104,7 +104,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "78% GL Run Funnel (Saquon/Hurts) • Top-5 OL • Condensed 2-WR Sets",
         "playcaller": "Sean Mannion / Kellen Moore",
         "motion_rank": 12,
-        "proe_tag": "Balanced Ground (-1.2%)",
+        "proe_tag": "Balanced Ground (0.0%)",
         "personnel_tag": "11/12 Personnel",
     },
     "BAL": {
@@ -115,7 +115,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "72% GL Run Funnel (Henry/Lamar) • Pre-Snap Motion • Lamar Read-Option",
         "playcaller": "Todd Monken",
         "motion_rank": 7,
-        "proe_tag": "Ground-Heavy (-3.8%)",
+        "proe_tag": "Ground-Heavy Option (0.0%)",
         "personnel_tag": "12/21 Personnel Pistol",
     },
     "GB": {
@@ -126,7 +126,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "Heavy Motion • Play-Action Deep Shots • 67% GL Run Funnel (Jacobs)",
         "playcaller": "Matt LaFleur",
         "motion_rank": 8,
-        "proe_tag": "Pass-Leaning (+1.8%)",
+        "proe_tag": "Balanced Zone (-1.0%)",
         "personnel_tag": "11/12 Personnel",
     },
     "CHI": {
@@ -134,10 +134,10 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "mentor_tree": "Campbell / Shanahan Lineage",
         "is_shanahan_tree": True,
         "is_top_eco": False,
-        "primary_tendency": "Elite Motion • High PROE • Creative RZ Funnel (Odunze/Burden/Loveland)",
+        "primary_tendency": "Elite Motion • Creative 11/12P RPO • RZ Spread Funnel (Odunze/Burden/Loveland)",
         "playcaller": "Ben Johnson",
         "motion_rank": 5,
-        "proe_tag": "Pass-Heavy (+4.2%)",
+        "proe_tag": "Balanced Spread (-2.7%)",
         "personnel_tag": "11/12 Personnel",
     },
     "MIN": {
@@ -145,10 +145,10 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "mentor_tree": "McVay Tree",
         "is_shanahan_tree": True,
         "is_top_eco": False,
-        "primary_tendency": "Top-5 Pass PROE (+4.9%) • 11-Personnel • Alpha Target Consolidation (Jefferson)",
+        "primary_tendency": "Pass-Forward System (+1.4% PROE) • 11-Personnel • Alpha Target Consolidation (Jefferson)",
         "playcaller": "Kevin O'Connell",
         "motion_rank": 10,
-        "proe_tag": "Pass-Heavy (+4.9%)",
+        "proe_tag": "Pass-Leaning (+1.4%)",
         "personnel_tag": "86% 11 Personnel (3-WR)",
     },
     "BUF": {
@@ -159,7 +159,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "Multi-TE 12p Power • Josh Allen Scramble Floor • DJ Moore / Kincaid Target Funnel",
         "playcaller": "Joe Brady",
         "motion_rank": 16,
-        "proe_tag": "Balanced Ground (-0.5%)",
+        "proe_tag": "Balanced Ground (-1.6%)",
         "personnel_tag": "12 Personnel Heavy (Kincaid/Knox)",
     },
     "HOU": {
@@ -170,7 +170,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "Top-10 Eco • Outside Zone • Play-Action Deep Shots (Stroud/Collins)",
         "playcaller": "Jerrod Johnson / Bobby Slowik",
         "motion_rank": 9,
-        "proe_tag": "Pass-Leaning (+2.1%)",
+        "proe_tag": "Balanced Zone (-0.5%)",
         "personnel_tag": "11 Personnel Spread",
     },
     "TB": {
@@ -178,10 +178,10 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "mentor_tree": "McVay Tree",
         "is_shanahan_tree": True,
         "is_top_eco": False,
-        "primary_tendency": "Top-5 Pass PROE (+5.1%) • 11-Personnel • 60% RZ Pass Funnel (Evans/Godwin)",
+        "primary_tendency": "11-Personnel Spread • Play-Action Deep Funnel (Evans/Godwin) • Workhorse Ground Flow",
         "playcaller": "Liam Coen",
         "motion_rank": 11,
-        "proe_tag": "Pass-Heavy (+5.1%)",
+        "proe_tag": "Ground-Leaning Play-Action (-6.6%)",
         "personnel_tag": "84% 11 Personnel",
     },
     "WAS": {
@@ -192,7 +192,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "Top-3 Neutral Pace • Read-Option Spread • Dual-Threat Floor (Daniels)",
         "playcaller": "Kliff Kingsbury",
         "motion_rank": 15,
-        "proe_tag": "Fast-Pace Balanced (+0.8%)",
+        "proe_tag": "Fast-Pace Balanced (0.0%)",
         "personnel_tag": "11 Personnel Quick Tempo",
     },
     "DEN": {
@@ -203,7 +203,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "High RB Target Share • Screen Heavy • Quick-Timing RZ Funnel",
         "playcaller": "Sean Payton",
         "motion_rank": 17,
-        "proe_tag": "Pass-Leaning (+1.5%)",
+        "proe_tag": "Pass-Leaning (+1.7%)",
         "personnel_tag": "11/12 Personnel",
     },
     "SEA": {
@@ -211,10 +211,10 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "mentor_tree": "Grubb / DeBoer Lineage",
         "is_shanahan_tree": False,
         "is_top_eco": False,
-        "primary_tendency": "47% 2-WR Target Funnel (JSN/DK) • High Pass Volume • Downfield Air Yards",
+        "primary_tendency": "47% 2-WR Target Funnel (JSN/DK) • Downfield Air Yards • Play-Action Flow",
         "playcaller": "Brian Fleury / Ryan Grubb",
         "motion_rank": 13,
-        "proe_tag": "Pass-Heavy (+3.6%)",
+        "proe_tag": "Balanced Spread (0.0%)",
         "personnel_tag": "Condensed 2-WR Focus",
     },
     "PIT": {
@@ -222,10 +222,10 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "mentor_tree": "Shanahan / Titans Lineage",
         "is_shanahan_tree": True,
         "is_top_eco": False,
-        "primary_tendency": "Heavy 12/13 Personnel (Multiple TEs) • Ground-Heavy PROE (-4.5%) • Outside Zone",
+        "primary_tendency": "Heavy 12/13 Personnel (Multiple TEs) • +4.6% PROE • Outside Zone & PA Shots",
         "playcaller": "Arthur Smith",
         "motion_rank": 20,
-        "proe_tag": "Ground-Heavy (-4.5%)",
+        "proe_tag": "Pass-Forward Lineage (+4.6%)",
         "personnel_tag": "12/13 Personnel Heavy",
     },
     "LAC": {
@@ -236,7 +236,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "Power Outside Zone • 71% GL Run Funnel (Hampton) • Heavy Play-Action",
         "playcaller": "Mike McDaniel / Jim Harbaugh",
         "motion_rank": 19,
-        "proe_tag": "Ground-Leaning (-2.8%)",
+        "proe_tag": "Ground-Leaning (-1.4%)",
         "personnel_tag": "12/21 Personnel Heavy",
     },
     "LV": {
@@ -247,7 +247,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "Shanahan Pre-Snap Motion • Condensed Splits • Target Consolidation (Adams/Bowers)",
         "playcaller": "Klint Kubiak",
         "motion_rank": 10,
-        "proe_tag": "Balanced Zone (+0.2%)",
+        "proe_tag": "Ground-Leaning Zone (-4.3%)",
         "personnel_tag": "11/12 Personnel",
     },
     "NO": {
@@ -258,7 +258,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "Pre-Snap Motion • Condensed Formation • Kamara/Olave Target Funnel",
         "playcaller": "Klint Kubiak",
         "motion_rank": 8,
-        "proe_tag": "Balanced Motion (+0.8%)",
+        "proe_tag": "Balanced Motion (-2.3%)",
         "personnel_tag": "11/12 Personnel",
     },
     "JAX": {
@@ -269,7 +269,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "High Pass Volume • RPO Spacing • Pass-Heavy RZ (Engram/Lawrence)",
         "playcaller": "Doug Pederson / Press Taylor",
         "motion_rank": 21,
-        "proe_tag": "Pass-Heavy (+3.2%)",
+        "proe_tag": "Pass-Leaning (+0.9%)",
         "personnel_tag": "11 Personnel Spread",
     },
     "ARI": {
@@ -280,7 +280,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "Outside Zone • Multi-TE Target Funnel (McBride) • Kyler Scrambles",
         "playcaller": "Drew Petzing",
         "motion_rank": 12,
-        "proe_tag": "Balanced Zone (-0.5%)",
+        "proe_tag": "Balanced Zone (-1.1%)",
         "personnel_tag": "12 Personnel Heavy",
     },
     "DAL": {
@@ -288,10 +288,10 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "mentor_tree": "McCarthy / Schottenheimer Lineage",
         "is_shanahan_tree": False,
         "is_top_eco": True,
-        "primary_tendency": "Top-3 Neutral Pace • 61% RZ Pass Funnel (Dak/Lamb) • High Volume",
+        "primary_tendency": "Top-3 Neutral Pace • 61% RZ Pass Funnel (Dak/Lamb) • High Overall Tempo",
         "playcaller": "Brian Schottenheimer",
         "motion_rank": 22,
-        "proe_tag": "Pass-Heavy (+4.1%)",
+        "proe_tag": "Balanced Ground (-3.4%)",
         "personnel_tag": "11 Personnel",
     },
     "CAR": {
@@ -302,7 +302,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "Fast-Pace 11-Personnel • Quick Timing Pass • Steady RB Floor",
         "playcaller": "Dave Canales",
         "motion_rank": 16,
-        "proe_tag": "Pass-Leaning (+1.2%)",
+        "proe_tag": "Balanced Quick Game (-2.0%)",
         "personnel_tag": "11 Personnel",
     },
     "CLE": {
@@ -310,10 +310,10 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "mentor_tree": "Air Raid / Dorsey Lineage",
         "is_shanahan_tree": False,
         "is_top_eco": False,
-        "primary_tendency": "High PROE (+4.8%) • 4-WR Shotgun Pass • Deep Ball Frequency",
+        "primary_tendency": "Shotgun Pass Spacing • Downfield Air Yards • Deep Ball Frequency",
         "playcaller": "Ken Dorsey",
         "motion_rank": 24,
-        "proe_tag": "Pass-Heavy (+4.8%)",
+        "proe_tag": "Balanced Ground (-3.2%)",
         "personnel_tag": "11/10 Personnel Spread",
     },
     "TEN": {
@@ -324,7 +324,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "Pass-Heavy 11-Spread • 3-WR Focus • Shotgun Pass Funnel",
         "playcaller": "Brian Callahan",
         "motion_rank": 23,
-        "proe_tag": "Pass-Heavy (+3.5%)",
+        "proe_tag": "Balanced Spread (-1.4%)",
         "personnel_tag": "11 Personnel",
     },
     "NYJ": {
@@ -335,7 +335,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "11-Personnel • Quick Timing • Alpha Target Consolidation (Wilson/Hall)",
         "playcaller": "Tanner Engstrand",
         "motion_rank": 25,
-        "proe_tag": "Balanced Pass (+0.9%)",
+        "proe_tag": "Balanced Spread (-1.3%)",
         "personnel_tag": "11 Personnel",
     },
     "NYG": {
@@ -346,7 +346,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "Read-Option • High Tempo Floor • Quick Perimeter Spacing (Nabers Alpha)",
         "playcaller": "Brian Daboll",
         "motion_rank": 26,
-        "proe_tag": "Pass-Leaning (+1.4%)",
+        "proe_tag": "Pass-Leaning (+1.3%)",
         "personnel_tag": "11 Personnel",
     },
     "NE": {
@@ -357,7 +357,7 @@ TEAM_SCHEME_INTEL: Dict[str, Dict[str, Any]] = {
         "primary_tendency": "Heavy 12/21 Personnel • Under-Center Ground • Rhamondre Volume Floor",
         "playcaller": "Alex Van Pelt",
         "motion_rank": 27,
-        "proe_tag": "Ground-Heavy (-3.4%)",
+        "proe_tag": "Pass-Leaning (+1.4%)",
         "personnel_tag": "12/21 Personnel Heavy",
     }
 }

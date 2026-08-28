@@ -29,23 +29,42 @@ def get_player_badges_html(p: pd.Series, platform: str = "yahoo") -> str:
     inj = str(p.get("injury_status", "")).strip()
     if inj and inj.lower() not in ("healthy", "nan", "—", "none", ""):
         badges.append(f'<span style="background:#DC2626; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">🚨 {inj}</span>')
+    
+    # 1. Positional Role & Tier Badges
+    pos = str(p.get("position", "")).upper()
+    tier_str = str(p.get("boris_tier_pos", "Tier 1"))
+    dvorp_val = float(p.get("dynamic_vorp", 0.0))
+    
+    if pos == "RB" and (tier_str == "Tier 1" or dvorp_val >= 150):
+        badges.append('<span style="background:#059669; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">👑 ANCHOR RB1</span>')
+    elif pos == "WR" and (tier_str == "Tier 1" or dvorp_val >= 100):
+        badges.append('<span style="background:#0284C7; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">🎯 ALPHA WR1</span>')
+    elif pos == "TE" and tier_str == "Tier 1":
+        badges.append('<span style="background:#7C3AED; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">💎 ELITE TE1</span>')
+    elif pos == "QB" and tier_str == "Tier 1":
+        badges.append('<span style="background:#D97706; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">⚡ ELITE QB1</span>')
+
+    # 2. Scheme & Archetype Badges
     if p.get("is_exodia") == 1:
-        badges.append('<span style="background:#7C3AED; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">💥 EXODIA</span>')
+        badges.append('<span style="background:#7C3AED; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">💥 EXODIA ALPHA</span>')
     if p.get("is_hero") == 1:
         badges.append('<span style="background:#059669; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">👑 HERO</span>')
-    if str(p.get("smyth_color_tag", "")).lower().find("target") != -1 or str(p.get("smyth_color_tag", "")).lower().find("green") != -1:
+    if str(p.get("smyth_color_tag", "")).lower().find("target") != -1 or str(p.get("smyth_color_tag", "")).lower().find("green") != -1 or str(p.get("smyth_color_tag", "")) == "🎯":
         badges.append('<span style="background:#10B981; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">🎯 SMYTH TARGET</span>')
     if p.get("is_gold_mine") == 1:
         badges.append('<span style="background:#D97706; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">⛏️ GOLD MINE</span>')
-    if p.get("is_contract_year") == 1:
-        badges.append('<span style="background:#0284C7; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">💰 CONTRACT YR</span>')
     if p.get("is_scheme_catalyst") == 1:
         badges.append('<span style="background:#EA580C; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">🔥 CATALYST</span>')
     
+    # 3. True High-Value Walk Year
+    if p.get("is_contract_year") == 1 and p.get("contract_year_value") == 1:
+        badges.append('<span style="background:#0284C7; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">💰 WALK YEAR</span>')
+    
+    # 4. Market Arbitrage & Value
     plat_key = platform.lower()
     delta_val = float(p.get(f"adp_delta_{plat_key}", p.get("adp_delta_yahoo", 0.0)))
-    if delta_val >= 5.0:
-        badges.append(f'<span style="background:#4F46E5; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">💎 ADP STEAL (+{delta_val:.1f})</span>')
+    if delta_val >= 4.0:
+        badges.append(f'<span style="background:#4F46E5; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">💎 ADP VALUE (+{delta_val:.1f})</span>')
     
     m_tag = str(p.get("platform_market_tag", ""))
     if m_tag in ["🚫 TRAP", "💎 STEAL"]:
@@ -98,36 +117,43 @@ def render_strategy_card_html(
     snip_c = "#DC2626" if snip_pct >= 75.0 else ("#D97706" if snip_pct >= 40.0 else "#059669")
     
     badges_html = get_player_badges_html(p, platform=platform)
-    badge_div = f'<div style="margin-bottom: 6px;">{badges_html}</div>' if badges_html else ""
+    badge_div = f'<div style="margin-bottom: 8px; display: flex; flex-wrap: wrap; gap: 4px;">{badges_html}</div>' if badges_html else ""
     
-    sub_txt = custom_subtitle or p.get("master_designation", compute_tactical_edge(p))
-    if p.get("stack_tag"):
-        sub_txt = f"{p['stack_tag']} • {sub_txt}"
-    cleaned_sub = clean_html_text(sub_txt)
+    # Strategic rationale / pitch box
+    strat_rationale = custom_subtitle or p.get("strategy_rationale", "")
+    if not strat_rationale:
+        sub_txt = p.get("master_designation", compute_tactical_edge(p))
+        if p.get("stack_tag"):
+            sub_txt = f"{p['stack_tag']} • {sub_txt}"
+        strat_rationale = clean_html_text(sub_txt)
+    else:
+        strat_rationale = clean_html_text(strat_rationale)
+
+    tactical_edge = clean_html_text(p.get("master_designation", compute_tactical_edge(p)))
 
     card_html = (
-        f'<div style="border: 2px solid {border_color}; background-color: {bg_color}; padding: 12px 14px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">'
-        f'<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">'
-        f'<span style="font-weight: 800; color: {title_color}; font-size: 0.92rem;">{strategy_title}</span>'
-        f'<span style="background: {border_color}; color: white; padding: 2px 8px; border-radius: 12px; font-weight: 700; font-size: 0.75rem;">{strategy_pill}</span>'
+        f'<div style="border: 2px solid {border_color}; background-color: {bg_color}; padding: 14px 16px; border-radius: 10px; margin-bottom: 14px; box-shadow: 0 4px 8px rgba(0,0,0,0.06);">'
+        f'<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">'
+        f'<span style="font-weight: 800; color: {title_color}; font-size: 0.92rem; letter-spacing: -0.2px;">{strategy_title}</span>'
+        f'<span style="background: {border_color}; color: white; padding: 3px 9px; border-radius: 12px; font-weight: 800; font-size: 0.75rem;">{strategy_pill}</span>'
         f'</div>'
-        f'<div style="display: flex; justify-content: space-between; align-items: center; margin: 4px 0;">'
-        f'<div style="display: flex; align-items: center; gap: 8px;">'
-        f'<img src="{headshot_url}" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1px solid #94A3B8; background: #0F172A;" />'
-        f'<div><div style="font-size: 1.15rem; font-weight: 800; color: #0F172A;">{emoji} {p_name}</div>'
-        f'<div style="font-size: 0.82rem; color: #475569; font-weight: 600; display: flex; align-items: center; gap: 4px;"><img src="{team_logo_url}" style="width: 12px; height: 12px;" /> {p_pos} - {p_team}</div></div>'
+        f'<div style="display: flex; justify-content: space-between; align-items: center; margin: 6px 0;">'
+        f'<div style="display: flex; align-items: center; gap: 10px;">'
+        f'<img src="{headshot_url}" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid #94A3B8; background: #0F172A;" />'
+        f'<div><div style="font-size: 1.18rem; font-weight: 800; color: #0F172A; line-height: 1.2;">{emoji} {p_name}</div>'
+        f'<div style="font-size: 0.83rem; color: #475569; font-weight: 700; display: flex; align-items: center; gap: 4px; margin-top: 2px;"><img src="{team_logo_url}" style="width: 14px; height: 14px;" /> {p_pos} - {p_team} &bull; <span style="color:#0284C7;">{tier}</span></div></div>'
         f'</div>'
-        f'<div style="font-size: 0.95rem; font-weight: 800; color: #1E3A8A; text-align: right;">📊 <b>{proj_pts:.1f} pts</b><br><span style="font-size: 0.78rem; color: #64748B; font-weight: 600;">({ppg:.1f}/G)</span></div>'
+        f'<div style="font-size: 0.95rem; font-weight: 800; color: #1E3A8A; text-align: right;">📊 <b>{proj_pts:.1f} pts</b><br><span style="font-size: 0.80rem; color: #64748B; font-weight: 600;">({ppg:.1f}/G)</span></div>'
         f'</div>'
-        f'<div style="font-size: 0.84rem; color: #334155; margin-bottom: 6px; line-height: 1.4;">'
-        f'<b>DynVORP:</b> <span style="color: #059669; font-weight: 800;">+{dvorp:.1f}</span> • '
-        f'<b>Tier:</b> <span style="font-weight: 700;">{tier}</span> • '
-        f'<b>Talent:</b> <span style="font-weight: 700;">{talent_str}</span> • '
-        f'<b>{platform.capitalize()} ADP:</b> {adp_str} <span style="color:#059669; font-weight:700;">({delta_str})</span> • '
+        f'<div style="font-size: 0.84rem; color: #334155; margin-bottom: 8px; line-height: 1.4; background: rgba(255,255,255,0.6); padding: 6px 10px; border-radius: 6px;">'
+        f'<b>DynVORP:</b> <span style="color: #059669; font-weight: 800;">+{dvorp:.1f}</span> &bull; '
+        f'<b>Talent:</b> <span style="font-weight: 700;">{talent_str}</span> &bull; '
+        f'<b>{platform.capitalize()} ADP:</b> {adp_str} <span style="color:#059669; font-weight:700;">({delta_str})</span> &bull; '
         f'<b>Snip:</b> <span style="color: {snip_c}; font-weight: 800;">{snip_pct:.0f}% ({snip_tag})</span>'
         f'</div>'
         f'{badge_div}'
-        f'<div style="font-size: 0.80rem; color: #475569; font-style: italic; border-top: 1px dashed rgba(0,0,0,0.12); padding-top: 5px;">{cleaned_sub}</div>'
+        f'<div style="background: rgba(255,255,255,0.85); border-left: 3px solid {border_color}; padding: 7px 10px; border-radius: 5px; font-size: 0.82rem; color: #1E293B; margin-bottom: 6px; line-height: 1.35;">{strat_rationale}</div>'
+        f'<div style="font-size: 0.78rem; color: #64748B; font-style: italic;">🎯 {tactical_edge}</div>'
         f'</div>'
     )
     return card_html
@@ -241,6 +267,36 @@ def render_tab_live_draft(df: pd.DataFrame):
         if st.button("🔄 Reset Draft", use_container_width=True):
             apply_reset_action(state_mgr)
             st.rerun()
+
+    # --------------------------------------------------------------------------
+    # LIVE PLATFORM STREAM (SLEEPER / YAHOO DIRECT SYNC)
+    # --------------------------------------------------------------------------
+    if "sleeper_user_data" in st.session_state and "sleeper_leagues" in st.session_state:
+        u_data = st.session_state["sleeper_user_data"]
+        leagues = st.session_state["sleeper_leagues"]
+        if leagues:
+            with st.expander("📡 Live Sleeper Draft Auto-Sync Stream", expanded=False):
+                s_c1, s_c2 = st.columns([3, 1])
+                with s_c1:
+                    draft_map = {f"{lg.get('name')} (Draft ID: {lg.get('draft_id')})": lg.get('draft_id') for lg in leagues if lg.get('draft_id')}
+                    if draft_map:
+                        sel_draft_label = st.selectbox("Select Sleeper Draft to Stream:", list(draft_map.keys()), key="live_war_room_sleeper_draft_sel")
+                        sel_d_id = draft_map[sel_draft_label]
+                    else:
+                        sel_d_id = None
+                        st.info("No active draft IDs found in Sleeper leagues.")
+                with s_c2:
+                    st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
+                    if st.button("🔄 Sync Live Picks", key="btn_quick_sync_sleeper", use_container_width=True):
+                        if sel_d_id:
+                            from src.ingestion.sleeper_client import SleeperClient
+                            sc = SleeperClient()
+                            res = sc.sync_draft_to_war_room(sel_d_id, state_mgr, user_sleeper_id=u_data.get("user_id"))
+                            if res["status"] == "success":
+                                st.success(f"Synced {res['picks_added']} new picks from Sleeper!")
+                                st.rerun()
+                            else:
+                                st.info("War room is already up to date with Sleeper!")
 
     # Calculate In-Draft Dynamic Models
     available_df = state_mgr.get_available_pool()
@@ -393,6 +449,7 @@ def render_tab_live_draft(df: pd.DataFrame):
                     bg_color="#F0F9FF",
                     title_color="#0369A1",
                     p=bpa,
+                    custom_subtitle=bpa.get("strategy_rationale", ""),
                     platform=state_mgr.platform
                 )
                 st.markdown(card1_html, unsafe_allow_html=True)
@@ -403,7 +460,7 @@ def render_tab_live_draft(df: pd.DataFrame):
             # Card 2: Tier Cliff Safeguard
             cliff = tri_cards.get("cliff")
             if cliff is not None:
-                cliff_warn_note = f"⚠️ Critical tier drop-off if missed before pick #{decision_target_pick}."
+                cliff_warn_note = cliff.get("strategy_rationale", f"⚠️ Critical tier drop-off if missed before pick #{decision_target_pick}.")
                 card2_html = render_strategy_card_html(
                     strategy_title="🚨 STRATEGY 2: TIER CLIFF SAFEGUARD",
                     strategy_pill="CLIFF DEFENSE",
@@ -429,6 +486,7 @@ def render_tab_live_draft(df: pd.DataFrame):
                     bg_color="#F5F3FF",
                     title_color="#6D28D9",
                     p=upside,
+                    custom_subtitle=upside.get("strategy_rationale", ""),
                     platform=state_mgr.platform
                 )
                 st.markdown(card3_html, unsafe_allow_html=True)
