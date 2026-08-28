@@ -220,24 +220,46 @@ st.markdown(
 )
 
 # Key KPI Cards
-kpi1, kpi2, kpi3, kpi4, kpi5, kpi6 = st.columns(6)
-with kpi1:
-    st.metric("Total Scouted Players", len(df), "12-Team 1/2 PPR")
-with kpi2:
-    exodia_count = int(df["is_exodia"].sum()) if "is_exodia" in df.columns else 15
-    st.metric("💥 Exodia / Must-Haves", f"{exodia_count} Players", "+22.0 Upside Boost")
-with kpi3:
-    elite_talent_cnt = len(df[df["nfl_talent_score"] >= 90.0]) if "nfl_talent_score" in df.columns else 0
-    st.metric("🔬 JoScho 90+ Talent Elite", f"{elite_talent_cnt} Players", "PBP Per-Opp Score")
-with kpi4:
-    yahoo_steals_cnt = len(df[(df["adp_delta_yahoo"] >= 5.0) & (df["composite_rank"] <= 180) & (df["adp_yahoo"] <= 200)])
-    st.metric("🟣 Yahoo ADP Steals", f"{yahoo_steals_cnt} Targets", "Draftable Steals (Top 180)")
-with kpi5:
-    rookie_cnt = int(df["is_rookie"].sum()) if "is_rookie" in df.columns else 0
-    st.metric("🎓 2026 Rookie Class", f"{rookie_cnt} Rookies", "ML Hit Prob Model")
-with kpi6:
-    target_count = len(df[df["smyth_color_tag"].str.contains("Target|Green", case=False, na=False)]) if "smyth_color_tag" in df.columns else 0
-    st.metric("🎯 Smyth Green Targets", f"{target_count} Players", "+12.0 Upside Model")
+exodia_count = int(df["is_exodia"].sum()) if "is_exodia" in df.columns else 15
+elite_talent_cnt = len(df[df["nfl_talent_score"] >= 90.0]) if "nfl_talent_score" in df.columns else 0
+yahoo_steals_cnt = len(df[(df["adp_delta_yahoo"] >= 5.0) & (df["composite_rank"] <= 180) & (df["adp_yahoo"] <= 200)])
+rookie_cnt = int(df["is_rookie"].sum()) if "is_rookie" in df.columns else 0
+target_count = len(df[df["smyth_color_tag"].astype(str).str.contains("🎯|Target|Green", case=False, na=False)]) if "smyth_color_tag" in df.columns else 0
+
+st.markdown(f"""
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px;">
+    <div style="background: #0B132B; border: 1px solid #1E293B; border-radius: 8px; padding: 14px 16px;">
+        <div style="color: #94A3B8; font-size: 0.78rem; font-weight: 700; text-transform: uppercase;">Total Scouted Pool</div>
+        <div style="color: #FFFFFF; font-size: 1.45rem; font-weight: 800; margin: 2px 0;">{len(df)} Players</div>
+        <div style="color: #64748B; font-size: 0.78rem;">Top 200 Fantasy Relevant</div>
+    </div>
+    <div style="background: #0B132B; border: 1px solid #1E293B; border-radius: 8px; padding: 14px 16px;">
+        <div style="color: #94A3B8; font-size: 0.78rem; font-weight: 700; text-transform: uppercase;">💥 Exodia Must-Haves</div>
+        <div style="color: #38BDF8; font-size: 1.45rem; font-weight: 800; margin: 2px 0;">{exodia_count} Players</div>
+        <div style="color: #64748B; font-size: 0.78rem;">Consensus Tier 1 Anchors</div>
+    </div>
+    <div style="background: #0B132B; border: 1px solid #1E293B; border-radius: 8px; padding: 14px 16px;">
+        <div style="color: #94A3B8; font-size: 0.78rem; font-weight: 700; text-transform: uppercase;">🔬 JoScho 90+ Talent</div>
+        <div style="color: #10B981; font-size: 1.45rem; font-weight: 800; margin: 2px 0;">{elite_talent_cnt} Players</div>
+        <div style="color: #64748B; font-size: 0.78rem;">Elite Film & MTF Z-Score</div>
+    </div>
+    <div style="background: #0B132B; border: 1px solid #1E293B; border-radius: 8px; padding: 14px 16px;">
+        <div style="color: #94A3B8; font-size: 0.78rem; font-weight: 700; text-transform: uppercase;">🟣 Yahoo ADP Steals</div>
+        <div style="color: #A855F7; font-size: 1.45rem; font-weight: 800; margin: 2px 0;">{yahoo_steals_cnt} Targets</div>
+        <div style="color: #64748B; font-size: 0.78rem;">Draftable +5.0 Pick Value</div>
+    </div>
+    <div style="background: #0B132B; border: 1px solid #1E293B; border-radius: 8px; padding: 14px 16px;">
+        <div style="color: #94A3B8; font-size: 0.78rem; font-weight: 700; text-transform: uppercase;">🎓 2026 Rookie Class</div>
+        <div style="color: #F59E0B; font-size: 1.45rem; font-weight: 800; margin: 2px 0;">{rookie_cnt} Rookies</div>
+        <div style="color: #64748B; font-size: 0.78rem;">Day 1 & 2 NFL Draft Capital</div>
+    </div>
+    <div style="background: #0B132B; border: 1px solid #1E293B; border-radius: 8px; padding: 14px 16px;">
+        <div style="color: #94A3B8; font-size: 0.78rem; font-weight: 700; text-transform: uppercase;">🎯 Smyth Green Targets</div>
+        <div style="color: #34D399; font-size: 1.45rem; font-weight: 800; margin: 2px 0;">{target_count} Players</div>
+        <div style="color: #64748B; font-size: 0.78rem;">Smyth Guide Priority Buys</div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 # ==============================================================================
 # MAIN 6-PILLAR ARCHITECTURE
