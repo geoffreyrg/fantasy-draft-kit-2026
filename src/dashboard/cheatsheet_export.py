@@ -70,7 +70,8 @@ def build_rich_tactical_note(row: pd.Series) -> str:
 
     # 5. ADP Value Delta
     adp_delta = row.get("adp_delta_yahoo", 0.0)
-    if pd.notnull(adp_delta) and float(adp_delta) >= 4.0:
+    adp_val = float(row.get("adp_yahoo", row.get("adp_consensus", 999.0)))
+    if pd.notnull(adp_delta) and 4.0 <= float(adp_delta) <= 60.0 and adp_val <= 240.0:
         parts.append(f"🟢 +{float(adp_delta):.1f} Value")
 
     # 6. Fallback if empty

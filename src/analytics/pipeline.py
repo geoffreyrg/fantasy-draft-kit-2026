@@ -590,8 +590,14 @@ class AnalyticsPipeline:
             curr_desig = str(row.get("master_designation", "")).strip()
             is_slp = (row.get("is_sleeper") is True) or (row.get("is_sleeper") == 1)
             delta = float(row.get("sleeper_delta", 0.0))
-            if (not curr_desig or curr_desig in ("—", "nan")) and is_slp and delta >= 6.0:
+            adp = float(row.get("adp_consensus", 999.0))
+            if (not curr_desig or curr_desig in ("—", "nan")) and is_slp and 6.0 <= delta <= 80.0 and adp <= 240.0:
                 return f"💤 **Breakout Sleeper (+{delta:.0f} ADP Delta)**"
+            elif (not curr_desig or curr_desig in ("—", "nan")):
+                if row.get("is_exodia") == 1:
+                    return "💥 **Exodia Target**"
+                elif is_slp:
+                    return "🎯 **Late Sleeper Target**"
             return curr_desig
 
         master["master_designation"] = master.apply(_sync_sleeper_designation, axis=1)
