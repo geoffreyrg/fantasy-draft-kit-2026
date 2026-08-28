@@ -335,8 +335,8 @@ class CompositeModelEngine:
         norm_ecr = (200.0 - ecr_series.fillna(150.0)).clip(lower=0.0) / 200.0 * 100.0
         norm_tb = df["tie_breaker_score"].fillna(50.0) if "tie_breaker_score" in df.columns else pd.Series(50.0, index=df.index)
         
-        # Skill position composite index: 65% VORP, 20% ECR market calibration, 15% 5-Pillar intelligence
-        skill_comp_score = (0.65 * norm_vorp + 0.20 * norm_ecr + 0.15 * norm_tb).round(2)
+        # Skill position composite index: 57% ECR market anchor, 28% VORP analytical value, 15% 5-Pillar intelligence
+        skill_comp_score = (0.28 * norm_vorp + 0.57 * norm_ecr + 0.15 * norm_tb).round(2)
         
         # For K and DST, place strictly at the baseline after skill positions
         k_dst_score = (-100.0 + df["adjusted_vorp"] * 0.1).round(2)
@@ -358,17 +358,17 @@ class CompositeModelEngine:
                 return explicit_auc
             score = _safe_float(row.get("composite_score"), 0.0)
             if score >= 85.0:
-                return round(45.0 + (score - 85.0) * 1.5, 1)
+                return round(45.0 + (score - 85.0) * 1.8, 1)
             elif score >= 75.0:
                 return round(30.0 + (score - 75.0) * 1.5, 1)
-            elif score >= 65.0:
-                return round(18.0 + (score - 65.0) * 1.2, 1)
+            elif score >= 68.0:
+                return round(20.0 + (score - 68.0) * 1.4, 1)
             elif score >= 55.0:
-                return round(8.0 + (score - 55.0) * 1.0, 1)
+                return round(10.0 + (score - 55.0) * 0.75, 1)
             elif score >= 45.0:
-                return round(3.0 + (score - 45.0) * 0.5, 1)
+                return round(4.0 + (score - 45.0) * 0.60, 1)
             elif score >= 35.0:
-                return round(1.0 + (score - 35.0) * 0.2, 1)
+                return round(2.0 + (score - 35.0) * 0.20, 1)
             return 1.0
 
         df["projected_auction_value"] = df.apply(_calculate_auction_value, axis=1).round(1)
@@ -466,13 +466,13 @@ class CompositeModelEngine:
                 return "T2"
             elif v >= 68.0:
                 return "T3"
-            elif v >= 60.0:
+            elif v >= 55.0:
                 return "T4"
-            elif v >= 52.0:
-                return "T5"
             elif v >= 45.0:
-                return "T6"
+                return "T5"
             elif v >= 35.0:
+                return "T6"
+            elif v >= 25.0:
                 return "T7"
             else:
                 return "T8"
