@@ -1,8 +1,8 @@
 """
 Tab 3: 🔬 360° Player Scouting Dossier & Head-to-Head Pick Arbiter
 Comprehensive multi-dimensional intelligence card for any player with HD headshots, team logos,
-bio vitals, Week 1 & Season projections, verified live FantasyPros news, position-specific JoScho talent metrics,
-and separate Regular Season vs. Playoff Strength of Schedule.
+bio vitals, Week 1 & Season projections, verified live FantasyPros API news & injury data,
+position-specific JoScho talent metrics, and separate Regular Season vs. Playoff Strength of Schedule.
 """
 
 import streamlit as st
@@ -16,44 +16,9 @@ from src.utils.player_media import PlayerMediaResolver
 from src.analytics.normalizer import DataNormalizer
 from src.ingestion.fantasypros_client import FantasyProsClient
 
-TEAM_CAMP_BEAT_INTEL = {
-    "ARI": "Cardinals Camp: Kyler Murray commanding high-tempo spread offense; Marvin Harrison Jr. & Trey McBride dominating primary target consolidation.",
-    "ATL": "Falcons Camp: Zac Robinson implementing McVay-tree outside zone scheme; Bijan Robinson utilized heavily as versatile pass-catcher & goal-line hammer.",
-    "BAL": "Ravens Camp: Todd Monken expanding Lamar Jackson downfield attack; Derrick Henry entrenched as short-yardage & 4th-quarter finisher.",
-    "BUF": "Bills Camp: Joe Brady building dynamic run-heavy spread; Josh Allen utilizing Dalton Kincaid & Keon Coleman in concentrated red-zone roles.",
-    "CAR": "Panthers Camp: Dave Canales installing quick-rhythm passing attack; Chuba Hubbard & Jonathon Brooks sharing backfield workload.",
-    "CHI": "Bears Camp: Ben Johnson-inspired concepts under Shane Waldron; Caleb Williams displaying elite arm talent with DJ Moore, Keenan Allen & Odunze.",
-    "CIN": "Bengals Camp: Joe Burrow & Ja'Marr Chase operating high-volume +3.6% PROE pass system; Tee Higgins locked into explosive boundary WR2 role.",
-    "CLE": "Browns Camp: Ken Dorsey installing spread shotgun concepts; high pass-rate expected with Amari Cooper & David Njoku as focal points.",
-    "DAL": "Cowboys Camp: Mike McCarthy 'Texas Coast' system; CeeDee Lamb locked in as undisputed alpha with 30%+ target consolidation.",
-    "DEN": "Broncos Camp: Sean Payton quick-decision passing game; Bo Nix distributing quickly to Courtland Sutton and dynamic backfield options.",
-    "DET": "Lions Camp: Ben Johnson top-3 offensive ecosystem; Jahmyr Gibbs explosive playmaking paired with David Montgomery between the tackles.",
-    "GB":  "Packers Camp: Matt LaFleur modern Shanahan motion attack; Jordan Love distributing across dynamic young WR corps and Josh Jacobs.",
-    "HOU": "Texans Camp: Bobby Slowik high-efficiency scheme; CJ Stroud targeting Nico Collins, Stefon Diggs & Tank Dell in 3-WR sets.",
-    "IND": "Colts Camp: Shane Steichen RPO powerhouse; Anthony Richardson explosive rushing ability unlocking massive running lanes for Jonathan Taylor.",
-    "JAX": "Jaguars Camp: Doug Pederson pass-forward scheme; Trevor Lawrence building strong deep connection with rookie phenom Brian Thomas Jr.",
-    "KC":  "Chiefs Camp: Andy Reid championship offense; Patrick Mahomes targeting Rashee Rice, Xavier Worthy & Travis Kelce in high-pace attack.",
-    "LAC": "Chargers Camp: Jim Harbaugh & Greg Roman physical downhill identity; heavy ground game focus with Ladd McConkey as primary target.",
-    "LAR": "Rams Camp: Sean McVay elite offensive design; Puka Nacua & Cooper Kupp commanding unmatched 55%+ combined target share.",
-    "LV":  "Raiders Camp: Antonio Pierce physical identity; Brock Bowers moving all over the formation as focal mismatch weapon.",
-    "MIA": "Dolphins Camp: Mike McDaniel fastest offense in NFL; De'Von Achane & Tyreek Hill creating explosive mismatch space on pre-snap motion.",
-    "MIN": "Vikings Camp: Kevin O'Connell high-volume pass scheme; Justin Jefferson commanding 28%+ target share as undisputed WR1.",
-    "NE":  "Patriots Camp: Alex Van Pelt run-heavy West Coast installation; Rhamondre Stevenson & TreVeyon Henderson splitting high-volume backfield touches.",
-    "NO":  "Saints Camp: Klint Kubiak Shanahan-tree wide zone scheme; Alvin Kamara & Chris Olave operating as primary engine pieces.",
-    "NYG": "Giants Camp: Brian Daboll uptempo spread; Malik Nabers heavily targeted across all three levels in 11-personnel sets.",
-    "NYJ": "Jets Camp: Aaron Rodgers healthy under center; Breece Hall & Garrett Wilson commanding immense high-value touch consolidation.",
-    "PHI": "Eagles Camp: Kellen Moore dynamic spread offense; Saquon Barkley running behind top-tier offensive line alongside AJ Brown & DeVonta Smith.",
-    "PIT": "Steelers Camp: Arthur Smith heavy 12/21-personnel attack; George Pickens deep target priority with Najee Harris & Jaylen Warren ground split.",
-    "SEA": "Seahawks Camp: Ryan Grubb high-octane vertical passing scheme; DK Metcalf, Jaxon Smith-Njigba & Kenneth Walker in explosive roles.",
-    "SF":  "49ers Camp: Kyle Shanahan gold-standard offense; Christian McCaffrey, Deebo Samuel, Brandon Aiyuk & George Kittle in league-best efficiency.",
-    "TB":  "Buccaneers Camp: Liam Coen Rams-tree passing scheme; Baker Mayfield leaning heavily on Mike Evans & Chris Godwin in 11-personnel.",
-    "TEN": "Titans Camp: Brian Callahan pass-forward modern attack; Will Levis looking deep to Calvin Ridley with Tony Pollard versatile backfield role.",
-    "WAS": "Commanders Camp: Kliff Kingsbury high-pace spread; Jayden Daniels dual-threat electricity with Terry McLaurin downfield.",
-}
-
 
 def generate_augmented_scouting_synthesis(p: pd.Series, pos: str, team: str, sched: dict, bio: dict) -> dict:
-    """Synthesizes multi-source data into a cohesive, readable scouting report."""
+    """Synthesizes verified multi-source data into a cohesive, readable scouting report."""
     raw_note = str(p.get("scouting_narrative", "")).strip()
     talent = p.get("nfl_talent_score", None)
     ol_rank = int(p.get("duracell_ol_rank", 16))
@@ -66,7 +31,7 @@ def generate_augmented_scouting_synthesis(p: pd.Series, pos: str, team: str, sch
     ecr_val = float(p.get("ecr", rank))
     adp_val = float(p.get("adp_consensus", p.get("adp_yahoo", ecr_val)))
     
-    # 1. Role & Opportunity
+    # 1. Role & Opportunity Blueprint
     if pos == "RB":
         if vorp > 100:
             role_desc = "Dominant workhorse profile with secured goal-line equity and elite pass-catching volume. High-ceiling anchor back."
@@ -306,7 +271,6 @@ def render_tab_player_dossier(df: pd.DataFrame):
 
             st.markdown("#### 📊 Core Intelligence Snapshot")
             
-            # Clean, elegant Custom Snapshot Cards (NO awkward Streamlit arrows/deltas)
             t_str = f"{float(talent):.1f} / 100" if pd.notna(talent) and talent != '—' else "N/A"
             t_sub = "Elite 95th+ Percentile" if (pd.notna(talent) and float(talent) >= 90) else ("Above Average" if (pd.notna(talent) and float(talent) >= 75) else "Scheme Dependent")
             proe_sub = "Pass-Heavy Scheme" if synth['proe'] > 2.0 else ("Run-Heavy Scheme" if synth['proe'] < -2.0 else "Balanced Scheme")
@@ -400,9 +364,9 @@ def render_tab_player_dossier(df: pd.DataFrame):
                 }
             st.dataframe(pd.DataFrame(season_table), use_container_width=True, hide_index=True)
 
-        # SUB-TAB 3: LIVE BREAKING NEWS & INJURY STATUS (ENRICHED WITH TEAM CAMP WIRE)
+        # SUB-TAB 3: LIVE BREAKING NEWS & INJURY STATUS (VERIFIED SOURCES ONLY)
         with p_tab3:
-            st.markdown("#### 📰 Verified FantasyPros Breaking News & Training Camp Wire")
+            st.markdown("#### 📰 Verified FantasyPros API News & Medical Diagnostic")
             fp_client = FantasyProsClient()
             news_items = fp_client.get_live_news()
             injury_items = fp_client.get_live_injuries()
@@ -413,28 +377,37 @@ def render_tab_player_dossier(df: pd.DataFrame):
             if p_injuries:
                 inj = p_injuries[0]
                 status_badge = inj.get("status_short") or inj.get("status") or "Reported"
+                inj_type = inj.get("injury_type") or inj.get("injury") or "Active Medical Evaluation"
+                inj_comm = inj.get("comment") or inj.get("notes") or f"{selected_player} is undergoing training camp evaluation."
                 st.markdown(f"""
-                <div style="background: #1E1B4B; border-left: 5px solid #EF4444; padding: 14px 18px; border-radius: 6px; margin-bottom: 16px;">
-                    <b style="color: #F87171; font-size: 1.1rem;">🚨 Official Injury Status: {status_badge} ({inj.get('injury_type', 'Medical Evaluation')})</b>
-                    <div style="color: #CBD5E1; margin-top: 4px;">{inj.get('comment', 'Player is working with medical staff in training camp.')}</div>
-                    <div style="color: #94A3B8; font-size: 0.85rem; margin-top: 6px;"><b>Practice Logs:</b> W1: {inj.get('practice_1', '—')} | W2: {inj.get('practice_2', '—')} | W3: {inj.get('practice_3', '—')}</div>
+                <div style="background: #1E1B4B; border-left: 5px solid #EF4444; padding: 16px 20px; border-radius: 8px; margin-bottom: 18px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <b style="color: #F87171; font-size: 1.15rem;">🚨 Official NFL Medical Status: {status_badge} ({inj_type})</b>
+                        <span style="background: #3730A3; color: #E0E7FF; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700;">FantasyPros Live Feed</span>
+                    </div>
+                    <div style="color: #CBD5E1; margin-top: 8px; font-size: 0.95rem; line-height: 1.5;">{inj_comm}</div>
+                    <div style="color: #94A3B8; font-size: 0.85rem; margin-top: 10px; border-top: 1px solid #312E81; padding-top: 6px;">
+                        <b>Practice Participation Logs:</b> Day 1: {inj.get('practice_1', '—') or '—'} &bull; Day 2: {inj.get('practice_2', '—') or '—'} &bull; Day 3: {inj.get('practice_3', '—') or '—'}
+                    </div>
                 </div>
                 """, unsafe_allow_html=True)
             else:
                 st.markdown(f"""
-                <div style="background: #064E3B; border-left: 5px solid #10B981; padding: 12px 16px; border-radius: 6px; margin-bottom: 16px;">
-                    <b style="color: #A7F3D0; font-size: 1.02rem;">🟢 Full Practice / Healthy: {selected_player} ({pos} – {norm_team}) is fully active with zero medical designations.</b>
+                <div style="background: #064E3B; border-left: 5px solid #10B981; padding: 14px 18px; border-radius: 8px; margin-bottom: 18px;">
+                    <b style="color: #A7F3D0; font-size: 1.05rem;">🟢 Full Practice / Healthy: {selected_player} ({pos} – {norm_team})</b>
+                    <div style="color: #D1FAE5; font-size: 0.88rem; margin-top: 4px;">Zero active medical or practice designations on the verified NFL injury registry.</div>
                 </div>
                 """, unsafe_allow_html=True)
 
             if p_news:
+                st.markdown("##### ⚡ Live Player Wire Updates")
                 for item in p_news:
                     title = item.get("title", "Breaking News")
                     author = item.get("author", "Staff Writer")
                     date_str = item.get("created_formated") or item.get("created", "Recent")
                     desc = item.get("desc", "")
                     impact = item.get("impact", "")
-                    cats = ", ".join(item.get("categories", ["Injury Updates"]))
+                    cats = ", ".join(item.get("categories", ["Breaking News"]))
 
                     st.markdown(f"""
                     <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; padding: 18px; margin-bottom: 16px;">
@@ -456,16 +429,8 @@ def render_tab_player_dossier(df: pd.DataFrame):
                         </div>
                     </div>
                     """, unsafe_allow_html=True)
-            
-            # Curated Team Training Camp Beat Intel
-            team_beat = TEAM_CAMP_BEAT_INTEL.get(norm_team, f"{norm_team} Training Camp: Standard installations ongoing for Week 1 preparation.")
-            st.markdown(f"""
-            <div style="background: #1F2937; border: 1px solid #374151; border-radius: 8px; padding: 16px; margin-top: 14px;">
-                <div style="font-weight: 800; color: #38BDF8; font-size: 0.95rem; margin-bottom: 6px;">📡 2026 {full_team_name} Training Camp Beat Intel</div>
-                <div style="color: #E5E7EB; font-size: 0.92rem; line-height: 1.5;">{team_beat}</div>
-                <div style="margin-top: 8px; color: #9CA3AF; font-size: 0.78rem;">Source: NFL Beat Wire & Camp Observers &bull; Aug 2026</div>
-            </div>
-            """, unsafe_allow_html=True)
+            else:
+                st.info(f"ℹ️ No breaking wire alerts for {selected_player} in the last 48 hours. See **Overview & Executive Report** for comprehensive scouting & role analysis.")
 
         # SUB-TAB 4: POSITION-SPECIFIC JOSCHO FILM & TALENT (FIXED COLUMN MAPPINGS)
         with p_tab4:
