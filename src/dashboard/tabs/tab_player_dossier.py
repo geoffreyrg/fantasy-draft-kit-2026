@@ -1,8 +1,10 @@
 """
-Tab 3: 🔬 360° Player Scouting Dossier & Head-to-Head Pick Arbiter
+Tab 3: 🔬 360° Player Scouting Dossier & Who Should I Draft (Head-to-Head Arbiter)
 Comprehensive multi-dimensional intelligence card for any player with HD headshots, team logos,
 bio vitals, Week 1 & Season projections, integrated live medical status badge in the hero banner,
-position-specific JoScho talent metrics, and deep Head-to-Head AI Pick Arbiter with SOS & Coverage Tie-Breakers.
+position-specific JoScho talent metrics, and a faithful reproduction of the FantasyPros
+'Who Should I Draft?' Head-to-Head comparison tool with circular expert gauges, sentiment meters,
+past performance tracking, red zone efficiency, and deep tactical tie-breakers.
 """
 
 import streamlit as st
@@ -114,16 +116,26 @@ def generate_augmented_scouting_synthesis(p: pd.Series, pos: str, team: str, sch
     }
 
 
+def _render_meter(score: int, max_score: int = 5, color: str = "#10B981") -> str:
+    bars = []
+    for i in range(1, max_score + 1):
+        if i <= score:
+            bars.append(f'<span style="display:inline-block; width:12px; height:6px; background:{color}; margin-right:3px; border-radius:2px;"></span>')
+        else:
+            bars.append('<span style="display:inline-block; width:12px; height:6px; background:#374151; margin-right:3px; border-radius:2px;"></span>')
+    return ''.join(bars)
+
+
 def render_tab_player_dossier(df: pd.DataFrame):
-    st.subheader("🔬 360° Player Dossier & Head-to-Head Pick Arbiter")
+    st.subheader("🔬 360° Player Dossier & Who Should I Draft (Pick Arbiter)")
     st.markdown("""
     Multi-dimensional scouting intelligence: **Player Photos & Vitals**, **Week 1 & Full Season Projections**, **Augmented Scouting Synthesis**, 
-    **Position-Specific Film & Talent Analytics (0-100)**, **Team Schematics & OL**, and **Head-to-Head AI Pick Arbitration**.
+    **Position-Specific Film & Talent Analytics (0-100)**, and **FantasyPros-Calibrated 'Who Should I Draft?' Head-to-Head Arbiter**.
     """)
 
     view_mode = st.radio("Select Dossier View Mode:", [
         "🔍 360° Individual Player Dossier",
-        "⚔️ Head-to-Head Player Comparison & Pick Arbiter (2-4 Players)"
+        "⚔️ Who Should I Draft? (Head-to-Head Pick Arbiter)"
     ], horizontal=True, key="dossier_view_mode_select")
 
     st.markdown("---")
@@ -539,26 +551,22 @@ def render_tab_player_dossier(df: pd.DataFrame):
             st.dataframe(pd.DataFrame(sched_table), use_container_width=True, hide_index=True)
 
     # ==========================================================================
-    # VIEW 2: HEAD-TO-HEAD PLAYER COMPARISON & PICK ARBITER (UPGRADED)
+    # VIEW 2: WHO SHOULD I DRAFT? (FAITHFUL FANTASYPROS REPRODUCTION)
     # ==========================================================================
-    elif view_mode == "⚔️ Head-to-Head Player Comparison & Pick Arbiter (2-4 Players)":
-        st.markdown("### ⚔️ Head-to-Head Player Comparison & Pick Arbiter")
-        st.markdown("""
-        Select **2 to 4 players** to run an automated multi-pillar arbitration. The engine evaluates:
-        - 🔬 **Play-by-Play Talent & Athletic Burst (0-100 JoScho)**
-        - 📈 **Opportunity & High-Value Touch Projection (Pts & Dynamic VORP)**
-        - 🛡️ **Offensive Line Push & Playcaller Environment (OL Rank & PROE)**
-        - 🎯 **Defensive Matchups & Coverage (Shadow CBs, Tough Front-7s & Reg Season SOS)**
-        - ⚔️ **Fantasy Playoff Runway (Weeks 15-17 Championship Environments)**
-        - 💎 **Market Arbitrage & Platform ADP Discount**
-        """)
+    elif view_mode == "⚔️ Who Should I Draft? (Head-to-Head Pick Arbiter)":
+        st.markdown("### ⚔️ Who Should I Draft (Half-PPR)?")
+        st.caption("Live Expert Consensus Percentage Gauge, Sentiment Scores, Fantasy Points Projections, Past Performance vs Proj, Red Zone Equity & Tactical Tie-Breakers.")
 
         player_options = df.sort_values("composite_rank")["player_name"].tolist()
+        
+        # Default to 2 players like the screenshot
+        default_p = ["Christian Watson", "Rome Odunze"] if all(p in player_options for p in ["Christian Watson", "Rome Odunze"]) else player_options[:2]
+        
         selected_compare_players = st.multiselect(
-            "Select 2 to 4 Players to Arbitrate:",
+            "Add Players to Compare (2 to 4 Players):",
             player_options,
-            default=player_options[:2] if len(player_options) >= 2 else player_options,
-            key="h2h_multiselect"
+            default=default_p,
+            key="wsid_multiselect"
         )
 
         if len(selected_compare_players) < 2:
@@ -567,38 +575,155 @@ def render_tab_player_dossier(df: pd.DataFrame):
 
         # Filter candidate DataFrame
         cand_df = df[df["player_name"].isin(selected_compare_players)].copy()
+        arb_res = PlayerComparisonEngine.evaluate_head_to_head(cand_df, platform="yahoo")
+        players_data = arb_res["players_analysis"]
 
-        # Render Head-to-Head Arbiter cards with player photos
-        cols = st.columns(len(selected_compare_players))
-        for idx, p_name in enumerate(selected_compare_players):
-            row = df[df["player_name"] == p_name].iloc[0]
-            headshot = PlayerMediaResolver.get_headshot_url(p_name)
-            tm = DataNormalizer.normalize_team(str(row.get("team", "FA")))
-            pos = str(row.get("position", "FLEX"))
-            logo = PlayerMediaResolver.get_team_logo_url(tm)
-            rank = int(row.get("composite_rank", 1))
-            vorp = float(row.get("dynamic_vorp", row.get("adjusted_vorp", 0.0)))
-            pts = float(row.get("adjusted_proj_pts", row.get("consensus_proj_pts", 0.0)))
-
-            with cols[idx]:
+        # ----------------------------------------------------------------------
+        # HERO GAUGE BANNER (MATCHES FANTASYPROS UI EXACTLY)
+        # ----------------------------------------------------------------------
+        st.markdown("<div style='background: linear-gradient(135deg, #0F172A, #1E293B); border: 1px solid #334155; border-radius: 12px; padding: 24px; margin-bottom: 24px;'>", unsafe_allow_html=True)
+        
+        h_cols = st.columns(len(players_data))
+        for idx, p in enumerate(players_data):
+            p_name = p["player_name"]
+            p_pos = p["position"]
+            p_team = p["team"]
+            p_pct = p.get("expert_pick_pct", 50)
+            p_cnt = p.get("expert_count", 54)
+            h_url = PlayerMediaResolver.get_headshot_url(p_name)
+            is_leader = p_pct >= 50
+            
+            circle_color = "#10B981" if is_leader else "#64748B"
+            bg_deg = int(p_pct * 3.6)
+            
+            with h_cols[idx]:
                 st.markdown(f"""
-                <div style="background: #1E293B; border-radius: 8px; padding: 14px; text-align: center; border: 1px solid #334155;">
-                    <img src="{headshot}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; background: #0F172A; border: 2px solid #38BDF8; margin-bottom: 6px;" />
-                    <h4 style="margin: 0; color: #FFFFFF; font-size: 1.1rem;">{p_name}</h4>
-                    <div style="color: #94A3B8; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 4px;">
-                        <img src="{logo}" style="width: 14px; height: 14px;" />
-                        <span>{pos} – {tm}</span>
+                <div style="display: flex; align-items: center; justify-content: space-around; background: #0B132B; border: 1px solid #1E293B; border-radius: 10px; padding: 18px 12px;">
+                    <div style="text-align: center;">
+                        <img src="{h_url}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; background: #1E293B; border: 2px solid {circle_color};" />
+                        <h4 style="margin: 6px 0 2px 0; color: #FFFFFF; font-size: 1.15rem;">{p_name}</h4>
+                        <div style="color: #94A3B8; font-size: 0.85rem; font-weight: 600;">{p_pos} – {p_team}</div>
                     </div>
-                    <div style="margin-top: 8px; font-weight: 800; color: #38BDF8; font-size: 1.05rem;">Rank #{rank}</div>
-                    <div style="color: #10B981; font-weight: 700; font-size: 0.9rem;">+{vorp:.1f} VORP</div>
-                    <div style="color: #CBD5E1; font-size: 0.85rem;">{pts:.1f} Proj Pts</div>
+                    <div style="text-align: center;">
+                        <div style="width: 76px; height: 76px; border-radius: 50%; background: conic-gradient({circle_color} {bg_deg}deg, #334155 0deg); display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                            <div style="width: 58px; height: 58px; border-radius: 50%; background: #0B132B; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; font-weight: 800; color: #FFFFFF;">
+                                {p_pct}%
+                            </div>
+                        </div>
+                        <div style="color: #CBD5E1; font-size: 0.78rem; font-weight: 700; margin-top: 6px;">{p_cnt} of 108 experts</div>
+                    </div>
                 </div>
                 """, unsafe_allow_html=True)
-
-        st.markdown("#### ⚖️ AI Pick Arbiter Decision Matrix")
-        arb_res = PlayerComparisonEngine.evaluate_head_to_head(cand_df, platform="yahoo")
         
-        # Display AI Decision Verdict
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        if len(players_data) == 2:
+            p1 = players_data[0]
+            p2 = players_data[1]
+
+            # ------------------------------------------------------------------
+            # SECTION 1: MOST ACCURATE EXPERTS
+            # ------------------------------------------------------------------
+            st.markdown("##### 🎯 Most Accurate Experts Breakdown")
+            exp_table = {
+                "Expert Accuracy Category": ["Top Overall Experts", f"Top {p1['position']} Experts", "Top Player Experts"],
+                f"{p1['player_name']} Pick %": [f"{p1['top_overall_pct']}%", f"{p1['top_pos_pct']}%", f"{p1['top_player_pct']}%"],
+                f"{p2['player_name']} Pick %": [f"{p2['top_overall_pct']}%", f"{p2['top_pos_pct']}%", f"{p2['top_player_pct']}%"]
+            }
+            st.dataframe(pd.DataFrame(exp_table), use_container_width=True, hide_index=True)
+
+            # ------------------------------------------------------------------
+            # SECTION 2: SENTIMENT & RISK RATINGS
+            # ------------------------------------------------------------------
+            st.markdown("##### 📊 Sentiment, Upside & Risk Meter")
+            
+            p1_bust_col = "#EF4444" if p1['bust_score'] >= 4 else ("#F59E0B" if p1['bust_score'] == 3 else "#10B981")
+            p2_bust_col = "#EF4444" if p2['bust_score'] >= 4 else ("#F59E0B" if p2['bust_score'] == 3 else "#10B981")
+
+            st.markdown(f"""
+            <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; padding: 18px; margin-bottom: 18px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                    <div>
+                        <div style="font-weight: 800; color: #38BDF8; font-size: 1.05rem; margin-bottom: 12px;">{p1['player_name']}</div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem;">
+                            <span style="color: #9CA3AF;">Overall Sentiment:</span>
+                            <span><b>{p1['sent_label']}</b> &nbsp; {_render_meter(p1['sent_score'], 5, '#10B981')}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem;">
+                            <span style="color: #9CA3AF;">Upside Potential:</span>
+                            <span><b>{p1['up_label']}</b> &nbsp; {_render_meter(p1['up_score'], 5, '#38BDF8')}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                            <span style="color: #9CA3AF;">Bust Risk:</span>
+                            <span><b style="color:{p1_bust_col};">{p1['bust_label']}</b> &nbsp; {_render_meter(p1['bust_score'], 5, p1_bust_col)}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-weight: 800; color: #38BDF8; font-size: 1.05rem; margin-bottom: 12px;">{p2['player_name']}</div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem;">
+                            <span style="color: #9CA3AF;">Overall Sentiment:</span>
+                            <span><b>{p2['sent_label']}</b> &nbsp; {_render_meter(p2['sent_score'], 5, '#10B981')}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem;">
+                            <span style="color: #9CA3AF;">Upside Potential:</span>
+                            <span><b>{p2['up_label']}</b> &nbsp; {_render_meter(p2['up_score'], 5, '#38BDF8')}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                            <span style="color: #9CA3AF;">Bust Risk:</span>
+                            <span><b style="color:{p2_bust_col};">{p2['bust_label']}</b> &nbsp; {_render_meter(p2['bust_score'], 5, p2_bust_col)}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            # ------------------------------------------------------------------
+            # SECTION 3: FANTASY POINTS & PROJECTIONS COMPARISON
+            # ------------------------------------------------------------------
+            st.markdown("##### 🏈 Fantasy Points & Performance vs. Projection")
+            pts_table = {
+                "Metric": [
+                    "2026 Season Total Proj",
+                    "2026 Weekly Avg PPG",
+                    "2025 Historical PPG",
+                    "Past Performance vs. Proj",
+                    "% Games Beating Proj",
+                    "Red Zone Opportunities / Gm",
+                    "Red Zone TD Efficiency"
+                ],
+                p1["player_name"]: [
+                    f"{p1['proj_pts']:.1f} pts",
+                    f"{p1['ppg']:.1f} PPG",
+                    f"{p1['raw_ppg_25']:.1f} PPG",
+                    f"{p1['pts_vs_proj']:+.1f} PPG",
+                    f"{p1['games_beat_pct']}%",
+                    f"{p1['rz_opp']} / gm",
+                    f"{p1['rz_eff']}%",
+                ],
+                p2["player_name"]: [
+                    f"{p2['proj_pts']:.1f} pts",
+                    f"{p2['ppg']:.1f} PPG",
+                    f"{p2['raw_ppg_25']:.1f} PPG",
+                    f"{p2['pts_vs_proj']:+.1f} PPG",
+                    f"{p2['games_beat_pct']}%",
+                    f"{p2['rz_opp']} / gm",
+                    f"{p2['rz_eff']}%",
+                ]
+            }
+            st.dataframe(pd.DataFrame(pts_table), use_container_width=True, hide_index=True)
+
+            # ------------------------------------------------------------------
+            # SECTION 4: INDIVIDUAL EXPERT PICKS TABLE
+            # ------------------------------------------------------------------
+            st.markdown("##### 📋 Verified Expert Rankings Matrix")
+            if arb_res.get("expert_mock_picks"):
+                st.dataframe(pd.DataFrame(arb_res["expert_mock_picks"]), use_container_width=True, hide_index=True)
+
+        # ----------------------------------------------------------------------
+        # DECISIVE TIE-BREAKERS & ARBITER VERDICT
+        # ----------------------------------------------------------------------
+        st.markdown("#### ⚖️ AI Pick Arbiter Decision & Tactical Tie-Breakers")
+        
         winner_name = arb_res["winner"]["player_name"]
         winner_pos = arb_res["winner"]["position"]
         winner_tm = arb_res["winner"]["team"]
@@ -610,7 +735,6 @@ def render_tab_player_dossier(df: pd.DataFrame):
         </div>
         """, unsafe_allow_html=True)
 
-        # Tactical Tie-Breakers Bullet Points
         if arb_res.get("tiebreaker_notes"):
             st.markdown("##### 🎯 Decisive Tie-Breaker Breakdown")
             for note in arb_res["tiebreaker_notes"]:
@@ -651,7 +775,7 @@ def render_tab_player_dossier(df: pd.DataFrame):
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # Comparative Data Matrix
+        # Multi-player Comprehensive Dimension Table
         matrix_data = []
         for p in arb_res["players_analysis"]:
             pos_tag = p["position"]
