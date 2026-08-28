@@ -397,12 +397,42 @@ class FantasyProsClient:
     # =========================================================================
     def _get_fallback_consensus_rankings(self, scoring_type: str = "HALF") -> pd.DataFrame:
         raw_dir = settings.paths.raw_data_dir
+        verified_ecr_path = raw_dir / "fantasypros_ecr_half_ppr_2026_top50.csv"
         fp_proj_path = raw_dir / "fantasypoints_projections_2026" / "season_projections_parsed.csv"
         duracell_path = raw_dir / "duracell_rankings.csv"
         yahoo_path = raw_dir / "joscho" / "board_yahoo_adp_live_2026.csv"
         
         all_players = []
         seen = set()
+
+        # 1. Ingest Verified Official 2026 FantasyPros Consensus ECR Top 50 First (Exact Ranks 1 to 50)
+        if verified_ecr_path.exists():
+            v_df = pd.read_csv(verified_ecr_path)
+            for _, r in v_df.iterrows():
+                name = str(r["player_name"]).strip()
+                seen.add(name.lower())
+                ecr_val = int(r["rank"])
+                pos = str(r["position"]).strip().upper()
+                team = str(r["team"]).strip().upper()
+                pos_rank = str(r.get("pos_rank", f"{pos}{ecr_val}"))
+                tier = int(r.get("tier", 1))
+                bye = _safe_int(r.get("bye"), 0)
+
+                all_players.append({
+                    "player_name": name,
+                    "position": pos,
+                    "team": team,
+                    "ecr": ecr_val,
+                    "pos_ecr": pos_rank,
+                    "best_rank": max(1, ecr_val - (2 if ecr_val <= 10 else 4)),
+                    "worst_rank": ecr_val + (2 if ecr_val <= 10 else 5),
+                    "std_dev": 1.2 if ecr_val <= 10 else 2.0,
+                    "fp_tier": tier,
+                    "bye_week": bye,
+                    "sportsdata_id": f"FP_{team}_{name.replace(' ', '_').upper()}",
+                    "owned_espn": 99.0 if ecr_val <= 50 else 80.0,
+                    "owned_yahoo": 99.0 if ecr_val <= 50 else 80.0,
+                })
 
         # Build position and team lookup dictionary
         pos_map = {}
@@ -424,7 +454,8 @@ class FantasyProsClient:
                 if c_name and pd.notnull(r.get("position")):
                     pos_map[c_name] = str(r["position"]).strip().upper()
 
-        # 1. Ingest FantasyPoints Season Projections as Primary Seed
+        # 2. Ingest FantasyPoints Season Projections for Remaining Players (Rank 51+)
+        rem_players = []
         if fp_proj_path.exists():
             fp_df = pd.read_csv(fp_proj_path)
             for _, r in fp_df.iterrows():
@@ -439,23 +470,19 @@ class FantasyProsClient:
                 adp = float(r.get("fp_adp", 999.0)) if pd.notnull(r.get("fp_adp")) else 999.0
                 pos_rank = str(r.get("fp_pos_rank", f"{pos}1"))
                 
-                all_players.append({
+                rem_players.append({
                     "player_name": name,
                     "position": pos,
                     "team": team,
-                    "ecr": adp if adp < 900 else 250.0,
+                    "adp_sort": adp,
                     "pos_ecr": pos_rank,
-                    "best_rank": max(1.0, adp - 5.0),
-                    "worst_rank": adp + 6.0,
-                    "std_dev": 2.5,
-                    "fp_tier": 1,
                     "bye_week": _safe_int(r.get("bye"), 0),
                     "sportsdata_id": f"FP_{team}_{name.replace(' ', '_').upper()}",
-                    "owned_espn": 80.0,
-                    "owned_yahoo": 80.0,
+                    "owned_espn": 75.0,
+                    "owned_yahoo": 75.0,
                 })
 
-        # 2. Ingest Duracell
+        # 3. Ingest Duracell for any remaining
         if duracell_path.exists():
             dur_df = pd.read_csv(duracell_path)
             for _, r in dur_df.iterrows():
@@ -466,28 +493,41 @@ class FantasyProsClient:
                 from src.analytics.normalizer import DataNormalizer
                 c_name = DataNormalizer.clean_player_name(name)
                 pos = pos_map.get(c_name, "RB")
-                ecr = float(r.get("consensus_rank", 150.0))
-                all_players.append({
+                ecr_d = float(r.get("consensus_rank", 150.0))
+                rem_players.append({
                     "player_name": name,
                     "position": pos,
                     "team": "FA",
-                    "ecr": ecr,
-                    "pos_ecr": f"{pos}{int(ecr)}",
-                    "best_rank": max(1.0, ecr - 6.0),
-                    "worst_rank": ecr + 8.0,
-                    "std_dev": 3.0,
-                    "fp_tier": _safe_int(r.get("tier"), 5),
+                    "adp_sort": ecr_d,
+                    "pos_ecr": f"{pos}{int(ecr_d)}",
                     "bye_week": 0,
                     "sportsdata_id": f"FP_DUR_{name.replace(' ', '_').upper()}",
                     "owned_espn": 50.0,
                     "owned_yahoo": 50.0,
                 })
 
+        if rem_players:
+            rem_df = pd.DataFrame(rem_players).sort_values(by="adp_sort").reset_index(drop=True)
+            for idx, r in rem_df.iterrows():
+                assigned_ecr = len(all_players) + 1
+                all_players.append({
+                    "player_name": r["player_name"],
+                    "position": r["position"],
+                    "team": r["team"],
+                    "ecr": assigned_ecr,
+                    "pos_ecr": r["pos_ecr"],
+                    "best_rank": max(1, assigned_ecr - 6),
+                    "worst_rank": assigned_ecr + 8,
+                    "std_dev": 3.0,
+                    "fp_tier": (assigned_ecr // 15) + 1,
+                    "bye_week": r["bye_week"],
+                    "sportsdata_id": r["sportsdata_id"],
+                    "owned_espn": r["owned_espn"],
+                    "owned_yahoo": r["owned_yahoo"],
+                })
+
         if all_players:
-            df = pd.DataFrame(all_players)
-            df = df.sort_values(by="ecr").reset_index(drop=True)
-            df["ecr"] = df.index + 1
-            return df
+            return pd.DataFrame(all_players)
 
         # Minimal fallback if files missing
         return pd.DataFrame([

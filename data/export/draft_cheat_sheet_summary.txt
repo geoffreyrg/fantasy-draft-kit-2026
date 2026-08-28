@@ -7,26 +7,26 @@ Rank  Player                 Pos    Team   Comp Score   VORP     ECR    ADP
 ---------------------------------------------------------------------------
 1     Jahmyr Gibbs           RB     DET    189.2        189.2    1.0    1.0   
 2     Bijan Robinson         RB     ATL    174.3        174.3    2.0    2.1   
-3     Jonathan Taylor        RB     IND    137.2        137.2    7.0    7.0   
+3     Jonathan Taylor        RB     IND    137.2        137.2    8.0    7.0   
 4     Puka Nacua             WR     LAR    130.1        130.1    4.0    4.9   
 5     Ja'Marr Chase          WR     CIN    123.4        123.4    3.0    3.9   
-6     Christian McCaffrey    RB     SF     112.1        112.1    5.0    5.6   
-7     James Cook             RB     BUF    110.6        110.6    11.0   10.8  
-8     Jaxon Smith-Njigba     WR     SEA    105.3        105.3    6.0    6.0   
-9     Amon-Ra St. Brown      WR     DET    103.6        103.6    9.0    8.8   
-10    Saquon Barkley         RB     PHI    100.4        100.4    14.0   13.4  
+6     Christian McCaffrey    RB     SF     112.1        112.1    7.0    5.6   
+7     James Cook III         RB     BUF    110.6        110.6    10.0   10.8  
+8     Jaxon Smith-Njigba     WR     SEA    105.3        105.3    5.0    6.0   
+9     Amon-Ra St. Brown      WR     DET    103.6        103.6    6.0    8.8   
+10    Saquon Barkley         RB     PHI    100.4        100.4    15.0   13.4  
 
 🎯 TOP PLATFORM ADP ARBITRAGE STEALS (Drafted much later on platform than consensus):
 Player                 Pos    Team   Best Platform   ADP Delta  Spread  
 ---------------------------------------------------------------------------
-Kyle Juszczyk          RB     SF     ESPN            +1386.0    0.0     
-Xavier Legette         WR     CAR    ESPN            +879.0     0.0     
-Pat Bryant             WR     DEN    YAHOO           +860.0     1009.4  
-Riley Patterson        K      MIA    ESPN            +765.0     0.0     
-Ryan Fitzgerald        K      CAR    ESPN            +764.0     0.0     
-Andre Szmyt            K      CLE    ESPN            +763.0     0.0     
-Houston Texans         DST    HOU    ESPN            +762.0     0.0     
-Los Angeles Rams       DST    LAR    ESPN            +761.0     0.0     
+Kyle Juszczyk          RB     SF     ESPN            +1292.0    0.0     
+Xavier Legette         WR     CAR    ESPN            +838.0     0.0     
+Pat Bryant             WR     DEN    YAHOO           +819.0     1009.4  
+Houston Texans         DST    HOU    ESPN            +757.0     0.0     
+Los Angeles Rams       DST    LAR    ESPN            +756.0     0.0     
+Andre Szmyt            K      CLE    ESPN            +755.0     0.0     
+Miami Dolphins         DST    MIA    ESPN            +754.0     0.0     
+Riley Patterson        K      MIA    ESPN            +753.0     0.0     
 
 🚀 TOP COMPOSITE SLEEPERS & BREAKOUT CANDIDATES:
 Player                 Pos    Team   Comp Rank    ADP      Sleeper Delta  Steam   
