@@ -1,456 +1,456 @@
 === RB RANKINGS ===
 
 --- Tier 1 ---
-1. Jahmyr Gibbs (DET) | ADP #1.4 | 🎯 Target / Core 1.01 | ⭐ Top-10 Eco: High-Motion Zone/PA: Top-3 Scoring Eco | 🏆 Playoff ⭐⭐⭐⭐⭐
-2. Bijan Robinson (ATL) | ADP #1.9 | 🎯 Target / Core 1.02 | 👑 Shanahan/Stefanski Wide Zone Lineage: Heavy Motion | 🏆 Playoff ⭐⭐⭐⭐⭐
+1. Jahmyr Gibbs (DET) | ADP #1.4 | [TARGET] Target / Core 1.01 ; Top-10 Eco: High-Motion Zone/PA: Top-3 Scoring Eco ; [Playoff A+]
+2. Bijan Robinson (ATL) | ADP #1.9 | [TARGET] Target / Core 1.02 ; Shanahan/Stefanski Wide Zone Lineage: Heavy Motion ; [Playoff A+]
 
 --- Tier 2 ---
-3. Christian McCaffrey (SF) | ADP #5.6 | 🎯 Target / Value | 👑 Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
-4. Jonathan Taylor (IND) | ADP #6.9 | 🎯 Target / Anchor | ⚡ Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace
-5. James Cook III (BUF) | ADP #9.8 | 🎯 Target | ⭐ Top-10 Eco: Power Spread: Multi-TE 12p Power
+3. Christian McCaffrey (SF) | ADP #5.6 | [TARGET] Target / Value ; Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
+4. Jonathan Taylor (IND) | ADP #6.9 | [TARGET] Target / Anchor ; Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace
+5. James Cook III (BUF) | ADP #9.8 | [TARGET] Target ; Top-10 Eco: Power Spread: Multi-TE 12p Power
 
 --- Tier 3 ---
-6. Chase Brown (CIN) | ADP #16.4 | 💥 Exodia / League-Winner | 🎯 Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) | ⚠️ OL #28 (Poor) | 🏆 Playoff ⭐⭐⭐⭐⭐ | 🟢 +4.4 Value
-7. Saquon Barkley (PHI) | ADP #12.1 | 🎯 Target / Bounce-Back | 👑 Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) | 🛡️ OL #2 (Top 5)
-8. De'Von Achane (MIA) | ADP #15.6 | 🚫 Fade / Overvalue | 👑 Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) | ⚠️ OL #30 (Poor)
-9. Omarion Hampton (LAC) | ADP #18.7 | 💥 Must-Have / Exodia | 👑 McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone
-10. Derrick Henry (BAL) | ADP #18.0 | 🎯 Target / Value | ⚡ Monken Power-Pistol Spread: 72% GL Run Funnel (Henry/Lamar)
-11. Kenneth Walker III (KC) | ADP #16.4 | 💥 Must-Have / Exodia | 🚀 Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) | 🏆 Playoff ⭐⭐⭐⭐⭐
-12. Ashton Jeanty (LV) | ADP #14.4 | 💥 Exodia / League-Winner | 👑 Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion
+6. Chase Brown (CIN) | ADP #16.4 | [EXODIA] Exodia / League-Winner ; Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) ; [OL #28 Poor] ; [Playoff A+] ; [+4.4 Value]
+7. Saquon Barkley (PHI) | ADP #12.1 | [TARGET] Target / Bounce-Back ; Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) ; [OL #2 Top-5]
+8. De'Von Achane (MIA) | ADP #15.6 | [FADE] Fade / Overvalue ; Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) ; [OL #30 Poor]
+9. Omarion Hampton (LAC) | ADP #18.7 | [EXODIA] Must-Have / Exodia ; McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone
+10. Derrick Henry (BAL) | ADP #18.0 | [TARGET] Target / Value ; Monken Power-Pistol Spread: 72% GL Run Funnel (Henry/Lamar)
+11. Kenneth Walker III (KC) | ADP #16.4 | [EXODIA] Must-Have / Exodia ; Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) ; [Playoff A+]
+12. Ashton Jeanty (LV) | ADP #14.4 | [EXODIA] Exodia / League-Winner ; Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion
 
 --- Tier 4 ---
-13. Kyren Williams (LAR) | ADP #29.1 | Value | 👑 McVay 11-Personnel Tree: Top-3 Motion | 🛡️ OL #3 (Top 5)
-14. Javonte Williams (DAL) | ADP #34.6 | 🎯 Target / 'The Twelve' | ⚡ Schottenheimer West Coast Spread: Top-3 Neutral Pace
-15. David Montgomery (HOU) | ADP #52.4 | 💥 Core Exodia / Value | 👑 Shanahan Wide Zone Tree: Top-10 Eco | ⚠️ OL #29 (Poor)
-16. Breece Hall (NYJ) | ADP #35.4 | 💥 Must-Have / Exodia | 🎯 Engstrand West Coast Spread: 11-Personnel
-17. Josh Jacobs (GB) | ADP #33.4 | Value / Risk | 👑 LaFleur Shanahan/McVay Tree: Heavy Motion
+13. Kyren Williams (LAR) | ADP #29.1 | Value ; McVay 11-Personnel Tree: Top-3 Motion ; [OL #3 Top-5]
+14. Javonte Williams (DAL) | ADP #34.6 | [TARGET] Target / The Twelve ; Schottenheimer West Coast Spread: Top-3 Neutral Pace
+15. David Montgomery (HOU) | ADP #52.4 | [EXODIA] Core Exodia / Value ; Shanahan Wide Zone Tree: Top-10 Eco ; [OL #29 Poor]
+16. Breece Hall (NYJ) | ADP #35.4 | [EXODIA] Must-Have / Exodia ; Engstrand West Coast Spread: 11-Personnel
+17. Josh Jacobs (GB) | ADP #33.4 | Value / Risk ; LaFleur Shanahan/McVay Tree: Heavy Motion
 
 --- Tier 5 ---
-18. Jeremiyah Love (ARI) | ADP #28.3 | 🚫 Bust / Avoid | 👑 Petzing Shanahan/Stefanski Tree: Outside Zone
-19. Travis Etienne Jr. (NO) | ADP #43.2 | 🚫 Overvalue / Fade | 👑 Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion
-20. Bucky Irving (TB) | ADP #55.2 | 🚫 Overvalue / Fade | 🎯 Liam Coen McVay Spread: 11-Personnel Spread | 🛡️ OL #5 (Top 5)
-21. D'Andre Swift (CHI) | ADP #47.4 | 🎯 Target / Value | 🔥 Ben Johnson Creative Motion: Elite Motion | 🛡️ OL #4 (Top 5)
-22. Quinshon Judkins (CLE) | ADP #53.2 | 🚫 Overvalue / Fade | 🎯 Ken Dorsey Air Raid Spread: Shotgun Pass Spacing | ⚠️ OL #32 (Poor)
-23. Bhayshul Tuten (JAX) | ADP #62.5 | 💥 Exodia League-Winner | 🎯 Doug Pederson West Coast RPO: High Pass Volume
+18. Jeremiyah Love (ARI) | ADP #28.3 | [FADE] Bust / Avoid ; Petzing Shanahan/Stefanski Tree: Outside Zone
+19. Travis Etienne Jr. (NO) | ADP #43.2 | [FADE] Overvalue / Fade ; Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion
+20. Bucky Irving (TB) | ADP #55.2 | [FADE] Overvalue / Fade ; Liam Coen McVay Spread: 11-Personnel Spread ; [OL #5 Top-5]
+21. D'Andre Swift (CHI) | ADP #47.4 | [TARGET] Target / Value ; Ben Johnson Creative Motion: Elite Motion ; [OL #4 Top-5]
+22. Quinshon Judkins (CLE) | ADP #53.2 | [FADE] Overvalue / Fade ; Ken Dorsey Air Raid Spread: Shotgun Pass Spacing ; [OL #32 Poor]
+23. Bhayshul Tuten (JAX) | ADP #62.5 | [EXODIA] Exodia League-Winner ; Doug Pederson West Coast RPO: High Pass Volume
 
 --- Tier 6 ---
-24. Rhamondre Stevenson (NE) | ADP #80.1 | 🎯 Target / Value | 🏃 Van Pelt Power West Coast: Heavy 12/21 Personnel
-25. Cam Skattebo (NYG) | ADP #41.7 | 💥 Must-Have / 'The Twelve' | ⚡ Daboll Spread Option: Read-Option
-26. Jaylen Warren (PIT) | ADP #76.8 | 🚫 Overvalue / Committee | 🏃 Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs)
+24. Rhamondre Stevenson (NE) | ADP #80.1 | [TARGET] Target / Value ; Van Pelt Power West Coast: Heavy 12/21 Personnel
+25. Cam Skattebo (NYG) | ADP #41.7 | [EXODIA] Must-Have / The Twelve ; Daboll Spread Option: Read-Option
+26. Jaylen Warren (PIT) | ADP #76.8 | [FADE] Overvalue / Committee ; Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs)
 
 --- Tier 7 ---
-27. Tony Pollard (TEN) | ADP #85.5 | 🚫 Fade / Committee | 🎯 Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread | ⚠️ OL #31 (Poor)
-28. TreVeyon Henderson (NE) | ADP #62.8 | 🚫 Overvalue / Fade | 🏃 Van Pelt Power West Coast: Heavy 12/21 Personnel | 🟢 +4.8 Value
-29. Rico Dowdle (PIT) | ADP #87.0 | 🎯 Target / Workhorse | 🏃 Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs)
+27. Tony Pollard (TEN) | ADP #85.5 | [FADE] Fade / Committee ; Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread ; [OL #31 Poor]
+28. TreVeyon Henderson (NE) | ADP #62.8 | [FADE] Overvalue / Fade ; Van Pelt Power West Coast: Heavy 12/21 Personnel ; [+4.8 Value]
+29. Rico Dowdle (PIT) | ADP #87.0 | [TARGET] Target / Workhorse ; Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs)
 
 --- Tier 8 ---
-30. Jadarian Price (SEA) | ADP #65.8 | 🎯 Target / Sleeper | 🎯 Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
-31. Chuba Hubbard (CAR) | ADP #84.4 | 🎯 Target / Even-Year | ⚡ Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
-32. Kenny Gainwell (TB) | ADP #118.1 | ⚠️ TRAP RISK | 🎯 Liam Coen McVay Spread: 11-Personnel Spread | 🛡️ OL #5 (Top 5) | 🟢 +7.1 Value
+30. Jadarian Price (SEA) | ADP #65.8 | [TARGET] Target / Sleeper ; Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
+31. Chuba Hubbard (CAR) | ADP #84.4 | [TARGET] Target / Even-Year ; Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
+32. Kenny Gainwell (TB) | ADP #118.1 | [TRAP RISK] ; Liam Coen McVay Spread: 11-Personnel Spread ; [OL #5 Top-5] ; [+7.1 Value]
 
 --- Tier 9 ---
-33. Aaron Jones (MIN) | ADP #123.1 | ⚠️ TRAP RISK | 🎯 O'Connell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
-34. Blake Corum (LAR) | ADP #99.6 | 📊 CONSENSUS | 👑 McVay 11-Personnel Tree: Top-3 Motion | 🛡️ OL #3 (Top 5)
-35. Kyle Monangai (CHI) | ADP #104.3 | 📊 CONSENSUS | 🔥 Ben Johnson Creative Motion: Elite Motion | 🛡️ OL #4 (Top 5) | 🟢 +5.3 Value
-36. Jonathon Brooks (CAR) | ADP #97.2 | 💥 Core Exodia / League-Winner | ⚡ Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
-37. RJ Harvey (DEN) | ADP #103.9 | 🎯 Target / Contingent Value | 🎯 Sean Payton West Coast Spread: High RB Target Share | 🛡️ OL #1 (Top 5) | 🟢 +21.9 Value
-38. Rachaad White (WAS) | ADP #122.3 | 🎯 Target / Value | ⚡ Kingsbury Air Raid: Top-3 Neutral Pace
-39. Isiah Pacheco (DET) | ADP #126.2 | Contingent Stash | ⭐ Top-10 Eco: High-Motion Zone/PA: Top-3 Scoring Eco | 🏆 Playoff ⭐⭐⭐⭐⭐
-40. Tyjae Spears (TEN) | ADP #133.4 | 💤 Breakout Sleeper (+11 ADP Delta) | 🎯 Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread | ⚠️ OL #31 (Poor)
+33. Aaron Jones (MIN) | ADP #123.1 | [TRAP RISK] ; OConnell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
+34. Blake Corum (LAR) | ADP #99.6 | [ CONSENSUS] ; McVay 11-Personnel Tree: Top-3 Motion ; [OL #3 Top-5]
+35. Kyle Monangai (CHI) | ADP #104.3 | [ CONSENSUS] ; Ben Johnson Creative Motion: Elite Motion ; [OL #4 Top-5] ; [+5.3 Value]
+36. Jonathon Brooks (CAR) | ADP #97.2 | [EXODIA] Core Exodia / League-Winner ; Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
+37. RJ Harvey (DEN) | ADP #103.9 | [TARGET] Target / Contingent Value ; Sean Payton West Coast Spread: High RB Target Share ; [OL #1 Top-5] ; [+21.9 Value]
+38. Rachaad White (WAS) | ADP #122.3 | [TARGET] Target / Value ; Kingsbury Air Raid: Top-3 Neutral Pace
+39. Isiah Pacheco (DET) | ADP #126.2 | Contingent Stash ; Top-10 Eco: High-Motion Zone/PA: Top-3 Scoring Eco ; [Playoff A+]
+40. Tyjae Spears (TEN) | ADP #133.4 | Breakout Sleeper (+11 ADP Delta) ; Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread ; [OL #31 Poor]
 
 --- Tier 10 ---
-41. J.K. Dobbins (DEN) | ADP #96.6 | 🚫 Overvalue / Committee | 🎯 Sean Payton West Coast Spread: High RB Target Share | 🛡️ OL #1 (Top 5)
-42. Jacory Croskey-Merritt (WAS) | ADP #111.0 | Sleeper / Value | ⚡ Kingsbury Air Raid: Top-3 Neutral Pace
-43. Keaton Mitchell (LAC) | ADP #131.8 | 💤 Breakout Sleeper (+30 ADP Delta) | 👑 McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone
-44. Justice Hill (BAL) | ADP #999.0 | 💎 SLEEPER | ⚡ Monken Power-Pistol Spread: 72% GL Run Funnel (Henry/Lamar)
-45. Dylan Sampson (CLE) | ADP #190.3 | PPR Sleeper | 🎯 Ken Dorsey Air Raid Spread: Shotgun Pass Spacing | ⚠️ OL #32 (Poor) | 🟢 +13.3 Value
-46. Ty Johnson (BUF) | ADP #999.0 | 💎 SLEEPER | ⭐ Top-10 Eco: Power Spread: Multi-TE 12p Power
-47. Tyler Allgeier (ARI) | ADP #129.9 | 💤 Breakout Sleeper (+7 ADP Delta) | 👑 Petzing Shanahan/Stefanski Tree: Outside Zone
-48. Samaje Perine (CIN) | ADP #999.0 | 💎 SLEEPER | 🎯 Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) | ⚠️ OL #28 (Poor) | 🏆 Playoff ⭐⭐⭐⭐⭐
-49. Zach Charbonnet (SEA) | ADP #129.5 | 💤 Breakout Sleeper (+6 ADP Delta) | 🎯 Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
-50. Mike Washington Jr. (LV) | ADP #121.8 | Sleeper / Handcuff | 👑 Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion
-51. Woody Marks (HOU) | ADP #131.4 | 📊 CONSENSUS | 👑 Shanahan Wide Zone Tree: Top-10 Eco | ⚠️ OL #29 (Poor)
-52. Jaydon Blue (DAL) | ADP #231.8 | 📊 CONSENSUS | ⚡ Schottenheimer West Coast Spread: Top-3 Neutral Pace | 🟢 +18.8 Value
-53. Chris Rodriguez Jr. (JAX) | ADP #131.8 | Goal-Line Stash | 🎯 Doug Pederson West Coast RPO: High Pass Volume
-54. Jonah Coleman (DEN) | ADP #130.1 | Sleeper / Handcuff | 🎯 Sean Payton West Coast Spread: High RB Target Share | 🛡️ OL #1 (Top 5)
-55. Jordan Mason (MIN) | ADP #115.9 | 🎯 Target / Value | 🎯 O'Connell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
-56. MarShawn Lloyd (GB) | ADP #199.3 | Upside Stash | 👑 LaFleur Shanahan/McVay Tree: Heavy Motion | 🟢 +15.3 Value
-57. Alvin Kamara (NO) | ADP #126.1 | 📊 CONSENSUS | 👑 Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion
-58. Tyrone Tracy Jr. (NYG) | ADP #130.9 | 🚀 HIGH CEILING | ⚡ Daboll Spread Option: Read-Option
-59. Emmett Johnson (KC) | ADP #195.5 | 💤 Breakout Sleeper (+8 ADP Delta) | 🚀 Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) | 🏆 Playoff ⭐⭐⭐⭐⭐ | 🟢 +14.5 Value
-60. Isaiah Davis (NYJ) | ADP #999.0 | 💎 SLEEPER | 🎯 Engstrand West Coast Spread: 11-Personnel
-61. Demond Claiborne (MIN) | ADP #242.0 | 📊 CONSENSUS | 🎯 O'Connell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
-62. Najee Harris (NYG) | ADP #221.4 | 📊 CONSENSUS | ⚡ Daboll Spread Option: Read-Option | 🟢 +21.4 Value
-63. Jaylen Wright (MIA) | ADP #247.9 | 📊 CONSENSUS | 👑 Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) | ⚠️ OL #30 (Poor)
-64. LeQuint Allen Jr. (JAX) | ADP #999.0 | 💎 SLEEPER | 🎯 Doug Pederson West Coast RPO: High Pass Volume
-65. Kaytron Allen (WAS) | ADP #239.1 | 📊 CONSENSUS | ⚡ Kingsbury Air Raid: Top-3 Neutral Pace | 🟢 +15.1 Value
-66. George Holani (SEA) | ADP #999.0 | 💎 SLEEPER | 🎯 Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
-67. Chris Brooks (GB) | ADP #999.0 | 💎 SLEEPER | 👑 LaFleur Shanahan/McVay Tree: Heavy Motion
-68. Tank Bigsby (PHI) | ADP #130.5 | #1 Pure Handcuff | 👑 Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) | 🛡️ OL #2 (Top 5)
-69. Ollie Gordon II (MIA) | ADP #999.0 | 💎 SLEEPER | 👑 Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) | ⚠️ OL #30 (Poor)
-70. Ray Davis (BUF) | ADP #229.5 | 📊 CONSENSUS | ⭐ Top-10 Eco: Power Spread: Multi-TE 12p Power | 🟢 +19.5 Value
-71. Brashard Smith (KC) | ADP #226.3 | 📊 CONSENSUS | 🚀 Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) | 🏆 Playoff ⭐⭐⭐⭐⭐ | 🟢 +21.3 Value
-72. Seth McGowan (IND) | ADP #999.0 | 💎 SLEEPER | ⚡ Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace
-73. Braelon Allen (NYJ) | ADP #208.6 | 📊 CONSENSUS | 🎯 Engstrand West Coast Spread: 11-Personnel | 🟢 +17.6 Value
-74. Jordan James (SF) | ADP #999.0 | 💎 SLEEPER | 👑 Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
-75. Kaelon Black (SF) | ADP #999.0 | Deep Stash | 👑 Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
-76. James Conner (ARI) | ADP #125.8 | 📊 CONSENSUS | 👑 Petzing Shanahan/Stefanski Tree: Outside Zone
-77. Tahj Brooks (CIN) | ADP #999.0 | 💎 SLEEPER | 🎯 Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) | ⚠️ OL #28 (Poor) | 🏆 Playoff ⭐⭐⭐⭐⭐
-78. DJ Giddens (IND) | ADP #999.0 | 💎 SLEEPER | ⚡ Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace
-79. Nicholas Singleton (TEN) | ADP #209.5 | 📊 CONSENSUS | 🎯 Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread | ⚠️ OL #31 (Poor) | 🟢 +17.5 Value
-80. Emanuel Wilson (SEA) | ADP #250.3 | 📊 CONSENSUS | 🎯 Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
-81. Trevor Etienne (CAR) | ADP #999.0 | 💎 SLEEPER | ⚡ Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
-82. Kyle Juszczyk (SF) | ADP #1655.0 | 💎 SLEEPER | 👑 Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
-83. Kimani Vidal (LAC) | ADP #241.0 | 📊 CONSENSUS | 👑 McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone
-84. Devin Singletary (NYG) | ADP #999.0 | 💎 SLEEPER | ⚡ Daboll Spread Option: Read-Option
-85. Will Shipley (PHI) | ADP #999.0 | 💎 SLEEPER | 👑 Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) | 🛡️ OL #2 (Top 5)
-86. Sean Tucker (TB) | ADP #243.9 | 📊 CONSENSUS | 🎯 Liam Coen McVay Spread: 11-Personnel Spread | 🛡️ OL #5 (Top 5)
-87. Kendre Miller (NO) | ADP #224.8 | 📊 CONSENSUS | 👑 Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion | 🟢 +20.8 Value
-88. Jawhar Jordan (HOU) | ADP #999.0 | 💎 SLEEPER | 👑 Shanahan Wide Zone Tree: Top-10 Eco | ⚠️ OL #29 (Poor)
-89. Zavier Scott (MIN) | ADP #693.0 | 💎 SLEEPER | 🎯 O'Connell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
-90. Brian Robinson Jr. (FA) | ADP #121.6 | 💤 Breakout Sleeper (+6 ADP Delta)
-91. Amon-Ra St.Brown (FA) | ADP #145.0 | 📊 CONSENSUS
-92. Zachariah Branch (FA) | ADP #147.0 | 📊 CONSENSUS
+41. J.K. Dobbins (DEN) | ADP #96.6 | [FADE] Overvalue / Committee ; Sean Payton West Coast Spread: High RB Target Share ; [OL #1 Top-5]
+42. Jacory Croskey-Merritt (WAS) | ADP #111.0 | Sleeper / Value ; Kingsbury Air Raid: Top-3 Neutral Pace
+43. Keaton Mitchell (LAC) | ADP #131.8 | Breakout Sleeper (+30 ADP Delta) ; McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone
+44. Justice Hill (BAL) | ADP #999.0 | [ SLEEPER] ; Monken Power-Pistol Spread: 72% GL Run Funnel (Henry/Lamar)
+45. Dylan Sampson (CLE) | ADP #190.3 | PPR Sleeper ; Ken Dorsey Air Raid Spread: Shotgun Pass Spacing ; [OL #32 Poor] ; [+13.3 Value]
+46. Ty Johnson (BUF) | ADP #999.0 | [ SLEEPER] ; Top-10 Eco: Power Spread: Multi-TE 12p Power
+47. Tyler Allgeier (ARI) | ADP #129.9 | Breakout Sleeper (+7 ADP Delta) ; Petzing Shanahan/Stefanski Tree: Outside Zone
+48. Samaje Perine (CIN) | ADP #999.0 | [ SLEEPER] ; Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) ; [OL #28 Poor] ; [Playoff A+]
+49. Zach Charbonnet (SEA) | ADP #129.5 | Breakout Sleeper (+6 ADP Delta) ; Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
+50. Mike Washington Jr. (LV) | ADP #121.8 | Sleeper / Handcuff ; Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion
+51. Woody Marks (HOU) | ADP #131.4 | [ CONSENSUS] ; Shanahan Wide Zone Tree: Top-10 Eco ; [OL #29 Poor]
+52. Jaydon Blue (DAL) | ADP #231.8 | [ CONSENSUS] ; Schottenheimer West Coast Spread: Top-3 Neutral Pace ; [+18.8 Value]
+53. Chris Rodriguez Jr. (JAX) | ADP #131.8 | Goal-Line Stash ; Doug Pederson West Coast RPO: High Pass Volume
+54. Jonah Coleman (DEN) | ADP #130.1 | Sleeper / Handcuff ; Sean Payton West Coast Spread: High RB Target Share ; [OL #1 Top-5]
+55. Jordan Mason (MIN) | ADP #115.9 | [TARGET] Target / Value ; OConnell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
+56. MarShawn Lloyd (GB) | ADP #199.3 | Upside Stash ; LaFleur Shanahan/McVay Tree: Heavy Motion ; [+15.3 Value]
+57. Alvin Kamara (NO) | ADP #126.1 | [ CONSENSUS] ; Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion
+58. Tyrone Tracy Jr. (NYG) | ADP #130.9 | [HIGH CEILING] ; Daboll Spread Option: Read-Option
+59. Emmett Johnson (KC) | ADP #195.5 | Breakout Sleeper (+8 ADP Delta) ; Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) ; [Playoff A+] ; [+14.5 Value]
+60. Isaiah Davis (NYJ) | ADP #999.0 | [ SLEEPER] ; Engstrand West Coast Spread: 11-Personnel
+61. Demond Claiborne (MIN) | ADP #242.0 | [ CONSENSUS] ; OConnell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
+62. Najee Harris (NYG) | ADP #221.4 | [ CONSENSUS] ; Daboll Spread Option: Read-Option ; [+21.4 Value]
+63. Jaylen Wright (MIA) | ADP #247.9 | [ CONSENSUS] ; Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) ; [OL #30 Poor]
+64. LeQuint Allen Jr. (JAX) | ADP #999.0 | [ SLEEPER] ; Doug Pederson West Coast RPO: High Pass Volume
+65. Kaytron Allen (WAS) | ADP #239.1 | [ CONSENSUS] ; Kingsbury Air Raid: Top-3 Neutral Pace ; [+15.1 Value]
+66. George Holani (SEA) | ADP #999.0 | [ SLEEPER] ; Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
+67. Chris Brooks (GB) | ADP #999.0 | [ SLEEPER] ; LaFleur Shanahan/McVay Tree: Heavy Motion
+68. Tank Bigsby (PHI) | ADP #130.5 | #1 Pure Handcuff ; Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) ; [OL #2 Top-5]
+69. Ollie Gordon II (MIA) | ADP #999.0 | [ SLEEPER] ; Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) ; [OL #30 Poor]
+70. Ray Davis (BUF) | ADP #229.5 | [ CONSENSUS] ; Top-10 Eco: Power Spread: Multi-TE 12p Power ; [+19.5 Value]
+71. Brashard Smith (KC) | ADP #226.3 | [ CONSENSUS] ; Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) ; [Playoff A+] ; [+21.3 Value]
+72. Seth McGowan (IND) | ADP #999.0 | [ SLEEPER] ; Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace
+73. Braelon Allen (NYJ) | ADP #208.6 | [ CONSENSUS] ; Engstrand West Coast Spread: 11-Personnel ; [+17.6 Value]
+74. Jordan James (SF) | ADP #999.0 | [ SLEEPER] ; Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
+75. Kaelon Black (SF) | ADP #999.0 | Deep Stash ; Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
+76. James Conner (ARI) | ADP #125.8 | [ CONSENSUS] ; Petzing Shanahan/Stefanski Tree: Outside Zone
+77. Tahj Brooks (CIN) | ADP #999.0 | [ SLEEPER] ; Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) ; [OL #28 Poor] ; [Playoff A+]
+78. DJ Giddens (IND) | ADP #999.0 | [ SLEEPER] ; Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace
+79. Nicholas Singleton (TEN) | ADP #209.5 | [ CONSENSUS] ; Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread ; [OL #31 Poor] ; [+17.5 Value]
+80. Emanuel Wilson (SEA) | ADP #250.3 | [ CONSENSUS] ; Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
+81. Trevor Etienne (CAR) | ADP #999.0 | [ SLEEPER] ; Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
+82. Kyle Juszczyk (SF) | ADP #1655.0 | [ SLEEPER] ; Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
+83. Kimani Vidal (LAC) | ADP #241.0 | [ CONSENSUS] ; McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone
+84. Devin Singletary (NYG) | ADP #999.0 | [ SLEEPER] ; Daboll Spread Option: Read-Option
+85. Will Shipley (PHI) | ADP #999.0 | [ SLEEPER] ; Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) ; [OL #2 Top-5]
+86. Sean Tucker (TB) | ADP #243.9 | [ CONSENSUS] ; Liam Coen McVay Spread: 11-Personnel Spread ; [OL #5 Top-5]
+87. Kendre Miller (NO) | ADP #224.8 | [ CONSENSUS] ; Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion ; [+20.8 Value]
+88. Jawhar Jordan (HOU) | ADP #999.0 | [ SLEEPER] ; Shanahan Wide Zone Tree: Top-10 Eco ; [OL #29 Poor]
+89. Zavier Scott (MIN) | ADP #693.0 | [ SLEEPER] ; OConnell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
+90. Brian Robinson Jr. (FA) | ADP #121.6 | Breakout Sleeper (+6 ADP Delta)
+91. Amon-Ra St.Brown (FA) | ADP #145.0 | [ CONSENSUS]
+92. Zachariah Branch (FA) | ADP #147.0 | [ CONSENSUS]
 
 
 === WR RANKINGS ===
 
 --- Tier 1 ---
-1. Ja'Marr Chase (CIN) | ADP #3.4 | 🎯 Target / WR1 | 🎯 Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) | ⚠️ OL #28 (Poor) | 🏆 Playoff ⭐⭐⭐⭐⭐
-2. Puka Nacua (LAR) | ADP #4.8 | 🎯 Target / WR1 | 👑 McVay 11-Personnel Tree: Top-3 Motion | 💰 Contract Year | 🛡️ OL #3 (Top 5)
-3. Jaxon Smith-Njigba (SEA) | ADP #6.8 | 🎯 Target | 🎯 Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
+1. Ja'Marr Chase (CIN) | ADP #3.4 | [TARGET] Target / WR1 ; Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) ; [OL #28 Poor] ; [Playoff A+]
+2. Puka Nacua (LAR) | ADP #4.8 | [TARGET] Target / WR1 ; McVay 11-Personnel Tree: Top-3 Motion ; [Contract Year] ; [OL #3 Top-5]
+3. Jaxon Smith-Njigba (SEA) | ADP #6.8 | [TARGET] Target ; Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
 
 --- Tier 2 ---
-4. Amon-Ra St. Brown (DET) | ADP #7.9 | 🎯 Target | ⭐ Top-10 Eco: High-Motion Zone/PA: Top-3 Scoring Eco | 🏆 Playoff ⭐⭐⭐⭐⭐
-5. CeeDee Lamb (DAL) | ADP #10.4 | 🎯 Target | ⚡ Schottenheimer West Coast Spread: Top-3 Neutral Pace
-6. Justin Jefferson (MIN) | ADP #12.8 | 🎯 Target / Anchor | 🎯 O'Connell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
-7. Drake London (ATL) | ADP #19.1 | 💥 Must-Have / Exodia | 👑 Shanahan/Stefanski Wide Zone Lineage: Heavy Motion | 💰 Contract Year | 🏆 Playoff ⭐⭐⭐⭐⭐ | 🟢 +6.1 Value
-8. A.J. Brown (NE) | ADP #24.7 | 🎯 Target | 🏃 Van Pelt Power West Coast: Heavy 12/21 Personnel | 🟢 +10.7 Value
-9. Nico Collins (HOU) | ADP #22.3 | 🎯 Target / Value | 👑 Shanahan Wide Zone Tree: Top-10 Eco | ⚠️ OL #29 (Poor) | 🟢 +4.3 Value
-10. George Pickens (DAL) | ADP #22.4 | Value | ⚡ Schottenheimer West Coast Spread: Top-3 Neutral Pace
-11. Chris Olave (NO) | ADP #32.9 | 🎯 Target / Value | 👑 Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion | 💰 Contract Year | 🟢 +8.9 Value
+4. Amon-Ra St. Brown (DET) | ADP #7.9 | [TARGET] Target ; Top-10 Eco: High-Motion Zone/PA: Top-3 Scoring Eco ; [Playoff A+]
+5. CeeDee Lamb (DAL) | ADP #10.4 | [TARGET] Target ; Schottenheimer West Coast Spread: Top-3 Neutral Pace
+6. Justin Jefferson (MIN) | ADP #12.8 | [TARGET] Target / Anchor ; OConnell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
+7. Drake London (ATL) | ADP #19.1 | [EXODIA] Must-Have / Exodia ; Shanahan/Stefanski Wide Zone Lineage: Heavy Motion ; [Contract Year] ; [Playoff A+] ; [+6.1 Value]
+8. A.J. Brown (NE) | ADP #24.7 | [TARGET] Target ; Van Pelt Power West Coast: Heavy 12/21 Personnel ; [+10.7 Value]
+9. Nico Collins (HOU) | ADP #22.3 | [TARGET] Target / Value ; Shanahan Wide Zone Tree: Top-10 Eco ; [OL #29 Poor] ; [+4.3 Value]
+10. George Pickens (DAL) | ADP #22.4 | Value ; Schottenheimer West Coast Spread: Top-3 Neutral Pace
+11. Chris Olave (NO) | ADP #32.9 | [TARGET] Target / Value ; Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion ; [Contract Year] ; [+8.9 Value]
 
 --- Tier 3 ---
-12. Malik Nabers (NYG) | ADP #32.3 | 🎯 Target / Alpha | ⚡ Daboll Spread Option: Read-Option | 🟢 +6.3 Value
-13. DeVonta Smith (PHI) | ADP #29.5 | 🎯 Target / Value | 👑 Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) | 🛡️ OL #2 (Top 5)
-14. Rashee Rice (KC) | ADP #34.5 | 🎯 Target / Contract Yr | 🚀 Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) | 🏆 Playoff ⭐⭐⭐⭐⭐ | 🟢 +5.5 Value
+12. Malik Nabers (NYG) | ADP #32.3 | [TARGET] Target / Alpha ; Daboll Spread Option: Read-Option ; [+6.3 Value]
+13. DeVonta Smith (PHI) | ADP #29.5 | [TARGET] Target / Value ; Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) ; [OL #2 Top-5]
+14. Rashee Rice (KC) | ADP #34.5 | [TARGET] Target / Contract Yr ; Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) ; [Playoff A+] ; [+5.5 Value]
 
 --- Tier 4 ---
-15. Zay Flowers (BAL) | ADP #36.3 | 🎯 Target / 'The Twelve' | ⚡ Monken Power-Pistol Spread: 72% GL Run Funnel (Henry/Lamar) | 🟢 +6.3 Value
-16. Tee Higgins (CIN) | ADP #33.5 | 🎯 Exodia Target | 🎯 Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) | ⚠️ OL #28 (Poor) | 🏆 Playoff ⭐⭐⭐⭐⭐
-17. Tetairoa McMillan (CAR) | ADP #41.8 | 🚫 Overvalue / Fade | ⚡ Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel | 🟢 +5.8 Value
-18. Garrett Wilson (NYJ) | ADP #49.4 | 🎯 Target / Bounce-Back | 🎯 Engstrand West Coast Spread: 11-Personnel | 🟢 +12.4 Value
-19. Jaylen Waddle (DEN) | ADP #41.9 | 🎯 Exodia Target / Value | 🎯 Sean Payton West Coast Spread: High RB Target Share | 🛡️ OL #1 (Top 5)
-20. Ladd McConkey (LAC) | ADP #45.5 | 🎯 Target | 👑 McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone | 🟢 +6.5 Value
-21. Jameson Williams (DET) | ADP #65.9 | ⚠️ TRAP RISK | ⭐ Top-10 Eco: High-Motion Zone/PA: Top-3 Scoring Eco | 🏆 Playoff ⭐⭐⭐⭐⭐ | 🟢 +4.9 Value
+15. Zay Flowers (BAL) | ADP #36.3 | [TARGET] Target / The Twelve ; Monken Power-Pistol Spread: 72% GL Run Funnel (Henry/Lamar) ; [+6.3 Value]
+16. Tee Higgins (CIN) | ADP #33.5 | [TARGET] Exodia Target ; Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) ; [OL #28 Poor] ; [Playoff A+]
+17. Tetairoa McMillan (CAR) | ADP #41.8 | [FADE] Overvalue / Fade ; Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel ; [+5.8 Value]
+18. Garrett Wilson (NYJ) | ADP #49.4 | [TARGET] Target / Bounce-Back ; Engstrand West Coast Spread: 11-Personnel ; [+12.4 Value]
+19. Jaylen Waddle (DEN) | ADP #41.9 | [TARGET] Exodia Target / Value ; Sean Payton West Coast Spread: High RB Target Share ; [OL #1 Top-5]
+20. Ladd McConkey (LAC) | ADP #45.5 | [TARGET] Target ; McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone ; [+6.5 Value]
+21. Jameson Williams (DET) | ADP #65.9 | [TRAP RISK] ; Top-10 Eco: High-Motion Zone/PA: Top-3 Scoring Eco ; [Playoff A+] ; [+4.9 Value]
 
 --- Tier 5 ---
-22. Emeka Egbuka (TB) | ADP #43.9 | 🚫 Overvalue / Risk | 🎯 Liam Coen McVay Spread: 11-Personnel Spread | 🛡️ OL #5 (Top 5)
-23. Mike Evans (SF) | ADP #67.1 | 💥 Core Exodia / Value | 👑 Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion | 🟢 +4.1 Value
-24. Terry McLaurin (WAS) | ADP #54.0 | 🎯 Target / 'The Twelve' | ⚡ Kingsbury Air Raid: Top-3 Neutral Pace | 🟢 +8.0 Value
-25. Davante Adams (LAR) | ADP #53.9 | Value | 👑 McVay 11-Personnel Tree: Top-3 Motion | 🛡️ OL #3 (Top 5) | 🟢 +5.9 Value
-26. Luther Burden III (CHI) | ADP #58.8 | 🎯 Exodia Target | 🔥 Ben Johnson Creative Motion: Elite Motion | 🛡️ OL #4 (Top 5) | 🟢 +8.8 Value
-27. Christian Watson (GB) | ADP #67.7 | 🎯 #1 Target / 'The Twelve' | 👑 LaFleur Shanahan/McVay Tree: Heavy Motion
-28. Parker Washington (JAX) | ADP #82.1 | 💥 Core Exodia / Value | 🎯 Doug Pederson West Coast RPO: High Pass Volume
-29. Rome Odunze (CHI) | ADP #67.6 | 🎯 Target / Value | 🔥 Ben Johnson Creative Motion: Elite Motion | 🛡️ OL #4 (Top 5)
+22. Emeka Egbuka (TB) | ADP #43.9 | [FADE] Overvalue / Risk ; Liam Coen McVay Spread: 11-Personnel Spread ; [OL #5 Top-5]
+23. Mike Evans (SF) | ADP #67.1 | [EXODIA] Core Exodia / Value ; Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion ; [+4.1 Value]
+24. Terry McLaurin (WAS) | ADP #54.0 | [TARGET] Target / The Twelve ; Kingsbury Air Raid: Top-3 Neutral Pace ; [+8.0 Value]
+25. Davante Adams (LAR) | ADP #53.9 | Value ; McVay 11-Personnel Tree: Top-3 Motion ; [OL #3 Top-5] ; [+5.9 Value]
+26. Luther Burden III (CHI) | ADP #58.8 | [TARGET] Exodia Target ; Ben Johnson Creative Motion: Elite Motion ; [OL #4 Top-5] ; [+8.8 Value]
+27. Christian Watson (GB) | ADP #67.7 | [TARGET] #1 Target / The Twelve ; LaFleur Shanahan/McVay Tree: Heavy Motion
+28. Parker Washington (JAX) | ADP #82.1 | [EXODIA] Core Exodia / Value ; Doug Pederson West Coast RPO: High Pass Volume
+29. Rome Odunze (CHI) | ADP #67.6 | [TARGET] Target / Value ; Ben Johnson Creative Motion: Elite Motion ; [OL #4 Top-5]
 
 --- Tier 6 ---
-30. DJ Moore (BUF) | ADP #62.0 | 🎯 Target / Value | ⭐ Top-10 Eco: Power Spread: Multi-TE 12p Power
-31. Brian Thomas Jr. (JAX) | ADP #83.9 | 🎯 Target | 🎯 Doug Pederson West Coast RPO: High Pass Volume | 🟢 +9.9 Value
-32. DK Metcalf (PIT) | ADP #86.3 | ⚠️ TRAP RISK | 🏃 Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs) | 🟢 +9.3 Value
-33. Quentin Johnston (LAC) | ADP #109.7 | 💤 Breakout Sleeper (+13 ADP Delta) | 👑 McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone
-34. Courtland Sutton (DEN) | ADP #103.2 | ⚠️ TRAP RISK | 🎯 Sean Payton West Coast Spread: High RB Target Share | 🛡️ OL #1 (Top 5) | 🟢 +20.2 Value
-35. Jakobi Meyers (JAX) | ADP #129.1 | 📊 CONSENSUS | 🎯 Doug Pederson West Coast RPO: High Pass Volume | 🟢 +21.1 Value
-36. Stefon Diggs (WAS) | ADP #107.6 | 🎯 Late Target / Risk | ⚡ Kingsbury Air Raid: Top-3 Neutral Pace
-37. Michael Pittman (PIT) | ADP #120.0 | 🎯 #7 Target / 'The Twelve' | 🏃 Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs) | 🟢 +18.0 Value
-38. Jordan Addison (MIN) | ADP #117.3 | 📊 CONSENSUS | 🎯 O'Connell McVay Pass Funnel: Pass-Forward System (+1.4% PROE) | 🟢 +13.3 Value
-39. Carnell Tate (TEN) | ADP #80.0 | 🚫 Overvalue / Fade | 🎯 Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread | ⚠️ OL #31 (Poor) | 🟢 +12.0 Value
-40. Jayden Reed (GB) | ADP #119.2 | ⚠️ TRAP RISK | 👑 LaFleur Shanahan/McVay Tree: Heavy Motion | 🟢 +4.2 Value
+30. DJ Moore (BUF) | ADP #62.0 | [TARGET] Target / Value ; Top-10 Eco: Power Spread: Multi-TE 12p Power
+31. Brian Thomas Jr. (JAX) | ADP #83.9 | [TARGET] Target ; Doug Pederson West Coast RPO: High Pass Volume ; [+9.9 Value]
+32. DK Metcalf (PIT) | ADP #86.3 | [TRAP RISK] ; Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs) ; [+9.3 Value]
+33. Quentin Johnston (LAC) | ADP #109.7 | Breakout Sleeper (+13 ADP Delta) ; McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone
+34. Courtland Sutton (DEN) | ADP #103.2 | [TRAP RISK] ; Sean Payton West Coast Spread: High RB Target Share ; [OL #1 Top-5] ; [+20.2 Value]
+35. Jakobi Meyers (JAX) | ADP #129.1 | [ CONSENSUS] ; Doug Pederson West Coast RPO: High Pass Volume ; [+21.1 Value]
+36. Stefon Diggs (WAS) | ADP #107.6 | [TARGET] Late Target / Risk ; Kingsbury Air Raid: Top-3 Neutral Pace
+37. Michael Pittman (PIT) | ADP #120.0 | [TARGET] #7 Target / The Twelve ; Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs) ; [+18.0 Value]
+38. Jordan Addison (MIN) | ADP #117.3 | [ CONSENSUS] ; OConnell McVay Pass Funnel: Pass-Forward System (+1.4% PROE) ; [+13.3 Value]
+39. Carnell Tate (TEN) | ADP #80.0 | [FADE] Overvalue / Fade ; Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread ; [OL #31 Poor] ; [+12.0 Value]
+40. Jayden Reed (GB) | ADP #119.2 | [TRAP RISK] ; LaFleur Shanahan/McVay Tree: Heavy Motion ; [+4.2 Value]
 
 --- Tier 7 ---
-41. Romeo Doubs (NE) | ADP #131.8 | 💤 Breakout Sleeper (+15 ADP Delta) | 🏃 Van Pelt Power West Coast: Heavy 12/21 Personnel | 🟢 +6.8 Value
-42. Chris Godwin Jr. (TB) | ADP #97.7 | 🎯 Target / Motion Alpha | 🎯 Liam Coen McVay Spread: 11-Personnel Spread | 🛡️ OL #5 (Top 5)
-43. Marvin Harrison Jr. (ARI) | ADP #78.7 | 🎯 Value / Target | 👑 Petzing Shanahan/Stefanski Tree: Outside Zone
-44. Cooper Kupp (SEA) | ADP #223.9 | 💎 SLEEPER | 🎯 Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK) | 🟢 +22.9 Value
-45. Deebo Samuel Sr. (SF) | ADP #127.5 | 💤 Breakout Sleeper (+16 ADP Delta) | 👑 Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
-46. Josh Downs (IND) | ADP #109.0 | 💥 Expanded Exodia / 'The Twelve' | ⚡ Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace | 💰 Contract Year
-47. Xavier Worthy (KC) | ADP #128.9 | 💤 Breakout Sleeper (+15 ADP Delta) | 🚀 Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) | 🏆 Playoff ⭐⭐⭐⭐⭐
-48. Michael Wilson (ARI) | ADP #102.9 | 📊 CONSENSUS | 👑 Petzing Shanahan/Stefanski Tree: Outside Zone | 🟢 +15.9 Value
+41. Romeo Doubs (NE) | ADP #131.8 | Breakout Sleeper (+15 ADP Delta) ; Van Pelt Power West Coast: Heavy 12/21 Personnel ; [+6.8 Value]
+42. Chris Godwin Jr. (TB) | ADP #97.7 | [TARGET] Target / Motion Alpha ; Liam Coen McVay Spread: 11-Personnel Spread ; [OL #5 Top-5]
+43. Marvin Harrison Jr. (ARI) | ADP #78.7 | [TARGET] Value / Target ; Petzing Shanahan/Stefanski Tree: Outside Zone
+44. Cooper Kupp (SEA) | ADP #223.9 | [ SLEEPER] ; Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK) ; [+22.9 Value]
+45. Deebo Samuel Sr. (SF) | ADP #127.5 | Breakout Sleeper (+16 ADP Delta) ; Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
+46. Josh Downs (IND) | ADP #109.0 | [EXODIA] Expanded Exodia / The Twelve ; Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace ; [Contract Year]
+47. Xavier Worthy (KC) | ADP #128.9 | Breakout Sleeper (+15 ADP Delta) ; Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) ; [Playoff A+]
+48. Michael Wilson (ARI) | ADP #102.9 | [ CONSENSUS] ; Petzing Shanahan/Stefanski Tree: Outside Zone ; [+15.9 Value]
 
 --- Tier 8 ---
-49. Matthew Golden (GB) | ADP #128.1 | 💤 Breakout Sleeper (+10 ADP Delta) | 👑 LaFleur Shanahan/McVay Tree: Heavy Motion | 🟢 +5.1 Value
-50. Alec Pierce (IND) | ADP #92.0 | 📊 CONSENSUS | ⚡ Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace
-51. Jalen Coker (CAR) | ADP #133.3 | 🎯 Target / Breakout | ⚡ Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
-52. Makai Lemon (PHI) | ADP #112.2 | 🚫 Overvalue / Hamstring | 👑 Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) | 🛡️ OL #2 (Top 5) | 🟢 +22.2 Value
-53. Tre Tucker (LV) | ADP #203.7 | 💤 Breakout Sleeper (+29 ADP Delta) | 👑 Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion | 🟢 +17.7 Value
-54. Khalil Shakir (BUF) | ADP #131.4 | 💤 Breakout Sleeper (+12 ADP Delta) | ⭐ Top-10 Eco: Power Spread: Multi-TE 12p Power
-55. Jalen McMillan (TB) | ADP #129.3 | Sleeper / Red Zone | 🎯 Liam Coen McVay Spread: 11-Personnel Spread | 🛡️ OL #5 (Top 5)
-56. Dontayvion Wicks (PHI) | ADP #999.0 | 💎 SLEEPER | 👑 Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) | 🛡️ OL #2 (Top 5)
-57. Ryan Flournoy (DAL) | ADP #233.0 | 💎 SLEEPER | ⚡ Schottenheimer West Coast Spread: Top-3 Neutral Pace | 🟢 +16.0 Value
-58. Keenan Allen (IND) | ADP #197.3 | 💤 Breakout Sleeper (+27 ADP Delta) | ⚡ Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace | 🟢 +14.3 Value
+49. Matthew Golden (GB) | ADP #128.1 | Breakout Sleeper (+10 ADP Delta) ; LaFleur Shanahan/McVay Tree: Heavy Motion ; [+5.1 Value]
+50. Alec Pierce (IND) | ADP #92.0 | [ CONSENSUS] ; Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace
+51. Jalen Coker (CAR) | ADP #133.3 | [TARGET] Target / Breakout ; Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
+52. Makai Lemon (PHI) | ADP #112.2 | [FADE] Overvalue / Hamstring ; Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) ; [OL #2 Top-5] ; [+22.2 Value]
+53. Tre Tucker (LV) | ADP #203.7 | Breakout Sleeper (+29 ADP Delta) ; Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion ; [+17.7 Value]
+54. Khalil Shakir (BUF) | ADP #131.4 | Breakout Sleeper (+12 ADP Delta) ; Top-10 Eco: Power Spread: Multi-TE 12p Power
+55. Jalen McMillan (TB) | ADP #129.3 | Sleeper / Red Zone ; Liam Coen McVay Spread: 11-Personnel Spread ; [OL #5 Top-5]
+56. Dontayvion Wicks (PHI) | ADP #999.0 | [ SLEEPER] ; Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) ; [OL #2 Top-5]
+57. Ryan Flournoy (DAL) | ADP #233.0 | [ SLEEPER] ; Schottenheimer West Coast Spread: Top-3 Neutral Pace ; [+16.0 Value]
+58. Keenan Allen (IND) | ADP #197.3 | Breakout Sleeper (+27 ADP Delta) ; Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace ; [+14.3 Value]
 
 --- Tier 9 ---
-59. Jalen Nailor (LV) | ADP #184.9 | Sleeper / Value | 👑 Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion | 🟢 +13.9 Value
-60. Wan'Dale Robinson (TEN) | ADP #130.9 | ⚠️ TRAP RISK | 🎯 Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread | ⚠️ OL #31 (Poor) | 🟢 +16.9 Value
-61. Rashid Shaheed (SEA) | ADP #128.3 | 💤 Breakout Sleeper (+14 ADP Delta) | 🎯 Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
-62. Jerry Jeudy (CLE) | ADP #191.2 | Late Value | 🎯 Ken Dorsey Air Raid Spread: Shotgun Pass Spacing | ⚠️ OL #32 (Poor) | 🟢 +13.2 Value
-63. Adonai Mitchell (NYJ) | ADP #235.5 | 💎 SLEEPER | 🎯 Engstrand West Coast Spread: 11-Personnel | 🟢 +15.5 Value
-64. KC Concepcion (CLE) | ADP #127.7 | 📊 CONSENSUS | 🎯 Ken Dorsey Air Raid Spread: Shotgun Pass Spacing | ⚠️ OL #32 (Poor) | 🟢 +8.7 Value
-65. Rashod Bateman (BAL) | ADP #232.7 | 📊 CONSENSUS | ⚡ Monken Power-Pistol Spread: 72% GL Run Funnel (Henry/Lamar) | 🟢 +16.7 Value
-66. Jauan Jennings (MIN) | ADP #126.9 | 💤 Breakout Sleeper (+20 ADP Delta) | 🎯 O'Connell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
-67. Caleb Douglas (MIA) | ADP #218.6 | 💎 SLEEPER | 👑 Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) | ⚠️ OL #30 (Poor) | 🟢 +20.6 Value
-68. Calvin Ridley (TEN) | ADP #253.2 | 💎 SLEEPER | 🎯 Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread | ⚠️ OL #31 (Poor)
-69. Devaughn Vele (NO) | ADP #239.8 | 💎 SLEEPER | 👑 Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion | 🟢 +14.8 Value
-70. KaVontae Turpin (DAL) | ADP #999.0 | 💎 SLEEPER | ⚡ Schottenheimer West Coast Spread: Top-3 Neutral Pace
-71. Denzel Boston (CLE) | ADP #131.4 | Rookie Sleeper | 🎯 Ken Dorsey Air Raid Spread: Shotgun Pass Spacing | ⚠️ OL #32 (Poor)
-72. Kayshon Boutte (HOU) | ADP #239.8 | 💎 SLEEPER | 👑 Shanahan Wide Zone Tree: Top-10 Eco | ⚠️ OL #29 (Poor) | 🟢 +13.8 Value
-73. Jordyn Tyson (NO) | ADP #94.4 | 🚫 Overvalue / IR Stash | 👑 Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion | 🟢 +5.4 Value
-74. Jaylin Noel (HOU) | ADP #213.7 | 💎 SLEEPER | 👑 Shanahan Wide Zone Tree: Top-10 Eco | ⚠️ OL #29 (Poor) | 🟢 +17.7 Value
-75. Tre Harris (LAC) | ADP #230.6 | 💎 SLEEPER | 👑 McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone | 🟢 +18.6 Value
-76. Malik Washington (MIA) | ADP #200.5 | 💎 SLEEPER | 👑 Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) | ⚠️ OL #30 (Poor) | 🟢 +15.5 Value
-77. Marvin Mims Jr. (DEN) | ADP #219.5 | 📊 CONSENSUS | 🎯 Sean Payton West Coast Spread: High RB Target Share | 🛡️ OL #1 (Top 5) | 🟢 +20.5 Value
-78. De'Zhaun Stribling (SF) | ADP #155.0 | #1 Rookie Sleeper WR | 👑 Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
-79. Omar Cooper Jr. (NYJ) | ADP #130.0 | 💤 Breakout Sleeper (+15 ADP Delta) | 🎯 Engstrand West Coast Spread: 11-Personnel
-80. Malachi Fields (NYG) | ADP #226.4 | 📊 CONSENSUS | ⚡ Daboll Spread Option: Read-Option | 🟢 +20.4 Value
-81. Kendrick Bourne (ARI) | ADP #999.0 | 💎 SLEEPER | 👑 Petzing Shanahan/Stefanski Tree: Outside Zone
-82. Tank Dell (HOU) | ADP #176.1 | 💤 Breakout Sleeper (+11 ADP Delta) | 👑 Shanahan Wide Zone Tree: Top-10 Eco | ⚠️ OL #29 (Poor) | 🟢 +10.1 Value
-83. Pat Bryant (DEN) | ADP #1180.0 | 💎 SLEEPER | 🎯 Sean Payton West Coast Spread: High RB Target Share | 🛡️ OL #1 (Top 5)
-84. Ja'Kobi Lane (BAL) | ADP #157.9 | 📊 CONSENSUS | ⚡ Monken Power-Pistol Spread: 72% GL Run Funnel (Henry/Lamar)
-85. Xavier Legette (CAR) | ADP #1200.0 | 💎 SLEEPER | ⚡ Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
-86. Tyquan Thornton (KC) | ADP #999.0 | 💎 SLEEPER | 🚀 Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) | 🏆 Playoff ⭐⭐⭐⭐⭐
-87. Germie Bernard (PIT) | ADP #232.3 | 📊 CONSENSUS | 🏃 Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs) | 🟢 +17.3 Value
-88. Isaac TeSlaa (DET) | ADP #212.3 | 📊 CONSENSUS | ⭐ Top-10 Eco: High-Motion Zone/PA: Top-3 Scoring Eco | 🏆 Playoff ⭐⭐⭐⭐⭐ | 🟢 +18.3 Value
-89. Jahan Dotson (ATL) | ADP #999.0 | 💎 SLEEPER | 👑 Shanahan/Stefanski Wide Zone Lineage: Heavy Motion | 🏆 Playoff ⭐⭐⭐⭐⭐
-90. Keon Coleman (BUF) | ADP #234.8 | 📊 CONSENSUS | ⭐ Top-10 Eco: Power Spread: Multi-TE 12p Power | 🟢 +15.8 Value
-91. Ricky Pearsall (FA) | ADP #141.0 | 💤 Breakout Sleeper (+6 ADP Delta)
-92. Jayden Higgins (FA) | ADP #146.0 | 📊 CONSENSUS
-93. Brandon Aiyuk (FA) | ADP #148.0 | 📊 CONSENSUS
-94. Antonio Williams (FA) | ADP #150.0 | 📊 CONSENSUS
+59. Jalen Nailor (LV) | ADP #184.9 | Sleeper / Value ; Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion ; [+13.9 Value]
+60. Wan'Dale Robinson (TEN) | ADP #130.9 | [TRAP RISK] ; Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread ; [OL #31 Poor] ; [+16.9 Value]
+61. Rashid Shaheed (SEA) | ADP #128.3 | Breakout Sleeper (+14 ADP Delta) ; Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
+62. Jerry Jeudy (CLE) | ADP #191.2 | Late Value ; Ken Dorsey Air Raid Spread: Shotgun Pass Spacing ; [OL #32 Poor] ; [+13.2 Value]
+63. Adonai Mitchell (NYJ) | ADP #235.5 | [ SLEEPER] ; Engstrand West Coast Spread: 11-Personnel ; [+15.5 Value]
+64. KC Concepcion (CLE) | ADP #127.7 | [ CONSENSUS] ; Ken Dorsey Air Raid Spread: Shotgun Pass Spacing ; [OL #32 Poor] ; [+8.7 Value]
+65. Rashod Bateman (BAL) | ADP #232.7 | [ CONSENSUS] ; Monken Power-Pistol Spread: 72% GL Run Funnel (Henry/Lamar) ; [+16.7 Value]
+66. Jauan Jennings (MIN) | ADP #126.9 | Breakout Sleeper (+20 ADP Delta) ; OConnell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
+67. Caleb Douglas (MIA) | ADP #218.6 | [ SLEEPER] ; Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) ; [OL #30 Poor] ; [+20.6 Value]
+68. Calvin Ridley (TEN) | ADP #253.2 | [ SLEEPER] ; Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread ; [OL #31 Poor]
+69. Devaughn Vele (NO) | ADP #239.8 | [ SLEEPER] ; Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion ; [+14.8 Value]
+70. KaVontae Turpin (DAL) | ADP #999.0 | [ SLEEPER] ; Schottenheimer West Coast Spread: Top-3 Neutral Pace
+71. Denzel Boston (CLE) | ADP #131.4 | Rookie Sleeper ; Ken Dorsey Air Raid Spread: Shotgun Pass Spacing ; [OL #32 Poor]
+72. Kayshon Boutte (HOU) | ADP #239.8 | [ SLEEPER] ; Shanahan Wide Zone Tree: Top-10 Eco ; [OL #29 Poor] ; [+13.8 Value]
+73. Jordyn Tyson (NO) | ADP #94.4 | [FADE] Overvalue / IR Stash ; Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion ; [+5.4 Value]
+74. Jaylin Noel (HOU) | ADP #213.7 | [ SLEEPER] ; Shanahan Wide Zone Tree: Top-10 Eco ; [OL #29 Poor] ; [+17.7 Value]
+75. Tre Harris (LAC) | ADP #230.6 | [ SLEEPER] ; McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone ; [+18.6 Value]
+76. Malik Washington (MIA) | ADP #200.5 | [ SLEEPER] ; Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) ; [OL #30 Poor] ; [+15.5 Value]
+77. Marvin Mims Jr. (DEN) | ADP #219.5 | [ CONSENSUS] ; Sean Payton West Coast Spread: High RB Target Share ; [OL #1 Top-5] ; [+20.5 Value]
+78. De'Zhaun Stribling (SF) | ADP #155.0 | #1 Rookie Sleeper WR ; Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
+79. Omar Cooper Jr. (NYJ) | ADP #130.0 | Breakout Sleeper (+15 ADP Delta) ; Engstrand West Coast Spread: 11-Personnel
+80. Malachi Fields (NYG) | ADP #226.4 | [ CONSENSUS] ; Daboll Spread Option: Read-Option ; [+20.4 Value]
+81. Kendrick Bourne (ARI) | ADP #999.0 | [ SLEEPER] ; Petzing Shanahan/Stefanski Tree: Outside Zone
+82. Tank Dell (HOU) | ADP #176.1 | Breakout Sleeper (+11 ADP Delta) ; Shanahan Wide Zone Tree: Top-10 Eco ; [OL #29 Poor] ; [+10.1 Value]
+83. Pat Bryant (DEN) | ADP #1180.0 | [ SLEEPER] ; Sean Payton West Coast Spread: High RB Target Share ; [OL #1 Top-5]
+84. Ja'Kobi Lane (BAL) | ADP #157.9 | [ CONSENSUS] ; Monken Power-Pistol Spread: 72% GL Run Funnel (Henry/Lamar)
+85. Xavier Legette (CAR) | ADP #1200.0 | [ SLEEPER] ; Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
+86. Tyquan Thornton (KC) | ADP #999.0 | [ SLEEPER] ; Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) ; [Playoff A+]
+87. Germie Bernard (PIT) | ADP #232.3 | [ CONSENSUS] ; Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs) ; [+17.3 Value]
+88. Isaac TeSlaa (DET) | ADP #212.3 | [ CONSENSUS] ; Top-10 Eco: High-Motion Zone/PA: Top-3 Scoring Eco ; [Playoff A+] ; [+18.3 Value]
+89. Jahan Dotson (ATL) | ADP #999.0 | [ SLEEPER] ; Shanahan/Stefanski Wide Zone Lineage: Heavy Motion ; [Playoff A+]
+90. Keon Coleman (BUF) | ADP #234.8 | [ CONSENSUS] ; Top-10 Eco: Power Spread: Multi-TE 12p Power ; [+15.8 Value]
+91. Ricky Pearsall (FA) | ADP #141.0 | Breakout Sleeper (+6 ADP Delta)
+92. Jayden Higgins (FA) | ADP #146.0 | [ CONSENSUS]
+93. Brandon Aiyuk (FA) | ADP #148.0 | [ CONSENSUS]
+94. Antonio Williams (FA) | ADP #150.0 | [ CONSENSUS]
 
 
 === TE RANKINGS ===
 
 --- Tier 1 ---
-1. Brock Bowers (LV) | ADP #21.1 | 💥 Must-Have / Exodia | 👑 Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion | 🟢 +4.1 Value
-2. Trey McBride (ARI) | ADP #25.8 | 🚫 Overvalue / Fade | 👑 Petzing Shanahan/Stefanski Tree: Outside Zone
+1. Brock Bowers (LV) | ADP #21.1 | [EXODIA] Must-Have / Exodia ; Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion ; [+4.1 Value]
+2. Trey McBride (ARI) | ADP #25.8 | [FADE] Overvalue / Fade ; Petzing Shanahan/Stefanski Tree: Outside Zone
 
 --- Tier 2 ---
-3. Colston Loveland (CHI) | ADP #39.6 | 🎯 Target / Breakout | 🔥 Ben Johnson Creative Motion: Elite Motion | 🛡️ OL #4 (Top 5)
-4. Tyler Warren (IND) | ADP #47.2 | 🎯 #2 Target / 'The Twelve' | ⚡ Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace
+3. Colston Loveland (CHI) | ADP #39.6 | [TARGET] Target / Breakout ; Ben Johnson Creative Motion: Elite Motion ; [OL #4 Top-5]
+4. Tyler Warren (IND) | ADP #47.2 | [TARGET] #2 Target / The Twelve ; Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace
 
 --- Tier 3 ---
-5. Kyle Pitts (ATL) | ADP #72.9 | Value | 👑 Shanahan/Stefanski Wide Zone Lineage: Heavy Motion | 🏆 Playoff ⭐⭐⭐⭐⭐
-6. Sam LaPorta (DET) | ADP #63.1 | 🎯 Target / 'The Twelve' | ⭐ Top-10 Eco: High-Motion Zone/PA: Top-3 Scoring Eco | 💰 Contract Year | 🏆 Playoff ⭐⭐⭐⭐⭐
-7. Travis Kelce (KC) | ADP #94.0 | ⚠️ TRAP RISK | 🚀 Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) | 🏆 Playoff ⭐⭐⭐⭐⭐
-8. Dallas Goedert (PHI) | ADP #106.3 | 🎯 Floor TE Target ($1-$3) | 👑 Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) | 🛡️ OL #2 (Top 5)
-9. Harold Fannin Jr. (CLE) | ADP #71.4 | Sleeper TE | 🎯 Ken Dorsey Air Raid Spread: Shotgun Pass Spacing | ⚠️ OL #32 (Poor)
+5. Kyle Pitts (ATL) | ADP #72.9 | Value ; Shanahan/Stefanski Wide Zone Lineage: Heavy Motion ; [Playoff A+]
+6. Sam LaPorta (DET) | ADP #63.1 | [TARGET] Target / The Twelve ; Top-10 Eco: High-Motion Zone/PA: Top-3 Scoring Eco ; [Contract Year] ; [Playoff A+]
+7. Travis Kelce (KC) | ADP #94.0 | [TRAP RISK] ; Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) ; [Playoff A+]
+8. Dallas Goedert (PHI) | ADP #106.3 | [TARGET] Floor TE Target ($1-$3) ; Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) ; [OL #2 Top-5]
+9. Harold Fannin Jr. (CLE) | ADP #71.4 | Sleeper TE ; Ken Dorsey Air Raid Spread: Shotgun Pass Spacing ; [OL #32 Poor]
 
 --- Tier 4 ---
-10. Jake Ferguson (DAL) | ADP #115.5 | ⚠️ TRAP RISK | ⚡ Schottenheimer West Coast Spread: Top-3 Neutral Pace | 🟢 +17.5 Value
-11. George Kittle (SF) | ADP #86.7 | 🎯 Value / Target ($6-$8 Auction) | 👑 Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
-12. Tucker Kraft (GB) | ADP #60.8 | 💥 Expanded Exodia / Value | 👑 LaFleur Shanahan/McVay Tree: Heavy Motion
-13. Mark Andrews (BAL) | ADP #113.4 | TE2 Value ($1-$3) | ⚡ Monken Power-Pistol Spread: 72% GL Run Funnel (Henry/Lamar)
-14. Juwan Johnson (NO) | ADP #127.4 | 🎯 Late TE Target ($1) | 👑 Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion
-15. Brenton Strange (JAX) | ADP #128.9 | Sleeper TE | 🎯 Doug Pederson West Coast RPO: High Pass Volume
-16. Dalton Schultz (HOU) | ADP #128.2 | 💤 Breakout Sleeper (+33 ADP Delta) | 👑 Shanahan Wide Zone Tree: Top-10 Eco | ⚠️ OL #29 (Poor)
+10. Jake Ferguson (DAL) | ADP #115.5 | [TRAP RISK] ; Schottenheimer West Coast Spread: Top-3 Neutral Pace ; [+17.5 Value]
+11. George Kittle (SF) | ADP #86.7 | [TARGET] Value / Target ($6-$8 Auction) ; Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
+12. Tucker Kraft (GB) | ADP #60.8 | [EXODIA] Expanded Exodia / Value ; LaFleur Shanahan/McVay Tree: Heavy Motion
+13. Mark Andrews (BAL) | ADP #113.4 | TE2 Value ($1-$3) ; Monken Power-Pistol Spread: 72% GL Run Funnel (Henry/Lamar)
+14. Juwan Johnson (NO) | ADP #127.4 | [TARGET] Late TE Target ($1) ; Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion
+15. Brenton Strange (JAX) | ADP #128.9 | Sleeper TE ; Doug Pederson West Coast RPO: High Pass Volume
+16. Dalton Schultz (HOU) | ADP #128.2 | Breakout Sleeper (+33 ADP Delta) ; Shanahan Wide Zone Tree: Top-10 Eco ; [OL #29 Poor]
 
 --- Tier 5 ---
-17. Dalton Kincaid (BUF) | ADP #99.0 | 🎯 Ceiling TE Target ($1-$3) | ⭐ Top-10 Eco: Power Spread: Multi-TE 12p Power | 🟢 +7.0 Value
-18. Hunter Henry (NE) | ADP #127.7 | 💤 Breakout Sleeper (+12 ADP Delta) | 🏃 Van Pelt Power West Coast: Heavy 12/21 Personnel
-19. T.J. Hockenson (MIN) | ADP #129.3 | 💤 Breakout Sleeper (+20 ADP Delta) | 🎯 O'Connell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
-20. Charlie Kolar (LAC) | ADP #999.0 | 🎯 Late Sleeper Target | 👑 McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone
+17. Dalton Kincaid (BUF) | ADP #99.0 | [TARGET] Ceiling TE Target ($1-$3) ; Top-10 Eco: Power Spread: Multi-TE 12p Power ; [+7.0 Value]
+18. Hunter Henry (NE) | ADP #127.7 | Breakout Sleeper (+12 ADP Delta) ; Van Pelt Power West Coast: Heavy 12/21 Personnel
+19. T.J. Hockenson (MIN) | ADP #129.3 | Breakout Sleeper (+20 ADP Delta) ; OConnell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
+20. Charlie Kolar (LAC) | ADP #999.0 | [TARGET] Late Sleeper Target ; McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone
 
 --- Tier 6 ---
-21. Isaiah Likely (NYG) | ADP #109.2 | 📊 CONSENSUS | ⚡ Daboll Spread Option: Read-Option
-22. Cade Otton (TB) | ADP #237.3 | 💤 Breakout Sleeper (+57 ADP Delta) | 🎯 Liam Coen McVay Spread: 11-Personnel Spread | 🛡️ OL #5 (Top 5) | 🟢 +14.3 Value
-23. AJ Barner (SEA) | ADP #126.0 | 💤 Breakout Sleeper (+30 ADP Delta) | 🎯 Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
-24. Chig Okonkwo (WAS) | ADP #126.3 | 💤 Breakout Sleeper (+30 ADP Delta) | ⚡ Kingsbury Air Raid: Top-3 Neutral Pace
-25. Pat Freiermuth (PIT) | ADP #239.9 | 💎 SLEEPER | 🏃 Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs) | 🟢 +12.9 Value
+21. Isaiah Likely (NYG) | ADP #109.2 | [ CONSENSUS] ; Daboll Spread Option: Read-Option
+22. Cade Otton (TB) | ADP #237.3 | Breakout Sleeper (+57 ADP Delta) ; Liam Coen McVay Spread: 11-Personnel Spread ; [OL #5 Top-5] ; [+14.3 Value]
+23. AJ Barner (SEA) | ADP #126.0 | Breakout Sleeper (+30 ADP Delta) ; Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
+24. Chig Okonkwo (WAS) | ADP #126.3 | Breakout Sleeper (+30 ADP Delta) ; Kingsbury Air Raid: Top-3 Neutral Pace
+25. Pat Freiermuth (PIT) | ADP #239.9 | [ SLEEPER] ; Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs) ; [+12.9 Value]
 
 --- Tier 7 ---
-26. Jonnu Smith (FA) | ADP #8.0 | 📊 CONSENSUS
-27. Gunnar Helm (TEN) | ADP #233.4 | 💎 SLEEPER | 🎯 Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread | ⚠️ OL #31 (Poor) | 🟢 +15.4 Value
-28. Evan Engram (DEN) | ADP #999.0 | 💎 SLEEPER | 🎯 Sean Payton West Coast Spread: High RB Target Share | 🛡️ OL #1 (Top 5)
-29. Greg Dulcich (MIA) | ADP #229.7 | Guru's Sleeper TE ($1) | 👑 Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) | ⚠️ OL #30 (Poor) | 🟢 +18.7 Value
-30. Michael Mayer (LV) | ADP #999.0 | 💎 SLEEPER | 👑 Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion
+26. Jonnu Smith (FA) | ADP #8.0 | [ CONSENSUS]
+27. Gunnar Helm (TEN) | ADP #233.4 | [ SLEEPER] ; Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread ; [OL #31 Poor] ; [+15.4 Value]
+28. Evan Engram (DEN) | ADP #999.0 | [ SLEEPER] ; Sean Payton West Coast Spread: High RB Target Share ; [OL #1 Top-5]
+29. Greg Dulcich (MIA) | ADP #229.7 | Gurus Sleeper TE ($1) ; Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) ; [OL #30 Poor] ; [+18.7 Value]
+30. Michael Mayer (LV) | ADP #999.0 | [ SLEEPER] ; Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion
 
 --- Tier 8 ---
-31. Kenyon Sadiq (NYJ) | ADP #130.0 | 💤 Breakout Sleeper (+11 ADP Delta) | 🎯 Engstrand West Coast Spread: 11-Personnel
-32. Colby Parkinson (LAR) | ADP #251.4 | 💎 SLEEPER | 👑 McVay 11-Personnel Tree: Top-3 Motion | 🛡️ OL #3 (Top 5)
-33. Mason Taylor (NYJ) | ADP #224.3 | 📊 CONSENSUS | 🎯 Engstrand West Coast Spread: 11-Personnel | 🟢 +21.3 Value
-34. Mike Gesicki (CIN) | ADP #999.0 | 💎 SLEEPER | 🎯 Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) | ⚠️ OL #28 (Poor) | 🏆 Playoff ⭐⭐⭐⭐⭐
-35. Theo Johnson (NYG) | ADP #232.2 | 💎 SLEEPER | ⚡ Daboll Spread Option: Read-Option | 🟢 +18.2 Value
-36. Dawson Knox (BUF) | ADP #999.0 | 💎 SLEEPER | ⭐ Top-10 Eco: Power Spread: Multi-TE 12p Power
-37. Cole Kmet (CHI) | ADP #999.0 | 💎 SLEEPER | 🔥 Ben Johnson Creative Motion: Elite Motion | 🛡️ OL #4 (Top 5)
-38. Darnell Washington (PIT) | ADP #999.0 | 💎 SLEEPER | 🏃 Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs)
-39. David Njoku (LAC) | ADP #206.9 | 💎 SLEEPER | 👑 McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone | 🟢 +17.9 Value
-40. Terrance Ferguson (LAR) | ADP #207.1 | #1 High-Ceiling TE Stash | 👑 McVay 11-Personnel Tree: Top-3 Motion | 🛡️ OL #3 (Top 5) | 🟢 +17.1 Value
-41. Tyler Higbee (LAR) | ADP #999.0 | 💎 SLEEPER | 👑 McVay 11-Personnel Tree: Top-3 Motion | 🛡️ OL #3 (Top 5)
-42. Darren Waller (CAR) | ADP #999.0 | 💎 SLEEPER | ⚡ Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
-43. Noah Fant (NO) | ADP #999.0 | 💎 SLEEPER | 👑 Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion
-44. Oronde Gadsden II (LAC) | ADP #126.6 | 🚀 HIGH CEILING | 👑 McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone | 🟢 +4.6 Value
-45. Noah Gray (KC) | ADP #999.0 | 💎 SLEEPER | 🚀 Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) | 🏆 Playoff ⭐⭐⭐⭐⭐
-46. Elijah Arroyo (SEA) | ADP #999.0 | 💎 SLEEPER | 🎯 Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
-47. Oscar Delp (NO) | ADP #999.0 | 💎 SLEEPER | 👑 Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion
-48. Elijah Higgins (ARI) | ADP #999.0 | 💎 SLEEPER | 👑 Petzing Shanahan/Stefanski Tree: Outside Zone
-49. Jake Tonges (SF) | ADP #241.4 | 💎 SLEEPER | 👑 Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
-50. Daniel Bellinger (TEN) | ADP #999.0 | 💎 SLEEPER | 🎯 Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread | ⚠️ OL #31 (Poor)
-51. Austin Hooper (ATL) | ADP #430.0 | 💎 SLEEPER | 👑 Shanahan/Stefanski Wide Zone Lineage: Heavy Motion | 🏆 Playoff ⭐⭐⭐⭐⭐
-52. Tanner Hudson (CIN) | ADP #999.0 | 💎 SLEEPER | 🎯 Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) | ⚠️ OL #28 (Poor) | 🏆 Playoff ⭐⭐⭐⭐⭐
-53. Drew Sample (CIN) | ADP #999.0 | 💎 SLEEPER | 🎯 Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) | ⚠️ OL #28 (Poor) | 🏆 Playoff ⭐⭐⭐⭐⭐
-54. Eli Raridon (NE) | ADP #999.0 | 💎 SLEEPER | 🏃 Van Pelt Power West Coast: Heavy 12/21 Personnel
-55. Josh Whyle (GB) | ADP #695.5 | 💎 SLEEPER | 👑 LaFleur Shanahan/McVay Tree: Heavy Motion
-56. Josh Oliver (MIN) | ADP #999.0 | 💎 SLEEPER | 🎯 O'Connell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
-57. Tommy Tremble (CAR) | ADP #999.0 | 💎 SLEEPER | ⚡ Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
-58. Will Kacmarek (MIA) | ADP #999.0 | 💎 SLEEPER | 👑 Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) | ⚠️ OL #30 (Poor)
-59. Joe Royer (CLE) | ADP #683.0 | 💎 SLEEPER | 🎯 Ken Dorsey Air Raid Spread: Shotgun Pass Spacing | ⚠️ OL #32 (Poor)
-60. Ja'Tavion Sanders (CAR) | ADP #999.0 | 💎 SLEEPER | ⚡ Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
+31. Kenyon Sadiq (NYJ) | ADP #130.0 | Breakout Sleeper (+11 ADP Delta) ; Engstrand West Coast Spread: 11-Personnel
+32. Colby Parkinson (LAR) | ADP #251.4 | [ SLEEPER] ; McVay 11-Personnel Tree: Top-3 Motion ; [OL #3 Top-5]
+33. Mason Taylor (NYJ) | ADP #224.3 | [ CONSENSUS] ; Engstrand West Coast Spread: 11-Personnel ; [+21.3 Value]
+34. Mike Gesicki (CIN) | ADP #999.0 | [ SLEEPER] ; Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) ; [OL #28 Poor] ; [Playoff A+]
+35. Theo Johnson (NYG) | ADP #232.2 | [ SLEEPER] ; Daboll Spread Option: Read-Option ; [+18.2 Value]
+36. Dawson Knox (BUF) | ADP #999.0 | [ SLEEPER] ; Top-10 Eco: Power Spread: Multi-TE 12p Power
+37. Cole Kmet (CHI) | ADP #999.0 | [ SLEEPER] ; Ben Johnson Creative Motion: Elite Motion ; [OL #4 Top-5]
+38. Darnell Washington (PIT) | ADP #999.0 | [ SLEEPER] ; Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs)
+39. David Njoku (LAC) | ADP #206.9 | [ SLEEPER] ; McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone ; [+17.9 Value]
+40. Terrance Ferguson (LAR) | ADP #207.1 | #1 High-Ceiling TE Stash ; McVay 11-Personnel Tree: Top-3 Motion ; [OL #3 Top-5] ; [+17.1 Value]
+41. Tyler Higbee (LAR) | ADP #999.0 | [ SLEEPER] ; McVay 11-Personnel Tree: Top-3 Motion ; [OL #3 Top-5]
+42. Darren Waller (CAR) | ADP #999.0 | [ SLEEPER] ; Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
+43. Noah Fant (NO) | ADP #999.0 | [ SLEEPER] ; Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion
+44. Oronde Gadsden II (LAC) | ADP #126.6 | [HIGH CEILING] ; McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone ; [+4.6 Value]
+45. Noah Gray (KC) | ADP #999.0 | [ SLEEPER] ; Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) ; [Playoff A+]
+46. Elijah Arroyo (SEA) | ADP #999.0 | [ SLEEPER] ; Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
+47. Oscar Delp (NO) | ADP #999.0 | [ SLEEPER] ; Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion
+48. Elijah Higgins (ARI) | ADP #999.0 | [ SLEEPER] ; Petzing Shanahan/Stefanski Tree: Outside Zone
+49. Jake Tonges (SF) | ADP #241.4 | [ SLEEPER] ; Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
+50. Daniel Bellinger (TEN) | ADP #999.0 | [ SLEEPER] ; Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread ; [OL #31 Poor]
+51. Austin Hooper (ATL) | ADP #430.0 | [ SLEEPER] ; Shanahan/Stefanski Wide Zone Lineage: Heavy Motion ; [Playoff A+]
+52. Tanner Hudson (CIN) | ADP #999.0 | [ SLEEPER] ; Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) ; [OL #28 Poor] ; [Playoff A+]
+53. Drew Sample (CIN) | ADP #999.0 | [ SLEEPER] ; Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) ; [OL #28 Poor] ; [Playoff A+]
+54. Eli Raridon (NE) | ADP #999.0 | [ SLEEPER] ; Van Pelt Power West Coast: Heavy 12/21 Personnel
+55. Josh Whyle (GB) | ADP #695.5 | [ SLEEPER] ; LaFleur Shanahan/McVay Tree: Heavy Motion
+56. Josh Oliver (MIN) | ADP #999.0 | [ SLEEPER] ; OConnell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
+57. Tommy Tremble (CAR) | ADP #999.0 | [ SLEEPER] ; Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
+58. Will Kacmarek (MIA) | ADP #999.0 | [ SLEEPER] ; Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) ; [OL #30 Poor]
+59. Joe Royer (CLE) | ADP #683.0 | [ SLEEPER] ; Ken Dorsey Air Raid Spread: Shotgun Pass Spacing ; [OL #32 Poor]
+60. Ja'Tavion Sanders (CAR) | ADP #999.0 | [ SLEEPER] ; Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
 
 
 === QB RANKINGS ===
 
 --- Tier 1 ---
-1. Josh Allen (BUF) | ADP #19.8 | QB1 (Cost Caution) | ⭐ Top-10 Eco: Power Spread: Multi-TE 12p Power
-2. Lamar Jackson (BAL) | ADP #37.6 | QB2 Floor | ⚡ Monken Power-Pistol Spread: 72% GL Run Funnel (Henry/Lamar)
+1. Josh Allen (BUF) | ADP #19.8 | QB1 (Cost Caution) ; Top-10 Eco: Power Spread: Multi-TE 12p Power
+2. Lamar Jackson (BAL) | ADP #37.6 | QB2 Floor ; Monken Power-Pistol Spread: 72% GL Run Funnel (Henry/Lamar)
 
 --- Tier 2 ---
-3. Drake Maye (NE) | ADP #47.3 | 🎯 Target / Ascending | 🏃 Van Pelt Power West Coast: Heavy 12/21 Personnel
-4. Jayden Daniels (WAS) | ADP #54.0 | 🎯 Target (Price Caution) | ⚡ Kingsbury Air Raid: Top-3 Neutral Pace
-5. Joe Burrow (CIN) | ADP #49.0 | 🚫 Overvalue / Pocket Trap | 🎯 Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) | ⚠️ OL #28 (Poor) | 🏆 Playoff ⭐⭐⭐⭐⭐
-6. Jalen Hurts (PHI) | ADP #56.9 | 🎯 Target / Discount | 👑 Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) | 🛡️ OL #2 (Top 5)
+3. Drake Maye (NE) | ADP #47.3 | [TARGET] Target / Ascending ; Van Pelt Power West Coast: Heavy 12/21 Personnel
+4. Jayden Daniels (WAS) | ADP #54.0 | [TARGET] Target (Price Caution) ; Kingsbury Air Raid: Top-3 Neutral Pace
+5. Joe Burrow (CIN) | ADP #49.0 | [FADE] Overvalue / Pocket Trap ; Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) ; [OL #28 Poor] ; [Playoff A+]
+6. Jalen Hurts (PHI) | ADP #56.9 | [TARGET] Target / Discount ; Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) ; [OL #2 Top-5]
 
 --- Tier 3 ---
-7. Dak Prescott (DAL) | ADP #74.2 | Value QB ($3 Auction) | ⚡ Schottenheimer West Coast Spread: Top-3 Neutral Pace
-8. Trevor Lawrence (JAX) | ADP #84.8 | 🎯 #1 QB Target / 'The Twelve' | 🎯 Doug Pederson West Coast RPO: High Pass Volume
-9. Justin Herbert (LAC) | ADP #69.8 | 🎯 Target / 'The Twelve' | 👑 McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone
-10. Brock Purdy (SF) | ADP #98.3 | 🎯 Value / Target | 👑 Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
-11. Jaxson Dart (NYG) | ADP #88.1 | 🎯 Superflex Target | ⚡ Daboll Spread Option: Read-Option
+7. Dak Prescott (DAL) | ADP #74.2 | Value QB ($3 Auction) ; Schottenheimer West Coast Spread: Top-3 Neutral Pace
+8. Trevor Lawrence (JAX) | ADP #84.8 | [TARGET] #1 QB Target / The Twelve ; Doug Pederson West Coast RPO: High Pass Volume
+9. Justin Herbert (LAC) | ADP #69.8 | [TARGET] Target / The Twelve ; McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone
+10. Brock Purdy (SF) | ADP #98.3 | [TARGET] Value / Target ; Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
+11. Jaxson Dart (NYG) | ADP #88.1 | [TARGET] Superflex Target ; Daboll Spread Option: Read-Option
 
 --- Tier 4 ---
-12. Caleb Williams (CHI) | ADP #68.0 | 🏆 LEAGUE WINNER | 🔥 Ben Johnson Creative Motion: Elite Motion | 🛡️ OL #4 (Top 5)
-13. Matthew Stafford (LAR) | ADP #100.5 | 💤 Breakout Sleeper (+7 ADP Delta) | 👑 McVay 11-Personnel Tree: Top-3 Motion | 🛡️ OL #3 (Top 5)
-14. Bo Nix (DEN) | ADP #99.8 | 💤 Breakout Sleeper (+7 ADP Delta) | 🎯 Sean Payton West Coast Spread: High RB Target Share | 🛡️ OL #1 (Top 5)
-15. Patrick Mahomes (KC) | ADP #100.1 | 💤 Breakout Sleeper (+12 ADP Delta) | 🚀 Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) | 🏆 Playoff ⭐⭐⭐⭐⭐
-16. Malik Willis (MIA) | ADP #124.8 | 💥 #1 Sleeper QB / Exodia ($1) | 👑 Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) | ⚠️ OL #30 (Poor)
+12. Caleb Williams (CHI) | ADP #68.0 | [LEAGUE WINNER] ; Ben Johnson Creative Motion: Elite Motion ; [OL #4 Top-5]
+13. Matthew Stafford (LAR) | ADP #100.5 | Breakout Sleeper (+7 ADP Delta) ; McVay 11-Personnel Tree: Top-3 Motion ; [OL #3 Top-5]
+14. Bo Nix (DEN) | ADP #99.8 | Breakout Sleeper (+7 ADP Delta) ; Sean Payton West Coast Spread: High RB Target Share ; [OL #1 Top-5]
+15. Patrick Mahomes (KC) | ADP #100.1 | Breakout Sleeper (+12 ADP Delta) ; Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) ; [Playoff A+]
+16. Malik Willis (MIA) | ADP #124.8 | [EXODIA] #1 Sleeper QB / Exodia ($1) ; Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) ; [OL #30 Poor]
 
 --- Tier 5 ---
-17. Tyler Shough (NO) | ADP #130.0 | Late Sleeper QB ($1) | 👑 Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion
-18. Jared Goff (DET) | ADP #114.5 | 💤 Breakout Sleeper (+18 ADP Delta) | ⭐ Top-10 Eco: High-Motion Zone/PA: Top-3 Scoring Eco | 🏆 Playoff ⭐⭐⭐⭐⭐
-19. Kyler Murray (MIN) | ADP #111.8 | 💥 Expanded Exodia / Sleeper ($1) | 🎯 O'Connell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
-20. Jordan Love (GB) | ADP #124.3 | 💤 Breakout Sleeper (+18 ADP Delta) | 👑 LaFleur Shanahan/McVay Tree: Heavy Motion
-21. Baker Mayfield (TB) | ADP #126.3 | 💤 Breakout Sleeper (+20 ADP Delta) | 🎯 Liam Coen McVay Spread: 11-Personnel Spread | 🛡️ OL #5 (Top 5)
+17. Tyler Shough (NO) | ADP #130.0 | Late Sleeper QB ($1) ; Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion
+18. Jared Goff (DET) | ADP #114.5 | Breakout Sleeper (+18 ADP Delta) ; Top-10 Eco: High-Motion Zone/PA: Top-3 Scoring Eco ; [Playoff A+]
+19. Kyler Murray (MIN) | ADP #111.8 | [EXODIA] Expanded Exodia / Sleeper ($1) ; OConnell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
+20. Jordan Love (GB) | ADP #124.3 | Breakout Sleeper (+18 ADP Delta) ; LaFleur Shanahan/McVay Tree: Heavy Motion
+21. Baker Mayfield (TB) | ADP #126.3 | Breakout Sleeper (+20 ADP Delta) ; Liam Coen McVay Spread: 11-Personnel Spread ; [OL #5 Top-5]
 
 --- Tier 6 ---
-22. Sam Darnold (SEA) | ADP #122.7 | 💤 Breakout Sleeper (+29 ADP Delta) | 🎯 Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
-23. Daniel Jones (IND) | ADP #205.8 | 💤 Breakout Sleeper (+35 ADP Delta) | ⚡ Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace | 🟢 +17.8 Value
-24. Jacoby Brissett (ARI) | ADP #243.0 | 💎 SLEEPER | 👑 Petzing Shanahan/Stefanski Tree: Outside Zone
-25. Geno Smith (NYJ) | ADP #999.0 | 🎯 SAFE FLOOR | 🎯 Engstrand West Coast Spread: 11-Personnel
+22. Sam Darnold (SEA) | ADP #122.7 | Breakout Sleeper (+29 ADP Delta) ; Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
+23. Daniel Jones (IND) | ADP #205.8 | Breakout Sleeper (+35 ADP Delta) ; Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace ; [+17.8 Value]
+24. Jacoby Brissett (ARI) | ADP #243.0 | [ SLEEPER] ; Petzing Shanahan/Stefanski Tree: Outside Zone
+25. Geno Smith (NYJ) | ADP #999.0 | [ SAFE FLOOR] ; Engstrand West Coast Spread: 11-Personnel
 
 --- Tier 7 ---
-26. Bryce Young (CAR) | ADP #227.1 | 🎯 SAFE FLOOR | ⚡ Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel | 🟢 +20.1 Value
-27. Aaron Rodgers (PIT) | ADP #228.8 | 🎯 SAFE FLOOR | 🏃 Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs) | 🟢 +19.8 Value
-28. Cam Ward (TEN) | ADP #213.7 | 🎯 SAFE FLOOR | 🎯 Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread | ⚠️ OL #31 (Poor) | 🟢 +18.7 Value
-29. Deshaun Watson (CLE) | ADP #999.0 | 🎯 SAFE FLOOR | 🎯 Ken Dorsey Air Raid Spread: Shotgun Pass Spacing | ⚠️ OL #32 (Poor)
-30. Fernando Mendoza (LV) | ADP #119.9 | 💤 Breakout Sleeper (+9 ADP Delta) | 👑 Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion
-31. Tua Tagovailoa (ATL) | ADP #236.5 | 📊 CONSENSUS | 👑 Shanahan/Stefanski Wide Zone Lineage: Heavy Motion | 🏆 Playoff ⭐⭐⭐⭐⭐ | 🟢 +14.5 Value
-32. Michael Penix Jr. (ATL) | ADP #227.9 | 📊 CONSENSUS | 👑 Shanahan/Stefanski Wide Zone Lineage: Heavy Motion | 🏆 Playoff ⭐⭐⭐⭐⭐ | 🟢 +19.9 Value
-33. Kirk Cousins (LV) | ADP #999.0 | 💎 SLEEPER | 👑 Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion
-34. J.J. McCarthy (MIN) | ADP #224.2 | 📊 CONSENSUS | 🎯 O'Connell McVay Pass Funnel: Pass-Forward System (+1.4% PROE) | 🟢 +22.2 Value
-35. Shedeur Sanders (CLE) | ADP #236.1 | 📊 CONSENSUS | 🎯 Ken Dorsey Air Raid Spread: Shotgun Pass Spacing | ⚠️ OL #32 (Poor) | 🟢 +15.1 Value
-36. Jameis Winston (NYG) | ADP #999.0 | 💎 SLEEPER | ⚡ Daboll Spread Option: Read-Option
-37. Carson Beck (ARI) | ADP #999.0 | 💎 SLEEPER | 👑 Petzing Shanahan/Stefanski Tree: Outside Zone
-38. Marcus Mariota (WAS) | ADP #999.0 | 💎 SLEEPER | ⚡ Kingsbury Air Raid: Top-3 Neutral Pace
-39. Justin Fields (KC) | ADP #999.0 | 💎 SLEEPER | 🚀 Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) | 🏆 Playoff ⭐⭐⭐⭐⭐
-40. Tyson Bagent (CHI) | ADP #999.0 | 💎 SLEEPER | 🔥 Ben Johnson Creative Motion: Elite Motion | 🛡️ OL #4 (Top 5)
-41. Tanner McKee (PHI) | ADP #999.0 | 💎 SLEEPER | 👑 Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) | 🛡️ OL #2 (Top 5)
-42. Josh Johnson (CIN) | ADP #544.0 | 💎 SLEEPER | 🎯 Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) | ⚠️ OL #28 (Poor) | 🏆 Playoff ⭐⭐⭐⭐⭐
-43. Joe Milton III (DAL) | ADP #999.0 | 💎 SLEEPER | ⚡ Schottenheimer West Coast Spread: Top-3 Neutral Pace
-44. Mac Jones (SF) | ADP #999.0 | 💎 SLEEPER | 👑 Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
-45. CJ Stroud (FA) | ADP #125.6 | 💤 Breakout Sleeper (+63 ADP Delta)
+26. Bryce Young (CAR) | ADP #227.1 | [ SAFE FLOOR] ; Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel ; [+20.1 Value]
+27. Aaron Rodgers (PIT) | ADP #228.8 | [ SAFE FLOOR] ; Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs) ; [+19.8 Value]
+28. Cam Ward (TEN) | ADP #213.7 | [ SAFE FLOOR] ; Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread ; [OL #31 Poor] ; [+18.7 Value]
+29. Deshaun Watson (CLE) | ADP #999.0 | [ SAFE FLOOR] ; Ken Dorsey Air Raid Spread: Shotgun Pass Spacing ; [OL #32 Poor]
+30. Fernando Mendoza (LV) | ADP #119.9 | Breakout Sleeper (+9 ADP Delta) ; Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion
+31. Tua Tagovailoa (ATL) | ADP #236.5 | [ CONSENSUS] ; Shanahan/Stefanski Wide Zone Lineage: Heavy Motion ; [Playoff A+] ; [+14.5 Value]
+32. Michael Penix Jr. (ATL) | ADP #227.9 | [ CONSENSUS] ; Shanahan/Stefanski Wide Zone Lineage: Heavy Motion ; [Playoff A+] ; [+19.9 Value]
+33. Kirk Cousins (LV) | ADP #999.0 | [ SLEEPER] ; Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion
+34. J.J. McCarthy (MIN) | ADP #224.2 | [ CONSENSUS] ; OConnell McVay Pass Funnel: Pass-Forward System (+1.4% PROE) ; [+22.2 Value]
+35. Shedeur Sanders (CLE) | ADP #236.1 | [ CONSENSUS] ; Ken Dorsey Air Raid Spread: Shotgun Pass Spacing ; [OL #32 Poor] ; [+15.1 Value]
+36. Jameis Winston (NYG) | ADP #999.0 | [ SLEEPER] ; Daboll Spread Option: Read-Option
+37. Carson Beck (ARI) | ADP #999.0 | [ SLEEPER] ; Petzing Shanahan/Stefanski Tree: Outside Zone
+38. Marcus Mariota (WAS) | ADP #999.0 | [ SLEEPER] ; Kingsbury Air Raid: Top-3 Neutral Pace
+39. Justin Fields (KC) | ADP #999.0 | [ SLEEPER] ; Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) ; [Playoff A+]
+40. Tyson Bagent (CHI) | ADP #999.0 | [ SLEEPER] ; Ben Johnson Creative Motion: Elite Motion ; [OL #4 Top-5]
+41. Tanner McKee (PHI) | ADP #999.0 | [ SLEEPER] ; Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) ; [OL #2 Top-5]
+42. Josh Johnson (CIN) | ADP #544.0 | [ SLEEPER] ; Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) ; [OL #28 Poor] ; [Playoff A+]
+43. Joe Milton III (DAL) | ADP #999.0 | [ SLEEPER] ; Schottenheimer West Coast Spread: Top-3 Neutral Pace
+44. Mac Jones (SF) | ADP #999.0 | [ SLEEPER] ; Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
+45. CJ Stroud (FA) | ADP #125.6 | Breakout Sleeper (+63 ADP Delta)
 
 
 === K RANKINGS ===
 
 --- Tier 1 ---
-1. Brandon Aubrey (DAL) | ADP #999.0 | Top Kicker | ⚡ Schottenheimer West Coast Spread: Top-3 Neutral Pace
-2. Jake Bates (DET) | ADP #999.0 | Top Kicker | ⭐ Top-10 Eco: High-Motion Zone/PA: Top-3 Scoring Eco | 🏆 Playoff ⭐⭐⭐⭐⭐
-3. Harrison Mevis (LAR) | ADP #999.0 | 💎 SLEEPER | 👑 McVay 11-Personnel Tree: Top-3 Motion | 🛡️ OL #3 (Top 5)
+1. Brandon Aubrey (DAL) | ADP #999.0 | Top Kicker ; Schottenheimer West Coast Spread: Top-3 Neutral Pace
+2. Jake Bates (DET) | ADP #999.0 | Top Kicker ; Top-10 Eco: High-Motion Zone/PA: Top-3 Scoring Eco ; [Playoff A+]
+3. Harrison Mevis (LAR) | ADP #999.0 | [ SLEEPER] ; McVay 11-Personnel Tree: Top-3 Motion ; [OL #3 Top-5]
 
 --- Tier 2 ---
-4. Cairo Santos (CHI) | ADP #999.0 | 💎 SLEEPER | 🔥 Ben Johnson Creative Motion: Elite Motion | 🛡️ OL #4 (Top 5)
-5. Jason Myers (SEA) | ADP #999.0 | 💎 SLEEPER | 🎯 Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
-6. Eddy Pineiro (SF) | ADP #999.0 | 💎 SLEEPER | 👑 Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
-7. Tyler Bass (BUF) | ADP #999.0 | 💎 SLEEPER | ⭐ Top-10 Eco: Power Spread: Multi-TE 12p Power
-8. Ka'imi Fairbairn (HOU) | ADP #999.0 | 💎 SLEEPER | 👑 Shanahan Wide Zone Tree: Top-10 Eco | ⚠️ OL #29 (Poor)
+4. Cairo Santos (CHI) | ADP #999.0 | [ SLEEPER] ; Ben Johnson Creative Motion: Elite Motion ; [OL #4 Top-5]
+5. Jason Myers (SEA) | ADP #999.0 | [ SLEEPER] ; Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
+6. Eddy Pineiro (SF) | ADP #999.0 | [ SLEEPER] ; Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
+7. Tyler Bass (BUF) | ADP #999.0 | [ SLEEPER] ; Top-10 Eco: Power Spread: Multi-TE 12p Power
+8. Ka'imi Fairbairn (HOU) | ADP #999.0 | [ SLEEPER] ; Shanahan Wide Zone Tree: Top-10 Eco ; [OL #29 Poor]
 
 --- Tier 3 ---
-9. Cameron Dicker (LAC) | ADP #999.0 | 💎 SLEEPER | 👑 McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone
-10. Spencer Shrader (IND) | ADP #999.0 | 💎 SLEEPER | ⚡ Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace
-11. Tyler Loop (BAL) | ADP #999.0 | 💎 SLEEPER | ⚡ Monken Power-Pistol Spread: 72% GL Run Funnel (Henry/Lamar)
-12. Harrison Butker (KC) | ADP #999.0 | 💎 SLEEPER | 🚀 Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) | 🏆 Playoff ⭐⭐⭐⭐⭐
-13. Cam Little (JAX) | ADP #999.0 | 💎 SLEEPER | 🎯 Doug Pederson West Coast RPO: High Pass Volume
-14. Trey Smack (GB) | ADP #999.0 | 💎 SLEEPER | 👑 LaFleur Shanahan/McVay Tree: Heavy Motion
+9. Cameron Dicker (LAC) | ADP #999.0 | [ SLEEPER] ; McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone
+10. Spencer Shrader (IND) | ADP #999.0 | [ SLEEPER] ; Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace
+11. Tyler Loop (BAL) | ADP #999.0 | [ SLEEPER] ; Monken Power-Pistol Spread: 72% GL Run Funnel (Henry/Lamar)
+12. Harrison Butker (KC) | ADP #999.0 | [ SLEEPER] ; Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) ; [Playoff A+]
+13. Cam Little (JAX) | ADP #999.0 | [ SLEEPER] ; Doug Pederson West Coast RPO: High Pass Volume
+14. Trey Smack (GB) | ADP #999.0 | [ SLEEPER] ; LaFleur Shanahan/McVay Tree: Heavy Motion
 
 --- Tier 4 ---
-15. Chase McLaughlin (TB) | ADP #999.0 | 💎 SLEEPER | 🎯 Liam Coen McVay Spread: 11-Personnel Spread | 🛡️ OL #5 (Top 5)
-16. Jake Elliott (PHI) | ADP #999.0 | 💎 SLEEPER | 👑 Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) | 🛡️ OL #2 (Top 5)
-17. Nick Folk (ATL) | ADP #999.0 | 💎 SLEEPER | 👑 Shanahan/Stefanski Wide Zone Lineage: Heavy Motion | 🏆 Playoff ⭐⭐⭐⭐⭐
-18. Evan McPherson (CIN) | ADP #999.0 | 💎 SLEEPER | 🎯 Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) | ⚠️ OL #28 (Poor) | 🏆 Playoff ⭐⭐⭐⭐⭐
-19. Wil Lutz (DEN) | ADP #999.0 | 💎 SLEEPER | 🎯 Sean Payton West Coast Spread: High RB Target Share | 🛡️ OL #1 (Top 5)
-20. Will Reichard (MIN) | ADP #999.0 | 💎 SLEEPER | 🎯 O'Connell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
-21. Charlie Smyth (NO) | ADP #999.0 | 💎 SLEEPER | 👑 Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion
-22. Andy Borregales (NE) | ADP #999.0 | 💎 SLEEPER | 🏃 Van Pelt Power West Coast: Heavy 12/21 Personnel
-23. Drew Stevens (WAS) | ADP #999.0 | 💎 SLEEPER | ⚡ Kingsbury Air Raid: Top-3 Neutral Pace
-24. Chris Boswell (PIT) | ADP #999.0 | 💎 SLEEPER | 🏃 Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs)
-25. Chad Ryland (ARI) | ADP #999.0 | 💎 SLEEPER | 👑 Petzing Shanahan/Stefanski Tree: Outside Zone
-26. Dominic Zvada (NYG) | ADP #999.0 | 💎 SLEEPER | ⚡ Daboll Spread Option: Read-Option
-27. Matt Gay (LV) | ADP #999.0 | 💎 SLEEPER | 👑 Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion
-28. Joey Slye (TEN) | ADP #999.0 | 💎 SLEEPER | 🎯 Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread | ⚠️ OL #31 (Poor)
-29. Cade York (NYJ) | ADP #999.0 | 💎 SLEEPER | 🎯 Engstrand West Coast Spread: 11-Personnel
-30. Riley Patterson (MIA) | ADP #999.0 | 💎 SLEEPER | 👑 Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) | ⚠️ OL #30 (Poor)
-31. Ryan Fitzgerald (CAR) | ADP #999.0 | 💎 SLEEPER | ⚡ Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
-32. Andre Szmyt (CLE) | ADP #999.0 | 💎 SLEEPER | 🎯 Ken Dorsey Air Raid Spread: Shotgun Pass Spacing | ⚠️ OL #32 (Poor)
+15. Chase McLaughlin (TB) | ADP #999.0 | [ SLEEPER] ; Liam Coen McVay Spread: 11-Personnel Spread ; [OL #5 Top-5]
+16. Jake Elliott (PHI) | ADP #999.0 | [ SLEEPER] ; Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) ; [OL #2 Top-5]
+17. Nick Folk (ATL) | ADP #999.0 | [ SLEEPER] ; Shanahan/Stefanski Wide Zone Lineage: Heavy Motion ; [Playoff A+]
+18. Evan McPherson (CIN) | ADP #999.0 | [ SLEEPER] ; Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) ; [OL #28 Poor] ; [Playoff A+]
+19. Wil Lutz (DEN) | ADP #999.0 | [ SLEEPER] ; Sean Payton West Coast Spread: High RB Target Share ; [OL #1 Top-5]
+20. Will Reichard (MIN) | ADP #999.0 | [ SLEEPER] ; OConnell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
+21. Charlie Smyth (NO) | ADP #999.0 | [ SLEEPER] ; Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion
+22. Andy Borregales (NE) | ADP #999.0 | [ SLEEPER] ; Van Pelt Power West Coast: Heavy 12/21 Personnel
+23. Drew Stevens (WAS) | ADP #999.0 | [ SLEEPER] ; Kingsbury Air Raid: Top-3 Neutral Pace
+24. Chris Boswell (PIT) | ADP #999.0 | [ SLEEPER] ; Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs)
+25. Chad Ryland (ARI) | ADP #999.0 | [ SLEEPER] ; Petzing Shanahan/Stefanski Tree: Outside Zone
+26. Dominic Zvada (NYG) | ADP #999.0 | [ SLEEPER] ; Daboll Spread Option: Read-Option
+27. Matt Gay (LV) | ADP #999.0 | [ SLEEPER] ; Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion
+28. Joey Slye (TEN) | ADP #999.0 | [ SLEEPER] ; Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread ; [OL #31 Poor]
+29. Cade York (NYJ) | ADP #999.0 | [ SLEEPER] ; Engstrand West Coast Spread: 11-Personnel
+30. Riley Patterson (MIA) | ADP #999.0 | [ SLEEPER] ; Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) ; [OL #30 Poor]
+31. Ryan Fitzgerald (CAR) | ADP #999.0 | [ SLEEPER] ; Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
+32. Andre Szmyt (CLE) | ADP #999.0 | [ SLEEPER] ; Ken Dorsey Air Raid Spread: Shotgun Pass Spacing ; [OL #32 Poor]
 
 
 === DST RANKINGS ===
 
 --- Tier 1 ---
-1. Houston Texans (HOU) | ADP #999.0 | 💎 SLEEPER | 👑 Shanahan Wide Zone Tree: Top-10 Eco | ⚠️ OL #29 (Poor)
-2. Los Angeles Rams (LAR) | ADP #999.0 | 💎 SLEEPER | 👑 McVay 11-Personnel Tree: Top-3 Motion | 🛡️ OL #3 (Top 5)
-3. Seattle Seahawks (SEA) | ADP #999.0 | Top D/ST | 🎯 Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
+1. Houston Texans (HOU) | ADP #999.0 | [ SLEEPER] ; Shanahan Wide Zone Tree: Top-10 Eco ; [OL #29 Poor]
+2. Los Angeles Rams (LAR) | ADP #999.0 | [ SLEEPER] ; McVay 11-Personnel Tree: Top-3 Motion ; [OL #3 Top-5]
+3. Seattle Seahawks (SEA) | ADP #999.0 | Top D/ST ; Fleury/Grubb Deep Spread: 47% 2-WR Target Funnel (JSN/DK)
 
 --- Tier 2 ---
-4. Denver Broncos (DEN) | ADP #999.0 | 💎 SLEEPER | 🎯 Sean Payton West Coast Spread: High RB Target Share | 🛡️ OL #1 (Top 5)
-5. Philadelphia Eagles (PHI) | ADP #999.0 | 💎 SLEEPER | 👑 Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) | 🛡️ OL #2 (Top 5)
-6. Jacksonville Jaguars (JAX) | ADP #999.0 | Top D/ST | 🎯 Doug Pederson West Coast RPO: High Pass Volume
-7. Minnesota Vikings (MIN) | ADP #999.0 | 💎 SLEEPER | 🎯 O'Connell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
-8. New England Patriots (NE) | ADP #999.0 | 💎 SLEEPER | 🏃 Van Pelt Power West Coast: Heavy 12/21 Personnel
+4. Denver Broncos (DEN) | ADP #999.0 | [ SLEEPER] ; Sean Payton West Coast Spread: High RB Target Share ; [OL #1 Top-5]
+5. Philadelphia Eagles (PHI) | ADP #999.0 | [ SLEEPER] ; Top-5 Eco: Power RPO / Tush Push: 78% GL Run Funnel (Saquon/Hurts) ; [OL #2 Top-5]
+6. Jacksonville Jaguars (JAX) | ADP #999.0 | Top D/ST ; Doug Pederson West Coast RPO: High Pass Volume
+7. Minnesota Vikings (MIN) | ADP #999.0 | [ SLEEPER] ; OConnell McVay Pass Funnel: Pass-Forward System (+1.4% PROE)
+8. New England Patriots (NE) | ADP #999.0 | [ SLEEPER] ; Van Pelt Power West Coast: Heavy 12/21 Personnel
 
 --- Tier 3 ---
-9. Kansas City Chiefs (KC) | ADP #999.0 | 💎 SLEEPER | 🚀 Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) | 🏆 Playoff ⭐⭐⭐⭐⭐
-10. Green Bay Packers (GB) | ADP #999.0 | 💎 SLEEPER | 👑 LaFleur Shanahan/McVay Tree: Heavy Motion
-11. Los Angeles Chargers (LAC) | ADP #999.0 | 💎 SLEEPER | 👑 McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone
-12. Pittsburgh Steelers (PIT) | ADP #999.0 | 💎 SLEEPER | 🏃 Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs)
-13. New Orleans Saints (NO) | ADP #999.0 | 💎 SLEEPER | 👑 Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion
-14. Baltimore Ravens (BAL) | ADP #999.0 | 💎 SLEEPER | ⚡ Monken Power-Pistol Spread: 72% GL Run Funnel (Henry/Lamar)
+9. Kansas City Chiefs (KC) | ADP #999.0 | [ SLEEPER] ; Andy Reid Pass-Heavy Spread: Top-5 Pass PROE (+6.4%) ; [Playoff A+]
+10. Green Bay Packers (GB) | ADP #999.0 | [ SLEEPER] ; LaFleur Shanahan/McVay Tree: Heavy Motion
+11. Los Angeles Chargers (LAC) | ADP #999.0 | [ SLEEPER] ; McDaniel/Harbaugh Power Zone Lineage: Power Outside Zone
+12. Pittsburgh Steelers (PIT) | ADP #999.0 | [ SLEEPER] ; Arthur Smith Heavy Zone Lineage: Heavy 12/13 Personnel (Multiple TEs)
+13. New Orleans Saints (NO) | ADP #999.0 | [ SLEEPER] ; Klint Kubiak Shanahan Motion Tree: Pre-Snap Motion
+14. Baltimore Ravens (BAL) | ADP #999.0 | [ SLEEPER] ; Monken Power-Pistol Spread: 72% GL Run Funnel (Henry/Lamar)
 
 --- Tier 4 ---
-15. Buffalo Bills (BUF) | ADP #999.0 | 💎 SLEEPER | ⭐ Top-10 Eco: Power Spread: Multi-TE 12p Power
-16. Carolina Panthers (CAR) | ADP #999.0 | 💎 SLEEPER | ⚡ Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
-17. Indianapolis Colts (IND) | ADP #999.0 | 💎 SLEEPER | ⚡ Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace
-18. San Francisco 49ers (SF) | ADP #999.0 | 💎 SLEEPER | 👑 Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
-19. Atlanta Falcons (ATL) | ADP #999.0 | 💎 SLEEPER | 👑 Shanahan/Stefanski Wide Zone Lineage: Heavy Motion | 🏆 Playoff ⭐⭐⭐⭐⭐
-20. Detroit Lions (DET) | ADP #999.0 | 💎 SLEEPER | ⭐ Top-10 Eco: High-Motion Zone/PA: Top-3 Scoring Eco | 🏆 Playoff ⭐⭐⭐⭐⭐
-21. Tampa Bay Buccaneers (TB) | ADP #999.0 | 💎 SLEEPER | 🎯 Liam Coen McVay Spread: 11-Personnel Spread | 🛡️ OL #5 (Top 5)
-22. New York Giants (NYG) | ADP #999.0 | 💎 SLEEPER | ⚡ Daboll Spread Option: Read-Option
-23. Chicago Bears (CHI) | ADP #999.0 | 💎 SLEEPER | 🔥 Ben Johnson Creative Motion: Elite Motion | 🛡️ OL #4 (Top 5)
-24. Washington Commanders (WAS) | ADP #999.0 | 💎 SLEEPER | ⚡ Kingsbury Air Raid: Top-3 Neutral Pace
-25. Las Vegas Raiders (LV) | ADP #999.0 | 💎 SLEEPER | 👑 Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion
-26. Miami Dolphins (MIA) | ADP #999.0 | 💎 SLEEPER | 👑 Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) | ⚠️ OL #30 (Poor)
-27. Cleveland Browns (CLE) | ADP #999.0 | 💎 SLEEPER | 🎯 Ken Dorsey Air Raid Spread: Shotgun Pass Spacing | ⚠️ OL #32 (Poor)
-28. Tennessee Titans (TEN) | ADP #999.0 | 💎 SLEEPER | 🎯 Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread | ⚠️ OL #31 (Poor)
-29. Dallas Cowboys (DAL) | ADP #999.0 | 💎 SLEEPER | ⚡ Schottenheimer West Coast Spread: Top-3 Neutral Pace
-30. Cincinnati Bengals (CIN) | ADP #999.0 | 💎 SLEEPER | 🎯 Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) | ⚠️ OL #28 (Poor) | 🏆 Playoff ⭐⭐⭐⭐⭐
-31. Arizona Cardinals (ARI) | ADP #999.0 | 💎 SLEEPER | 👑 Petzing Shanahan/Stefanski Tree: Outside Zone
-32. New York Jets (NYJ) | ADP #999.0 | 💎 SLEEPER | 🎯 Engstrand West Coast Spread: 11-Personnel
+15. Buffalo Bills (BUF) | ADP #999.0 | [ SLEEPER] ; Top-10 Eco: Power Spread: Multi-TE 12p Power
+16. Carolina Panthers (CAR) | ADP #999.0 | [ SLEEPER] ; Canales McVay/Waldron Quick Game: Fast-Pace 11-Personnel
+17. Indianapolis Colts (IND) | ADP #999.0 | [ SLEEPER] ; Steichen Fast-Pace Zone-Read: Top-5 Neutral Pace
+18. San Francisco 49ers (SF) | ADP #999.0 | [ SLEEPER] ; Kyle Shanahan Wide Zone: Heavy Pre-Snap Motion
+19. Atlanta Falcons (ATL) | ADP #999.0 | [ SLEEPER] ; Shanahan/Stefanski Wide Zone Lineage: Heavy Motion ; [Playoff A+]
+20. Detroit Lions (DET) | ADP #999.0 | [ SLEEPER] ; Top-10 Eco: High-Motion Zone/PA: Top-3 Scoring Eco ; [Playoff A+]
+21. Tampa Bay Buccaneers (TB) | ADP #999.0 | [ SLEEPER] ; Liam Coen McVay Spread: 11-Personnel Spread ; [OL #5 Top-5]
+22. New York Giants (NYG) | ADP #999.0 | [ SLEEPER] ; Daboll Spread Option: Read-Option
+23. Chicago Bears (CHI) | ADP #999.0 | [ SLEEPER] ; Ben Johnson Creative Motion: Elite Motion ; [OL #4 Top-5]
+24. Washington Commanders (WAS) | ADP #999.0 | [ SLEEPER] ; Kingsbury Air Raid: Top-3 Neutral Pace
+25. Las Vegas Raiders (LV) | ADP #999.0 | [ SLEEPER] ; Klint Kubiak Shanahan Tree: Shanahan Pre-Snap Motion
+26. Miami Dolphins (MIA) | ADP #999.0 | [ SLEEPER] ; Shanahan/McDaniel Speed Tree: Fastest Motion in NFL (#1) ; [OL #30 Poor]
+27. Cleveland Browns (CLE) | ADP #999.0 | [ SLEEPER] ; Ken Dorsey Air Raid Spread: Shotgun Pass Spacing ; [OL #32 Poor]
+28. Tennessee Titans (TEN) | ADP #999.0 | [ SLEEPER] ; Callahan McVay/Taylor Spread: Pass-Heavy 11-Spread ; [OL #31 Poor]
+29. Dallas Cowboys (DAL) | ADP #999.0 | [ SLEEPER] ; Schottenheimer West Coast Spread: Top-3 Neutral Pace
+30. Cincinnati Bengals (CIN) | ADP #999.0 | [ SLEEPER] ; Zac Taylor 11-Spread: Pass-Heavy (+3.6% PROE) ; [OL #28 Poor] ; [Playoff A+]
+31. Arizona Cardinals (ARI) | ADP #999.0 | [ SLEEPER] ; Petzing Shanahan/Stefanski Tree: Outside Zone
+32. New York Jets (NYJ) | ADP #999.0 | [ SLEEPER] ; Engstrand West Coast Spread: 11-Personnel
 
