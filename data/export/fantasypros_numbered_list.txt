@@ -5,12 +5,12 @@
 5. Jaxon Smith-Njigba
 6. Ja'Marr Chase
 7. Christian McCaffrey
-8. James Cook III
+8. James Cook
 9. Amon-Ra St. Brown
 10. Saquon Barkley
 11. CeeDee Lamb
 12. Chase Brown
-13. Kenneth Walker III
+13. Kenneth Walker
 14. Justin Jefferson
 15. Omarion Hampton
 16. Brock Bowers
@@ -43,11 +43,11 @@
 43. Jeremiyah Love
 44. Terry McLaurin
 45. Drake Maye
-46. Luther Burden III
+46. Luther Burden
 47. David Montgomery
 48. Tetairoa McMillan
 49. Davante Adams
-50. Travis Etienne Jr.
+50. Travis Etienne
 51. Tyler Warren
 52. Joe Burrow
 53. Bucky Irving
@@ -56,7 +56,7 @@
 56. Jalen Hurts
 57. Bhayshul Tuten
 58. Sam LaPorta
-59. DJ Moore
+59. D.J. Moore
 60. Jameson Williams
 61. Jayden Daniels
 62. Mike Evans
@@ -70,15 +70,15 @@
 70. Dak Prescott
 71. Parker Washington
 72. Justin Herbert
-73. Brian Thomas Jr.
+73. Brian Thomas
 74. Rhamondre Stevenson
 75. Carnell Tate
-76. Harold Fannin Jr.
+76. Harold Fannin
 77. Jaylen Warren
-78. DK Metcalf
+78. D.K. Metcalf
 79. Jonnu Smith
 80. Chuba Hubbard
-81. Marvin Harrison Jr.
+81. Marvin Harrison
 82. Courtland Sutton
 83. George Kittle
 84. Rico Dowdle
@@ -87,7 +87,7 @@
 87. Michael Wilson
 88. Jaxson Dart
 89. Matthew Stafford
-90. Chris Godwin Jr.
+90. Chris Godwin
 91. Travis Kelce
 92. RJ Harvey
 93. Tony Pollard

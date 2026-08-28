@@ -313,11 +313,12 @@ def render_tab_master_board(df: pd.DataFrame):
             format_choice = st.selectbox(
                 "Select FantasyPros Import Format:",
                 [
-                    "1. Numbered List (1. Player Name) — Recommended (Fastest & 100% Reliable)",
-                    "2. Plain Names Only (Player Name per line)",
-                    "3. WAF-Safe CSV with Notes (Rank,Player,Team,Position,Tier,Notes)",
-                    "4. Minimal CSV without Notes (Rank,Player,Team,Position,Tier)",
-                    "5. Positional Cheat Sheet (RB1-50, WR1-50, TE1-30, QB1-30 Tiers)"
+                    "1. Copy-Paste Ranked List (1. Player Name (TEAM - POS)) — Recommended for Web Paste",
+                    "2. Copy-Paste with Tiers (Tier 1 / Player Name)",
+                    "3. FantasyPros CSV with Tags & Notes (Rank,Player,Team,Position,Tier,Tag,Notes)",
+                    "4. Standard FantasyPros CSV (Rank,Player,Team,Position,Tier,Notes)",
+                    "5. Numbered List (1. Player Name)",
+                    "6. Positional Cheat Sheet (RB1-50, WR1-50, TE1-30, QB1-30 Tiers)"
                 ]
             )
         with f_c2:
@@ -326,33 +327,39 @@ def render_tab_master_board(df: pd.DataFrame):
         # Generate exports
         exports = generate_fantasypros_exports(board_df, top_n=pool_depth)
 
-        if "1. Numbered" in format_choice:
-            content = exports["numbered"]
-            file_name = "fantasypros_numbered_rankings_2026.txt"
+        if "1. Copy-Paste Ranked List" in format_choice:
+            content = exports["ranked_list"]
+            file_name = "fantasypros_copy_paste_ranked_list.txt"
             mime_type = "text/plain"
             box_lang = "text"
-            instructions = "In FantasyPros Cheat Sheet Creator, click <b>Edit Rankings &gt; Import from Text</b>, paste the numbered list below, and click <b>Confirm / Save</b>. (Zero 403 or formatting errors)."
-        elif "2. Plain" in format_choice:
-            content = exports["raw"]
-            file_name = "fantasypros_raw_names_2026.txt"
+            instructions = "In FantasyPros Cheat Sheet Creator, click <b>Edit Rankings &gt; Import from Text / Paste</b>, paste the text below, and click <b>Confirm / Save</b>. FantasyPros perfectly matches the <code>Player (TEAM - POS)</code> syntax without any 403 errors."
+        elif "2. Copy-Paste with Tiers" in format_choice:
+            content = exports["with_tiers"]
+            file_name = "fantasypros_copy_paste_with_tiers.txt"
             mime_type = "text/plain"
             box_lang = "text"
-            instructions = "In FantasyPros Cheat Sheet Creator, click <b>Import from Text</b>, paste the plain names list below, and hit <b>Confirm</b>."
-        elif "3. WAF-Safe CSV" in format_choice:
+            instructions = "In FantasyPros Cheat Sheet Creator, click <b>Edit Tiers / Import</b>, paste the list below with Tier headings, and hit <b>Confirm</b>."
+        elif "3. FantasyPros CSV with Tags" in format_choice:
+            content = exports["upload_csv"]
+            file_name = "fantasypros_cheatsheet_upload.csv"
+            mime_type = "text/csv"
+            box_lang = "csv"
+            instructions = "Standard 7-column FantasyPros CSV with TARGET/AVOID/SLEEPER tags and full emoji scouting notes. Save/download file and upload via <b>Upload Spreadsheet / CSV</b>."
+        elif "4. Standard FantasyPros CSV" in format_choice:
             content = exports["csv"]
-            file_name = "fantasypros_custom_cheatsheet_2026.csv"
+            file_name = "fantasypros_custom_rankings.csv"
             mime_type = "text/csv"
             box_lang = "csv"
-            instructions = "Download the CSV file and upload it via <b>Upload Spreadsheet / CSV</b>, or paste into spreadsheet importer. (Sanitized ASCII, no special character WAF blocking)."
-        elif "4. Minimal CSV" in format_choice:
-            content = exports["simple_csv"]
-            file_name = "fantasypros_simple_rankings_2026.csv"
-            mime_type = "text/csv"
-            box_lang = "csv"
-            instructions = "Minimal 5-column CSV (Rank, Player, Team, Position, Tier) for foolproof CSV importing into FantasyPros / Draft Wizard."
+            instructions = "Standard 6-column FantasyPros CSV with full tactical notes (no commas in notes, preventing CSV quote breakages). Upload directly or paste into CSV importer."
+        elif "5. Numbered List" in format_choice:
+            content = exports["numbered"]
+            file_name = "fantasypros_numbered_list.txt"
+            mime_type = "text/plain"
+            box_lang = "text"
+            instructions = "Numbered 1-N player list for FantasyPros quick text paste."
         else:
             content = exports["positional"]
-            file_name = "fantasypros_positional_cheatsheet_2026.txt"
+            file_name = "fantasypros_positional_cheatsheet.txt"
             mime_type = "text/plain"
             box_lang = "text"
             instructions = "Positional breakdown with draft tiers for reference or custom sheet creation."

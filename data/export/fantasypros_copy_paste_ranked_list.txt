@@ -1,484 +1,200 @@
-1. Jahmyr Gibbs
-2. Bijan Robinson
-3. Jonathan Taylor
-4. Puka Nacua
-5. Ja'Marr Chase
-6. Christian McCaffrey
-7. James Cook
-8. Jaxon Smith-Njigba
-9. Amon-Ra St. Brown
-10. Saquon Barkley
-11. Kenneth Walker
-12. De'Von Achane
-13. Derrick Henry
-14. Chase Brown
-15. Omarion Hampton
-16. Ashton Jeanty
-17. CeeDee Lamb
-18. Josh Jacobs
-19. Breece Hall
-20. Brock Bowers
-21. Justin Jefferson
-22. Drake London
-23. Kyren Williams
-24. Nico Collins
-25. Zay Flowers
-26. A.J. Brown
-27. Tee Higgins
-28. Chris Olave
-29. DeVonta Smith
-30. Javonte Williams
-31. George Pickens
-32. Josh Allen
-33. Cam Skattebo
-34. Ladd McConkey
-35. David Montgomery
-36. Rashee Rice
-37. Malik Nabers
-38. Trey McBride
-39. D'Andre Swift
-40. Travis Etienne
-41. Quinshon Judkins
-42. Tyler Warren
-43. Garrett Wilson
-44. Jameson Williams
-45. Rhamondre Stevenson
-46. Colston Loveland
-47. Jaylen Waddle
-48. Terry McLaurin
-49. Bucky Irving
-50. Luther Burden
-51. Jeremiyah Love
-52. Davante Adams
-53. Emeka Egbuka
-54. Drake Maye
-55. Christian Watson
-56. Bhayshul Tuten
-57. Tetairoa McMillan
-58. Parker Washington
-59. Lamar Jackson
-60. Rome Odunze
-61. Jalen Hurts
-62. Mike Evans
-63. DJ Moore
-64. Brian Thomas
-65. Jaylen Warren
-66. Jayden Daniels
-67. Kyle Pitts
-68. Sam LaPorta
-69. Harold Fannin
-70. Quentin Johnston
-71. Joe Burrow
-72. Tucker Kraft
-73. George Kittle
-74. DK Metcalf
-75. Justin Herbert
-76. TreVeyon Henderson
-77. Trevor Lawrence
-78. Mark Andrews
-79. Michael Pittman
-80. Travis Kelce
-81. Brock Purdy
-82. Caleb Williams
-83. Dak Prescott
-84. Dallas Goedert
-85. Courtland Sutton
-86. Chuba Hubbard
-87. Rico Dowdle
-88. Patrick Mahomes
-89. Bo Nix
-90. Jadarian Price
-91. Carnell Tate
-92. Juwan Johnson
-93. Jordan Addison
-94. Marvin Harrison
-95. Dalton Kincaid
-96. Jakobi Meyers
-97. Jake Ferguson
-98. Brenton Strange
-99. Tony Pollard
-100. Jaxson Dart
-101. Isaiah Likely
-102. Michael Wilson
-103. Alec Pierce
-104. Chris Godwin
-105. Josh Downs
-106. Hunter Henry
-107. Romeo Doubs
-108. Jared Goff
-109. Kenny Gainwell
-110. Jayden Reed
-111. Dalton Schultz
-112. Matthew Stafford
-113. T.J. Hockenson
-114. Stefon Diggs
-115. Matthew Golden
-116. Aaron Jones Sr.
-117. Baker Mayfield
-118. Xavier Worthy
-119. Cade Otton
-120. AJ Barner
-121. Wan'Dale Robinson
-122. Chig Okonkwo
-123. Kyler Murray
-124. Deebo Samuel Sr.
-125. Tyler Shough
-126. RJ Harvey
-127. Jordan Love
-128. Daniel Jones
-129. Blake Corum
-130. Tre Tucker
-131. Malik Willis
-132. Khalil Shakir
-133. Kyle Monangai
-134. Jonathon Brooks
-135. Pat Freiermuth
-136. Jalen Coker
-137. C.J. Stroud
-138. Cooper Kupp
-139. Jalen Nailor
-140. Sam Darnold
-141. J.K. Dobbins
-142. Keenan Allen
-143. Kenyon Sadiq
-144. Evan Engram
-145. Rachaad White
-146. Gunnar Helm
-147. Ryan Flournoy
-148. Makai Lemon
-149. Charlie Kolar
-150. KC Concepcion
-151. Brandon Aubrey
-152. Houston Texans
-153. Los Angeles Rams
-154. Jake Bates
-155. Seattle Seahawks
-156. Denver Broncos
-157. Philadelphia Eagles
-158. Jacksonville Jaguars
-159. Blake Grupe
-160. Harrison Mevis
-161. Minnesota Vikings
-162. Cairo Santos
-163. New England Patriots
-164. Kansas City Chiefs
-165. Jason Myers
-166. Eddy Pineiro
-167. Tyler Bass
-168. Ka'imi Fairbairn
-169. Cameron Dicker
-170. Spencer Shrader
-171. Green Bay Packers
-172. Tyler Loop
-173. Los Angeles Chargers
-174. Pittsburgh Steelers
-175. Harrison Butker
-176. New Orleans Saints
-177. Cam Little
-178. Baltimore Ravens
-179. Buffalo Bills
-180. Carolina Panthers
-181. Trey Smack
-182. Chase McLaughlin
-183. Rashid Shaheed
-184. Greg Dulcich
-185. Dontayvion Wicks
-186. Jacory Croskey-Merritt
-187. Caleb Douglas
-188. Jerry Jeudy
-189. Jalen McMillan
-190. Jacoby Brissett
-191. Bryce Young
-192. Tyjae Spears
-193. DeMario Douglas
-194. Terrance Ferguson
-195. Colby Parkinson
-196. Mike Gesicki
-197. Rashod Bateman
-198. Geno Smith
-199. Aaron Rodgers
-200. Malik Washington
-201. Oronde Gadsden II
-202. Cam Ward
-203. Denzel Boston
-204. Mason Taylor
-205. Michael Mayer
-206. Jauan Jennings
-207. Zach Charbonnet
-208. Tre' Harris
-209. Theo Johnson
-210. Kayshon Boutte
-211. Darnell Washington
-212. Cole Kmet
-213. Dawson Knox
-214. Justice Hill
-215. Adonai Mitchell
-216. Jordyn Tyson
-217. Devaughn Vele
-218. Isiah Pacheco
-219. Keaton Mitchell
-220. Calvin Ridley
-221. Woody Marks
-222. De'Zhaun Stribling
-223. David Njoku
-224. Darren Waller
-225. Erick All Jr.
-226. Noah Gray
-227. Malachi Fields
-228. Tyler Higbee
-229. Jordan Mason
-230. Chris Rodriguez Jr.
-231. Dylan Sampson
-232. Tyquan Thornton
-233. Pat Bryant
-234. Tyler Allgeier
-235. Omar Cooper Jr.
-236. KaVontae Turpin
-237. Chris Bell
-238. Elijah Arroyo
-239. Andrei Iosivas
-240. Noah Fant
-241. Travis Hunter
-242. Jaylin Noel
-243. Tank Dell
-244. Ja'Kobi Lane
-245. Samaje Perine
-246. Kendrick Bourne
-247. Brian Robinson Jr.
-248. Troy Franklin
-249. Xavier Legette
-250. Darius Slayton
-251. Marvin Mims Jr.
-252. Ty Johnson
-253. Mike Washington Jr.
-254. Isaac TeSlaa
-255. Elijah Higgins
-256. Jahan Dotson
-257. Daniel Bellinger
-258. Jake Tonges
-259. Germie Bernard
-260. Austin Hooper
-261. Oscar Delp
-262. Tanner Hudson
-263. Ted Hurst III
-264. Keon Coleman
-265. Alvin Kamara
-266. Tommy Tremble
-267. Tyrone Tracy Jr.
-268. Zachariah Branch
-269. Deshaun Watson
-270. Drew Sample
-271. Xavier Hutchinson
-272. Adam Trautman
-273. MarShawn Lloyd
-274. Marlin Klein
-275. Jonah Coleman
-276. John Bates
-277. Elic Ayomanor
-278. Josh Oliver
-279. Will Kacmarek
-280. Kalif Raymond
-281. Luke Musgrave
-282. Eli Raridon
-283. Eli Stowers
-284. Ja'Tavion Sanders
-285. Jaydon Blue
-286. Tory Horton
-287. Ben Sinnott
-288. Tommy Myers
-289. Jalen Tolbert
-290. Jack Bech
-291. Joshua Palmer
-292. Cyrus Allen
-293. Cade Stover
-294. Jackson Hawes
-295. Tyreek Hill
-296. Luke Schoonmaker
-297. Nate Boerkircher
-298. Tank Bigsby
-299. Brandon Aiyuk
-300. Matt Hibner
-301. Taysom Hill
-302. Michael Trigg
-303. Najee Harris
-304. Luke McCaffrey
-305. Chimere Dike
-306. Zach Ertz
-307. Max Klare
-308. Braelon Allen
-309. Mitchell Evans
-310. Darnell Mooney
-311. Jacob Cowing
-312. Chris Brazzell II
-313. George Holani
-314. Emmett Johnson
-315. LeQuint Allen Jr.
-316. Treylon Burks
-317. Kevin Coleman Jr.
-318. Antonio Williams
-319. Christian Kirk
-320. Isaiah Davis
-321. Ray Davis
-322. Trey Benson
-323. Jaylen Wright
-324. Malik Davis
-325. Mack Hollins
-326. Ashton Dulin
-327. Devontez Walker
-328. Emari Demercado
-329. Olamide Zaccheaus
-330. Chris Brooks
-331. Kaytron Allen
-332. Lew Nichols III
-333. Cash Jones
-334. Miles Sanders
-335. Jaydn Ott
-336. Kenny McIntosh
-337. Ty Chandler
-338. Kene Nwangwu
-339. Miles Davis
-340. Malik Benson
-341. Kyle Williams
-342. Jamal Haynes
-343. Noah Whittington
-344. Kalel Mullings
-345. Demond Claiborne
-346. Tanner Koziol
-347. Sam Roush
-348. Justin Joly
-349. Hollywood Brown
-350. Fernando Mendoza
-351. John Metchie III
-352. James Conner
-353. Brenen Thompson
-354. Jonnu Smith
-355. Roman Wilson
-356. Kaelon Black
-357. Konata Mumpfield
-358. Adam Randall
-359. Colbie Young
-360. Zavion Thomas
-361. Ollie Gordon II
-362. Jordan James
-363. Jordan Whittington
-364. Brashard Smith
-365. Kimani Vidal
-366. Dyami Brown
-367. Isaiah Bond
-368. Seth McGowan
-369. Bryce Lance
-370. Barion Brown
-371. Nicholas Singleton
-372. Jahdae Walker
-373. Tutu Atwell
-374. Skyler Bell
-375. Tez Johnson
-376. Sione Vaki
-377. Savion Williams
-378. Tai Felton
-379. Tim Patrick
-380. Deion Burks
-381. Demarcus Robinson
-382. Kyle Juszczyk
-383. Michael Penix Jr.
-384. Cedric Tillman
-385. Frank Gore Jr.
-386. Nick Westbrook-Ikhine
-387. Jimmy Horn Jr.
-388. DJ Giddens
-389. Trevor Etienne
-390. Isaiah Williams
-391. Raheim Sanders
-392. Tua Tagovailoa
-393. Tahj Brooks
-394. Devin Singletary
-395. Elijah Sarratt
-396. Greg Dortch
-397. Kirk Cousins
-398. Will Shipley
-399. Austin Ekeler
-400. Sean Tucker
-401. Emanuel Wilson
-402. Kendre Miller
-403. Lil'Jordan Humphrey
-404. Dont'e Thornton Jr.
-405. Jaylin Lane
-406. Damien Martinez
-407. Zavier Scott
-408. Michael Carter
-409. Marquez Valdes-Scantling
-410. Jaleel McLaughlin
-411. Mitch Tinsley
-412. Jalen Royals
-413. Jawhar Jordan
-414. Odell Beckham Jr.
-415. Audric Estime
-416. Dameon Pierce
-417. Xavier Restrepo
-418. CJ Daniels
-419. Roschon Johnson
-420. Hunter Luepke
-421. KeAndre Lambert-Smith
-422. Jordan Watkins
-423. Dylan Laube
-424. Xavier Smith
-425. Jeremy McNichols
-426. DeAndre Hopkins
-427. Jam Miller
-428. Jarquez Hunter
-429. David Sills V
-430. Cedrick Wilson Jr.
-431. Kareem Hunt
-432. Terrell Jennings
-433. Chris Blair
-434. Michael Woods II
-435. Devin Neal
-436. J'Mari Taylor
-437. Elijah Moore
-438. Reggie Virgil
-439. Michael Burton
-440. Eli Heidenreich
-441. Khalil Herbert
-442. Isaac Guerendo
-443. Rasheen Ali
-444. Jerome Ford
-445. Antonio Gibson
-446. Van Jefferson
-447. Tyler Lockett
-448. Alec Ingold
-449. Phil Mafah
-450. Tyler Goodson
-451. Velus Jones Jr.
-452. Roman Hemby
-453. Joe Mixon
-454. Jalen Reagor
-455. Adam Prentice
-456. Travis Homer
-457. Ronnie Rivers
-458. Max Bredeson
-459. Nathan Carter
-460. Reggie Gilliam
-461. Patrick Ricard
-462. Kaleb Johnson
-463. Robert Henry Jr.
-464. Jacob Saylors
-465. Bam Knight
-466. British Brooks
-467. Shedeur Sanders
-468. Jameis Winston
-469. J.J. McCarthy
-470. Marcus Mariota
-471. Carson Beck
-472. Justin Fields
-473. Mac Jones
-474. Tyson Bagent
-475. Joe Milton III
-476. Ty Simpson
-477. Joe Flacco
-478. Tyrod Taylor
-479. Anthony Richardson Sr.
-480. Gardner Minshew II
-481. Riley Leonard
-482. Jake Browning
-483. Cade Klubnik
-484. Drew Allar
+1. Jahmyr Gibbs (DET - RB)
+2. Bijan Robinson (ATL - RB)
+3. Puka Nacua (LAR - WR)
+4. Jonathan Taylor (IND - RB)
+5. Jaxon Smith-Njigba (SEA - WR)
+6. Ja'Marr Chase (CIN - WR)
+7. Christian McCaffrey (SF - RB)
+8. James Cook (BUF - RB)
+9. Amon-Ra St. Brown (DET - WR)
+10. Saquon Barkley (PHI - RB)
+11. CeeDee Lamb (DAL - WR)
+12. Chase Brown (CIN - RB)
+13. Kenneth Walker (KC - RB)
+14. Justin Jefferson (MIN - WR)
+15. Omarion Hampton (LAC - RB)
+16. Brock Bowers (LV - TE)
+17. Drake London (ATL - WR)
+18. Derrick Henry (BAL - RB)
+19. De'Von Achane (MIA - RB)
+20. A.J. Brown (NE - WR)
+21. Nico Collins (HOU - WR)
+22. Ashton Jeanty (LV - RB)
+23. Josh Allen (BUF - QB)
+24. Chris Olave (NO - WR)
+25. George Pickens (DAL - WR)
+26. DeVonta Smith (PHI - WR)
+27. Rashee Rice (KC - WR)
+28. Zay Flowers (BAL - WR)
+29. Malik Nabers (NYG - WR)
+30. Tee Higgins (CIN - WR)
+31. Kyren Williams (LAR - RB)
+32. Trey McBride (ARI - TE)
+33. Breece Hall (NYJ - RB)
+34. Javonte Williams (DAL - RB)
+35. Colston Loveland (CHI - TE)
+36. Ladd McConkey (LAC - WR)
+37. Josh Jacobs (GB - RB)
+38. Lamar Jackson (BAL - QB)
+39. Garrett Wilson (NYJ - WR)
+40. Emeka Egbuka (TB - WR)
+41. D'Andre Swift (CHI - RB)
+42. Jaylen Waddle (DEN - WR)
+43. Jeremiyah Love (ARI - RB)
+44. Terry McLaurin (WAS - WR)
+45. Drake Maye (NE - QB)
+46. Luther Burden (CHI - WR)
+47. David Montgomery (HOU - RB)
+48. Tetairoa McMillan (CAR - WR)
+49. Davante Adams (LAR - WR)
+50. Travis Etienne (NO - RB)
+51. Tyler Warren (IND - TE)
+52. Joe Burrow (CIN - QB)
+53. Bucky Irving (TB - RB)
+54. Cam Skattebo (NYG - RB)
+55. Quinshon Judkins (CLE - RB)
+56. Jalen Hurts (PHI - QB)
+57. Bhayshul Tuten (JAX - RB)
+58. Sam LaPorta (DET - TE)
+59. D.J. Moore (BUF - WR)
+60. Jameson Williams (DET - WR)
+61. Jayden Daniels (WAS - QB)
+62. Mike Evans (SF - WR)
+63. Rome Odunze (CHI - WR)
+64. Tucker Kraft (GB - TE)
+65. Christian Watson (GB - WR)
+66. TreVeyon Henderson (NE - RB)
+67. Caleb Williams (CHI - QB)
+68. Kyle Pitts (ATL - TE)
+69. Jadarian Price (SEA - RB)
+70. Dak Prescott (DAL - QB)
+71. Parker Washington (JAX - WR)
+72. Justin Herbert (LAC - QB)
+73. Brian Thomas (JAX - WR)
+74. Rhamondre Stevenson (NE - RB)
+75. Carnell Tate (TEN - WR)
+76. Harold Fannin (CLE - TE)
+77. Jaylen Warren (PIT - RB)
+78. D.K. Metcalf (PIT - WR)
+79. Jonnu Smith (FA - TE)
+80. Chuba Hubbard (CAR - RB)
+81. Marvin Harrison (ARI - WR)
+82. Courtland Sutton (DEN - WR)
+83. George Kittle (SF - TE)
+84. Rico Dowdle (PIT - RB)
+85. Trevor Lawrence (JAX - QB)
+86. Dalton Kincaid (BUF - TE)
+87. Michael Wilson (ARI - WR)
+88. Jaxson Dart (NYG - QB)
+89. Matthew Stafford (LAR - QB)
+90. Chris Godwin (TB - WR)
+91. Travis Kelce (KC - TE)
+92. RJ Harvey (DEN - RB)
+93. Tony Pollard (TEN - RB)
+94. Makai Lemon (PHI - WR)
+95. Patrick Mahomes (KC - QB)
+96. Jake Ferguson (DAL - TE)
+97. Kyle Monangai (CHI - RB)
+98. Quentin Johnston (LAC - WR)
+99. Blake Corum (LAR - RB)
+100. Josh Downs (IND - WR)
+101. Jordan Addison (MIN - WR)
+102. Michael Pittman (PIT - WR)
+103. Brock Purdy (SF - QB)
+104. Jordyn Tyson (NO - WR)
+105. Alec Pierce (IND - WR)
+106. Jakobi Meyers (JAX - WR)
+107. Jonathon Brooks (CAR - RB)
+108. Isaiah Likely (NYG - TE)
+109. J.K. Dobbins (DEN - RB)
+110. Dallas Goedert (PHI - TE)
+111. Stefon Diggs (WAS - WR)
+112. Kenny Gainwell (TB - RB)
+113. Bo Nix (DEN - QB)
+114. Jayden Reed (GB - WR)
+115. Mark Andrews (BAL - TE)
+116. Jared Goff (DET - QB)
+117. Romeo Doubs (NE - WR)
+118. Jacory Croskey-Merritt (WAS - RB)
+119. Matthew Golden (GB - WR)
+120. Aaron Jones (MIN - RB)
+121. Deebo Samuel Sr. (SF - WR)
+122. Baker Mayfield (TB - QB)
+123. Wan'Dale Robinson (TEN - WR)
+124. Hunter Henry (NE - TE)
+125. Xavier Worthy (KC - WR)
+126. Oronde Gadsden II (LAC - TE)
+127. Khalil Shakir (BUF - WR)
+128. Rachaad White (WAS - RB)
+129. Jordan Love (GB - QB)
+130. Jordan Mason (MIN - RB)
+131. KC Concepcion (CLE - WR)
+132. Jalen Coker (CAR - WR)
+133. Rashid Shaheed (SEA - WR)
+134. Brenton Strange (JAX - TE)
+135. Ricky Pearsall (FA - WR)
+136. Kyler Murray (MIN - QB)
+137. Zach Charbonnet (SEA - RB)
+138. Kenyon Sadiq (NYJ - TE)
+139. Tyler Allgeier (ARI - RB)
+140. Chris Rodriguez Jr. (JAX - RB)
+141. CJ Stroud (FA - QB)
+142. Jayden Higgins (FA - WR)
+143. Tyler Shough (NO - QB)
+144. T.J. Hockenson (MIN - TE)
+145. Brandon Aiyuk (FA - WR)
+146. De'Zhaun Stribling (SF - WR)
+147. Brian Robinson Jr. (FA - RB)
+148. Sam Darnold (SEA - QB)
+149. Amon-Ra St.Brown (FA - RB)
+150. Antonio Williams (FA - WR)
+151. Zachariah Branch (FA - RB)
+152. Keaton Mitchell (LAC - RB)
+153. Juwan Johnson (NO - TE)
+154. Malik Willis (MIA - QB)
+155. AJ Barner (SEA - TE)
+156. Tyjae Spears (TEN - RB)
+157. Chig Okonkwo (WAS - TE)
+158. Jalen Nailor (LV - WR)
+159. Ja'Kobi Lane (BAL - WR)
+160. Dalton Schultz (HOU - TE)
+161. Woody Marks (HOU - RB)
+162. Jonah Coleman (DEN - RB)
+163. Isiah Pacheco (DET - RB)
+164. Alvin Kamara (NO - RB)
+165. Tank Dell (HOU - WR)
+166. Denzel Boston (CLE - WR)
+167. Tyrone Tracy Jr. (NYG - RB)
+168. Mike Washington Jr. (LV - RB)
+169. Dylan Sampson (CLE - RB)
+170. Keenan Allen (IND - WR)
+171. Daniel Jones (IND - QB)
+172. Fernando Mendoza (LV - QB)
+173. Tank Bigsby (PHI - RB)
+174. Omar Cooper Jr. (NYJ - WR)
+175. Tre Tucker (LV - WR)
+176. Jauan Jennings (MIN - WR)
+177. Jalen McMillan (TB - WR)
+178. Jerry Jeudy (CLE - WR)
+179. Charlie Kolar (LAC - TE)
+180. Cade Otton (TB - TE)
+181. Terrance Ferguson (LAR - TE)
+182. David Njoku (LAC - TE)
+183. Malik Washington (MIA - WR)
+184. Cooper Kupp (SEA - WR)
+185. Ryan Flournoy (DAL - WR)
+186. Jacoby Brissett (ARI - QB)
+187. Emmett Johnson (KC - RB)
+188. Dontayvion Wicks (PHI - WR)
+189. Colby Parkinson (LAR - TE)
+190. Cole Kmet (CHI - TE)
+191. MarShawn Lloyd (GB - RB)
+192. Evan Engram (DEN - TE)
+193. Pat Freiermuth (PIT - TE)
+194. Michael Mayer (LV - TE)
+195. Greg Dulcich (MIA - TE)
+196. Cam Ward (TEN - QB)
+197. Dawson Knox (BUF - TE)
+198. Gunnar Helm (TEN - TE)
+199. Bryce Young (CAR - QB)
+200. Geno Smith (NYJ - QB)

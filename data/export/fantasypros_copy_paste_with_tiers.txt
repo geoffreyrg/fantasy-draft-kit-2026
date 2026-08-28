@@ -1,532 +1,517 @@
-
-Tier 1
+Tier ier 1
 Jahmyr Gibbs
 Bijan Robinson
-Jonathan Taylor
 Puka Nacua
+
+Tier ier 2
+Jonathan Taylor
+
+Tier ier 1
+Jaxon Smith-Njigba
 Ja'Marr Chase
 
-Tier 2
+Tier ier 2
 Christian McCaffrey
 James Cook
-Jaxon Smith-Njigba
 Amon-Ra St. Brown
+
+Tier ier 3
 Saquon Barkley
-Kenneth Walker
-De'Von Achane
-Derrick Henry
+
+Tier ier 2
+CeeDee Lamb
+
+Tier ier 3
 Chase Brown
+Kenneth Walker
+
+Tier ier 2
+Justin Jefferson
+
+Tier ier 3
 Omarion Hampton
+
+Tier ier 1
+Brock Bowers
+
+Tier ier 2
+Drake London
+
+Tier ier 3
+Derrick Henry
+De'Von Achane
+
+Tier ier 2
+A.J. Brown
+Nico Collins
+
+Tier ier 3
 Ashton Jeanty
 
-Tier 3
-CeeDee Lamb
-Josh Jacobs
-Breece Hall
-Brock Bowers
-Justin Jefferson
-Drake London
-Kyren Williams
-Nico Collins
-Zay Flowers
-A.J. Brown
-Tee Higgins
+Tier ier 1
+Josh Allen
+
+Tier ier 2
 Chris Olave
-DeVonta Smith
-Javonte Williams
 George Pickens
 
-Tier 4
-Josh Allen
-Cam Skattebo
-Ladd McConkey
-David Montgomery
+Tier ier 3
+DeVonta Smith
 Rashee Rice
-Malik Nabers
-Trey McBride
-D'Andre Swift
-Travis Etienne
-Quinshon Judkins
-Tyler Warren
-Garrett Wilson
-Jameson Williams
-Rhamondre Stevenson
-Colston Loveland
-Jaylen Waddle
-Terry McLaurin
-Bucky Irving
-Luther Burden
-Davante Adams
-Jeremiyah Love
 
-Tier 5
-Emeka Egbuka
-Drake Maye
-Christian Watson
-Bhayshul Tuten
-Tetairoa McMillan
-Parker Washington
+Tier ier 4
+Zay Flowers
+
+Tier ier 3
+Malik Nabers
+
+Tier ier 4
+Tee Higgins
+Kyren Williams
+
+Tier ier 1
+Trey McBride
+
+Tier ier 4
+Breece Hall
+Javonte Williams
+
+Tier ier 2
+Colston Loveland
+
+Tier ier 4
+Ladd McConkey
+Josh Jacobs
+
+Tier ier 1
 Lamar Jackson
-Rome Odunze
-Jalen Hurts
-Mike Evans
-DJ Moore
-Brian Thomas
-Jaylen Warren
-Jayden Daniels
-Kyle Pitts
-Sam LaPorta
-Harold Fannin
-Quentin Johnston
+
+Tier ier 4
+Garrett Wilson
+
+Tier ier 5
+Emeka Egbuka
+D'Andre Swift
+
+Tier ier 4
+Jaylen Waddle
+
+Tier ier 5
+Jeremiyah Love
+Terry McLaurin
+
+Tier ier 2
+Drake Maye
+
+Tier ier 5
+Luther Burden
+
+Tier ier 4
+David Montgomery
+Tetairoa McMillan
+
+Tier ier 5
+Davante Adams
+Travis Etienne
+
+Tier ier 2
+Tyler Warren
 Joe Burrow
+
+Tier ier 5
+Bucky Irving
+
+Tier ier 6
+Cam Skattebo
+
+Tier ier 5
+Quinshon Judkins
+
+Tier ier 2
+Jalen Hurts
+
+Tier ier 5
+Bhayshul Tuten
+
+Tier ier 3
+Sam LaPorta
+
+Tier ier 6
+D.J. Moore
+
+Tier ier 4
+Jameson Williams
+
+Tier ier 2
+Jayden Daniels
+
+Tier ier 5
+Mike Evans
+Rome Odunze
+
+Tier ier 4
 Tucker Kraft
 
-Tier 6
-George Kittle
-DK Metcalf
-Justin Herbert
+Tier ier 5
+Christian Watson
+
+Tier ier 7
 TreVeyon Henderson
-Trevor Lawrence
-Mark Andrews
-Michael Pittman
-Travis Kelce
-Brock Purdy
+
+Tier ier 4
 Caleb Williams
-Dak Prescott
-Dallas Goedert
-Courtland Sutton
-Chuba Hubbard
-Brandon Aubrey
-Houston Texans
-Los Angeles Rams
-Jake Bates
-Seattle Seahawks
-Denver Broncos
-Philadelphia Eagles
-Jacksonville Jaguars
-Blake Grupe
-Harrison Mevis
-Minnesota Vikings
-Cairo Santos
-Rico Dowdle
-New England Patriots
-Patrick Mahomes
-Kansas City Chiefs
-Jason Myers
-Eddy Pineiro
-Tyler Bass
-Ka'imi Fairbairn
-Cameron Dicker
-Spencer Shrader
-Green Bay Packers
-Tyler Loop
-Los Angeles Chargers
-Pittsburgh Steelers
-New Orleans Saints
-Juwan Johnson
-Harrison Butker
-Carnell Tate
-Bo Nix
+
+Tier ier 3
+Kyle Pitts
+
+Tier ier 8
 Jadarian Price
 
-Tier 7
-Cam Little
-Baltimore Ravens
-Buffalo Bills
-Carolina Panthers
-Trey Smack
-Indianapolis Colts
-Chase McLaughlin
-Jake Elliott
-San Francisco 49ers
-Jordan Addison
-Nick Folk
-Atlanta Falcons
-Evan McPherson
+Tier ier 3
+Dak Prescott
+
+Tier ier 5
+Parker Washington
+
+Tier ier 3
+Justin Herbert
+
+Tier ier 6
+Brian Thomas
+Rhamondre Stevenson
+Carnell Tate
+
+Tier ier 3
+Harold Fannin
+
+Tier ier 6
+Jaylen Warren
+D.K. Metcalf
+
+Tier ier 7
+Jonnu Smith
+
+Tier ier 8
+Chuba Hubbard
+
+Tier ier 7
 Marvin Harrison
-Wil Lutz
-Detroit Lions
+
+Tier ier 6
+Courtland Sutton
+
+Tier ier 4
+George Kittle
+
+Tier ier 7
+Rico Dowdle
+
+Tier ier 3
+Trevor Lawrence
+
+Tier ier 5
 Dalton Kincaid
-Tampa Bay Buccaneers
-Will Reichard
-Charlie Smyth
-New York Giants
-Andy Borregales
-Daniel Carlson
-Chicago Bears
-Jakobi Meyers
-Washington Commanders
-Jake Ferguson
-Las Vegas Raiders
-Miami Dolphins
-Brenton Strange
-Cleveland Browns
-Chris Boswell
-Chad Ryland
-Tennessee Titans
-Tony Pollard
-Dallas Cowboys
-Cincinnati Bengals
-Jason Sanders
-Joey Slye
-Jaxson Dart
-New York Jets
-Isaiah Likely
-Ryan Fitzgerald
+
+Tier ier 7
 Michael Wilson
-Alec Pierce
-Chris Godwin
-Josh Downs
-Hunter Henry
-Romeo Doubs
-Jared Goff
-Kenny Gainwell
-Jayden Reed
-Dalton Schultz
+
+Tier ier 3
+Jaxson Dart
+
+Tier ier 4
 Matthew Stafford
-T.J. Hockenson
+
+Tier ier 7
+Chris Godwin
+
+Tier ier 3
+Travis Kelce
+
+Tier ier 9
+RJ Harvey
+
+Tier ier 7
+Tony Pollard
+
+Tier ier 8
+Makai Lemon
+
+Tier ier 4
+Patrick Mahomes
+Jake Ferguson
+
+Tier ier 9
+Kyle Monangai
+
+Tier ier 6
+Quentin Johnston
+
+Tier ier 9
+Blake Corum
+
+Tier ier 7
+Josh Downs
+
+Tier ier 6
+Jordan Addison
+Michael Pittman
+
+Tier ier 3
+Brock Purdy
+
+Tier ier 9
+Jordyn Tyson
+
+Tier ier 8
+Alec Pierce
+
+Tier ier 6
+Jakobi Meyers
+
+Tier ier 9
+Jonathon Brooks
+
+Tier ier 6
+Isaiah Likely
+
+Tier ier 10
+J.K. Dobbins
+
+Tier ier 3
+Dallas Goedert
+
+Tier ier 6
 Stefon Diggs
+
+Tier ier 8
+Kenny Gainwell
+
+Tier ier 4
+Bo Nix
+
+Tier ier 6
+Jayden Reed
+
+Tier ier 4
+Mark Andrews
+
+Tier ier 5
+Jared Goff
+
+Tier ier 7
+Romeo Doubs
+
+Tier ier 10
+Jacory Croskey-Merritt
+
+Tier ier 8
 Matthew Golden
-Aaron Jones Sr.
+
+Tier ier 9
+Aaron Jones
+
+Tier ier 7
+Deebo Samuel Sr.
+
+Tier ier 5
 Baker Mayfield
 
-Tier 8
-Xavier Worthy
-Cade Otton
-AJ Barner
+Tier ier 9
 Wan'Dale Robinson
-Chig Okonkwo
-Kyler Murray
-Deebo Samuel Sr.
-Ben Sauls
-Tyler Shough
-RJ Harvey
-Jordan Love
-Daniel Jones
-Blake Corum
-Jake Moody
-Zane Gonzalez
-Brandon McManus
-Tre Tucker
-Malik Willis
-Khalil Shakir
-Kyle Monangai
-Jonathon Brooks
-Pat Freiermuth
-Jalen Coker
-C.J. Stroud
-Cooper Kupp
-Jalen Nailor
-Sam Darnold
-J.K. Dobbins
-Keenan Allen
-Kenyon Sadiq
-Evan Engram
-Rachaad White
-Gunnar Helm
-Ryan Flournoy
-Makai Lemon
-Charlie Kolar
-KC Concepcion
-Rashid Shaheed
-Greg Dulcich
-Dontayvion Wicks
-Jacory Croskey-Merritt
-Caleb Douglas
-Jerry Jeudy
-Jalen McMillan
-Jacoby Brissett
-Bryce Young
-Tyjae Spears
-DeMario Douglas
-Terrance Ferguson
-Colby Parkinson
-Mike Gesicki
-Rashod Bateman
-Geno Smith
-Aaron Rodgers
-Malik Washington
+
+Tier ier 5
+Hunter Henry
+
+Tier ier 7
+Xavier Worthy
+
+Tier ier 8
 Oronde Gadsden II
-Cam Ward
-Denzel Boston
-Mason Taylor
-Michael Mayer
-Jauan Jennings
-Zach Charbonnet
-Tre' Harris
-Theo Johnson
-Kayshon Boutte
-Darnell Washington
-Cole Kmet
-Dawson Knox
-Justice Hill
-Adonai Mitchell
-Jordyn Tyson
-Devaughn Vele
-Isiah Pacheco
-Keaton Mitchell
-Calvin Ridley
-Woody Marks
-De'Zhaun Stribling
-David Njoku
-Darren Waller
-Erick All Jr.
-Noah Gray
-Malachi Fields
-Tyler Higbee
+Khalil Shakir
+
+Tier ier 9
+Rachaad White
+
+Tier ier 5
+Jordan Love
+
+Tier ier 10
 Jordan Mason
-Chris Rodriguez Jr.
-Dylan Sampson
-Tyquan Thornton
-Pat Bryant
+
+Tier ier 9
+KC Concepcion
+
+Tier ier 8
+Jalen Coker
+
+Tier ier 9
+Rashid Shaheed
+
+Tier ier 4
+Brenton Strange
+
+Tier ier 9
+Ricky Pearsall
+
+Tier ier 5
+Kyler Murray
+
+Tier ier 10
+Zach Charbonnet
+
+Tier ier 8
+Kenyon Sadiq
+
+Tier ier 10
 Tyler Allgeier
-Omar Cooper Jr.
-KaVontae Turpin
-Chris Bell
-Elijah Arroyo
-Andrei Iosivas
-Noah Fant
-Travis Hunter
-Jaylin Noel
-Tank Dell
-Ja'Kobi Lane
-Samaje Perine
-Kendrick Bourne
-Brian Robinson Jr.
-Troy Franklin
-Xavier Legette
-Darius Slayton
-Marvin Mims Jr.
-Ty Johnson
-Mike Washington Jr.
-Isaac TeSlaa
-Elijah Higgins
-Jahan Dotson
-Daniel Bellinger
-Jake Tonges
-Germie Bernard
-Austin Hooper
-Oscar Delp
-Tanner Hudson
-Ted Hurst III
-Keon Coleman
-Alvin Kamara
-Tommy Tremble
-Tyrone Tracy Jr.
-Zachariah Branch
-Deshaun Watson
-Drew Sample
-Xavier Hutchinson
-Adam Trautman
-MarShawn Lloyd
-Marlin Klein
-Jonah Coleman
-John Bates
-Elic Ayomanor
-Josh Oliver
-Will Kacmarek
-Kalif Raymond
-Luke Musgrave
-Eli Raridon
-Eli Stowers
-Ja'Tavion Sanders
-Jaydon Blue
-Tory Horton
-Ben Sinnott
-Tommy Myers
-Jalen Tolbert
-Jack Bech
-Joshua Palmer
-Cyrus Allen
-Cade Stover
-Jackson Hawes
-Tyreek Hill
-Luke Schoonmaker
-Nate Boerkircher
-Tank Bigsby
+Chris Rodriguez Jr.
+
+Tier ier 7
+CJ Stroud
+
+Tier ier 9
+Jayden Higgins
+
+Tier ier 5
+Tyler Shough
+T.J. Hockenson
+
+Tier ier 9
 Brandon Aiyuk
-Matt Hibner
-Taysom Hill
-Michael Trigg
-Najee Harris
-Luke McCaffrey
-Chimere Dike
-Zach Ertz
-Max Klare
-Braelon Allen
-Mitchell Evans
-Darnell Mooney
-Jacob Cowing
-Chris Brazzell II
-George Holani
-Emmett Johnson
-LeQuint Allen Jr.
-Treylon Burks
-Kevin Coleman Jr.
+De'Zhaun Stribling
+
+Tier ier 10
+Brian Robinson Jr.
+
+Tier ier 6
+Sam Darnold
+
+Tier ier 10
+Amon-Ra St.Brown
+
+Tier ier 9
 Antonio Williams
-Christian Kirk
-Isaiah Davis
-Ray Davis
-Trey Benson
-Jaylen Wright
-Malik Davis
-Mack Hollins
-Ashton Dulin
-Devontez Walker
-Emari Demercado
-Olamide Zaccheaus
-Chris Brooks
-Kaytron Allen
-Miles Davis
-Ty Chandler
-Kenny McIntosh
-Kene Nwangwu
-Miles Sanders
-Cash Jones
-Jaydn Ott
-Lew Nichols III
-Malik Benson
-Kyle Williams
-Jamal Haynes
-Noah Whittington
-Kalel Mullings
-Demond Claiborne
-Tanner Koziol
-Sam Roush
-Justin Joly
-Hollywood Brown
+
+Tier ier 10
+Zachariah Branch
+Keaton Mitchell
+
+Tier ier 4
+Juwan Johnson
+Malik Willis
+
+Tier ier 6
+AJ Barner
+
+Tier ier 9
+Tyjae Spears
+
+Tier ier 6
+Chig Okonkwo
+
+Tier ier 9
+Jalen Nailor
+Ja'Kobi Lane
+
+Tier ier 4
+Dalton Schultz
+
+Tier ier 10
+Woody Marks
+Jonah Coleman
+
+Tier ier 9
+Isiah Pacheco
+
+Tier ier 10
+Alvin Kamara
+
+Tier ier 9
+Tank Dell
+Denzel Boston
+
+Tier ier 10
+Tyrone Tracy Jr.
+Mike Washington Jr.
+Dylan Sampson
+
+Tier ier 8
+Keenan Allen
+
+Tier ier 6
+Daniel Jones
+
+Tier ier 7
 Fernando Mendoza
-John Metchie III
-James Conner
-Brenen Thompson
-Jonnu Smith
-Roman Wilson
-Kaelon Black
-Konata Mumpfield
-Adam Randall
-Colbie Young
-Zavion Thomas
-Ollie Gordon II
-Jordan James
-Jordan Whittington
-Brashard Smith
-Kimani Vidal
-Dyami Brown
-Isaiah Bond
-Seth McGowan
-Bryce Lance
-Barion Brown
-Nicholas Singleton
-Jahdae Walker
-Tutu Atwell
-Skyler Bell
-Tez Johnson
-Sione Vaki
-Savion Williams
-Tai Felton
-Tim Patrick
-Deion Burks
-Demarcus Robinson
-Kyle Juszczyk
-Michael Penix Jr.
-Cedric Tillman
-Frank Gore Jr.
-Nick Westbrook-Ikhine
-Jimmy Horn Jr.
-DJ Giddens
-Trevor Etienne
-Isaiah Williams
-Raheim Sanders
-Tua Tagovailoa
-Tahj Brooks
-Devin Singletary
-Elijah Sarratt
-Greg Dortch
-Kirk Cousins
-Will Shipley
-Austin Ekeler
-Sean Tucker
-Emanuel Wilson
-Kendre Miller
-Lil'Jordan Humphrey
-Dont'e Thornton Jr.
-Jaylin Lane
-Damien Martinez
-Zavier Scott
-Michael Carter
-Marquez Valdes-Scantling
-Jaleel McLaughlin
-Mitch Tinsley
-Jalen Royals
-Jawhar Jordan
-Odell Beckham Jr.
-Audric Estime
-Dameon Pierce
-Xavier Restrepo
-CJ Daniels
-Roschon Johnson
-Hunter Luepke
-KeAndre Lambert-Smith
-Jordan Watkins
-Dylan Laube
-Xavier Smith
-Jeremy McNichols
-DeAndre Hopkins
-Jam Miller
-Jarquez Hunter
-David Sills V
-Cedrick Wilson Jr.
-Kareem Hunt
-Terrell Jennings
-Chris Blair
-Michael Woods II
-Devin Neal
-J'Mari Taylor
-Elijah Moore
-Reggie Virgil
-Michael Burton
-Eli Heidenreich
-Khalil Herbert
-Isaac Guerendo
-Rasheen Ali
-Jerome Ford
-Antonio Gibson
-Van Jefferson
-Tyler Lockett
-Alec Ingold
-Phil Mafah
-Tyler Goodson
-Velus Jones Jr.
-Roman Hemby
-Joe Mixon
-Jalen Reagor
-Adam Prentice
-Travis Homer
-Ronnie Rivers
-Max Bredeson
-Nathan Carter
-Reggie Gilliam
-Patrick Ricard
-Kaleb Johnson
-Robert Henry Jr.
-Jacob Saylors
-Bam Knight
-British Brooks
-Shedeur Sanders
-Jameis Winston
-J.J. McCarthy
-Marcus Mariota
-Carson Beck
-Justin Fields
-Mac Jones
-Tyson Bagent
-Joe Milton III
-Ty Simpson
-Joe Flacco
-Tyrod Taylor
-Anthony Richardson Sr.
-Gardner Minshew II
-Riley Leonard
-Jake Browning
-Cade Klubnik
-Drew Allar
+
+Tier ier 10
+Tank Bigsby
+
+Tier ier 9
+Omar Cooper Jr.
+
+Tier ier 8
+Tre Tucker
+
+Tier ier 9
+Jauan Jennings
+
+Tier ier 8
+Jalen McMillan
+
+Tier ier 9
+Jerry Jeudy
+
+Tier ier 5
+Charlie Kolar
+
+Tier ier 6
+Cade Otton
+
+Tier ier 8
+Terrance Ferguson
+David Njoku
+
+Tier ier 9
+Malik Washington
+
+Tier ier 7
+Cooper Kupp
+
+Tier ier 8
+Ryan Flournoy
+
+Tier ier 6
+Jacoby Brissett
+
+Tier ier 10
+Emmett Johnson
+
+Tier ier 8
+Dontayvion Wicks
+Colby Parkinson
+Cole Kmet
+
+Tier ier 10
+MarShawn Lloyd
+
+Tier ier 7
+Evan Engram
+
+Tier ier 6
+Pat Freiermuth
+
+Tier ier 7
+Michael Mayer
+Greg Dulcich
+Cam Ward
+
+Tier ier 8
+Dawson Knox
+
+Tier ier 7
+Gunnar Helm
+Bryce Young
+
+Tier ier 6
+Geno Smith

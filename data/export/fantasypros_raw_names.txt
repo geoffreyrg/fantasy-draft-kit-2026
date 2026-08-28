@@ -5,12 +5,12 @@ Jonathan Taylor
 Jaxon Smith-Njigba
 Ja'Marr Chase
 Christian McCaffrey
-James Cook III
+James Cook
 Amon-Ra St. Brown
 Saquon Barkley
 CeeDee Lamb
 Chase Brown
-Kenneth Walker III
+Kenneth Walker
 Justin Jefferson
 Omarion Hampton
 Brock Bowers
@@ -43,11 +43,11 @@ Jaylen Waddle
 Jeremiyah Love
 Terry McLaurin
 Drake Maye
-Luther Burden III
+Luther Burden
 David Montgomery
 Tetairoa McMillan
 Davante Adams
-Travis Etienne Jr.
+Travis Etienne
 Tyler Warren
 Joe Burrow
 Bucky Irving
@@ -56,7 +56,7 @@ Quinshon Judkins
 Jalen Hurts
 Bhayshul Tuten
 Sam LaPorta
-DJ Moore
+D.J. Moore
 Jameson Williams
 Jayden Daniels
 Mike Evans
@@ -70,15 +70,15 @@ Jadarian Price
 Dak Prescott
 Parker Washington
 Justin Herbert
-Brian Thomas Jr.
+Brian Thomas
 Rhamondre Stevenson
 Carnell Tate
-Harold Fannin Jr.
+Harold Fannin
 Jaylen Warren
-DK Metcalf
+D.K. Metcalf
 Jonnu Smith
 Chuba Hubbard
-Marvin Harrison Jr.
+Marvin Harrison
 Courtland Sutton
 George Kittle
 Rico Dowdle
@@ -87,7 +87,7 @@ Dalton Kincaid
 Michael Wilson
 Jaxson Dart
 Matthew Stafford
-Chris Godwin Jr.
+Chris Godwin
 Travis Kelce
 RJ Harvey
 Tony Pollard
