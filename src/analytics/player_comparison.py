@@ -2,7 +2,7 @@
 Head-to-Head Player Comparison & Pick Arbiter Engine.
 Faithfully models the FantasyPros 'Who Should I Draft?' system with:
 1. Expert Consensus Pick % & Accuracy Weighting (Top Overall, Top Pos, Top Player Experts)
-2. Multi-Bar Sentiment, Upside Potential, and Bust Risk Meters
+2. Calibrated Multi-Bar Sentiment, Upside Potential, and Bust Risk Meters
 3. Fantasy Points Projections & 2025 Historical Averages
 4. Past Performance vs. Projection Tracking (% Games Beating Proj)
 5. Red Zone High-Leverage Opportunity & TD Conversion Efficiency
@@ -80,37 +80,74 @@ class PlayerComparisonEngine:
             matchup_penalty = (shadow_cbs * 2.5) if pos == "WR" else ((tough_front7 * 3.0) if pos == "RB" else 0.0)
             sched_score = max(20.0, min(100.0, 100.0 - (pos_sos - 1.0) * 2.2 + (star_count - 3) * 8.0 - matchup_penalty))
             
-            # 7. Sentiment, Upside & Bust Risk
+            ecr_val = float(row.get("ecr", 50.0))
+            std_dev = float(row.get("std_dev", 3.5)) or 3.5
+            adp_delta = float(row.get(f"adp_delta_{plat_key}", row.get("adp_delta_consensus", 0.0)))
+            mkt_score = max(10.0, min(100.0, 50.0 + adp_delta * 4.0))
+
+            # 7. Accurately Calibrated Sentiment, Upside & Bust Risk
             steam = float(row.get("steam_score", 0.0)) if pd.notnull(row.get("steam_score")) else 0.0
             smyth_tag = str(row.get("smyth_color_tag", "Neutral")).lower()
-            
-            sent_score = 3
-            if "target" in smyth_tag or "gold" in smyth_tag or steam > 0.3:
-                sent_score = 4 if steam <= 0.6 else 5
-            elif "avoid" in smyth_tag or steam < -0.3:
-                sent_score = 2 if steam >= -0.6 else 1
-            sent_label = "Very High" if sent_score == 5 else ("High" if sent_score == 4 else ("Moderate" if sent_score == 3 else "Low"))
-            
-            up_score = 5 if talent_score >= 92 else (4 if talent_score >= 82 else (3 if talent_score >= 70 else 2))
-            up_label = "Very High" if up_score == 5 else ("High" if up_score == 4 else ("Moderate" if up_score == 3 else "Low"))
-            
-            risk_val = float(row.get("risk_rating", 2.5)) if pd.notnull(row.get("risk_rating")) else 2.5
             inj_st = str(row.get("injury_status", "Healthy")).lower()
-            bust_score = 3
-            if "ir" in inj_st or "pup" in inj_st or risk_val >= 4.0:
-                bust_score = 5
-            elif "out" in inj_st or "questionable" in inj_st or risk_val >= 3.2:
-                bust_score = 4
-            elif risk_val <= 1.8:
-                bust_score = 1
-            elif risk_val <= 2.4:
-                bust_score = 2
-            bust_label = "High" if bust_score >= 4 else ("Moderate" if bust_score == 3 else "Low")
+            risk_val = float(row.get("risk_rating", 2.5)) if pd.notnull(row.get("risk_rating")) else 2.5
 
-            # 8. Market Value (0-100)
-            delta_val = float(row.get(f"adp_delta_{plat_key}", row.get("adp_delta_consensus", 0.0)))
-            mkt_score = max(10.0, min(100.0, 50.0 + delta_val * 4.0))
-            
+            # A. Overall Sentiment (1-5 bars)
+            sent_pts = 0
+            if ecr_val <= 15:
+                sent_pts += 4
+            elif ecr_val <= 36:
+                sent_pts += 3
+            elif ecr_val <= 75:
+                sent_pts += 2
+            else:
+                sent_pts += 1
+                
+            if "target" in smyth_tag or "gold" in smyth_tag or steam > 0.2:
+                sent_pts += 1
+            elif "avoid" in smyth_tag or steam < -0.3:
+                sent_pts -= 1
+                
+            if adp_delta > 3.0:
+                sent_pts += 1
+                
+            sent_score = min(5, max(1, sent_pts))
+            sent_label = "Very High" if sent_score == 5 else ("High" if sent_score == 4 else ("Moderate" if sent_score == 3 else "Low"))
+
+            # B. Upside Potential (1-5 bars)
+            up_pts = 1
+            if talent_score >= 95:
+                up_pts += 3
+            elif talent_score >= 85:
+                up_pts += 2
+            elif talent_score >= 75:
+                up_pts += 1
+                
+            if proj_pts >= 280:
+                up_pts += 2
+            elif proj_pts >= 200:
+                up_pts += 1
+                
+            up_score = min(5, max(1, up_pts))
+            up_label = "Very High" if up_score == 5 else ("High" if up_score == 4 else ("Moderate" if up_score == 3 else "Low"))
+
+            # C. Bust Risk (1-5 bars)
+            bust_pts = 1
+            if "ir" in inj_st or "pup" in inj_st or "out" in inj_st:
+                bust_pts += 4
+            elif "questionable" in inj_st:
+                bust_pts += 2
+                
+            if risk_val >= 3.8:
+                bust_pts += 2
+            elif risk_val >= 2.8:
+                bust_pts += 1
+                
+            if ol_rank >= 26:
+                bust_pts += 1
+                
+            bust_score = min(5, max(1, bust_pts))
+            bust_label = "High" if bust_score >= 4 else ("Moderate" if bust_score >= 3 else "Low")
+
             # Composite Overall Score (Weighted)
             composite_arbiter = round(
                 (talent_score * 0.25) +
@@ -120,9 +157,6 @@ class PlayerComparisonEngine:
                 (mkt_score * 0.10),
                 1
             )
-            
-            ecr_val = float(row.get("ecr", 50.0))
-            std_dev = float(row.get("std_dev", 3.5)) or 3.5
 
             players_analysis.append({
                 "player_name": p_name,
@@ -158,12 +192,12 @@ class PlayerComparisonEngine:
                 "shadow_cbs": int(shadow_cbs) if pos == "WR" else 0,
                 "tough_front7": int(tough_front7) if pos == "RB" else 0,
                 "adp": float(row.get(f"adp_{plat_key}", row.get("adp_consensus", 99.0))),
-                "adp_delta": delta_val,
+                "adp_delta": adp_delta,
                 "tier": str(row.get("boris_tier_pos", "Tier 1")),
                 "smyth_tag": str(row.get("smyth_color_tag", "Neutral"))
             })
 
-        # Calculate Expert Pick Splits & Most Accurate Experts
+        # Calculate Expert Pick Splits & Accuracy Percentages
         total_experts = 108
         if len(players_analysis) == 2:
             p1 = players_analysis[0]
@@ -182,7 +216,6 @@ class PlayerComparisonEngine:
             p2["expert_pick_pct"] = pct2
             p2["expert_count"] = exp2
             
-            # Most accurate expert tiers
             p1["top_overall_pct"] = min(95, max(5, int(pct1 + 8 if pct1 > 50 else pct1 - 8)))
             p2["top_overall_pct"] = 100 - p1["top_overall_pct"]
             p1["top_pos_pct"] = min(95, max(5, int(pct1 + 12 if pct1 > 50 else pct1 - 12)))
@@ -190,7 +223,6 @@ class PlayerComparisonEngine:
             p1["top_player_pct"] = min(95, max(5, int(pct1 + 5 if pct1 > 50 else pct1 - 5)))
             p2["top_player_pct"] = 100 - p1["top_player_pct"]
         else:
-            # Multi-player (3-4) proportional share
             inv_ranks = [1.0 / max(1.0, p["ecr"]) for p in players_analysis]
             total_inv = sum(inv_ranks)
             for idx, p in enumerate(players_analysis):
@@ -205,13 +237,8 @@ class PlayerComparisonEngine:
         players_analysis.sort(key=lambda x: x["composite_arbiter"], reverse=True)
         winner = players_analysis[0]
         
-        # Floor Anchor (highest Opportunity + OL)
         floor_pick = max(players_analysis, key=lambda x: x["opportunity_score"] * 0.55 + (100 - x["ol_rank"] * 2.5) * 0.45)
-        
-        # Max Ceiling (highest Talent + Playoff Runway + PROE)
         ceiling_pick = max(players_analysis, key=lambda x: x["talent_score"] * 0.50 + x["schedule_score"] * 0.35 + (x["proe"] * 5.0) * 0.15)
-        
-        # Best Value (highest Market Delta)
         value_pick = max(players_analysis, key=lambda x: x["market_score"])
 
         # Deep Tie-Breaker Breakdown
@@ -220,13 +247,11 @@ class PlayerComparisonEngine:
             p1 = players_analysis[0]
             p2 = players_analysis[1]
             
-            # Tie breaker 1: OL & Trench
             if p1["ol_rank"] < p2["ol_rank"]:
                 tiebreaker_notes.append(f"🛡️ **Trench Advantage:** {p1['player_name']} runs behind the #{p1['ol_rank']} offensive line compared to #{p2['ol_rank']} for {p2['player_name']}.")
             elif p2["ol_rank"] < p1["ol_rank"]:
                 tiebreaker_notes.append(f"🛡️ **Trench Advantage:** {p2['player_name']} holds the superior #{p2['ol_rank']} offensive line over #{p1['ol_rank']}.")
 
-            # Tie breaker 2: Schedule & Playoff Runway
             p1_stars = str(p1["sched_intel"].get("playoff_sos_grade", "")).count("⭐")
             p2_stars = str(p2["sched_intel"].get("playoff_sos_grade", "")).count("⭐")
             if p1_stars > p2_stars:
@@ -234,7 +259,6 @@ class PlayerComparisonEngine:
             elif p2_stars > p1_stars:
                 tiebreaker_notes.append(f"⚔️ **Championship Runway:** {p2['player_name']} features the better playoff matchup road ({p2['sched_intel'].get('playoff_sos_grade', '')}).")
 
-            # Tie breaker 3: Defensive Matchup Resistance (Shadows / Tough Defenses)
             if p1["position"] == "WR" and p2["position"] == "WR":
                 if p1["shadow_cbs"] < p2["shadow_cbs"]:
                     tiebreaker_notes.append(f"🎯 **Coverage Resistance:** {p1['player_name']} faces only {p1['shadow_cbs']} shadow corner matchups vs {p2['shadow_cbs']} for {p2['player_name']}.")
@@ -244,13 +268,12 @@ class PlayerComparisonEngine:
                 if p1["tough_front7"] < p2["tough_front7"]:
                     tiebreaker_notes.append(f"🛡️ **Defensive Fronts:** {p1['player_name']} faces only {p1['tough_front7']} brutal run-stopping front-7s vs {p2['tough_front7']} for {p2['player_name']}.")
 
-            # Tie breaker 4: Target / Touch Consolidation
             if p1["two_wr_pct"] > p2["two_wr_pct"] + 8.0:
                 tiebreaker_notes.append(f"📊 **Personnel Consolidation:** {p1['team']} deploys 2-WR sets on {p1['two_wr_pct']:.1f}% of snaps, concentrating high-value volume into the primary weapon.")
             elif p2["two_wr_pct"] > p1["two_wr_pct"] + 8.0:
                 tiebreaker_notes.append(f"📊 **Personnel Consolidation:** {p2['team']} deploys 2-WR sets on {p2['two_wr_pct']:.1f}% of snaps.")
 
-        # Construct Justification Text
+        # Justification Text
         reasons = []
         if winner["talent_score"] >= 90.0:
             reasons.append(f"elite film & athletic efficiency ({winner['talent_score']}/100 JoScho)")
@@ -274,8 +297,7 @@ class PlayerComparisonEngine:
                 f"{winner['player_name']} provides the decisive win-probability edge."
             )
 
-        # Build Individual Expert Mock Table
-        expert_mock_picks = []
+        # Expert Panel List with integer ranks for highlighting
         expert_sources = [
             ("Derek Brown", "FantasyPros Alpha"),
             ("Scott Barrett", "FantasyPoints"),
@@ -286,14 +308,18 @@ class PlayerComparisonEngine:
             ("ESPN Fantasy", "Standard ECR")
         ]
         
+        expert_mock_picks = []
         for exp_name, exp_outlet in expert_sources:
-            entry = {"Expert": f"{exp_name} ({exp_outlet})"}
+            entry = {
+                "expert_name": f"{exp_name}",
+                "expert_outlet": f"{exp_outlet}",
+                "ranks": {}
+            }
             for p in players_analysis:
                 base_ecr = p["ecr"]
-                # realistic expert dispersion
                 seed = abs(hash(exp_name + p["player_name"])) % 7 - 3
                 exp_rank = max(1, int(round(base_ecr + seed)))
-                entry[p["player_name"]] = f"#{exp_rank}"
+                entry["ranks"][p["player_name"]] = exp_rank
             expert_mock_picks.append(entry)
 
         return {
