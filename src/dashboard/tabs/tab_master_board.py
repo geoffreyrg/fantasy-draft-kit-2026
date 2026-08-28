@@ -65,7 +65,12 @@ def render_tab_master_board(df: pd.DataFrame):
 
     view_mode = st.radio(
         "Select Board Display Format:",
-        ["⚡ Live Decision HUD & Tiebreaker Matrix", "📋 Full Scouting Deep-Dive Table", "📊 Boris Chen GMM Tier Staircase Charts"],
+        [
+            "⚡ Live Decision HUD & Tiebreaker Matrix", 
+            "📋 Full Scouting Deep-Dive Table", 
+            "📊 Boris Chen GMM Tier Staircase Charts",
+            "📋 FantasyPros Cheat Sheet & 1-Click Export"
+        ],
         horizontal=True
     )
 
@@ -90,13 +95,15 @@ def render_tab_master_board(df: pd.DataFrame):
         focus_filters = st.multiselect(
             "Focus Filters (Multi-Select)",
             [
-                "💥 Exodia Core",
+                "👑 Exodia Blueprint",
+                "🏆 League Winners",
+                "🚀 High Ceiling Spikes",
+                "🎯 Joel Smyth Green Targets",
+                "👑 Hansen Top 12 Targets",
                 "🔥 Breakout Catalysts",
                 "⭐ Top 10 Offense Assets",
-                "🎯 Joel Smyth Green Targets",
-                "👑 Guru 12 Targets",
                 "💰 Contract Year Assets",
-                "🚫 Red Fades & ⚠️ Avoids"
+                "🚫 Red Fades & ⚠️ Traps"
             ],
             default=[],
             key="mb_focus_multiselect"
@@ -120,20 +127,24 @@ def render_tab_master_board(df: pd.DataFrame):
     # Apply Multi-Select Focus Filters
     if focus_filters:
         masks = []
-        if "💥 Exodia Core" in focus_filters:
-            masks.append(board_df["is_exodia"] == 1)
+        if "👑 Exodia Blueprint" in focus_filters:
+            masks.append(board_df["archetype_badge"] == "👑 EXODIA")
+        if "🏆 League Winners" in focus_filters:
+            masks.append(board_df["archetype_badge"] == "🏆 LEAGUE WINNER")
+        if "🚀 High Ceiling Spikes" in focus_filters:
+            masks.append(board_df["archetype_badge"] == "🚀 HIGH CEILING")
+        if "🎯 Joel Smyth Green Targets" in focus_filters:
+            masks.append(board_df["smyth_color_tag"].str.contains("Target|Green", case=False, na=False))
+        if "👑 Hansen Top 12 Targets" in focus_filters:
+            masks.append(board_df["is_hansen_twelve"] == 1)
         if "🔥 Breakout Catalysts" in focus_filters:
             masks.append(board_df["has_breakout_catalyst"] == 1)
         if "⭐ Top 10 Offense Assets" in focus_filters:
             masks.append((board_df["is_top_offense_undervalued"] == 1) | (board_df["team"].isin(ui_comp.TOP_10_TEAMS)))
-        if "🎯 Joel Smyth Green Targets" in focus_filters:
-            masks.append(board_df["smyth_color_tag"].str.contains("Target", case=False, na=False))
-        if "👑 Guru 12 Targets" in focus_filters:
-            masks.append(board_df["master_designation"].str.contains("Twelve|Guru", case=False, na=False))
         if "💰 Contract Year Assets" in focus_filters:
             masks.append(board_df["is_contract_year"] == 1)
-        if "🚫 Red Fades & ⚠️ Avoids" in focus_filters:
-            masks.append(board_df.apply(_is_avoid_or_fade, axis=1))
+        if "🚫 Red Fades & ⚠️ Traps" in focus_filters:
+            masks.append((board_df["archetype_badge"] == "⚠️ TRAP RISK") | board_df.apply(_is_avoid_or_fade, axis=1))
 
         if masks:
             combined_mask = masks[0]
@@ -166,41 +177,59 @@ def render_tab_master_board(df: pd.DataFrame):
     # VIEW 1: LIVE HUD VIEW (HIGH-DENSITY TIEBREAKER MATRIX)
     # --------------------------------------------------------------------------
     if view_mode == "⚡ Live Decision HUD & Tiebreaker Matrix":
-        st.markdown("##### ⚡ Live Decision HUD & Tactical Tiebreaker Matrix (Sub-5s Scannability)")
+        st.markdown("##### ⚡ Live Decision HUD & 5-Pillar Tiebreaker Matrix (Sub-5s Scannability)")
+        st.caption("Includes calibrated **5-Pillar Tiebreaker Scores** (🛡️ Scheme/OL, ⚔️ SOS/Playoffs, 🎯 Expert, 🔬 Talent, 📈 Steam) for instantaneous draft room arbitration.")
+
+        # Interactive In-Tier Tiebreaker Expander
+        with st.expander("⚔️ Launch In-Tier Tiebreaker Arbiter (Compare players within the same tier)", expanded=False):
+            t_sel = st.selectbox("Select Tier to Arbitrate:", ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8"], index=1, key="mb_tier_arbiter_sel")
+            tier_candidates = df[df["composite_tier"] == t_sel].sort_values("tie_breaker_score", ascending=False).head(5)
+            if not tier_candidates.empty:
+                t_cols = st.columns(len(tier_candidates))
+                for idx, (_, r_p) in enumerate(tier_candidates.iterrows()):
+                    with t_cols[idx]:
+                        p_n = r_p["player_name"]
+                        p_t = r_p.get("team", "FA")
+                        p_pos = r_p.get("position", "RB")
+                        p_tie = float(r_p.get("tie_breaker_score", 50.0))
+                        p_sch = float(r_p.get("pillar_scheme_score", 50.0))
+                        p_sos = float(r_p.get("pillar_sos_score", 50.0))
+                        p_tal = float(r_p.get("pillar_talent_score", 50.0))
+                        p_stm = float(r_p.get("pillar_steam_score", 50.0))
+                        
+                        st.markdown(f"""
+                        <div style="background: #111827; border: 1px solid #374151; border-top: 3px solid #38BDF8; border-radius: 8px; padding: 12px; margin-bottom: 8px;">
+                            <div style="font-weight: 800; color: #FFFFFF; font-size: 0.95rem;">{p_n}</div>
+                            <div style="color: #94A3B8; font-size: 0.8rem;">{p_pos} – {p_t} &bull; Rank #{int(r_p.get('composite_rank', 99))}</div>
+                            <div style="margin: 8px 0 6px 0; background: #1F2937; padding: 6px; border-radius: 4px; text-align: center;">
+                                <span style="color: #38BDF8; font-size: 1.15rem; font-weight: 900;">{p_tie:.1f}</span>
+                                <span style="color: #94A3B8; font-size: 0.72rem; display: block;">Tiebreaker Index</span>
+                            </div>
+                            <div style="font-size: 0.76rem; color: #CBD5E1; line-height: 1.5;">
+                                🛡️ Scheme: <b>{p_sch:.1f}</b><br/>
+                                ⚔️ SOS: <b>{p_sos:.1f}</b><br/>
+                                🔬 Talent: <b>{p_tal:.1f}</b><br/>
+                                📈 Steam: <b>{p_stm:.1f}</b>
+                            </div>
+                        </div>
+                        """, unsafe_allow_html=True)
+
         hud_cols = [
-            # Group 1: Identity & Primary Role
-            "composite_rank", "player_name", "position", "team", "master_designation",
-            # Group 2: Consensus Tiers & ECR Grouping
-            "composite_tier", "boris_tier_pos", "ecr",
-            # Group 3: Model Projections & Quantitative Value
-            "adjusted_vorp", "adjusted_proj_pts",
-            # Group 4: Market Pricing & Draft Value Edge
-            "adp_yahoo", "adp_delta_yahoo",
-            # Group 5: Film, Scheme & Lineage
-            "smyth_color_tag", "duracell_ol_rank",
-            # Group 6: Live Actionable Context
+            # Group 1: Identity & Archetype
+            "composite_rank", "player_name", "position", "team", "archetype_badge",
+            # Group 2: Consensus Tiers & 5-Pillar Tiebreaker Scores
+            "composite_tier", "boris_tier_pos", "tie_breaker_score",
+            "pillar_scheme_score", "pillar_sos_score", "pillar_expert_score", "pillar_talent_score", "pillar_steam_score",
+            # Group 3: Model Projections & VORP
+            "adjusted_vorp", "consensus_proj_pts", "proj_floor", "proj_ceiling",
+            # Group 4: Dual-Phase SOS & Market Pricing
+            "reg_season_sos_grade", "playoff_sos_grade", "adp_yahoo", "adp_delta_yahoo",
+            # Group 5: Live Actionable Context
             "tactical_context"
         ]
         hud_df = board_df[[c for c in hud_cols if c in board_df.columns]].sort_values("composite_rank")
 
         column_config = ui_comp.STANDARD_COLUMN_CONFIG.copy()
-        column_config.update({
-            "composite_rank": st.column_config.NumberColumn("Rank", format="#%d", pinned=True),
-            "player_name": st.column_config.TextColumn("Player", pinned=True),
-            "position": st.column_config.TextColumn("Pos", pinned=True),
-            "team": st.column_config.TextColumn("Team", pinned=True),
-            "master_designation": st.column_config.TextColumn("Designation", width="medium"),
-            "composite_tier": st.column_config.TextColumn("Tier", width="small", help="Master Quantitative Composite Tier (T1-T8)"),
-            "boris_tier_pos": st.column_config.TextColumn("Boris Tier", width="small", help="Boris Chen Gaussian clustering positional tier"),
-            "ecr": st.column_config.NumberColumn("ECR", format="%.1f", help="Consensus Expert Consensus Ranking (ECR)"),
-            "adjusted_vorp": st.column_config.NumberColumn("🏆 VORP", format="%.1f", help="Value Over Replacement Player"),
-            "adjusted_proj_pts": st.column_config.NumberColumn("🚀 Calib Proj", format="%.1f", help="Calibrated multi-source projections"),
-            "adp_yahoo": st.column_config.NumberColumn("Yahoo ADP", format="%.1f", help="Live Yahoo Fantasy ADP"),
-            "adp_delta_yahoo": st.column_config.NumberColumn("Yahoo Edge", format="%+.1f", help="Model Rank vs Yahoo ADP (Positive = Value/Steal on Yahoo)"),
-            "smyth_color_tag": st.column_config.TextColumn("🎯 Smyth", width="small", help="Joel Smyth Big Board: 🎯 Target (+12), 🟡 Pass (-5), 🚫 Avoid (-15), ⚪ Neutral (0)"),
-            "duracell_ol_rank": st.column_config.NumberColumn("OL Rk", format="#%d", help="Consensus Offensive Line Rank (1 = Best, 32 = Worst)"),
-            "tactical_context": st.column_config.TextColumn("⚡ Key Tactical Tiebreaker Intel", width="large", help="Playoff W17 matchup, defense/shadow CB intel, playcaller, OL rank, 2-WR usage %, and goal-line roles"),
-        })
 
         st.dataframe(
             hud_df,
@@ -208,23 +237,24 @@ def render_tab_master_board(df: pd.DataFrame):
             hide_index=True,
             column_config=column_config
         )
-        st.caption(f"⚡ Live HUD Mode: Showing {len(hud_df)} players with comprehensive tiebreaker intelligence.")
+        st.caption(f"⚡ Live HUD Mode: Showing {len(hud_df)} players with comprehensive 5-pillar tiebreaker intelligence.")
 
     # --------------------------------------------------------------------------
     # VIEW 2: FULL SCOUTING DEEP-DIVE TABLE
     # --------------------------------------------------------------------------
     elif view_mode == "📋 Full Scouting Deep-Dive Table":
         display_cols = [
-            # Group 1: Identity & Primary Role
-            "composite_rank", "player_name", "position", "team", "expected_round_label", "master_designation",
-            # Group 2: Consensus Tiers & ECR Grouping
-            "composite_tier", "boris_tier_pos", "ecr",
-            # Group 3: Projections & Upside
-            "adjusted_vorp", "adjusted_proj_pts", "upside_pct_display",
-            # Group 4: Market Pricing & Arbitrage Edge
-            "adp_yahoo", "adp_delta_yahoo",
-            # Group 5: Film, Scheme, Contract & Medical
-            "smyth_color_tag", "duracell_ol_rank", "is_contract_year", "injury_status",
+            # Group 1: Identity & Archetype
+            "composite_rank", "player_name", "position", "team", "archetype_badge", "expected_round_label", "master_designation",
+            # Group 2: Tiers & 5-Pillar Tie-Breaker Scores
+            "composite_tier", "boris_tier_pos", "tie_breaker_score",
+            "pillar_scheme_score", "pillar_sos_score", "pillar_expert_score", "pillar_talent_score", "pillar_steam_score",
+            # Group 3: Projections & Range
+            "adjusted_vorp", "consensus_proj_pts", "proj_floor", "proj_ceiling", "proj_spread", "upside_pct_display",
+            # Group 4: Dual-Phase SOS & Market Arbitrage
+            "reg_season_sos_grade", "playoff_sos_grade", "adp_yahoo", "adp_delta_yahoo", "sleeper_trend_count",
+            # Group 5: Trenches & Medical
+            "duracell_ol_rank", "is_contract_year", "injury_status",
             # Group 6: Live Actionable Context
             "tactical_context"
         ]
@@ -266,3 +296,71 @@ def render_tab_master_board(df: pd.DataFrame):
             ui_comp.render_boris_chen_staircase(chart_base_df[chart_base_df["position"] == "QB"].sort_values("pos_ecr_num").head(30), "Quarterbacks (QB)", is_positional=True)
         with pos_tab5:
             ui_comp.render_boris_chen_staircase(chart_base_df[chart_base_df["position"] == "TE"].sort_values("pos_ecr_num").head(30), "Tight Ends (TE)", is_positional=True)
+
+    # --------------------------------------------------------------------------
+    # VIEW 4: FANTASYPROS CHEAT SHEET & 1-CLICK EXPORT
+    # --------------------------------------------------------------------------
+    elif view_mode == "📋 FantasyPros Cheat Sheet & 1-Click Export":
+        from src.dashboard.cheatsheet_export import generate_fantasypros_exports
+        
+        st.markdown("### 📋 FantasyPros Custom Cheat Sheet & Quick-Import Rankings")
+        st.markdown("""
+        Easily copy and paste your custom quantitative rankings directly into the **FantasyPros Draft Wizard / Cheatsheet Creator** or download an upload-ready CSV.
+        """)
+
+        f_c1, f_c2 = st.columns([2, 2])
+        with f_c1:
+            format_choice = st.selectbox(
+                "Select FantasyPros Import Format:",
+                [
+                    "1. Numbered List (1. Player Name) — Recommended for Quick Paste",
+                    "2. Plain Names Only (Player Name per line)",
+                    "3. Standard FantasyPros CSV (Rank,Player,Team,Position,Tier,Notes)",
+                    "4. Positional Cheat Sheet (RB1-50, WR1-50, TE1-30, QB1-30 Tiers)"
+                ]
+            )
+        with f_c2:
+            pool_depth = st.slider("Player Pool Depth:", min_value=50, max_value=250, value=200, step=25)
+
+        # Generate exports
+        exports = generate_fantasypros_exports(board_df, top_n=pool_depth)
+
+        if "1. Numbered" in format_choice:
+            content = exports["numbered"]
+            file_name = "fantasypros_numbered_rankings_2026.txt"
+            mime_type = "text/plain"
+        elif "2. Plain" in format_choice:
+            content = exports["raw"]
+            file_name = "fantasypros_raw_names_2026.txt"
+            mime_type = "text/plain"
+        elif "3. Standard" in format_choice:
+            content = exports["csv"]
+            file_name = "fantasypros_custom_cheatsheet_2026.csv"
+            mime_type = "text/csv"
+        else:
+            content = exports["positional"]
+            file_name = "fantasypros_positional_cheatsheet_2026.txt"
+            mime_type = "text/plain"
+
+        # Download button & Copy instructions
+        st.markdown(f"""
+        <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid #10B981; padding: 12px 16px; border-radius: 8px; margin: 12px 0;">
+            <div style="font-weight: 800; color: #10B981; font-size: 0.95rem;">💡 How to Use in FantasyPros:</div>
+            <div style="color: #CBD5E1; font-size: 0.85rem; margin-top: 4px; line-height: 1.5;">
+                1. Click the <b>Copy</b> button in the top-right of the code box below (or download the file).<br/>
+                2. In FantasyPros Draft Wizard / Cheat Sheet Creator, click <b>Edit Rankings / Import</b>.<br/>
+                3. Paste the list directly and hit <b>Save / Apply</b>.
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.download_button(
+            label=f"📥 Download {file_name}",
+            data=content,
+            file_name=file_name,
+            mime=mime_type,
+            use_container_width=True
+        )
+
+        st.code(content, language="text" if "csv" not in file_name else "csv")
+

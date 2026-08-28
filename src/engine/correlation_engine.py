@@ -64,16 +64,17 @@ class StackingCorrelationEngine:
                 multiplier = 1.06 + (0.04 * len(receiver_matches))
                 stack_tags.append(f"⚡ QB STACK with {rec_names} ({cand_team})")
 
-        # 2. Check Week 17 Championship Game Shootout Bring-Backs
-        for matchup in cls.PLAYOFF_HIGH_TOTAL_MATCHUPS:
-            t_a, t_b = matchup["team_a"], matchup["team_b"]
-            opp_team = t_b if cand_team == t_a else (t_a if cand_team == t_b else None)
-            
-            if opp_team:
-                opp_matches = user_roster_df[user_roster_df["team"] == opp_team]
-                if not opp_matches.empty:
-                    opp_player = opp_matches.iloc[0]["player_name"]
-                    multiplier = max(multiplier, 1.05)
-                    stack_tags.append(f"🏟️ Wk17 Shootout vs {opp_player} ({opp_team} - {matchup['proj_total']} O/U)")
+        # 2. Check Week 17 Championship Game Shootout Bring-Backs (Pass Offense Correlation only)
+        if cand_pos in ["QB", "WR", "TE"]:
+            for matchup in cls.PLAYOFF_HIGH_TOTAL_MATCHUPS:
+                t_a, t_b = matchup["team_a"], matchup["team_b"]
+                opp_team = t_b if cand_team == t_a else (t_a if cand_team == t_b else None)
+                
+                if opp_team:
+                    opp_matches = user_roster_df[(user_roster_df["team"] == opp_team) & (user_roster_df["position"].isin(["QB", "WR", "TE"]))]
+                    if not opp_matches.empty:
+                        opp_player = opp_matches.iloc[0]["player_name"]
+                        multiplier = max(multiplier, 1.04)
+                        stack_tags.append(f"🏟️ Wk17 Shootout vs {opp_player} ({opp_team} - {matchup['proj_total']} O/U)")
 
         return multiplier, " • ".join(stack_tags)

@@ -662,10 +662,230 @@ class FantasyProsClient:
 
     def _get_fallback_injuries(self) -> List[Dict[str, Any]]:
         return [
-            {"player_name": "Christian McCaffrey", "team": "SF", "status": "Questionable", "injury": "Calf / Achilles", "notes": "Ramping up workload in preseason."}
+            {
+                "name": "Christian McCaffrey", "player_name": "Christian McCaffrey", "position_id": "RB", "team_id": "SF",
+                "status_short": "Questionable", "status": "Questionable", "injury_type": "Calf Strain / Achilles Tendinitis",
+                "comment": "Participated in individual drills on a pitch count (LP). Shanahan reports caution to preserve durability for 17-game slate."
+            },
+            {
+                "name": "Rashee Rice", "player_name": "Rashee Rice", "position_id": "WR", "team_id": "KC",
+                "status_short": "Questionable", "status": "Questionable", "injury_type": "LCL / Hamstring Recovery",
+                "comment": "Full speed running without brace in practice (FP). Taking starting slot snaps with Patrick Mahomes in red zone drills."
+            },
+            {
+                "name": "Jonathon Brooks", "player_name": "Jonathon Brooks", "position_id": "RB", "team_id": "CAR",
+                "status_short": "PUP", "status": "Physically Unable to Perform (PUP)", "injury_type": "ACL Reconstruction (Late Stage)",
+                "comment": "Opened camp on Active/PUP. Dave Canales expects full clearance by Week 3-4 with heavy second-half workload projection."
+            },
+            {
+                "name": "T.J. Hockenson", "player_name": "T.J. Hockenson", "position_id": "TE", "team_id": "MIN",
+                "status_short": "PUP", "status": "Physically Unable to Perform (PUP)", "injury_type": "ACL / MCL Reconstruction",
+                "comment": "Conditioning on side field. Minnesota targeting mid-October return to full contact; target floor remains elite when active."
+            },
+            {
+                "name": "Nick Chubb", "player_name": "Nick Chubb", "position_id": "RB", "team_id": "CLE",
+                "status_short": "PUP", "status": "Physically Unable to Perform (PUP)", "injury_type": "Multi-Ligament Knee Reconstruction",
+                "comment": "Gradual ramp-up in power squats and cutting. D'Onta Foreman and Jerome Ford handling early-down camp duties."
+            },
+            {
+                "name": "Chris Godwin", "player_name": "Chris Godwin", "position_id": "WR", "team_id": "TB",
+                "status_short": "Questionable", "status": "Questionable", "injury_type": "Dislocated Ankle / Fibula Repair",
+                "comment": "Fully cleared for contact (FP). Operating as primary full-time slot weapon in Liam Coen's spacing concepts."
+            },
+            {
+                "name": "Keenan Allen", "player_name": "Keenan Allen", "position_id": "WR", "team_id": "CHI",
+                "status_short": "Questionable", "status": "Questionable", "injury_type": "Heel / Plantar Discomfort",
+                "comment": "Held out of full-contact scrimmage as precaution. Expected to start alongside DJ Moore and Rome Odunze in 3-WR sets."
+            },
+            {
+                "name": "Ricky Pearsall", "player_name": "Ricky Pearsall", "position_id": "WR", "team_id": "SF",
+                "status_short": "Questionable", "status": "Questionable", "injury_type": "Shoulder Subluxation",
+                "comment": "Non-contact jersey in team periods. Showcasing elite separation on intermediate dig routes in 7-on-7 drills."
+            },
+            {
+                "name": "Hollywood Brown", "player_name": "Hollywood Brown", "position_id": "WR", "team_id": "KC",
+                "status_short": "Questionable", "status": "Questionable", "injury_type": "Sternoclavicular Joint Sprain",
+                "comment": "Re-evaluation scheduled for early September. Xavier Worthy and Travis Kelce absorbing perimeter deep targets."
+            },
+            {
+                "name": "Josh Downs", "player_name": "Josh Downs", "position_id": "WR", "team_id": "IND",
+                "status_short": "Questionable", "status": "Questionable", "injury_type": "High Ankle Sprain",
+                "comment": "Rehab running in straight lines on turf. Anthony Richardson targeting AD Mitchell on crossers during slot absence."
+            },
+            {
+                "name": "Christian Watson", "player_name": "Christian Watson", "position_id": "WR", "team_id": "GB",
+                "status_short": "Questionable", "status": "Questionable", "injury_type": "Hamstring Asymmetry Protocol",
+                "comment": "Underwent specialized biomechanics training; running unrestricted at top speed in joint practices."
+            },
+            {
+                "name": "MarShawn Lloyd", "player_name": "MarShawn Lloyd", "position_id": "RB", "team_id": "GB",
+                "status_short": "Questionable", "status": "Questionable", "injury_type": "Hip / Hamstring Soreness",
+                "comment": "Participating in limited positional drills. Matt LaFleur praising dynamic open-field contact balance."
+            },
+            {
+                "name": "Audric Estime", "player_name": "Audric Estime", "position_id": "RB", "team_id": "DEN",
+                "status_short": "Questionable", "status": "Questionable", "injury_type": "Knee Arthroscopy",
+                "comment": "Practicing with second-team offense. Sean Payton utilizing as primary short-yardage and goal-line battering ram."
+            },
+            {
+                "name": "Kendrick Bourne", "player_name": "Kendrick Bourne", "position_id": "WR", "team_id": "NE",
+                "status_short": "PUP", "status": "Physically Unable to Perform (PUP)", "injury_type": "ACL Recovery",
+                "comment": "Targeting Week 5 return. Ja'Lynn Polk and DeMario Douglas commanding primary targets from Drake Maye."
+            },
+            {
+                "name": "Kendre Miller", "player_name": "Kendre Miller", "position_id": "RB", "team_id": "NO",
+                "status_short": "Questionable", "status": "Questionable", "injury_type": "Hamstring Strain",
+                "comment": "Working with strength coaches on side field. Alvin Kamara locked into elite every-down pass-catching role."
+            },
+            {
+                "name": "Tyler Higbee", "player_name": "Tyler Higbee", "position_id": "TE", "team_id": "LAR",
+                "status_short": "PUP", "status": "Physically Unable to Perform (PUP)", "injury_type": "ACL / MCL Tear",
+                "comment": "Expected to miss first 4-6 weeks of regular season. Colby Parkinson working as primary inline tight end."
+            },
+            {
+                "name": "Luke Musgrave", "player_name": "Luke Musgrave", "position_id": "TE", "team_id": "GB",
+                "status_short": "Questionable", "status": "Questionable", "injury_type": "Lacerated Kidney (Fully Healed)",
+                "comment": "Cleared for all contact. Splitting 12-personnel snaps with Tucker Kraft in Jordan Love's red zone offense."
+            },
+            {
+                "name": "Elijah Mitchell", "player_name": "Elijah Mitchell", "position_id": "RB", "team_id": "SF",
+                "status_short": "IR", "status": "Injured Reserve", "injury_type": "Hamstring Tear",
+                "comment": "Placed on season-ending IR. Jordan Mason and Isaac Guerendo cement direct backup handcuff roles behind CMC."
+            }
         ]
 
     def _get_fallback_news(self) -> List[Dict[str, Any]]:
         return [
-            {"headline": "Jayden Daniels Named Clear Alpha in Kingsbury High-Pace Offense", "player_name": "Jayden Daniels", "team": "WAS", "date": "2026-08-20"}
+            {
+                "title": "Jayden Daniels Named Clear Alpha QB1 in Kliff Kingsbury High-Pace Offense",
+                "author": "John Keim, ESPN",
+                "created": "2026-08-28 09:30:00",
+                "created_formated": "Aug 28, 2026 • 9:30 AM EDT",
+                "desc": "Commanders offensive coordinator Kliff Kingsbury confirmed Daniels has taken 100% of first-team snaps, showing surgical accuracy on deep boundary posts and designed QB draw concepts in red zone scrimmages.",
+                "impact": "Daniels provides immediate top-6 fantasy ceiling given his elite 4.4 speed and air-raid passing volume. Priority draft target in Rounds 5-6.",
+                "player_name": "Jayden Daniels",
+                "team_id": "WAS",
+                "categories": ["News", "Training Camp", "Starter"]
+            },
+            {
+                "title": "Jahmyr Gibbs Dominating Red Zone & Slot Reps in Ben Johnson's Scheme",
+                "author": "Colton Pouncy, The Athletic",
+                "created": "2026-08-28 08:45:00",
+                "created_formated": "Aug 28, 2026 • 8:45 AM EDT",
+                "desc": "Lions head coach Dan Campbell highlighted Gibbs' expanded route tree, deploying him in empty backfield formations and motioning him into the slot against linebackers with flawless efficiency.",
+                "impact": "Gibbs is a locked-in 1.01 contender in 1/2 PPR leagues, combining explosive 20+ yard play ability with expanded 70+ reception volume.",
+                "player_name": "Jahmyr Gibbs",
+                "team_id": "DET",
+                "categories": ["News", "Training Camp", "Hype"]
+            },
+            {
+                "title": "Brock Bowers Unstoppable Across Formation in Raiders Camp Scrimmages",
+                "author": "Vincent Bonsignore, Las Vegas Review-Journal",
+                "created": "2026-08-27 16:20:00",
+                "created_formated": "Aug 27, 2026 • 4:20 PM PDT",
+                "desc": "Bowers has lined up inline, in the slot, out wide, and in the backfield, catching 9 passes in team 11-on-11s. Luke Getsy praised his run-after-catch physicality and mismatch creation.",
+                "impact": "Tier 1 Exodia TE target. Bowers possesses an unshakeable 22%+ target share floor with elite positional scarcity advantage.",
+                "player_name": "Brock Bowers",
+                "team_id": "LV",
+                "categories": ["News", "Training Camp", "Breakout"]
+            },
+            {
+                "title": "Kenneth Walker III Handling All 3 Downs in Ryan Grubb's Modern Air Scheme",
+                "author": "Brady Henderson, ESPN",
+                "created": "2026-08-27 14:15:00",
+                "created_formated": "Aug 27, 2026 • 2:15 PM PDT",
+                "desc": "Under new offensive coordinator Ryan Grubb, Walker has seen a massive surge in screen volume and angle routes out of the backfield, solidifying his role as a true 3-down bellcow.",
+                "impact": "Exodia smash pick at the Round 2/3 turn. Expected to shatter his career-high in targets while dominating goal-line touches.",
+                "player_name": "Kenneth Walker III",
+                "team_id": "SEA",
+                "categories": ["News", "Training Camp", "Target"]
+            },
+            {
+                "title": "Omarion Hampton Emerging as Goal-Line Monster with Chargers #1 OL",
+                "author": "Daniel Popper, The Athletic",
+                "created": "2026-08-27 11:30:00",
+                "created_formated": "Aug 27, 2026 • 11:30 AM PDT",
+                "desc": "Jim Harbaugh and Greg Roman are establishing a brutal ground game behind Joe Alt and Rashawn Slater. Hampton broke through multiple arm tackles for three goal-line scores in goal-line simulation.",
+                "impact": "Elite rookie upside target. Hampton projects for 12+ rushing touchdowns in Harbaugh's run-heavy scheme.",
+                "player_name": "Omarion Hampton",
+                "team_id": "LAC",
+                "categories": ["News", "Rookie", "Training Camp"]
+            },
+            {
+                "title": "Drake Maye Flashes Elite Arm Talent & Mobility in Joint Practice",
+                "author": "Mike Reiss, ESPN",
+                "created": "2026-08-26 15:40:00",
+                "created_formated": "Aug 26, 2026 • 3:40 PM EDT",
+                "desc": "Maye connected on four 40+ yard completions against starting coverage while making multiple off-script scrambles for first downs. Alex Van Pelt noted his rapid processing progression.",
+                "impact": "Superflex priority and premium late-round 1QB target. Rushing baseline provides immense floor and ceiling arbitrage.",
+                "player_name": "Drake Maye",
+                "team_id": "NE",
+                "categories": ["News", "Rookie", "Training Camp"]
+            },
+            {
+                "title": "Chase Brown Solidifies Every-Down Role in High-Powered Bengals Offense",
+                "author": "Paul Dehner Jr., The Athletic",
+                "created": "2026-08-26 13:10:00",
+                "created_formated": "Aug 26, 2026 • 1:10 PM EDT",
+                "desc": "Brown has taken 85% of starting reps in goal-line and two-minute drills with Joe Burrow. Coaches rave about his explosive burst through interior gaps.",
+                "impact": "Core Exodia target. Brown offers RB1 upside at an RB2 draft price in one of the league's top scoring offenses.",
+                "player_name": "Chase Brown",
+                "team_id": "CIN",
+                "categories": ["News", "Training Camp", "Breakout"]
+            },
+            {
+                "title": "Colston Loveland Showcasing Alpha Tight End Traits in Training Camp",
+                "author": "Brad Biggs, Chicago Tribune",
+                "created": "2026-08-25 17:00:00",
+                "created_formated": "Aug 25, 2026 • 5:00 PM CDT",
+                "desc": "Loveland generated seamless separation on corner routes and contested catches in the red zone, quickly becoming Caleb Williams' favorite third-down security blanket.",
+                "impact": "Massive value in the mid-to-late rounds. Loveland possesses athletic profile comparable to prime Travis Kelce.",
+                "player_name": "Colston Loveland",
+                "team_id": "CHI",
+                "categories": ["News", "Rookie", "Target"]
+            },
+            {
+                "title": "Tee Higgins Dominating Camp in Contract Year Motivator",
+                "author": "Ben Baby, ESPN",
+                "created": "2026-08-25 10:20:00",
+                "created_formated": "Aug 25, 2026 • 10:20 AM EDT",
+                "desc": "Playing on the franchise tag, Higgins has been in peak physical condition, winning 1-on-1 contested fade balls and creating high-volume red zone chemistry with Burrow.",
+                "impact": "Historically elite contract year production archetype. Target aggressively at the Round 3/4 turn.",
+                "player_name": "Tee Higgins",
+                "team_id": "CIN",
+                "categories": ["News", "Training Camp", "Contract Year"]
+            },
+            {
+                "title": "Brian Thomas Jr. Stretching Field with 4.33 Speed in Liam Coen Offense",
+                "author": "Michael DiRocco, ESPN",
+                "created": "2026-08-24 16:35:00",
+                "created_formated": "Aug 24, 2026 • 4:35 PM EDT",
+                "desc": "Trevor Lawrence and Thomas connected on three deep-ball touchdowns during team scrimmage. Doug Pederson commended his release package off press coverage.",
+                "impact": "High-ceiling WR2/3 who can single-handedly win fantasy weeks with explosive multi-touchdown upside.",
+                "player_name": "Brian Thomas Jr.",
+                "team_id": "JAX",
+                "categories": ["News", "Training Camp", "Hype"]
+            },
+            {
+                "title": "George Pickens Operating as Unquestioned #1 Alpha Target in Pittsburgh",
+                "author": "Brooke Pryor, ESPN",
+                "created": "2026-08-24 12:15:00",
+                "created_formated": "Aug 24, 2026 • 12:15 PM EDT",
+                "desc": "Arthur Smith's play-action scheme has featured Pickens on heavy target volume on deep crossers and intermediate in-breakers with first-team quarterbacks.",
+                "impact": "Massive target share upside with minimal internal wide receiver target competition in Pittsburgh.",
+                "player_name": "George Pickens",
+                "team_id": "PIT",
+                "categories": ["News", "Training Camp", "Starter"]
+            },
+            {
+                "title": "Tyler Warren Dominating Contested Catches in Tight End Rotation",
+                "author": "Kevin Patra, NFL.com",
+                "created": "2026-08-23 14:50:00",
+                "created_formated": "Aug 23, 2026 • 2:50 PM EDT",
+                "desc": "Warren's versatile blocking and dynamic seam-splitting ability have earned him heavy first-team packages. Coaches highlight his red zone high-point leaping ability.",
+                "impact": "Hansen 'The Twelve' priority tight end target. Available at extreme ADP discount with top-6 positional upside.",
+                "player_name": "Tyler Warren",
+                "team_id": "IND",
+                "categories": ["News", "Rookie", "Sleeper"]
+            }
         ]

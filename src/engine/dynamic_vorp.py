@@ -194,7 +194,8 @@ class DynamicVORPEngine:
                 next_tier_best = None
                 vorp_drop = 0.0
 
-            is_cliff = (n_remaining <= 2 and vorp_drop >= 8.0) or (vorp_drop >= 12.0)
+            # True cliff condition: very few players remain in top tier AND there is a significant VORP drop
+            is_cliff = (n_remaining <= 2 and vorp_drop >= 8.0) or (n_remaining <= max(1, picks_away // 4) and n_remaining <= 3 and vorp_drop >= 10.0)
             
             cliffs[pos] = {
                 "top_player": top_player["player_name"],
@@ -206,7 +207,7 @@ class DynamicVORPEngine:
                 "next_tier_vorp": round(float(next_tier_best[vorp_col]), 1) if next_tier_best is not None else 0.0,
                 "vorp_drop": vorp_drop,
                 "is_cliff": is_cliff,
-                "cliff_severity": "CRITICAL" if vorp_drop >= 14.0 else ("HIGH" if vorp_drop >= 8.0 else "NORMAL")
+                "cliff_severity": "CRITICAL" if (is_cliff and vorp_drop >= 14.0) else ("HIGH" if is_cliff else "NORMAL")
             }
             
         return cliffs

@@ -13,6 +13,7 @@ import numpy as np
 
 from config.settings import settings
 from src.ingestion.fantasypros_client import FantasyProsClient
+from src.ingestion.sleeper_client import SleeperClient
 from src.ingestion.nflverse_client import NFLVerseClient
 from src.ingestion.pdf_guide_parser import PDFGuideParser
 from src.ingestion.duracell_parser import DuracellParser
@@ -25,6 +26,7 @@ from src.analytics.normalizer import DataNormalizer
 from src.analytics.vorp import VORPEngine
 from src.analytics.adp_arbitrage import ADPArbitrageEngine
 from src.analytics.composite_model import CompositeModelEngine
+from src.dashboard.export_pipeline import ExportPipeline
 
 logger = logging.getLogger(__name__)
 
@@ -77,6 +79,7 @@ class AnalyticsPipeline:
         self.duracell_parser = DuracellParser()
         self.footballguys_parser = FootballguysParser()
         self.cheatsheet_parser = CheatSheetParser()
+        self.sleeper_client = SleeperClient()
         self.reddit_tracker = RedditSteamTracker()
         self.joscho_parser = JoSchoParser()
         self.fp_projections_parser = FantasyPointsProjectionsParser()
@@ -118,6 +121,28 @@ class AnalyticsPipeline:
         team_env_df = self.nflverse_client.get_team_environment_metrics()
         steam_df = self.reddit_tracker.analyze_sentiment_steam()
 
+        # Sleeper Live 24-Hour Trending Activity
+        try:
+            slp_adds = self.sleeper_client.get_trending_players(trend_type="add", limit=60)
+            slp_drops = self.sleeper_client.get_trending_players(trend_type="drop", limit=30)
+            sleeper_trend_data = []
+            for itm in (slp_adds or []):
+                sleeper_trend_data.append({
+                    "player_name": itm.get("player_name"),
+                    "sleeper_trend_count": itm.get("count", 0),
+                    "sleeper_trend_tag": "🔥 Trending Add"
+                })
+            for itm in (slp_drops or []):
+                sleeper_trend_data.append({
+                    "player_name": itm.get("player_name"),
+                    "sleeper_trend_count": -itm.get("count", 0),
+                    "sleeper_trend_tag": "❄️ Trending Drop"
+                })
+            sleeper_trend_df = pd.DataFrame(sleeper_trend_data)
+        except Exception as se:
+            logger.warning(f"Sleeper trending ingestion error: {se}")
+            sleeper_trend_df = pd.DataFrame()
+
         # JoScho Analytics (Talent Scores, Rookie Board & Hit %, Independent Hurdle ML Projections, Live Yahoo ADP)
         joscho_talent_df = self.joscho_parser.load_talent_scores()
         joscho_rookie_df = self.joscho_parser.load_rookie_board()
@@ -153,6 +178,10 @@ class AnalyticsPipeline:
         cs_df = self.normalizer.enrich_dataframe(cs_df) if not cs_df.empty else pd.DataFrame()
         if not cs_df.empty:
             cs_df = cs_df.drop_duplicates(subset=["clean_name"], keep="first").reset_index(drop=True)
+
+        sleeper_trend_df = self.normalizer.enrich_dataframe(sleeper_trend_df) if not sleeper_trend_df.empty else pd.DataFrame()
+        if not sleeper_trend_df.empty:
+            sleeper_trend_df = sleeper_trend_df.drop_duplicates(subset=["clean_name"], keep="first").reset_index(drop=True)
 
         steam_df = self.normalizer.enrich_dataframe(steam_df) if not steam_df.empty else pd.DataFrame()
         if not steam_df.empty:
@@ -335,6 +364,20 @@ class AnalyticsPipeline:
                 master[c_name] = def_val
             else:
                 master[c_name] = master[c_name].fillna(def_val)
+
+        # Merge Sleeper Live Trending Activity
+        if not sleeper_trend_df.empty:
+            slp_cols = ["clean_name", "sleeper_trend_count", "sleeper_trend_tag"]
+            avail_slp = [c for c in slp_cols if c in sleeper_trend_df.columns]
+            master = pd.merge(master, sleeper_trend_df[avail_slp], on="clean_name", how="left")
+        if "sleeper_trend_count" not in master.columns:
+            master["sleeper_trend_count"] = 0.0
+        else:
+            master["sleeper_trend_count"] = master["sleeper_trend_count"].fillna(0.0)
+        if "sleeper_trend_tag" not in master.columns:
+            master["sleeper_trend_tag"] = "—"
+        else:
+            master["sleeper_trend_tag"] = master["sleeper_trend_tag"].fillna("—")
 
         # Merge Reddit steam and sentiment
         if not steam_df.empty:
@@ -572,5 +615,15 @@ class AnalyticsPipeline:
         except Exception as pe:
             logger.info(f"Parquet optional write: {pe}")
 
+        try:
+            ExportPipeline().export(master)
+        except Exception as ee:
+            logger.warning(f"Export pipeline error: {ee}")
         logger.info(f"Pipeline executed successfully! Processed {len(master)} players.")
         return master
+
+
+if __name__ == "__main__":
+    pipeline = AnalyticsPipeline()
+    pipeline.run()
+

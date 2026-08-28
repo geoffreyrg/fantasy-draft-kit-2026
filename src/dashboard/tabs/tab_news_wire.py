@@ -1,7 +1,10 @@
 """
-Tab 6: 📰 2026 Training Camp, Injuries & Hype Radar
-Real-time breaking training camp news, beat reporter updates, 32-team injury diagnostic matrix,
-and live Reddit r/fantasyfootball sentiment steam radar.
+Tab 6: 📰 Real-Time Wire, Sleeper Buzz & Medical Radar
+Real-time intelligence from all 32 NFL training camps:
+- ⚡ Live Training Camp & Beat Reporter Wire with Fantasy Impact Takeaways
+- 📈 Sleeper 24-Hour Real-Time Trending Radar (Add/Drop Transaction Velocity)
+- 🏥 32-Team Injury Diagnostic Matrix & Practice Participation (IR/PUP/Q/FP)
+- 🔥 Reddit Sentiment Hype Trains & Steam Radar
 """
 
 import streamlit as st
@@ -9,25 +12,28 @@ import pandas as pd
 from typing import Dict, Any, List
 
 from src.ingestion.fantasypros_client import FantasyProsClient
+from src.ingestion.sleeper_client import SleeperClient
 from src.utils.player_media import PlayerMediaResolver
 from src.analytics.normalizer import DataNormalizer
 from src.ingestion.reddit_steam import RedditSteamTracker
 
 
 def render_tab_news_wire(df: pd.DataFrame):
-    st.subheader("📰 2026 Training Camp, Injuries & Hype Radar")
+    st.subheader("📰 Real-Time Wire, Sleeper Buzz & Medical Radar")
     st.markdown("""
-    Real-time intelligence from all 32 NFL training camps: **Verified FantasyPros Breaking News**, **Beat Reporter Intel & Fantasy Impact Takeaways**, 
-    **32-Team Medical Diagnostic Matrix (IR/PUP/Q/FP)**, and **Live Reddit Sentiment Hype Radar**.
+    Real-time intelligence from all 32 NFL training camps: **Verified Beat Reporter Wire & Fantasy Impact**, 
+    **Sleeper 24-Hour Trending Radar (Adds/Drops)**, **32-Team Medical Diagnostic Matrix (IR/PUP/Q/FP)**, and **Live Reddit Sentiment Hype Radar**.
     """)
 
-    sub1, sub2, sub3 = st.tabs([
+    sub1, sub2, sub3, sub4 = st.tabs([
         "⚡ Live Training Camp & Beat Reporter Wire",
+        "📈 Sleeper 24-Hour Trending Radar",
         "🏥 32-Team Injury Diagnostic Matrix & Practice Logs",
         "🔥 Reddit Hype Trains & Steam Radar",
     ])
 
     fp_client = FantasyProsClient()
+    sleeper_client = SleeperClient()
 
     # Build Top 200 Skill Position Player dictionary for high-precision name resolution
     top200_df = df[df.get("composite_rank", 999) <= 200].copy()
@@ -38,11 +44,11 @@ def render_tab_news_wire(df: pd.DataFrame):
     top200_name_set = set(top200_df["player_name"].dropna().unique().tolist())
 
     # ==========================================================================
-    # SUBTAB 1: LIVE BREAKING NEWS WIRE
+    # SUBTAB 1: LIVE BREAKING NEWS WIRE & BEAT REPORTER INTEL
     # ==========================================================================
     with sub1:
         st.markdown("### ⚡ Live Training Camp News & Fantasy Impact Takeaways")
-        st.caption("Live verified news feed direct from FantasyPros API with beat reporter attribution, high-res headshots, and actionable fantasy analysis.")
+        st.caption("Live verified news feed direct from beat reporters with high-res headshots, practice notes, and actionable fantasy analysis.")
 
         col_f1, col_f2, col_f3, col_f4 = st.columns([2, 1, 1, 1])
         with col_f1:
@@ -50,25 +56,25 @@ def render_tab_news_wire(df: pd.DataFrame):
         with col_f2:
             team_filter = st.selectbox("Filter by Team:", ["All Teams"] + sorted(df["team"].dropna().unique().tolist()), key="news_wire_team_filter")
         with col_f3:
-            cat_filter = st.selectbox("Category:", ["All Categories", "Injury", "News", "Commentary", "Transactions"], key="news_wire_cat_filter")
+            cat_filter = st.selectbox("Category:", ["All Categories", "Training Camp", "Starter", "Target", "Breakout", "Rookie", "Contract Year", "Hype", "Sleeper"], key="news_wire_cat_filter")
         with col_f4:
-            top200_only = st.checkbox("⭐ Top 200 Fantasy Relevant Only", value=True, key="news_top200_only")
+            top200_only = st.checkbox("⭐ Top 200 Fantasy Relevant Only", value=False, key="news_top200_only")
 
         news_items = fp_client.get_live_news()
 
         # Process and match news items against real player registry
         processed_news = []
         for n in news_items:
-            title = str(n.get("title", ""))
+            title = str(n.get("title", n.get("headline", "")))
             desc = str(n.get("desc", ""))
             impact = str(n.get("impact", ""))
             raw_p = str(n.get("player_name", "")).strip()
-            cats = [str(c).lower() for c in n.get("categories", [])]
+            cats = [str(c).lower() for c in n.get("categories", ["News", "Training Camp"])]
             
             # Match search filter
             if search_query:
                 q = search_query.lower()
-                if q not in title.lower() and q not in desc.lower() and q not in impact.lower() and q not in str(n.get("team_id", "")).lower():
+                if q not in title.lower() and q not in desc.lower() and q not in impact.lower() and q not in str(n.get("team_id", "")).lower() and q not in raw_p.lower():
                     continue
 
             # Match category filter
@@ -82,7 +88,6 @@ def render_tab_news_wire(df: pd.DataFrame):
                 matched_player = next(p for p in all_player_names if p.lower() == raw_p.lower())
             else:
                 for p in all_player_names:
-                    # Match if full player name is in title or desc
                     if p.lower() in title.lower():
                         matched_player = p
                         break
@@ -116,11 +121,10 @@ def render_tab_news_wire(df: pd.DataFrame):
             if team_filter != "All Teams" and team_code != team_filter:
                 continue
 
-            display_name = matched_player or (title.split("(")[0].strip() if "(" in title else title.split(" ")[0])
+            display_name = matched_player or raw_p or (title.split("(")[0].strip() if "(" in title else title.split(" ")[0])
             headshot_url = PlayerMediaResolver.get_headshot_url(display_name)
             team_logo_url = PlayerMediaResolver.get_team_logo_url(team_code)
 
-            # If headshot URL is default, fallback directly to team logo
             if "default.png" in headshot_url:
                 headshot_url = team_logo_url
 
@@ -169,11 +173,81 @@ def render_tab_news_wire(df: pd.DataFrame):
             """, unsafe_allow_html=True)
 
     # ==========================================================================
-    # SUBTAB 2: 32-TEAM INJURY DIAGNOSTIC MATRIX
+    # SUBTAB 2: SLEEPER 24-HOUR TRENDING RADAR (TRANSACTION VELOCITY)
     # ==========================================================================
     with sub2:
+        st.markdown("### 📈 Sleeper Real-Time Trending Radar")
+        st.markdown("Real-time add/drop transaction velocity across millions of Sleeper fantasy leagues. Detects preseason buzz, depth chart promotions, and injury fallout in real time.")
+
+        ctrl_c1, ctrl_c2 = st.columns([2, 2])
+        with ctrl_c1:
+            time_window = st.selectbox("Lookback Window:", options=[12, 24, 48, 72], index=1, format_func=lambda x: f"Last {x} Hours", key="news_trending_lookback")
+        with ctrl_c2:
+            pos_filter = st.selectbox("Position Filter:", options=["ALL", "QB", "RB", "WR", "TE"], index=0, key="news_trending_pos_filter")
+
+        t_col1, t_col2 = st.columns(2)
+        with t_col1:
+            st.markdown(f"#### 🔥 Top Trending Adds (Last {time_window}h)")
+            with st.spinner("Fetching trending adds & player profiles..."):
+                adds = sleeper_client.get_trending_players(trend_type="add", lookback_hours=time_window, limit=25)
+            
+            if adds:
+                df_adds = pd.DataFrame(adds)
+                if "position" in df_adds.columns and pos_filter != "ALL":
+                    df_adds = df_adds[df_adds["position"] == pos_filter]
+                
+                if not df_adds.empty:
+                    if "count" in df_adds.columns:
+                        df_adds["24h Adds"] = df_adds["count"].apply(lambda x: f"+{int(x):,}")
+                    
+                    rename_map = {
+                        "player_name": "Player Name",
+                        "position": "Pos",
+                        "team": "Team",
+                        "24h Adds": "24h Adds",
+                        "injury_status": "Injury / Status"
+                    }
+                    final_cols = [c for c in ["player_name", "position", "team", "24h Adds", "injury_status"] if c in df_adds.columns]
+                    st.dataframe(df_adds[final_cols].rename(columns=rename_map), use_container_width=True, hide_index=True)
+                else:
+                    st.info(f"No {pos_filter} trending adds found.")
+            else:
+                st.info("No trending adds data available right now.")
+
+        with t_col2:
+            st.markdown(f"#### 🧊 Top Trending Drops (Last {time_window}h)")
+            with st.spinner("Fetching trending drops & player profiles..."):
+                drops = sleeper_client.get_trending_players(trend_type="drop", lookback_hours=time_window, limit=25)
+            
+            if drops:
+                df_drops = pd.DataFrame(drops)
+                if "position" in df_drops.columns and pos_filter != "ALL":
+                    df_drops = df_drops[df_drops["position"] == pos_filter]
+
+                if not df_drops.empty:
+                    if "count" in df_drops.columns:
+                        df_drops["24h Drops"] = df_drops["count"].apply(lambda x: f"-{int(x):,}")
+
+                    rename_map = {
+                        "player_name": "Player Name",
+                        "position": "Pos",
+                        "team": "Team",
+                        "24h Drops": "24h Drops",
+                        "injury_status": "Injury / Status"
+                    }
+                    final_cols = [c for c in ["player_name", "position", "team", "24h Drops", "injury_status"] if c in df_drops.columns]
+                    st.dataframe(df_drops[final_cols].rename(columns=rename_map), use_container_width=True, hide_index=True)
+                else:
+                    st.info(f"No {pos_filter} trending drops found.")
+            else:
+                st.info("No trending drops data available right now.")
+
+    # ==========================================================================
+    # SUBTAB 3: 32-TEAM INJURY DIAGNOSTIC MATRIX
+    # ==========================================================================
+    with sub3:
         st.markdown("### 🏥 32-Team Injury Diagnostic Matrix & Practice Participation")
-        st.caption("Live medical tracking: Official NFL injury status, injury diagnosis, and Weeks 1-3 practice status (DNP / LP / FP).")
+        st.caption("Live medical tracking: Official NFL injury status, injury diagnosis, and practice status (DNP / LP / FP).")
 
         injuries = fp_client.get_live_injuries()
         
@@ -186,11 +260,18 @@ def render_tab_news_wire(df: pd.DataFrame):
         inj_rows = []
         for item in injuries:
             p_name = item.get("name") or item.get("player_name", "Unknown")
-            tm = item.get("team_id", "FA")
-            pos = item.get("position_id", "—")
+            tm = item.get("team_id") or item.get("team", "FA")
+            pos = item.get("position_id") or item.get("pos", "—")
             status = item.get("status_short") or item.get("status", "Reported")
-            inj_type = item.get("injury_type") or item.get("practice_report_injury_type") or "Undisclosed"
-            comment = item.get("comment", "—")
+            inj_type = item.get("injury_type") or item.get("injury", "Undisclosed")
+            comment = item.get("comment") or item.get("notes", "—")
+
+            # Try to resolve position and team from master df if missing
+            if pos == "—" or tm == "FA":
+                match_p = df[df["player_name"].str.lower() == p_name.lower()]
+                if not match_p.empty:
+                    pos = str(match_p.iloc[0].get("position", pos))
+                    tm = str(match_p.iloc[0].get("team", tm))
 
             # Filter status
             if inj_status_filter:
@@ -200,7 +281,7 @@ def render_tab_news_wire(df: pd.DataFrame):
             # Search filter
             if inj_search:
                 q = inj_search.lower()
-                if q not in p_name.lower() and q not in tm.lower() and q not in inj_type.lower():
+                if q not in p_name.lower() and q not in tm.lower() and q not in inj_type.lower() and q not in comment.lower():
                     continue
 
             inj_rows.append({
@@ -218,9 +299,9 @@ def render_tab_news_wire(df: pd.DataFrame):
             st.info("No active injuries match the current filter.")
 
     # ==========================================================================
-    # SUBTAB 3: REDDIT STEAM RADAR
+    # SUBTAB 4: REDDIT STEAM RADAR
     # ==========================================================================
-    with sub3:
+    with sub4:
         st.markdown("### 🔥 Reddit Sentiment Hype Radar & Steam Velocity")
         st.caption("Ingests r/fantasyfootball posts & comments to detect breaking sentiment swings and training camp buzz.")
 

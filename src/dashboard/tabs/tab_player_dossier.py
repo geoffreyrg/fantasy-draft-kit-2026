@@ -349,27 +349,68 @@ def render_tab_player_dossier(df: pd.DataFrame):
             t_sub = "Elite 95th+ Percentile" if (pd.notna(talent) and float(talent) >= 90) else ("Above Average" if (pd.notna(talent) and float(talent) >= 75) else "Scheme Dependent")
             proe_sub = "Pass-Heavy Scheme" if synth['proe'] > 2.0 else ("Run-Heavy Scheme" if synth['proe'] < -2.0 else "Balanced Scheme")
             
+            p_floor = float(p_row.get("proj_floor", synth['proj_pts'] * 0.90))
+            p_ceil = float(p_row.get("proj_ceiling", synth['proj_pts'] * 1.10))
+            p_spread = float(p_row.get("proj_spread", p_ceil - p_floor))
+            tb_val = float(p_row.get("tie_breaker_score", 50.0))
+            arch_val = str(p_row.get("archetype_badge", "📊 CONSENSUS"))
+
+            p1_s = float(p_row.get("pillar_scheme_score", 50.0))
+            p2_s = float(p_row.get("pillar_sos_score", 50.0))
+            p3_s = float(p_row.get("pillar_expert_score", 50.0))
+            p4_s = float(p_row.get("pillar_talent_score", 50.0))
+            p5_s = float(p_row.get("pillar_steam_score", 50.0))
+            
             st.markdown(f"""
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px;">
                 <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; padding: 16px;">
-                    <div style="color: #9CA3AF; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">Projected Scoring</div>
-                    <div style="color: #FFFFFF; font-size: 1.6rem; font-weight: 800; margin: 4px 0;">{synth['proj_pts']:.1f} pts</div>
-                    <div style="color: #60A5FA; font-size: 0.85rem; font-weight: 600;">{synth['ppg']:.1f} PPG &bull; 1/2 PPR</div>
+                    <div style="color: #9CA3AF; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">Archetype & Tie-Breaker</div>
+                    <div style="color: #7C3AED; font-size: 1.4rem; font-weight: 800; margin: 4px 0;">{arch_val}</div>
+                    <div style="color: #A78BFA; font-size: 0.85rem; font-weight: 700;">⚡ Score: {tb_val:.1f} / 100</div>
+                </div>
+                <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; padding: 16px;">
+                    <div style="color: #9CA3AF; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">Projection Range Bracket</div>
+                    <div style="color: #FFFFFF; font-size: 1.4rem; font-weight: 800; margin: 4px 0;">{p_floor:.0f} - {p_ceil:.0f} pts</div>
+                    <div style="color: #60A5FA; font-size: 0.85rem; font-weight: 600;">Med: {synth['proj_pts']:.1f} (Spread: Δ{p_spread:.0f})</div>
                 </div>
                 <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; padding: 16px;">
                     <div style="color: #9CA3AF; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">Dynamic Value (VORP)</div>
-                    <div style="color: #10B981; font-size: 1.6rem; font-weight: 800; margin: 4px 0;">+{synth['vorp']:.1f} pts</div>
+                    <div style="color: #10B981; font-size: 1.4rem; font-weight: 800; margin: 4px 0;">+{synth['vorp']:.1f} pts</div>
                     <div style="color: #9CA3AF; font-size: 0.85rem;">Positional Tier: <b>{synth['tier']}</b></div>
                 </div>
                 <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; padding: 16px;">
-                    <div style="color: #9CA3AF; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">Film & Talent Grade</div>
-                    <div style="color: #FFFFFF; font-size: 1.6rem; font-weight: 800; margin: 4px 0;">{t_str}</div>
-                    <div style="color: #9CA3AF; font-size: 0.85rem;">{t_sub}</div>
-                </div>
-                <div style="background: #111827; border: 1px solid #374151; border-radius: 8px; padding: 16px;">
-                    <div style="color: #9CA3AF; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">Offensive Line & Scheme</div>
-                    <div style="color: #FFFFFF; font-size: 1.6rem; font-weight: 800; margin: 4px 0;">OL Rank #{synth['ol_rank']}</div>
+                    <div style="color: #9CA3AF; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">Film & Scheme Alignment</div>
+                    <div style="color: #FFFFFF; font-size: 1.4rem; font-weight: 800; margin: 4px 0;">OL #{synth['ol_rank']} &bull; {t_str}</div>
                     <div style="color: #9CA3AF; font-size: 0.85rem;">{synth['proe']:+.1f}% PROE &bull; {proe_sub}</div>
+                </div>
+            </div>
+
+            <div style="background: #1E293B; border: 1px solid #334155; border-radius: 10px; padding: 16px; margin-bottom: 24px;">
+                <div style="font-weight: 800; color: #F8FAFC; font-size: 0.95rem; margin-bottom: 10px; display: flex; justify-content: space-between;">
+                    <span>⚡ 5-PILLAR DRAFT ROOM TIE-BREAKER BREAKDOWN (0-100 INDEX)</span>
+                    <span style="color: #A78BFA;">Total Index: {tb_val:.1f} / 100</span>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; font-size: 0.84rem;">
+                    <div style="background: #0F172A; padding: 10px; border-radius: 6px; border-top: 3px solid #38BDF8;">
+                        <span style="color: #94A3B8;">1. Scheme & OL (25%)</span><br>
+                        <b style="color: #38BDF8; font-size: 1.1rem;">{p1_s:.1f}</b> <span style="color:#64748B;">/ 100</span>
+                    </div>
+                    <div style="background: #0F172A; padding: 10px; border-radius: 6px; border-top: 3px solid #10B981;">
+                        <span style="color: #94A3B8;">2. Dual SOS (20%)</span><br>
+                        <b style="color: #10B981; font-size: 1.1rem;">{p2_s:.1f}</b> <span style="color:#64748B;">/ 100</span>
+                    </div>
+                    <div style="background: #0F172A; padding: 10px; border-radius: 6px; border-top: 3px solid #F59E0B;">
+                        <span style="color: #94A3B8;">3. Expert Targets (25%)</span><br>
+                        <b style="color: #F59E0B; font-size: 1.1rem;">{p3_s:.1f}</b> <span style="color:#64748B;">/ 100</span>
+                    </div>
+                    <div style="background: #0F172A; padding: 10px; border-radius: 6px; border-top: 3px solid #8B5CF6;">
+                        <span style="color: #94A3B8;">4. Talent & Film (15%)</span><br>
+                        <b style="color: #8B5CF6; font-size: 1.1rem;">{p4_s:.1f}</b> <span style="color:#64748B;">/ 100</span>
+                    </div>
+                    <div style="background: #0F172A; padding: 10px; border-radius: 6px; border-top: 3px solid #EC4899;">
+                        <span style="color: #94A3B8;">5. Opportunity & Steam (15%)</span><br>
+                        <b style="color: #EC4899; font-size: 1.1rem;">{p5_s:.1f}</b> <span style="color:#64748B;">/ 100</span>
+                    </div>
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -764,10 +805,41 @@ def render_tab_player_dossier(df: pd.DataFrame):
         # ----------------------------------------------------------------------
         # SECTION 2: PROJECTIONS & SCORING (FANTASYPOINTS 2026)
         # ----------------------------------------------------------------------
-        st.markdown("##### 📊 2. 2026 Projections & Dynamic VORP (FantasyPoints)")
+        st.markdown("##### 📊 2. 2026 Projections & Projection Range Brackets (FantasyPoints)")
+        
+        # Side-by-Side Projection Range Bracket Cards
+        b_cols = st.columns(len(players_data))
+        for idx, p in enumerate(players_data):
+            p_floor = p.get("proj_floor", p["proj_pts"] * 0.88)
+            p_ceil = p.get("proj_ceiling", p["proj_pts"] * 1.15)
+            p_spread = p.get("proj_spread", p_ceil - p_floor)
+            p_med = p.get("raw_proj", p["proj_pts"])
+            
+            with b_cols[idx]:
+                st.markdown(f"""
+                <div style="background: #0B132B; border: 1px solid #1E293B; border-radius: 8px; padding: 14px 16px; margin-bottom: 14px;">
+                    <div style="color: #94A3B8; font-size: 0.76rem; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase;">PROJECTION RANGE BRACKET</div>
+                    <div style="color: #FFFFFF; font-size: 1.45rem; font-weight: 900; margin: 4px 0 2px 0;">{int(p_floor)} - {int(p_ceil)} pts</div>
+                    <div style="color: #38BDF8; font-size: 0.84rem; font-weight: 700;">
+                        Med: {p_med:.1f} <span style="color: #94A3B8; font-weight: 500;">(Spread: &Delta;{int(p_spread)})</span>
+                    </div>
+                    <div style="margin-top: 8px; background: #1E293B; height: 6px; border-radius: 3px; overflow: hidden; display: flex;">
+                        <div style="background: #3B82F6; width: {max(5.0, min(95.0, ((p_med - p_floor) / max(1.0, p_spread)) * 100.0))}%; height: 100%;"></div>
+                        <div style="background: #10B981; width: {max(5.0, min(95.0, ((p_ceil - p_med) / max(1.0, p_spread)) * 100.0))}%; height: 100%;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; color: #64748B; font-size: 0.72rem; margin-top: 4px;">
+                        <span>Floor: {p_floor:.1f}</span>
+                        <span>Ceiling: {p_ceil:.1f}</span>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
         proj_defs = [
             ("2026 Baseline Projection", "raw_proj", "{:.1f} pts", True),
             ("2026 Scheme-Adjusted Projection", "proj_pts", "{:.1f} pts", True),
+            ("Safety Baseline Floor (10th %ile)", "proj_floor", "{:.1f} pts", True),
+            ("Spike Ceiling Outcome (90th %ile)", "proj_ceiling", "{:.1f} pts", True),
+            ("Volatility Outcome Spread (Δ)", "proj_spread", "Δ {:.1f} pts", False),
             ("Weekly Projected PPG", "ppg", "{:.1f} PPG", True),
             ("Dynamic Value Over Replacement (VORP)", "vorp_pts", "+{:.1f} pts", True),
         ]
@@ -779,11 +851,22 @@ def render_tab_player_dossier(df: pd.DataFrame):
 
         p_rows = ""
         for label, key, fmt, higher_is_better in proj_defs:
-            vals = [p[key] for p in players_data]
+            vals = []
+            for p in players_data:
+                if key in p:
+                    vals.append(p[key])
+                elif key == "proj_floor":
+                    vals.append(round(p.get("proj_pts", 150.0) * 0.88, 1))
+                elif key == "proj_ceiling":
+                    vals.append(round(p.get("proj_pts", 150.0) * 1.15, 1))
+                elif key == "proj_spread":
+                    vals.append(round(p.get("proj_pts", 150.0) * 0.27, 1))
+                else:
+                    vals.append(p.get(key, 0.0))
             best_val = max(vals) if higher_is_better else min(vals)
             p_rows += f"<tr style='border-bottom: 1px solid #1E293B;'><td style='width: {metric_w}; padding: 10px 16px; color: #E2E8F0; font-size: 0.9rem; font-weight: 500;'>{label}</td>"
-            for p in players_data:
-                v = p[key]
+            for idx, p in enumerate(players_data):
+                v = vals[idx]
                 is_win = (v == best_val) and (vals.count(best_val) < len(vals))
                 val_str = fmt.format(v)
                 c = "#10B981; font-weight: 800;" if is_win else "#CBD5E1; font-weight: 500;"
@@ -824,22 +907,202 @@ def render_tab_player_dossier(df: pd.DataFrame):
         st.markdown(f'<div style="background: #111827; border: 1px solid #374151; border-radius: 8px; overflow: hidden; margin-bottom: 22px;"><table style="width: 100%; table-layout: fixed; border-collapse: collapse; text-align: left;">{t_header}{t_rows}</table></div>', unsafe_allow_html=True)
 
         # ----------------------------------------------------------------------
-        # SECTION 4: SCHEDULE & PLAYOFF RUNWAY (WEEKS 15-17)
+        # SECTION 4: 5-PILLAR TACTICAL TIEBREAKER SCORECARD & VISUAL BARS
         # ----------------------------------------------------------------------
-        st.markdown("##### ⚔️ 4. 2026 Strength of Schedule & Playoff Runway")
-        sched_header = f"<tr style='background: #1F2937; border-bottom: 1px solid #374151;'><th style='width: {metric_w}; padding: 10px 16px; color: #94A3B8; font-size: 0.85rem; text-transform: uppercase;'>Schedule Dimension</th>"
+        st.markdown("##### ⚡ 4. 5-Pillar Tactical Tiebreaker Matrix (0–100 Scale)")
+        st.caption("Quantitative Best-Player-Available (BPA) engine evaluating Scheme, Strength of Schedule, Expert Consensus, Film Talent, and Projectable Role Volume.")
+
+        pillar_configs = [
+            {
+                "title": "🛡️ Pillar 1: Scheme, OL & Pass Funnel",
+                "weight": "25% Weight",
+                "score_key": "pillar_scheme_score",
+                "desc": "Evaluates offensive line trench rank, playcaller neutral PROE %, and 2-WR target consolidation.",
+                "get_detail": lambda p: f"OL #{p['ol_rank']} &bull; PROE {p['proe']:+.1f}% &bull; 2-WR Sets {p['two_wr_pct']:.1f}%"
+            },
+            {
+                "title": "⚔️ Pillar 2: Dual-Phase SOS & Playoff Runway",
+                "weight": "25% Weight",
+                "score_key": "pillar_sos_score",
+                "desc": "Net trench SOS (W1–14) plus Weeks 15–17 championship slate shootout environments.",
+                "get_detail": lambda p: f"Reg SOS #{p['sched_intel'].get('pos_sos_rank', 16)} &bull; Playoffs: {p['sched_intel'].get('playoff_sos_grade', '⭐⭐⭐')}"
+            },
+            {
+                "title": "🎯 Pillar 3: Expert & Boris Chen GMM Consensus",
+                "weight": "20% Weight",
+                "score_key": "pillar_expert_score",
+                "desc": "Boris Chen GMM cluster tier, Joel Smyth Target/Avoid status, EXODIA badge, and FantasyPros consensus.",
+                "get_detail": lambda p: (
+                    ("👑 EXODIA &bull; " if (p["row_data"].get("is_exodia") == 1 or "EXODIA" in str(p["row_data"].get("archetype_badge", ""))) else "") +
+                    ("🐉 DRAGON &bull; " if "DRAGON" in str(p["row_data"].get("duracell_tier_tag", "")).upper() else "") +
+                    f"{p['tier']} &bull; Smyth: {p['smyth_tag']} &bull; ECR #{int(p['ecr'])}"
+                )
+            },
+            {
+                "title": "🔬 Pillar 4: Film & Athletic Talent Grade",
+                "weight": "15% Weight",
+                "score_key": "pillar_talent_score",
+                "desc": "JoScho play-by-play film grade (0–100), missed tackles forced, and explosive play rate.",
+                "get_detail": lambda p: f"Film Grade: {p['talent_score']:.1f}/100 &bull; Archetype: {p['row_data'].get('archetype_badge', 'Standard')}"
+            },
+            {
+                "title": "🚀 Pillar 5: Role Volume, Workhorse Catalysts & VORP",
+                "weight": "15% Weight",
+                "score_key": "pillar_opportunity_score",
+                "desc": "Evaluates projectable weekly touch/target floor, red-zone goal line share, dynamic VORP, and contract year incentives.",
+                "get_detail": lambda p: f"Weekly: {p['ppg']:.1f} PPG &bull; Dynamic VORP: +{p['vorp_pts']:.1f} pts &bull; Contract: {'Yes' if p['row_data'].get('is_contract_year') == 1 else 'No'}"
+            },
+        ]
+
+        for p_cfg in pillar_configs:
+            k = p_cfg["score_key"]
+            scores = [p[k] for p in players_data]
+            max_s = max(scores)
+            
+            st.markdown(f"""
+            <div style="background: #111827; border: 1px solid #1F2937; border-radius: 8px; padding: 14px 18px; margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <div>
+                        <span style="font-weight: 800; color: #38BDF8; font-size: 0.95rem;">{p_cfg['title']}</span>
+                        <span style="color: #94A3B8; font-size: 0.78rem; margin-left: 8px; font-style: italic;">{p_cfg['desc']}</span>
+                    </div>
+                    <span style="background: #1E293B; color: #93C5FD; font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">{p_cfg['weight']}</span>
+                </div>
+            """, unsafe_allow_html=True)
+            
+            p_cols = st.columns(len(players_data))
+            for idx, p in enumerate(players_data):
+                p_s = p[k]
+                is_best = (p_s == max_s) and (scores.count(max_s) < len(scores))
+                diff_str = f"<span style='color: #10B981; font-weight: 800; font-size: 0.72rem; margin-left: 6px;'>👑 +{p_s - min(scores):.1f} Leader</span>" if is_best else ""
+                bar_col = "#10B981" if is_best else "#38BDF8"
+                detail_txt = p_cfg["get_detail"](p)
+                
+                with p_cols[idx]:
+                    st.markdown(f"""
+                    <div style="background: #0B132B; border: 1px solid {'#10B981' if is_best else '#334155'}; border-radius: 6px; padding: 10px 12px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-weight: 700; color: #FFFFFF; font-size: 0.88rem;">{p['player_name']}</span>
+                            <div><span style="font-weight: 900; color: {bar_col}; font-size: 1.05rem;">{p_s:.1f}</span>{diff_str}</div>
+                        </div>
+                        <div style="background: #1E293B; height: 6px; border-radius: 3px; margin: 6px 0; overflow: hidden;">
+                            <div style="background: {bar_col}; width: {min(100.0, max(0.0, p_s))}%; height: 100%;"></div>
+                        </div>
+                        <div style="color: #94A3B8; font-size: 0.74rem;">{detail_txt}</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+            st.markdown("</div>", unsafe_allow_html=True)
+
+        # ----------------------------------------------------------------------
+        # SECTION 5: SCHEDULE & PLAYOFF RUNWAY (WEEKS 15-17)
+        # ----------------------------------------------------------------------
+        st.markdown("##### ⚔️ 5. 2026 Positional Strength of Schedule & Championship Matchups")
+        
+        # Helper function for high-contrast Grade Badges
+        def _get_sos_badge_html(grade_str, extra_label=""):
+            g = str(grade_str).upper().strip()
+            if "A+" in g or g == "A":
+                bg = "rgba(16, 185, 129, 0.18)"
+                border = "#10B981"
+                text_col = "#34D399"
+                icon = "🟢"
+            elif "A-" in g or "B+" in g or g == "B":
+                bg = "rgba(14, 165, 233, 0.18)"
+                border = "#0EA5E9"
+                text_col = "#38BDF8"
+                icon = "🔵"
+            elif "B-" in g or "C+" in g or g == "C":
+                bg = "rgba(245, 158, 11, 0.18)"
+                border = "#F59E0B"
+                text_col = "#FBBF24"
+                icon = "🟡"
+            else:
+                bg = "rgba(239, 68, 68, 0.18)"
+                border = "#EF4444"
+                text_col = "#F87171"
+                icon = "🔴"
+            
+            lbl_html = f"<span style='color: #94A3B8; font-size: 0.76rem; font-weight: 500; margin-left: 6px;'>{extra_label}</span>" if extra_label else ""
+            return f"<span style='background: {bg}; border: 1.5px solid {border}; color: {text_col}; font-weight: 800; font-size: 0.85rem; padding: 4px 10px; border-radius: 6px; display: inline-flex; align-items: center;'>{icon} <strong style='margin-left: 4px;'>{grade_str}</strong>{lbl_html}</span>"
+
+        # Table Header
+        sched_header = f"<tr style='background: #1F2937; border-bottom: 1px solid #374151;'><th style='width: {metric_w}; padding: 12px 16px; color: #94A3B8; font-size: 0.85rem; text-transform: uppercase;'>Schedule & Championship Dimension</th>"
         for p in players_data:
-            sched_header += f"<th style='width: {player_w}; padding: 10px 16px; color: #38BDF8; font-size: 0.85rem; text-align: center;'>{p['player_name']}</th>"
+            sched_header += f"<th style='width: {player_w}; padding: 12px 16px; color: #38BDF8; font-size: 0.88rem; text-align: center; font-weight: 800;'>{p['player_name']}</th>"
         sched_header += "</tr>"
 
-        s_cells_reg = "".join([f"<td style='width: {player_w}; padding: 10px 16px; text-align: center; color: #CBD5E1;'>Rank #{p['sched_intel'].get('pos_sos_rank', 16)} ({p['sched_intel'].get('pos_sos_grade', 'B')})</td>" for p in players_data])
-        s_cells_playoff = "".join([f"<td style='width: {player_w}; padding: 10px 16px; text-align: center; color: #FBBF24; font-weight: 700;'>{p['sched_intel'].get('playoff_sos_grade', '⭐⭐⭐')}</td>" for p in players_data])
-        s_cells_champ = "".join([f"<td style='width: {player_w}; padding: 10px 16px; text-align: center; color: #94A3B8; font-size: 0.85rem;'>{p['sched_intel'].get('playoff_w17_championship', 'Standard')}</td>" for p in players_data])
+        # Row 1: Regular Season Positional SOS (with Grade Badge + Rank Meter)
+        s_cells_reg = ""
+        for p in players_data:
+            s_intel = p["sched_intel"]
+            rank = s_intel.get("pos_sos_rank", 16)
+            grade = s_intel.get("pos_sos_grade", "B")
+            pct = max(5.0, min(100.0, ((33 - rank) / 32.0) * 100.0))
+            bar_c = "#34D399" if rank <= 8 else ("#38BDF8" if rank <= 16 else ("#FBBF24" if rank <= 24 else "#F87171"))
+            tag = "Top 5 Soft" if rank <= 5 else ("Favorable" if rank <= 12 else ("Neutral" if rank <= 20 else "Tough Front"))
+            
+            badge_html = _get_sos_badge_html(grade, f"Rank #{rank}/32 ({tag})")
+            s_cells_reg += (
+                f"<td style='width: {player_w}; padding: 12px 16px; text-align: center;'>"
+                f"<div style='display: flex; flex-direction: column; align-items: center; gap: 6px;'>"
+                f"{badge_html}"
+                f"<div style='background: #1E293B; width: 85%; height: 5px; border-radius: 3px; overflow: hidden; margin-top: 2px;'>"
+                f"<div style='background: {bar_c}; width: {pct}%; height: 100%;'></div>"
+                f"</div></div></td>"
+            )
+
+        # Row 2: Overall Fantasy Playoffs Runway (Weeks 15-17)
+        s_cells_playoff = ""
+        for p in players_data:
+            s_intel = p["sched_intel"]
+            p_grade = s_intel.get("playoff_sos_grade", "⭐⭐⭐ Neutral Slate")
+            w15 = s_intel.get("playoff_w15", "Competitive Matchup")
+            w16 = s_intel.get("playoff_w16", "Division Matchup")
+            w17 = s_intel.get("playoff_w17_championship", "Championship Matchup")
+            p_summary = s_intel.get("playoff_summary", "Standard fantasy playoff road.")
+            
+            s_cells_playoff += (
+                f"<td style='width: {player_w}; padding: 12px 16px; text-align: left; vertical-align: top;'>"
+                f"<div style='color: #FBBF24; font-weight: 800; font-size: 0.95rem; margin-bottom: 6px;'>{p_grade}</div>"
+                f"<div style='color: #E2E8F0; font-size: 0.78rem; line-height: 1.4; margin-bottom: 4px;'>"
+                f"&bull; <b>W15:</b> {w15}<br/>"
+                f"&bull; <b>W16:</b> {w16}<br/>"
+                f"&bull; <b>W17:</b> {w17}"
+                f"</div>"
+                f"<div style='color: #94A3B8; font-size: 0.74rem; font-style: italic; border-top: 1px solid #1E293B; padding-top: 4px; margin-top: 4px;'>{p_summary}</div>"
+                f"</td>"
+            )
+
+        # Row 3: Week 17 Championship Positional Matchup (Full Quantitative & Qualitative Scorecard)
+        s_cells_champ = ""
+        for p in players_data:
+            s_intel = p["sched_intel"]
+            c_grade = s_intel.get("w17_champ_grade", s_intel.get("pos_sos_grade", "B"))
+            c_opp = s_intel.get("w17_opp", "TBD")
+            c_loc = s_intel.get("w17_loc", "vs")
+            c_total = s_intel.get("w17_total", 45.0)
+            c_env = s_intel.get("w17_env", "Championship Matchup")
+            c_rank = s_intel.get("w17_champ_def_rank", 16)
+            c_label = s_intel.get("w17_champ_label", "Championship Matchup")
+            c_intel = s_intel.get("w17_champ_intel", "")
+            
+            c_badge = _get_sos_badge_html(c_grade, f"{c_loc} {c_opp} ({c_total} O/U)")
+            s_cells_champ += (
+                f"<td style='width: {player_w}; padding: 14px 16px; text-align: left; vertical-align: top;'>"
+                f"<div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;'>"
+                f"{c_badge}"
+                f"<span style='background: #1E293B; color: #38BDF8; font-size: 0.76rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; border: 1px solid #334155;'>Def vs {p['position']}: #{c_rank}/32</span>"
+                f"</div>"
+                f"<div style='color: #38BDF8; font-size: 0.82rem; font-weight: 700; margin-bottom: 4px;'>🏟️ {c_env}</div>"
+                f"<div style='color: #F8FAFC; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px;'>🎯 <em>{c_label}</em></div>"
+                f"<div style='color: #CBD5E1; font-size: 0.78rem; line-height: 1.4; background: #0B132B; padding: 10px 12px; border-radius: 6px; border: 1px solid #1E293B;'>{c_intel}</div></td>"
+            )
 
         sched_rows = (
-            f"<tr style='border-bottom: 1px solid #1E293B;'><td style='width: {metric_w}; padding: 10px 16px; color: #E2E8F0; font-size: 0.9rem;'>Regular Season Positional SOS</td>{s_cells_reg}</tr>"
-            f"<tr style='border-bottom: 1px solid #1E293B;'><td style='width: {metric_w}; padding: 10px 16px; color: #E2E8F0; font-size: 0.9rem;'>Fantasy Playoffs Runway (W15-17)</td>{s_cells_playoff}</tr>"
-            f"<tr><td style='width: {metric_w}; padding: 10px 16px; color: #E2E8F0; font-size: 0.9rem;'>Week 17 Championship Matchup</td>{s_cells_champ}</tr>"
+            f"<tr style='border-bottom: 1px solid #1E293B;'><td style='width: {metric_w}; padding: 12px 16px; color: #E2E8F0; font-size: 0.88rem; font-weight: 600;'>1. Regular Season Positional SOS<br/><span style='font-size: 0.75rem; color: #64748B;'>Trench block win rate vs defensive front (W1–14)</span></td>{s_cells_reg}</tr>"
+            f"<tr style='border-bottom: 1px solid #1E293B;'><td style='width: {metric_w}; padding: 12px 16px; color: #E2E8F0; font-size: 0.88rem; font-weight: 600;'>2. Overall Playoff Runway (Weeks 15–17)<br/><span style='font-size: 0.75rem; color: #64748B;'>3-round championship road & climate environments</span></td>{s_cells_playoff}</tr>"
+            f"<tr><td style='width: {metric_w}; padding: 14px 16px; color: #E2E8F0; font-size: 0.88rem; font-weight: 600; vertical-align: top;'>3. Week 17 Championship Matchup<br/><span style='font-size: 0.75rem; color: #64748B;'>Positional defense rating, Vegas game total & tactical scheme intel</span></td>{s_cells_champ}</tr>"
         )
 
         st.markdown(f'<div style="background: #111827; border: 1px solid #374151; border-radius: 8px; overflow: hidden; margin-bottom: 22px;"><table style="width: 100%; table-layout: fixed; border-collapse: collapse; text-align: left;">{sched_header}{sched_rows}</table></div>', unsafe_allow_html=True)
@@ -852,20 +1115,44 @@ def render_tab_player_dossier(df: pd.DataFrame):
         winner_name = arb_res["winner"]["player_name"]
         winner_pos = arb_res["winner"]["position"]
         winner_tm = arb_res["winner"]["team"]
+        winner_score = arb_res["winner"]["composite_arbiter"]
         
+        # Calculate pillar win count
+        pillar_keys = ["pillar_scheme_score", "pillar_sos_score", "pillar_expert_score", "pillar_talent_score", "pillar_opportunity_score"]
+        pillar_labels = ["Scheme & OL", "SOS & Playoffs", "Expert Consensus", "Film & Talent", "Role Volume & VORP"]
+        
+        win_counts = {p["player_name"]: [] for p in players_data}
+        for pk, pl in zip(pillar_keys, pillar_labels):
+            best_p = max(players_data, key=lambda x: x[pk])
+            win_counts[best_p["player_name"]].append(pl)
+        
+        scoreboard_html = ""
+        for p_name, won_pils in win_counts.items():
+            cnt = len(won_pils)
+            pil_str = ", ".join(won_pils) if won_pils else "Tightly Contested"
+            is_w = (p_name == winner_name)
+            bd_col = "#10B981" if is_w else "#64748B"
+            bg_col = "#064E3B" if is_w else "#1E293B"
+            scoreboard_html += f"<div style='display: inline-block; background: {bg_col}; border: 1px solid {bd_col}; border-radius: 6px; padding: 6px 12px; margin-right: 10px; margin-bottom: 8px;'><b style='color: #FFFFFF;'>{p_name}:</b> <span style='color: #38BDF8;'>{cnt}/5 Pillars</span> <span style='color: #94A3B8; font-size: 0.78rem;'>({pil_str})</span></div>"
+
         st.markdown(f"""
-        <div style="background: #111827; border: 1px solid #374151; border-left: 5px solid #10B981; border-radius: 8px; padding: 18px; margin: 16px 0;">
-            <div style="color: #10B981; font-weight: 800; font-size: 1.15rem; margin-bottom: 6px;">🏆 THE PICK: {winner_name} ({winner_pos} – {winner_tm})</div>
-            <div style="color: #F3F4F6; font-size: 0.95rem; line-height: 1.5;">{arb_res['verdict_text']}</div>
+        <div style="background: #0B132B; border: 1.5px solid #10B981; border-left: 6px solid #10B981; border-radius: 10px; padding: 20px; margin: 16px 0; box-shadow: 0 4px 14px rgba(0,0,0,0.35);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 10px;">
+                <div style="color: #10B981; font-weight: 900; font-size: 1.25rem;">🏆 THE PICK: {winner_name} ({winner_pos} – {winner_tm})</div>
+                <div style="background: #064E3B; color: #A7F3D0; padding: 4px 12px; border-radius: 6px; font-weight: 800; font-size: 0.9rem;">Composite Index: {winner_score:.1f} / 100</div>
+            </div>
+            <div style="margin-bottom: 12px;">{scoreboard_html}</div>
+            <div style="color: #F3F4F6; font-size: 0.96rem; line-height: 1.6; border-top: 1px solid #1E293B; padding-top: 12px;">{arb_res['verdict_text']}</div>
         </div>
         """, unsafe_allow_html=True)
 
         if arb_res.get("tiebreaker_notes"):
-            st.markdown("##### 🎯 Decisive Tie-Breaker Breakdown")
+            st.markdown("##### 🎯 Decisive 5-Pillar Head-to-Head Breakdown")
             for note in arb_res["tiebreaker_notes"]:
                 st.markdown(f"- {note}")
 
         # Highlight Archetype Cards
+        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
         col_h1, col_h2, col_h3 = st.columns(3)
         floor_name = arb_res["floor_pick"]["player_name"]
         ceiling_name = arb_res["ceiling_pick"]["player_name"]
@@ -873,27 +1160,27 @@ def render_tab_player_dossier(df: pd.DataFrame):
         
         with col_h1:
             st.markdown(f"""
-            <div style="background: #1F2937; border-left: 4px solid #3B82F6; padding: 12px 14px; border-radius: 6px;">
+            <div style="background: #1F2937; border-left: 4px solid #3B82F6; padding: 14px; border-radius: 6px;">
                 <div style="color: #93C5FD; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">🛡️ Safest Floor Anchor</div>
-                <div style="color: #FFFFFF; font-size: 1.05rem; font-weight: 800; margin-top: 2px;">{floor_name}</div>
-                <div style="color: #9CA3AF; font-size: 0.8rem;">Secured touch volume & elite trench push</div>
+                <div style="color: #FFFFFF; font-size: 1.1rem; font-weight: 800; margin-top: 2px;">{floor_name}</div>
+                <div style="color: #9CA3AF; font-size: 0.82rem; margin-top: 4px;">Secured touch volume & elite trench push</div>
             </div>
             """, unsafe_allow_html=True)
             
         with col_h2:
             st.markdown(f"""
-            <div style="background: #1F2937; border-left: 4px solid #F59E0B; padding: 12px 14px; border-radius: 6px;">
+            <div style="background: #1F2937; border-left: 4px solid #F59E0B; padding: 14px; border-radius: 6px;">
                 <div style="color: #FCD34D; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">🚀 Highest Ceiling Play</div>
-                <div style="color: #FFFFFF; font-size: 1.05rem; font-weight: 800; margin-top: 2px;">{ceiling_name}</div>
-                <div style="color: #9CA3AF; font-size: 0.8rem;">Explosive JoScho burst & shootout schedule</div>
+                <div style="color: #FFFFFF; font-size: 1.1rem; font-weight: 800; margin-top: 2px;">{ceiling_name}</div>
+                <div style="color: #9CA3AF; font-size: 0.82rem; margin-top: 4px;">Explosive JoScho burst & shootout schedule</div>
             </div>
             """, unsafe_allow_html=True)
             
         with col_h3:
             st.markdown(f"""
-            <div style="background: #1F2937; border-left: 4px solid #10B981; padding: 12px 14px; border-radius: 6px;">
+            <div style="background: #1F2937; border-left: 4px solid #10B981; padding: 14px; border-radius: 6px;">
                 <div style="color: #6EE7B7; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">💎 Best Draft Value Steal</div>
-                <div style="color: #FFFFFF; font-size: 1.05rem; font-weight: 800; margin-top: 2px;">{value_name}</div>
-                <div style="color: #9CA3AF; font-size: 0.8rem;">Optimal platform ADP arbitrage discount</div>
+                <div style="color: #FFFFFF; font-size: 1.1rem; font-weight: 800; margin-top: 2px;">{value_name}</div>
+                <div style="color: #9CA3AF; font-size: 0.82rem; margin-top: 4px;">Optimal platform ADP arbitrage discount</div>
             </div>
             """, unsafe_allow_html=True)

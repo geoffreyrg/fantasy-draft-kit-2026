@@ -30,7 +30,20 @@ def get_player_badges_html(p: pd.Series, platform: str = "yahoo") -> str:
     if inj and inj.lower() not in ("healthy", "nan", "—", "none", ""):
         badges.append(f'<span style="background:#DC2626; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">🚨 {inj}</span>')
     
-    # 1. Positional Role & Tier Badges
+    # 1. Archetype Badges (Top Priority)
+    arch = str(p.get("archetype_badge", "")).strip()
+    if "EXODIA" in arch or p.get("is_exodia") == 1:
+        badges.append('<span style="background:#7C3AED; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">👑 EXODIA ALPHA</span>')
+    elif "LEAGUE WINNER" in arch:
+        badges.append('<span style="background:#059669; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">🏆 LEAGUE WINNER</span>')
+    elif "HIGH CEILING" in arch:
+        badges.append('<span style="background:#0284C7; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">🚀 HIGH CEILING</span>')
+    elif "SAFE FLOOR" in arch:
+        badges.append('<span style="background:#475569; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">🎯 SAFE FLOOR</span>')
+    elif "TRAP RISK" in arch or p.get("is_dirty_30") == 1:
+        badges.append('<span style="background:#DC2626; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">⚠️ TRAP RISK</span>')
+    
+    # 2. Positional Role & Tier Badges
     pos = str(p.get("position", "")).upper()
     tier_str = str(p.get("boris_tier_pos", "Tier 1"))
     dvorp_val = float(p.get("dynamic_vorp", 0.0))
@@ -44,28 +57,30 @@ def get_player_badges_html(p: pd.Series, platform: str = "yahoo") -> str:
     elif pos == "QB" and tier_str == "Tier 1":
         badges.append('<span style="background:#D97706; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">⚡ ELITE QB1</span>')
 
-    # 2. Scheme & Archetype Badges
-    if p.get("is_exodia") == 1:
-        badges.append('<span style="background:#7C3AED; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">💥 EXODIA ALPHA</span>')
+    # 3. Expert & Catalyst Badges
     if p.get("is_hero") == 1:
         badges.append('<span style="background:#059669; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">👑 HERO</span>')
     if str(p.get("smyth_color_tag", "")).lower().find("target") != -1 or str(p.get("smyth_color_tag", "")).lower().find("green") != -1 or str(p.get("smyth_color_tag", "")) == "🎯":
         badges.append('<span style="background:#10B981; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">🎯 SMYTH TARGET</span>')
     if p.get("is_gold_mine") == 1:
         badges.append('<span style="background:#D97706; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">⛏️ GOLD MINE</span>')
-    if p.get("is_scheme_catalyst") == 1:
+    if p.get("has_breakout_catalyst") == 1 or p.get("is_scheme_catalyst") == 1:
         badges.append('<span style="background:#EA580C; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">🔥 CATALYST</span>')
     
-    # 3. True High-Value Walk Year
-    if p.get("is_contract_year") == 1 and p.get("contract_year_value") == 1:
+    # 4. Walk Year
+    if p.get("is_contract_year") == 1:
         badges.append('<span style="background:#0284C7; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">💰 WALK YEAR</span>')
     
-    # 4. Market Arbitrage & Value
+    # 5. Market Arbitrage & Sleeper Trending
     plat_key = platform.lower()
     delta_val = float(p.get(f"adp_delta_{plat_key}", p.get("adp_delta_yahoo", 0.0)))
     if delta_val >= 4.0:
         badges.append(f'<span style="background:#4F46E5; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">💎 ADP VALUE (+{delta_val:.1f})</span>')
     
+    slp_trend = float(p.get("sleeper_trend_count", 0.0))
+    if slp_trend >= 500:
+        badges.append(f'<span style="background:#10B981; color:white; padding:2px 6px; border-radius:4px; font-size:0.72rem; font-weight:800;">🔥 SLEEPER +{int(slp_trend)}</span>')
+
     m_tag = str(p.get("platform_market_tag", ""))
     if m_tag in ["🚫 TRAP", "💎 STEAL"]:
         m_c = "#DC2626" if m_tag == "🚫 TRAP" else "#059669"
@@ -81,6 +96,12 @@ def clean_html_text(text: str) -> str:
     text = re.sub(r"\*\*(.*?)\*\*", r"<b>\1</b>", str(text))
     text = re.sub(r"\*(.*?)\*", r"<i>\1</i>", text)
     return text.strip()
+
+def unindent_html(html_str: str) -> str:
+    """Strips all leading whitespace from every line so Streamlit markdown never creates accidental code blocks."""
+    if not html_str:
+        return ""
+    return "\n".join([line.strip() for line in html_str.strip().splitlines() if line.strip()])
 
 def render_strategy_card_html(
     strategy_title: str,
@@ -101,25 +122,32 @@ def render_strategy_card_html(
     
     proj_pts = float(p.get("adjusted_proj_pts", p.get("consensus_proj_pts", 0.0)))
     ppg = proj_pts / 17.0 if proj_pts > 0 else 0.0
+    floor_pts = float(p.get("proj_floor", proj_pts * 0.88))
+    ceil_pts = float(p.get("proj_ceiling", proj_pts * 1.15))
+    spread_pts = float(p.get("proj_spread", ceil_pts - floor_pts))
     dvorp = float(p.get("dynamic_vorp", 0.0))
+    tb_score = float(p.get("tie_breaker_score", 50.0))
     tier = str(p.get("boris_tier_pos", "Tier 1"))
     talent = p.get("nfl_talent_score", "—")
     talent_str = f"{float(talent):.1f}/100" if pd.notnull(talent) and talent != "—" else "—"
+    
+    reg_sos = str(p.get("reg_season_sos_grade", "B"))
+    playoff_sos = str(p.get("playoff_sos_grade", "⭐⭐⭐"))
     
     plat_key = platform.lower()
     adp_val = p.get(f"adp_{plat_key}", p.get("adp_consensus", 0.0))
     adp_str = f"#{float(adp_val):.1f}" if pd.notnull(adp_val) and adp_val > 0 else "—"
     delta_val = float(p.get(f"adp_delta_{plat_key}", 0.0))
-    delta_str = f"+{delta_val:.1f}" if delta_val > 0 else (f"{delta_val:.1f}" if delta_val < 0 else "0.0")
+    delta_str = f"+{delta_val:.1f} picks" if delta_val > 0 else (f"{delta_val:.1f} picks" if delta_val < 0 else "Even")
+    delta_color = "#10B981" if delta_val > 0 else ("#EF4444" if delta_val < -3.0 else "#94A3B8")
     
     snip_pct = float(p.get("snip_risk_pct", 50.0))
     snip_tag = str(p.get("snip_risk_tag", "SAFE TO WAIT"))
-    snip_c = "#DC2626" if snip_pct >= 75.0 else ("#D97706" if snip_pct >= 40.0 else "#059669")
+    snip_c = "#EF4444" if snip_pct >= 75.0 else ("#F59E0B" if snip_pct >= 40.0 else "#10B981")
     
     badges_html = get_player_badges_html(p, platform=platform)
-    badge_div = f'<div style="margin-bottom: 8px; display: flex; flex-wrap: wrap; gap: 4px;">{badges_html}</div>' if badges_html else ""
+    badge_div = f'<div style="margin-top: 8px; margin-bottom: 8px; display: flex; flex-wrap: wrap; gap: 4px;">{badges_html}</div>' if badges_html else ""
     
-    # Strategic rationale / pitch box
     strat_rationale = custom_subtitle or p.get("strategy_rationale", "")
     if not strat_rationale:
         sub_txt = p.get("master_designation", compute_tactical_edge(p))
@@ -131,32 +159,55 @@ def render_strategy_card_html(
 
     tactical_edge = clean_html_text(p.get("master_designation", compute_tactical_edge(p)))
 
-    card_html = (
-        f'<div style="border: 2px solid {border_color}; background-color: {bg_color}; padding: 14px 16px; border-radius: 10px; margin-bottom: 14px; box-shadow: 0 4px 8px rgba(0,0,0,0.06);">'
-        f'<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">'
-        f'<span style="font-weight: 800; color: {title_color}; font-size: 0.92rem; letter-spacing: -0.2px;">{strategy_title}</span>'
-        f'<span style="background: {border_color}; color: white; padding: 3px 9px; border-radius: 12px; font-weight: 800; font-size: 0.75rem;">{strategy_pill}</span>'
-        f'</div>'
-        f'<div style="display: flex; justify-content: space-between; align-items: center; margin: 6px 0;">'
-        f'<div style="display: flex; align-items: center; gap: 10px;">'
-        f'<img src="{headshot_url}" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid #94A3B8; background: #0F172A;" />'
-        f'<div><div style="font-size: 1.18rem; font-weight: 800; color: #0F172A; line-height: 1.2;">{emoji} {p_name}</div>'
-        f'<div style="font-size: 0.83rem; color: #475569; font-weight: 700; display: flex; align-items: center; gap: 4px; margin-top: 2px;"><img src="{team_logo_url}" style="width: 14px; height: 14px;" /> {p_pos} - {p_team} &bull; <span style="color:#0284C7;">{tier}</span></div></div>'
-        f'</div>'
-        f'<div style="font-size: 0.95rem; font-weight: 800; color: #1E3A8A; text-align: right;">📊 <b>{proj_pts:.1f} pts</b><br><span style="font-size: 0.80rem; color: #64748B; font-weight: 600;">({ppg:.1f}/G)</span></div>'
-        f'</div>'
-        f'<div style="font-size: 0.84rem; color: #334155; margin-bottom: 8px; line-height: 1.4; background: rgba(255,255,255,0.6); padding: 6px 10px; border-radius: 6px;">'
-        f'<b>DynVORP:</b> <span style="color: #059669; font-weight: 800;">+{dvorp:.1f}</span> &bull; '
-        f'<b>Talent:</b> <span style="font-weight: 700;">{talent_str}</span> &bull; '
-        f'<b>{platform.capitalize()} ADP:</b> {adp_str} <span style="color:#059669; font-weight:700;">({delta_str})</span> &bull; '
-        f'<b>Snip:</b> <span style="color: {snip_c}; font-weight: 800;">{snip_pct:.0f}% ({snip_tag})</span>'
-        f'</div>'
-        f'{badge_div}'
-        f'<div style="background: rgba(255,255,255,0.85); border-left: 3px solid {border_color}; padding: 7px 10px; border-radius: 5px; font-size: 0.82rem; color: #1E293B; margin-bottom: 6px; line-height: 1.35;">{strat_rationale}</div>'
-        f'<div style="font-size: 0.78rem; color: #64748B; font-style: italic;">🎯 {tactical_edge}</div>'
-        f'</div>'
-    )
-    return card_html
+    card_html = f"""
+<div style="border: 1.5px solid {border_color}; background: linear-gradient(145deg, #0B132B 0%, #111827 100%); padding: 14px 16px; border-radius: 10px; margin-bottom: 12px; box-shadow: 0 4px 14px rgba(0,0,0,0.35);">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+<span style="font-weight: 800; color: #FFFFFF; font-size: 0.88rem; letter-spacing: 0.2px; text-transform: uppercase;">{strategy_title}</span>
+<span style="background: rgba(255,255,255,0.08); color: {border_color}; border: 1px solid {border_color}; padding: 3px 9px; border-radius: 12px; font-weight: 800; font-size: 0.72rem; letter-spacing: 0.3px;">{strategy_pill}</span>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+<div style="display: flex; align-items: center; gap: 12px;">
+<img src="{headshot_url}" style="width: 46px; height: 46px; border-radius: 50%; object-fit: cover; border: 2px solid {border_color}; background: #0F172A;" />
+<div>
+<div style="font-size: 1.25rem; font-weight: 900; color: #FFFFFF; line-height: 1.2;">{emoji} {p_name}</div>
+<div style="font-size: 0.85rem; color: #94A3B8; font-weight: 700; display: flex; align-items: center; gap: 6px; margin-top: 3px;">
+<img src="{team_logo_url}" style="width: 14px; height: 14px;" />
+<span style="color: #F8FAFC;">{p_pos} - {p_team}</span> &bull; 
+<span style="color: #38BDF8; font-weight: 800;">{tier}</span>
+</div>
+</div>
+</div>
+<div style="text-align: right;">
+<div style="font-size: 1.20rem; font-weight: 900; color: #38BDF8;">📊 {proj_pts:.1f} pts</div>
+<div style="font-size: 0.78rem; color: #94A3B8; font-weight: 600;">{ppg:.1f} PPG &bull; [{int(floor_pts)}-{int(ceil_pts)}]</div>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; background: rgba(15, 23, 42, 0.7); border: 1px solid #1E293B; border-radius: 6px; padding: 7px 10px; margin-bottom: 8px; text-align: center;">
+<div>
+<div style="color: #64748B; font-size: 0.68rem; font-weight: 700; text-transform: uppercase;">DynVORP</div>
+<div style="color: #10B981; font-weight: 800; font-size: 0.88rem;">+{dvorp:.1f} pts</div>
+</div>
+<div>
+<div style="color: #64748B; font-size: 0.68rem; font-weight: 700; text-transform: uppercase;">Arbiter</div>
+<div style="color: #A855F7; font-weight: 800; font-size: 0.88rem;">{tb_score:.1f}/100</div>
+</div>
+<div>
+<div style="color: #64748B; font-size: 0.68rem; font-weight: 700; text-transform: uppercase;">{platform.upper()} ADP</div>
+<div style="color: {delta_color}; font-weight: 800; font-size: 0.88rem;">{adp_str} ({delta_str})</div>
+</div>
+<div>
+<div style="color: #64748B; font-size: 0.68rem; font-weight: 700; text-transform: uppercase;">Snip Risk</div>
+<div style="color: {snip_c}; font-weight: 800; font-size: 0.88rem;">{snip_pct:.0f}% ({snip_tag})</div>
+</div>
+</div>
+{badge_div}
+<div style="background: rgba(0, 0, 0, 0.35); border-left: 3px solid {border_color}; padding: 8px 12px; border-radius: 4px; font-size: 0.82rem; color: #E2E8F0; line-height: 1.4; margin-bottom: 6px;">
+{strat_rationale}
+</div>
+<div style="font-size: 0.76rem; color: #64748B; font-style: italic;">🎯 {tactical_edge}</div>
+</div>
+"""
+    return unindent_html(card_html)
 
 def apply_draft_action(state_mgr: DraftStateManager, player_name: str, by_user: bool = False):
     return state_mgr.draft_player(player_name, by_user=by_user)
@@ -204,7 +255,7 @@ def render_tab_live_draft(df: pd.DataFrame):
     status_bg = "linear-gradient(135deg, #DC2626 0%, #991B1B 100%)" if is_my_turn else "linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%)"
     turn_text = f"🚨 YOU ARE ON THE CLOCK (Pick #{cur_p})" if is_my_turn else f"⏱️ Next Pick: #{next_user_p} ({picks_away} picks away)"
 
-    st.markdown(f"""
+    st.markdown(unindent_html(f"""
     <div style="background: {status_bg}; color: white; padding: 16px 20px; border-radius: 10px; margin-bottom: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.12);">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div>
@@ -218,7 +269,7 @@ def render_tab_live_draft(df: pd.DataFrame):
             </div>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """), unsafe_allow_html=True)
 
     # Positional Run / Velocity Check
     recent_picks = state.get("history", [])
@@ -229,11 +280,11 @@ def render_tab_live_draft(df: pd.DataFrame):
     active_runs = [v["tag"] for k, v in run_velocities.items() if v.get("is_run")]
     if active_runs:
         run_alert_txt = " • ".join(active_runs)
-        st.markdown(f"""
+        st.markdown(unindent_html(f"""
         <div style="background-color: #EA580C; color: white; padding: 8px 14px; border-radius: 6px; font-weight: 800; font-size: 0.92rem; margin-bottom: 10px;">
             {run_alert_txt} — Dynamic baseline replacement inflated by +10%!
         </div>
-        """, unsafe_allow_html=True)
+        """), unsafe_allow_html=True)
 
     # Global Live Draft Controls Bar
     c1, c2, c3, c4, c5, c6 = st.columns([1.5, 1.2, 1.5, 1.3, 1.2, 1.3])
@@ -337,6 +388,85 @@ def render_tab_live_draft(df: pd.DataFrame):
     )
     tri_cards = RecommendationEngine.get_tri_strategy_recommendations(scored_df, cliffs)
 
+    # --------------------------------------------------------------------------
+    # LIVE RECENT PICKS TICKER / STREAM (MAIN SCREEN FEED)
+    # --------------------------------------------------------------------------
+    recent_history = state.get("history", [])
+    if recent_history:
+        st.markdown(unindent_html(f"""
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0 6px 0;">
+            <div style="font-weight: 800; font-size: 0.95rem; color: #F8FAFC; display: flex; align-items: center; gap: 6px;">
+                <span style="color: #EF4444; font-size: 1.1rem;">🔴</span> LIVE DRAFT FEED (Recent Picks)
+            </div>
+            <div style="font-size: 0.78rem; color: #94A3B8;">
+                Total Picks Made: <b style="color: #38BDF8;">{len(recent_history)}</b> / {state['league_size'] * state['total_rounds']}
+            </div>
+        </div>
+        """), unsafe_allow_html=True)
+        
+        # Display horizontal strip of the last up to 6 picks
+        display_picks = list(reversed(recent_history))[:6]
+        feed_cols = st.columns(len(display_picks))
+        
+        for idx, ev in enumerate(display_picks):
+            p_pos = ev.position
+            p_team = DataNormalizer.normalize_team(str(ev.team))
+            headshot = PlayerMediaResolver.get_headshot_url(ev.player_name)
+            logo = PlayerMediaResolver.get_team_logo_url(p_team)
+            
+            is_user = ev.drafted_by_user
+            card_border = "#10B981" if is_user else "#334155"
+            card_bg = "rgba(16, 185, 129, 0.12)" if is_user else "rgba(15, 23, 42, 0.7)"
+            tag_label = "👑 MY TEAM" if is_user else f"👤 Team {((ev.pick_number - 1) % state['league_size']) + 1}"
+            tag_color = "#10B981" if is_user else "#94A3B8"
+            
+            with feed_cols[idx]:
+                st.markdown(unindent_html(f"""
+                <div style="border: 1px solid {card_border}; background: {card_bg}; border-radius: 8px; padding: 8px 10px; height: 100%;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                        <span style="color: #38BDF8; font-weight: 800; font-size: 0.75rem;">#{ev.pick_number} (R{ev.round_number}.{((ev.pick_number - 1) % state['league_size']) + 1})</span>
+                        <span style="color: {tag_color}; font-weight: 800; font-size: 0.68rem;">{tag_label}</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin: 4px 0;">
+                        <img src="{headshot}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1.5px solid {card_border}; background: #0F172A;" />
+                        <div style="overflow: hidden;">
+                            <div style="color: #FFFFFF; font-weight: 800; font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{ev.player_name}</div>
+                            <div style="color: #94A3B8; font-size: 0.70rem; font-weight: 600; display: flex; align-items: center; gap: 3px;">
+                                <img src="{logo}" style="width: 11px; height: 11px;" /> {p_pos} - {p_team}
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; font-size: 0.68rem; color: #64748B;">
+                        <span>VORP: <b style="color: #10B981;">+{ev.vorp_at_pick:.1f}</b></span>
+                        <span>ADP #{ev.platform_adp:.1f}</span>
+                    </div>
+                </div>
+                """), unsafe_allow_html=True)
+                
+        # Quick-expand drawer to view full draft table without leaving cockpit
+        with st.expander(f"📜 View Full Live Draft History Board ({len(recent_history)} picks logged)", expanded=False):
+            h_records = []
+            for ev in reversed(recent_history):
+                h_records.append({
+                    "Pick #": f"#{ev.pick_number} (R{ev.round_number}.{((ev.pick_number - 1) % state['league_size']) + 1})",
+                    "Player": ev.player_name,
+                    "Position": ev.position,
+                    "Team": ev.team,
+                    "Drafted By": "👑 MY TEAM" if ev.drafted_by_user else f"Team {((ev.pick_number - 1) % state['league_size']) + 1}",
+                    "VORP at Pick": round(ev.vorp_at_pick, 1),
+                    "Platform ADP": round(ev.platform_adp, 1)
+                })
+            st.dataframe(pd.DataFrame(h_records), use_container_width=True, hide_index=True)
+    else:
+        st.markdown(unindent_html(f"""
+        <div style="background: rgba(15, 23, 42, 0.4); border: 1px dashed #334155; border-radius: 8px; padding: 8px 14px; margin: 8px 0 12px 0; display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 0.82rem; color: #94A3B8;">
+                <span style="color: #38BDF8; font-weight: 700;">🔴 Live Draft Feed Ready:</span> Picks made via the Fast Board or Sleeper auto-sync will stream live across this ticker in real-time.
+            </div>
+            <div style="font-size: 0.75rem; color: #64748B;">0 / {state['league_size'] * state['total_rounds']} Picks</div>
+        </div>
+        """), unsafe_allow_html=True)
+
     # Main Cockpit vs Master Views
     cockpit_view = st.radio("War Room View Mode:", [
         "🎯 60-Second In-Draft Cockpit",
@@ -356,16 +486,16 @@ def render_tab_live_draft(df: pd.DataFrame):
         if top_auto is not None and is_my_turn:
             auto_pts = float(top_auto.get("adjusted_proj_pts", top_auto.get("consensus_proj_pts", 0.0)))
             auto_ppg = auto_pts / 17.0 if auto_pts > 0 else 0.0
-            st.markdown(f"""
-            <div style="background-color: #FEF3C7; border: 2px dashed #D97706; padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+            st.markdown(unindent_html(f"""
+            <div style="background: linear-gradient(135deg, #78350F 0%, #451A03 100%); border: 2px solid #F59E0B; padding: 10px 16px; border-radius: 8px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);">
                 <div>
-                    <span style="font-weight: 800; color: #92400E; font-size: 0.95rem;">⚡ 10-SECOND EMERGENCY AUTO-PICK SAFEGUARD:</span>
-                    <b style="color: #111827; font-size: 1.05rem; margin-left: 8px;">{top_auto['player_name']}</b> ({top_auto['position']}-{top_auto['team']}) — 
-                    <span style="font-weight: 800; color: #1E3A8A;">📊 {auto_pts:.1f} pts ({auto_ppg:.1f}/G)</span> • 
-                    <span style="color: #059669; font-weight: 700;">+{top_auto.get('dynamic_vorp', 0):.1f} DynVORP</span> • {top_auto.get('boris_tier_pos', 'Tier 1')}
+                    <span style="font-weight: 800; color: #FCD34D; font-size: 0.95rem;">⚡ 10-SECOND EMERGENCY AUTO-PICK SAFEGUARD:</span>
+                    <b style="color: #FFFFFF; font-size: 1.10rem; margin-left: 8px;">{top_auto['player_name']}</b> <span style="color: #CBD5E1;">({top_auto['position']}-{top_auto['team']})</span> &bull; 
+                    <span style="font-weight: 800; color: #38BDF8;">📊 {auto_pts:.1f} pts ({auto_ppg:.1f}/G)</span> &bull; 
+                    <span style="color: #10B981; font-weight: 800;">+{top_auto.get('dynamic_vorp', 0):.1f} DynVORP</span> &bull; <span style="color: #FBBF24;">{top_auto.get('boris_tier_pos', 'Tier 1')}</span>
                 </div>
             </div>
-            """, unsafe_allow_html=True)
+            """), unsafe_allow_html=True)
 
         col_left, col_center, col_right = st.columns([1.1, 1.5, 1.4])
 
@@ -391,24 +521,29 @@ def render_tab_live_draft(df: pd.DataFrame):
             for slot_name, filled_list, hint in starter_definitions:
                 if filled_list:
                     p = filled_list[0]
-                    st.markdown(f"""
-                    <div style="background-color: #ECFDF5; border-left: 4px solid #059669; padding: 6px 10px; border-radius: 4px; margin-bottom: 5px;">
-                        <span style="font-weight: 800; color: #065F46; font-size: 0.85rem;">{slot_name}:</span> 
-                        <b style="color: #111827;">{p['player_name']}</b> <span style="font-size: 0.8rem; color: #4B5563;">({p['team']} - {p['boris_tier']})</span>
-                        <span style="float: right; font-weight: 700; color: #059669; font-size: 0.85rem;">+{p['vorp']:.1f} VORP</span>
+                    st.markdown(unindent_html(f"""
+                    <div style="background: rgba(16, 185, 129, 0.10); border: 1px solid #10B981; border-left: 4px solid #10B981; padding: 7px 12px; border-radius: 6px; margin-bottom: 5px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <span style="font-weight: 800; color: #10B981; font-size: 0.85rem;">{slot_name}:</span> 
+                                <b style="color: #FFFFFF; font-size: 0.90rem;">{p['player_name']}</b> <span style="font-size: 0.78rem; color: #94A3B8;">({p['team']} - {p['boris_tier']})</span>
+                            </div>
+                            <span style="font-weight: 800; color: #10B981; font-size: 0.85rem;">+{p['vorp']:.1f} V</span>
+                        </div>
                     </div>
-                    """, unsafe_allow_html=True)
+                    """), unsafe_allow_html=True)
                 else:
                     is_urgent = (slot_name in ["RB1", "RB2", "WR1", "WR2"] and cur_p >= 25)
-                    slot_bg = "#FEF2F2" if is_urgent else "#F8FAFC"
-                    border_c = "#DC2626" if is_urgent else "#CBD5E1"
+                    slot_bg = "rgba(239, 68, 68, 0.10)" if is_urgent else "rgba(30, 41, 59, 0.4)"
+                    border_c = "#EF4444" if is_urgent else "#334155"
                     badge_text = "🚨 CRITICAL NEED" if is_urgent else "EMPTY"
-                    st.markdown(f"""
-                    <div style="background-color: {slot_bg}; border-left: 4px solid {border_c}; padding: 6px 10px; border-radius: 4px; margin-bottom: 5px;">
-                        <span style="font-weight: 800; color: #475569; font-size: 0.85rem;">{slot_name}:</span> 
-                        <span style="color: #94A3B8; font-style: italic;">[{badge_text}] - {hint}</span>
+                    badge_c = "#EF4444" if is_urgent else "#64748B"
+                    st.markdown(unindent_html(f"""
+                    <div style="background: {slot_bg}; border: 1px solid {border_c}; border-left: 4px solid {border_c}; padding: 7px 12px; border-radius: 6px; margin-bottom: 5px;">
+                        <span style="font-weight: 800; color: #CBD5E1; font-size: 0.85rem;">{slot_name}:</span> 
+                        <span style="color: {badge_c}; font-weight: 700; font-size: 0.78rem;">[{badge_text}]</span> <span style="color: #64748B; font-size: 0.78rem;">- {hint}</span>
                     </div>
-                    """, unsafe_allow_html=True)
+                    """), unsafe_allow_html=True)
 
             if slots["BENCH"]:
                 st.markdown(f"**Bench Depth ({len(slots['BENCH'])}):**")
@@ -416,22 +551,49 @@ def render_tab_live_draft(df: pd.DataFrame):
                 st.caption(", ".join(bench_names))
 
             st.markdown("---")
-            st.markdown("#### 📊 Active Tier Scarcity")
+            st.markdown("#### 📉 Positional Tier Cliffs & Scarcity Radar")
+            st.caption("Tracks remaining Tier 1 & 2 starters before your next pick. A cliff alert indicates an immediate ~30-50 pt drop-off if missed.")
+
             for pos in ["RB", "WR", "TE", "QB"]:
                 c_data = cliffs.get(pos, {})
                 t_counts = tier_scarcity.get(pos, {})
-                cliff_warn = "🚨 CLIFF" if c_data.get("is_cliff", False) else ""
+                is_cliff = c_data.get("is_cliff", False)
                 t1 = t_counts.get("Tier 1", 0)
                 t2 = t_counts.get("Tier 2", 0)
                 t3 = t_counts.get("Tier 3", 0)
-                st.markdown(f"""
-                <div style="font-size: 0.85rem; margin-bottom: 4px; background: #F1F5F9; padding: 4px 8px; border-radius: 4px;">
-                    <b>{pos}:</b> <span style="color: {'#DC2626' if t1==0 else '#059669'}; font-weight: 700;">T1:{t1}</span> | 
-                    <span style="color: {'#DC2626' if t2==0 else '#0284C7'}; font-weight: 700;">T2:{t2}</span> | 
-                    <span style="font-weight: 600;">T3:{t3}</span> 
-                    <span style="color: #DC2626; font-weight: 800; float: right;">{cliff_warn}</span>
+                
+                drop_pts = c_data.get("vorp_drop", 35.0)
+                
+                if is_cliff:
+                    card_border = "#EF4444"
+                    card_bg = "rgba(239, 68, 68, 0.12)"
+                    status_badge = f'<span style="background:#EF4444; color:white; padding:2px 7px; border-radius:4px; font-size:0.70rem; font-weight:800;">🚨 CRITICAL CLIFF (Δ -{drop_pts:.0f} pts)</span>'
+                elif t1 == 0 and t2 <= 2:
+                    card_border = "#F59E0B"
+                    card_bg = "rgba(245, 158, 11, 0.08)"
+                    status_badge = f'<span style="background:#F59E0B; color:black; padding:2px 7px; border-radius:4px; font-size:0.70rem; font-weight:800;">⚠️ TIER 2 RUN ({t2} left)</span>'
+                elif t1 > 0:
+                    card_border = "#10B981"
+                    card_bg = "rgba(16, 185, 129, 0.06)"
+                    status_badge = f'<span style="background:rgba(16, 185, 129, 0.2); color:#10B981; border: 1px solid #10B981; padding:2px 7px; border-radius:4px; font-size:0.70rem; font-weight:800;">✅ {t1} Tier 1s Left</span>'
+                else:
+                    card_border = "#334155"
+                    card_bg = "rgba(30, 41, 59, 0.3)"
+                    status_badge = f'<span style="color:#94A3B8; font-size:0.70rem; font-weight:700;">Tier 1 Cleared &bull; {t2} T2 left</span>'
+                    
+                st.markdown(unindent_html(f"""
+                <div style="border: 1px solid {card_border}; background: {card_bg}; padding: 7px 10px; border-radius: 6px; margin-bottom: 6px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
+                        <b style="color: #FFFFFF; font-size: 0.90rem;">{pos} Depth:</b>
+                        {status_badge}
+                    </div>
+                    <div style="font-size: 0.78rem; color: #CBD5E1; display: flex; gap: 8px;">
+                        <span><b style="color: {'#EF4444' if t1==0 else '#10B981'};">Tier 1:</b> {t1}</span> &bull;
+                        <span><b style="color: {'#EF4444' if t2==0 else '#38BDF8'};">Tier 2:</b> {t2}</span> &bull;
+                        <span><b>Tier 3:</b> {t3}</span>
+                    </div>
                 </div>
-                """, unsafe_allow_html=True)
+                """), unsafe_allow_html=True)
 
         # ----------------------------------------------------------------------
         # COLUMN 2: TRI-STRATEGY OPTIMAL RECOMMENDATIONS
@@ -446,14 +608,14 @@ def render_tab_live_draft(df: pd.DataFrame):
                     strategy_title="🛡️ STRATEGY 1: BEST VALUE AVAILABLE (BPA)",
                     strategy_pill=f"MRU: {bpa.get('mru_score', 0):.1f}",
                     border_color="#0284C7",
-                    bg_color="#F0F9FF",
-                    title_color="#0369A1",
+                    bg_color="#0B1727",
+                    title_color="#38BDF8",
                     p=bpa,
                     custom_subtitle=bpa.get("strategy_rationale", ""),
                     platform=state_mgr.platform
                 )
                 st.markdown(card1_html, unsafe_allow_html=True)
-                if st.button(f"⚡ DRAFT {bpa['player_name'].upper()} TO MY TEAM", key="btn_draft_bpa", use_container_width=True):
+                if st.button(f"⚡ DRAFT {bpa['player_name'].upper()} (BPA)", key="btn_draft_bpa", use_container_width=True):
                     apply_draft_action(state_mgr, bpa["player_name"], by_user=True)
                     st.rerun()
 
@@ -464,9 +626,9 @@ def render_tab_live_draft(df: pd.DataFrame):
                 card2_html = render_strategy_card_html(
                     strategy_title="🚨 STRATEGY 2: TIER CLIFF SAFEGUARD",
                     strategy_pill="CLIFF DEFENSE",
-                    border_color="#DC2626",
-                    bg_color="#FEF2F2",
-                    title_color="#B91C1C",
+                    border_color="#EF4444",
+                    bg_color="#1C1118",
+                    title_color="#F87171",
                     p=cliff,
                     custom_subtitle=cliff_warn_note,
                     platform=state_mgr.platform
@@ -482,9 +644,9 @@ def render_tab_live_draft(df: pd.DataFrame):
                 card3_html = render_strategy_card_html(
                     strategy_title="🚀 STRATEGY 3: CEILING & STACK PLAY",
                     strategy_pill="TALENT / SYNERGY",
-                    border_color="#7C3AED",
-                    bg_color="#F5F3FF",
-                    title_color="#6D28D9",
+                    border_color="#8B5CF6",
+                    bg_color="#161129",
+                    title_color="#C084FC",
                     p=upside,
                     custom_subtitle=upside.get("strategy_rationale", ""),
                     platform=state_mgr.platform
@@ -504,23 +666,88 @@ def render_tab_live_draft(df: pd.DataFrame):
             if queue_names:
                 q_df = scored_df[scored_df["player_name"].isin(queue_names)]
                 for _, q_p in q_df.iterrows():
-                    snip_c = "#DC2626" if q_p.get("snip_risk_pct", 0) >= 75.0 else ("#D97706" if q_p.get("snip_risk_pct", 0) >= 40.0 else "#059669")
-                    st.markdown(f"""
-                    <div style="border-left: 4px solid {snip_c}; background: #F8FAFC; padding: 6px 10px; border-radius: 4px; margin-bottom: 6px;">
+                    qp_name = q_p["player_name"]
+                    qp_pos = q_p["position"]
+                    qp_team = DataNormalizer.normalize_team(str(q_p["team"]))
+                    qp_tier = str(q_p.get("boris_tier_pos", "Tier 1"))
+                    qp_headshot = PlayerMediaResolver.get_headshot_url(qp_name)
+                    qp_logo = PlayerMediaResolver.get_team_logo_url(qp_team)
+                    
+                    qp_proj = float(q_p.get("adjusted_proj_pts", q_p.get("consensus_proj_pts", 0.0)))
+                    qp_ppg = qp_proj / 17.0 if qp_proj > 0 else 0.0
+                    qp_vorp = float(q_p.get("dynamic_vorp", 0.0))
+                    
+                    snip_pct = float(q_p.get("snip_risk_pct", 50.0))
+                    surv_pct = max(0.0, 100.0 - snip_pct)
+                    snip_c = "#EF4444" if snip_pct >= 75.0 else ("#F59E0B" if snip_pct >= 40.0 else "#10B981")
+                    snip_bg = "rgba(239, 68, 68, 0.15)" if snip_pct >= 75.0 else ("rgba(245, 158, 11, 0.15)" if snip_pct >= 40.0 else "rgba(16, 185, 129, 0.15)")
+                    snip_label = "🚨 CRITICAL SNIPING RISK" if snip_pct >= 75.0 else ("⚠️ MODERATE RISK" if snip_pct >= 40.0 else "✅ SAFE TO WAIT")
+                    
+                    plat_key = state_mgr.platform.lower()
+                    qp_adp = q_p.get(f"adp_{plat_key}", q_p.get("adp_consensus", 0.0))
+                    qp_adp_str = f"#{float(qp_adp):.1f}" if pd.notnull(qp_adp) and qp_adp > 0 else "—"
+                    qp_delta = float(q_p.get(f"adp_delta_{plat_key}", 0.0))
+                    qp_delta_str = f"+{qp_delta:.1f}" if qp_delta > 0 else f"{qp_delta:.1f}"
+                    
+                    q_badges = get_player_badges_html(q_p, platform=state_mgr.platform)
+                    q_badge_div = f'<div style="margin-top: 6px; display: flex; flex-wrap: wrap; gap: 3px;">{q_badges}</div>' if q_badges else ""
+                    
+                    st.markdown(unindent_html(f"""
+                    <div style="background: #0B132B; border: 1px solid #1E293B; border-left: 4px solid {snip_c}; border-radius: 8px; padding: 12px 14px; margin-bottom: 8px;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <b>{q_p['player_name']}</b> <span style="font-size: 0.8rem; color: #4B5563;">({q_p['position']} - {q_p['team']})</span>
-                            <span style="color: {snip_c}; font-weight: 800; font-size: 0.8rem;">{q_p.get('snip_risk_pct', 0):.0f}% Snip</span>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <img src="{qp_headshot}" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid {snip_c}; background: #0F172A;" />
+                                <div>
+                                    <div style="color: #FFFFFF; font-size: 1.05rem; font-weight: 800; line-height: 1.2;">{qp_name}</div>
+                                    <div style="color: #94A3B8; font-size: 0.78rem; font-weight: 600; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                                        <img src="{qp_logo}" style="width: 13px; height: 13px;" />
+                                        <span style="color: #38BDF8; font-weight: 700;">{qp_pos} - {qp_team}</span> &bull; 
+                                        <span style="color: #F59E0B;">{qp_tier}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="background: {snip_bg}; color: {snip_c}; border: 1px solid {snip_c}; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 0.75rem;">
+                                    {snip_pct:.0f}% Snip
+                                </div>
+                            </div>
                         </div>
+                        
+                        <div style="margin-top: 8px; background: #1E293B; height: 6px; border-radius: 3px; overflow: hidden; display: flex;">
+                            <div style="background: {snip_c}; width: {snip_pct}%; height: 100%;"></div>
+                            <div style="background: #10B981; width: {surv_pct}%; height: 100%;"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; color: #64748B; font-size: 0.70rem; margin-top: 3px; font-weight: 600;">
+                            <span style="color: {snip_c};">{snip_label}</span>
+                            <span>P(Avail at #{next_user_p}): <b style="color: #10B981;">{surv_pct:.0f}%</b></span>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; background: rgba(15, 23, 42, 0.7); border: 1px solid #1E293B; border-radius: 5px; padding: 6px 8px; margin-top: 8px; text-align: center;">
+                            <div>
+                                <div style="color: #64748B; font-size: 0.68rem; font-weight: 700;">PROJECTION</div>
+                                <div style="color: #38BDF8; font-weight: 800; font-size: 0.82rem;">{qp_proj:.1f} pts ({qp_ppg:.1f}/G)</div>
+                            </div>
+                            <div>
+                                <div style="color: #64748B; font-size: 0.68rem; font-weight: 700;">DynVORP</div>
+                                <div style="color: #10B981; font-weight: 800; font-size: 0.82rem;">+{qp_vorp:.1f} pts</div>
+                            </div>
+                            <div>
+                                <div style="color: #64748B; font-size: 0.68rem; font-weight: 700;">ADP VALUE</div>
+                                <div style="color: #F8FAFC; font-weight: 800; font-size: 0.82rem;">{qp_adp_str} ({qp_delta_str})</div>
+                            </div>
+                        </div>
+                        {q_badge_div}
                     </div>
-                    """, unsafe_allow_html=True)
-                    qc1, qc2 = st.columns([1, 1])
+                    """), unsafe_allow_html=True)
+                    
+                    qc1, qc2 = st.columns([1.2, 0.8])
                     with qc1:
-                        if st.button(f"⚡ Draft to Me", key=f"q_draft_{q_p['player_name']}", use_container_width=True):
-                            apply_draft_action(state_mgr, q_p["player_name"], by_user=True)
+                        if st.button(f"⚡ Draft {qp_name.split()[0]}", key=f"q_draft_{qp_name}", use_container_width=True):
+                            apply_draft_action(state_mgr, qp_name, by_user=True)
                             st.rerun()
                     with qc2:
-                        if st.button(f"❌ Remove", key=f"q_rem_{q_p['player_name']}", use_container_width=True):
-                            state_mgr.toggle_queue(q_p["player_name"])
+                        if st.button(f"❌ Remove", key=f"q_rem_{qp_name}", use_container_width=True):
+                            state_mgr.toggle_queue(qp_name)
                             st.rerun()
             else:
                 st.info("💡 Queue is empty. Star players from the fast board below to monitor sniping risk.")
@@ -545,18 +772,18 @@ def render_tab_live_draft(df: pd.DataFrame):
                 f_emoji = get_designation_emoji(f_p)
                 m_tag = f_p.get("platform_market_tag", "")
                 
-                tag_badge = f" <span style='font-size:0.75rem; color:#DC2626; font-weight:700;'>[{m_tag}]</span>" if m_tag in ["🚫 TRAP", "💎 STEAL"] else ""
+                tag_badge = f" <span style='font-size:0.75rem; color:#EF4444; font-weight:700;'>[{m_tag}]</span>" if m_tag in ["🚫 TRAP", "💎 STEAL"] else ""
                 
                 f_pts = float(f_p.get("adjusted_proj_pts", f_p.get("consensus_proj_pts", 0.0)))
                 fc_info, fc_mine, fc_taken, fc_q = st.columns([2.5, 1, 1, 0.8])
                 with fc_info:
-                    st.markdown(f"""
+                    st.markdown(unindent_html(f"""
                     <div style="font-size: 0.86rem; padding-top: 4px; line-height: 1.25;">
-                        {f_emoji} <b>{f_name}</b> <span style="font-size: 0.76rem; color: #64748B;">({f_pos}-{f_team})</span>{tag_badge}<br/>
-                        <span style="font-size: 0.78rem; color: #1E3A8A; font-weight: 600;">{f_pts:.1f} pts</span> • 
-                        <span style="color: #059669; font-weight: 700; font-size: 0.78rem;">+{f_vorp:.1f} V</span>
+                        {f_emoji} <b style="color: #FFFFFF;">{f_name}</b> <span style="font-size: 0.76rem; color: #94A3B8;">({f_pos}-{f_team})</span>{tag_badge}<br/>
+                        <span style="font-size: 0.78rem; color: #38BDF8; font-weight: 700;">{f_pts:.1f} pts</span> • 
+                        <span style="color: #10B981; font-weight: 700; font-size: 0.78rem;">+{f_vorp:.1f} V</span>
                     </div>
-                    """, unsafe_allow_html=True)
+                    """), unsafe_allow_html=True)
                 with fc_mine:
                     if st.button("Mine", key=f"mine_{f_name}", use_container_width=True):
                         apply_draft_action(state_mgr, f_name, by_user=True)

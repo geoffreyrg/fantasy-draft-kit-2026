@@ -270,9 +270,9 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
     "⚡ Live Draft War Room",
     "🏆 Master Consensus Board & Tiers",
     "🔬 360° Player Scouting Dossier",
-    "🎯 Market Arbitrage & Sleeper Radar",
+    "🎯 Market Arbitrage & Steals",
     "🛡️ Team Schematics & Matchup Matrix",
-    "📰 Training Camp & Injury Wire",
+    "📰 Real-Time Wire, Sleeper Buzz & Medical Radar",
     "🎮 Platform Sync (Sleeper & Yahoo)",
 ])
 

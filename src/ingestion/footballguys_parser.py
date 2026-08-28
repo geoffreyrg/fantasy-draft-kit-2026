@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 class FootballguysParser:
     DEFAULT_URL = (
         "https://www.footballguys.com/rankings/duration/preseason"
-        "?leagueselect_type=dynamic&ppr=1.0&pp1d=0&pass-yds=25&pass-td=4&pass-int=-1"
+        "?leagueselect_type=dynamic&ppr=0.5&pp1d=0&pass-yds=25&pass-td=4&pass-int=-1"
         "&rec-rec-te=0&qb%2Crb%2Cwr%2Cte=0&qb=1&rb=2&wr=3&te=1&rb%2Cwr%2Cte=1"
         "&qb-team=0&numTeams=12&consensus=1&pos=all&adpSource=consensus&year=2026&week=0"
         "&durationTypeKey=preseason&userId=0&rankerId=0#more"
@@ -86,20 +86,20 @@ class FootballguysParser:
 
     def _fallback_data(self) -> pd.DataFrame:
         data = [
-            {"player_name": "Jahmyr Gibbs", "position": "RB", "team": "DET", "fbg_rank": 1, "fbg_pos_rank": "RB1", "fbg_proj_pts": 372.85, "fbg_tier": 1, "bye_week": 5},
-            {"player_name": "Bijan Robinson", "position": "RB", "team": "ATL", "fbg_rank": 2, "fbg_pos_rank": "RB2", "fbg_proj_pts": 369.48, "fbg_tier": 2, "bye_week": 5},
-            {"player_name": "Christian McCaffrey", "position": "RB", "team": "SF", "fbg_rank": 3, "fbg_pos_rank": "RB3", "fbg_proj_pts": 334.68, "fbg_tier": 2, "bye_week": 4},
-            {"player_name": "Ja'Marr Chase", "position": "WR", "team": "CIN", "fbg_rank": 4, "fbg_pos_rank": "WR1", "fbg_proj_pts": 336.03, "fbg_tier": 3, "bye_week": 5},
-            {"player_name": "Jonathan Taylor", "position": "RB", "team": "IND", "fbg_rank": 5, "fbg_pos_rank": "RB4", "fbg_proj_pts": 270.0, "fbg_tier": 4, "bye_week": 5},
-            {"player_name": "Puka Nacua", "position": "WR", "team": "LAR", "fbg_rank": 6, "fbg_pos_rank": "WR2", "fbg_proj_pts": 339.8, "fbg_tier": 4, "bye_week": 6},
-            {"player_name": "James Cook", "position": "RB", "team": "BUF", "fbg_rank": 7, "fbg_pos_rank": "RB5", "fbg_proj_pts": 250.0, "fbg_tier": 4, "bye_week": 4},
-            {"player_name": "Derrick Henry", "position": "RB", "team": "BAL", "fbg_rank": 8, "fbg_pos_rank": "RB6", "fbg_proj_pts": 245.0, "fbg_tier": 5, "bye_week": 6},
-            {"player_name": "Saquon Barkley", "position": "RB", "team": "PHI", "fbg_rank": 9, "fbg_pos_rank": "RB7", "fbg_proj_pts": 295.0, "fbg_tier": 5, "bye_week": 4},
-            {"player_name": "De'Von Achane", "position": "RB", "team": "MIA", "fbg_rank": 10, "fbg_pos_rank": "RB8", "fbg_proj_pts": 280.0, "fbg_tier": 5, "bye_week": 5},
-            {"player_name": "Jaxon Smith-Njigba", "position": "WR", "team": "SEA", "fbg_rank": 11, "fbg_pos_rank": "WR3", "fbg_proj_pts": 326.18, "fbg_tier": 5, "bye_week": 4},
-            {"player_name": "Amon-Ra St. Brown", "position": "WR", "team": "DET", "fbg_rank": 12, "fbg_pos_rank": "WR4", "fbg_proj_pts": 310.0, "fbg_tier": 5, "bye_week": 5},
-            {"player_name": "Chase Brown", "position": "RB", "team": "CIN", "fbg_rank": 13, "fbg_pos_rank": "RB9", "fbg_proj_pts": 242.0, "fbg_tier": 5, "bye_week": 5},
-            {"player_name": "Brock Bowers", "position": "TE", "team": "LV", "fbg_rank": 14, "fbg_pos_rank": "TE1", "fbg_proj_pts": 244.01, "fbg_tier": 5, "bye_week": 6},
-            {"player_name": "Kenneth Walker III", "position": "RB", "team": "SEA", "fbg_rank": 15, "fbg_pos_rank": "RB10", "fbg_proj_pts": 260.0, "fbg_tier": 5, "bye_week": 5}
+            {"player_name": "Jahmyr Gibbs", "position": "RB", "team": "DET", "fbg_rank": 1, "fbg_pos_rank": "RB1", "fbg_proj_pts": 311.45, "fbg_tier": 1, "bye_week": 5},
+            {"player_name": "Bijan Robinson", "position": "RB", "team": "ATL", "fbg_rank": 2, "fbg_pos_rank": "RB2", "fbg_proj_pts": 301.06, "fbg_tier": 2, "bye_week": 5},
+            {"player_name": "Christian McCaffrey", "position": "RB", "team": "SF", "fbg_rank": 3, "fbg_pos_rank": "RB3", "fbg_proj_pts": 290.75, "fbg_tier": 2, "bye_week": 4},
+            {"player_name": "Ja'Marr Chase", "position": "WR", "team": "CIN", "fbg_rank": 4, "fbg_pos_rank": "WR1", "fbg_proj_pts": 278.21, "fbg_tier": 3, "bye_week": 5},
+            {"player_name": "Jonathan Taylor", "position": "RB", "team": "IND", "fbg_rank": 5, "fbg_pos_rank": "RB4", "fbg_proj_pts": 259.92, "fbg_tier": 4, "bye_week": 5},
+            {"player_name": "Puka Nacua", "position": "WR", "team": "LAR", "fbg_rank": 6, "fbg_pos_rank": "WR2", "fbg_proj_pts": 259.06, "fbg_tier": 4, "bye_week": 6},
+            {"player_name": "James Cook III", "position": "RB", "team": "BUF", "fbg_rank": 7, "fbg_pos_rank": "RB5", "fbg_proj_pts": 243.71, "fbg_tier": 4, "bye_week": 4},
+            {"player_name": "Saquon Barkley", "position": "RB", "team": "PHI", "fbg_rank": 8, "fbg_pos_rank": "RB6", "fbg_proj_pts": 233.69, "fbg_tier": 5, "bye_week": 4},
+            {"player_name": "Derrick Henry", "position": "RB", "team": "BAL", "fbg_rank": 9, "fbg_pos_rank": "RB7", "fbg_proj_pts": 232.38, "fbg_tier": 5, "bye_week": 6},
+            {"player_name": "Chase Brown", "position": "RB", "team": "CIN", "fbg_rank": 10, "fbg_pos_rank": "RB8", "fbg_proj_pts": 229.95, "fbg_tier": 5, "bye_week": 5},
+            {"player_name": "Jaxon Smith-Njigba", "position": "WR", "team": "SEA", "fbg_rank": 11, "fbg_pos_rank": "WR3", "fbg_proj_pts": 236.51, "fbg_tier": 5, "bye_week": 4},
+            {"player_name": "Amon-Ra St. Brown", "position": "WR", "team": "DET", "fbg_rank": 12, "fbg_pos_rank": "WR4", "fbg_proj_pts": 235.57, "fbg_tier": 5, "bye_week": 5},
+            {"player_name": "De'Von Achane", "position": "RB", "team": "MIA", "fbg_rank": 13, "fbg_pos_rank": "RB9", "fbg_proj_pts": 227.86, "fbg_tier": 5, "bye_week": 5},
+            {"player_name": "Kenneth Walker III", "position": "RB", "team": "SEA", "fbg_rank": 14, "fbg_pos_rank": "RB10", "fbg_proj_pts": 226.65, "fbg_tier": 5, "bye_week": 5},
+            {"player_name": "Brock Bowers", "position": "TE", "team": "LV", "fbg_rank": 15, "fbg_pos_rank": "TE1", "fbg_proj_pts": 213.63, "fbg_tier": 6, "bye_week": 6}
         ]
         return pd.DataFrame(data)

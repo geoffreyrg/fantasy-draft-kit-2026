@@ -213,21 +213,32 @@ class BorisChenGMMTierEngine:
                 pos_num = float(row["pos_ecr_num"])
                 t = cls.get_pos_tier(pos_name, int(pos_num))
                 
+                ecr_val = _safe_float(row.get("ecr"), pos_num)
                 sd = _safe_float(row.get("std_dev"), 2.0)
+                
+                # Scale overall ranking uncertainty into positional space
+                pos_sd = max(0.45, sd * (pos_num / max(ecr_val, 1.0)))
+                
+                # Volatility / Projection Spread modifier
+                p_spread = _safe_float(row.get("proj_spread"), 35.0)
+                spread_mult = max(0.85, min(1.35, p_spread / 45.0))
+                pos_sd = pos_sd * spread_mult
+                
+                # Check for explicit positional or extreme upside skew
                 best_raw = _safe_float(row.get("pos_best_rank", row.get("best_rank")), None)
-                worst_raw = _safe_float(row.get("pos_worst_rank", row.get("worst_rank")), None)
-                
-                spread = max(1.0, min(sd * 0.75, pos_num * 0.20 + 2.5))
-                
-                if best_raw is not None and 0 < best_raw <= max_cap:
-                    best_v = max(1.0, min(float(best_raw), pos_num))
+                if best_raw is not None and 0 < best_raw <= pos_num:
+                    best_v = max(1.0, float(best_raw))
                 else:
-                    best_v = max(1.0, round(pos_num - spread, 1))
-                    
-                if worst_raw is not None and worst_raw >= best_v and worst_raw <= max_cap:
-                    worst_v = max(float(worst_raw), pos_num)
+                    best_v = max(1.0, round(pos_num - 1.5 * pos_sd, 1))
+                
+                worst_pos_raw = _safe_float(row.get("pos_worst_rank"), None)
+                if worst_pos_raw is not None and worst_pos_raw >= pos_num and worst_pos_raw <= max_cap:
+                    worst_v = float(worst_pos_raw)
                 else:
-                    worst_v = min(float(max_cap), round(pos_num + spread, 1))
+                    worst_v = min(float(max_cap), round(pos_num + 1.5 * pos_sd, 1))
+                
+                if (worst_v - best_v) < 0.6:
+                    worst_v = round(best_v + 0.6, 1)
                     
                 rng = round(worst_v - best_v, 1)
                 return pd.Series([t, float(pos_num), round(best_v, 1), round(worst_v, 1), rng])

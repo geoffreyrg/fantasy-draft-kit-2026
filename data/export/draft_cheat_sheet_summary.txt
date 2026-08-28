@@ -5,16 +5,16 @@ FANTASY FOOTBALL DRAFT KIT 2026 - EXECUTIVE SCOUTING SUMMARY
 🏆 TOP 10 OVERALL COMPOSITE UPSIDE PLAYERS:
 Rank  Player                 Pos    Team   Comp Score   VORP     ECR    ADP   
 ---------------------------------------------------------------------------
-1     Jahmyr Gibbs           RB     DET    189.2        189.2    1.0    1.0   
-2     Bijan Robinson         RB     ATL    174.3        174.3    2.0    2.1   
-3     Jonathan Taylor        RB     IND    137.2        137.2    8.0    7.0   
-4     Puka Nacua             WR     LAR    130.1        130.1    4.0    4.9   
-5     Ja'Marr Chase          WR     CIN    123.4        123.4    3.0    3.9   
-6     Christian McCaffrey    RB     SF     112.1        112.1    7.0    5.6   
-7     James Cook III         RB     BUF    110.6        110.6    10.0   10.8  
-8     Jaxon Smith-Njigba     WR     SEA    105.3        105.3    5.0    6.0   
-9     Amon-Ra St. Brown      WR     DET    103.6        103.6    6.0    8.8   
-10    Saquon Barkley         RB     PHI    100.4        100.4    15.0   13.4  
+1     Jahmyr Gibbs           RB     DET    161.4        161.4    1.0    1.0   
+2     Bijan Robinson         RB     ATL    150.7        150.7    2.0    2.1   
+3     Jonathan Taylor        RB     IND    120.1        120.1    8.0    7.0   
+4     Puka Nacua             WR     LAR    117.7        117.7    4.0    4.9   
+5     Christian McCaffrey    RB     SF     108.7        108.7    7.0    5.6   
+6     James Cook III         RB     BUF    96.8         96.8     10.0   10.8  
+7     Ja'Marr Chase          WR     CIN    90.9         90.9     3.0    3.9   
+8     Saquon Barkley         RB     PHI    87.4         87.4     15.0   13.4  
+9     Jaxon Smith-Njigba     WR     SEA    87.2         87.2     5.0    6.0   
+10    De'Von Achane          RB     MIA    86.0         86.0     16.0   11.5  
 
 🎯 TOP PLATFORM ADP ARBITRAGE STEALS (Drafted much later on platform than consensus):
 Player                 Pos    Team   Best Platform   ADP Delta  Spread  
@@ -31,14 +31,14 @@ Riley Patterson        K      MIA    ESPN            +753.0     0.0
 🚀 TOP COMPOSITE SLEEPERS & BREAKOUT CANDIDATES:
 Player                 Pos    Team   Comp Rank    ADP      Sleeper Delta  Steam   
 ---------------------------------------------------------------------------
-Juwan Johnson          TE     NO     #113         189.1    +76.1          0.0     
-Mark Andrews           TE     BAL    #78          129.6    +51.6          0.0     
-Quentin Johnston       WR     LAC    #70          111.1    +41.1          0.0     
-Brock Purdy            QB     SF     #81          121.3    +40.3          0.0     
-Dallas Goedert         TE     PHI    #84          123.5    +39.5          0.0     
-Rhamondre Stevenson    RB     NE     #45          81.0     +36.0          0.0     
-Trevor Lawrence        QB     JAX    #77          100.8    +23.8          0.0     
-Michael Pittman        WR     PIT    #79          101.6    +22.6          0.0     
+Brock Purdy            QB     SF     #70          121.3    +51.3          0.0     
+Dallas Goedert         TE     PHI    #77          123.5    +46.5          0.0     
+Rhamondre Stevenson    RB     NE     #44          81.0     +37.0          0.0     
+Trevor Lawrence        QB     JAX    #64          100.8    +36.8          0.0     
+Quentin Johnston       WR     LAC    #75          111.1    +36.1          0.0     
+Malik Willis           QB     MIA    #161         194.2    +33.2          0.0     
+Juwan Johnson          TE     NO     #159         189.1    +30.1          0.0     
+David Montgomery       RB     HOU    #21          49.8     +28.8          34.0    
 
 🍀 TOP POSITIVE LUCK REGRESSION BOUNCE-BACK CANDIDATES:
 Player                 Pos    Team   2025 Adj PPG   Luck Pts Lost   Unlucky Flag

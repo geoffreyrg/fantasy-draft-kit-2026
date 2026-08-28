@@ -1,0 +1,456 @@
+=== RB RANKINGS ===
+
+--- Tier 1 ---
+1. Jahmyr Gibbs (DET) - VORP: +161.4 | ADP: #1.4
+2. Bijan Robinson (ATL) - VORP: +150.7 | ADP: #1.9
+
+--- Tier 2 ---
+3. Christian McCaffrey (SF) - VORP: +108.7 | ADP: #5.6
+4. Jonathan Taylor (IND) - VORP: +120.1 | ADP: #6.9
+5. James Cook III (BUF) - VORP: +96.8 | ADP: #9.8
+
+--- Tier 3 ---
+6. Chase Brown (CIN) - VORP: +57.8 | ADP: #16.4
+7. Saquon Barkley (PHI) - VORP: +87.4 | ADP: #12.1
+8. De'Von Achane (MIA) - VORP: +86.0 | ADP: #15.6
+9. Omarion Hampton (LAC) - VORP: +48.9 | ADP: #18.7
+10. Derrick Henry (BAL) - VORP: +79.6 | ADP: #18.0
+11. Kenneth Walker III (KC) - VORP: +71.9 | ADP: #16.4
+12. Ashton Jeanty (LV) - VORP: +44.7 | ADP: #14.4
+
+--- Tier 4 ---
+13. Kyren Williams (LAR) - VORP: +47.4 | ADP: #29.1
+14. Javonte Williams (DAL) - VORP: +47.9 | ADP: #34.6
+15. David Montgomery (HOU) - VORP: +48.8 | ADP: #52.4
+16. Breece Hall (NYJ) - VORP: +54.7 | ADP: #35.4
+17. Josh Jacobs (GB) - VORP: +58.0 | ADP: #33.4
+
+--- Tier 5 ---
+18. Jeremiyah Love (ARI) - VORP: +30.3 | ADP: #28.3
+19. Travis Etienne Jr. (NO) - VORP: +25.6 | ADP: #43.2
+20. Bucky Irving (TB) - VORP: +34.0 | ADP: #55.2
+21. D'Andre Swift (CHI) - VORP: +32.9 | ADP: #47.4
+22. Quinshon Judkins (CLE) - VORP: +34.1 | ADP: #53.2
+23. Bhayshul Tuten (JAX) - VORP: +33.6 | ADP: #62.5
+
+--- Tier 6 ---
+24. Rhamondre Stevenson (NE) - VORP: +27.1 | ADP: #80.1
+25. Cam Skattebo (NYG) - VORP: +10.3 | ADP: #41.7
+26. Jaylen Warren (PIT) - VORP: +8.7 | ADP: #76.8
+
+--- Tier 7 ---
+27. Tony Pollard (TEN) - VORP: +5.4 | ADP: #85.5
+28. TreVeyon Henderson (NE) - VORP: +1.7 | ADP: #62.8
+29. Rico Dowdle (PIT) - VORP: +0.6 | ADP: #87.0
+
+--- Tier 8 ---
+30. Jadarian Price (SEA) - VORP: +0.0 | ADP: #65.8
+31. Chuba Hubbard (CAR) - VORP: +-3.5 | ADP: #84.4
+32. Kenny Gainwell (TB) - VORP: +-8.8 | ADP: #118.1
+
+--- Tier 9 ---
+33. Aaron Jones (MIN) - VORP: +-10.4 | ADP: #123.1
+34. Blake Corum (LAR) - VORP: +-20.9 | ADP: #99.6
+35. Kyle Monangai (CHI) - VORP: +-25.1 | ADP: #104.3
+36. Jonathon Brooks (CAR) - VORP: +-25.2 | ADP: #97.2
+37. RJ Harvey (DEN) - VORP: +-28.9 | ADP: #103.9
+38. Rachaad White (WAS) - VORP: +-34.2 | ADP: #122.3
+39. Isiah Pacheco (DET) - VORP: +-41.7 | ADP: #126.2
+40. Tyjae Spears (TEN) - VORP: +-45.6 | ADP: #133.4
+
+--- Tier 10 ---
+41. J.K. Dobbins (DEN) - VORP: +-48.0 | ADP: #96.6
+42. Jacory Croskey-Merritt (WAS) - VORP: +-50.3 | ADP: #111.0
+43. Keaton Mitchell (LAC) - VORP: +-52.8 | ADP: #131.8
+44. Justice Hill (BAL) - VORP: +-58.5 | ADP: #999.0
+45. Dylan Sampson (CLE) - VORP: +-61.6 | ADP: #190.3
+46. Ty Johnson (BUF) - VORP: +-64.4 | ADP: #999.0
+47. Tyler Allgeier (ARI) - VORP: +-70.3 | ADP: #129.9
+48. Samaje Perine (CIN) - VORP: +-71.2 | ADP: #999.0
+49. Zach Charbonnet (SEA) - VORP: +-73.4 | ADP: #129.5
+50. Mike Washington Jr. (LV) - VORP: +-75.7 | ADP: #121.8
+51. Woody Marks (HOU) - VORP: +-75.8 | ADP: #131.4
+52. Jaydon Blue (DAL) - VORP: +-79.7 | ADP: #231.8
+53. Chris Rodriguez Jr. (JAX) - VORP: +-83.1 | ADP: #131.8
+54. Jonah Coleman (DEN) - VORP: +-85.4 | ADP: #130.1
+55. Jordan Mason (MIN) - VORP: +-87.3 | ADP: #115.9
+56. MarShawn Lloyd (GB) - VORP: +-88.6 | ADP: #199.3
+57. Alvin Kamara (NO) - VORP: +-88.8 | ADP: #126.1
+58. Tyrone Tracy Jr. (NYG) - VORP: +-91.3 | ADP: #130.9
+59. Emmett Johnson (KC) - VORP: +-91.6 | ADP: #195.5
+60. Isaiah Davis (NYJ) - VORP: +-95.5 | ADP: #999.0
+61. Demond Claiborne (MIN) - VORP: +-96.1 | ADP: #242.0
+62. Najee Harris (NYG) - VORP: +-98.6 | ADP: #221.4
+63. Jaylen Wright (MIA) - VORP: +-99.9 | ADP: #247.9
+64. LeQuint Allen Jr. (JAX) - VORP: +-99.8 | ADP: #999.0
+65. Kaytron Allen (WAS) - VORP: +-101.5 | ADP: #239.1
+66. George Holani (SEA) - VORP: +-101.5 | ADP: #999.0
+67. Chris Brooks (GB) - VORP: +-103.7 | ADP: #999.0
+68. Tank Bigsby (PHI) - VORP: +-107.1 | ADP: #130.5
+69. Ollie Gordon II (MIA) - VORP: +-108.7 | ADP: #999.0
+70. Ray Davis (BUF) - VORP: +-109.2 | ADP: #229.5
+71. Brashard Smith (KC) - VORP: +-109.5 | ADP: #226.3
+72. Seth McGowan (IND) - VORP: +-111.8 | ADP: #999.0
+73. Braelon Allen (NYJ) - VORP: +-112.3 | ADP: #208.6
+74. Jordan James (SF) - VORP: +-114.8 | ADP: #999.0
+75. Kaelon Black (SF) - VORP: +-116.1 | ADP: #999.0
+76. James Conner (ARI) - VORP: +-116.4 | ADP: #125.8
+77. Tahj Brooks (CIN) - VORP: +-118.5 | ADP: #999.0
+78. DJ Giddens (IND) - VORP: +-118.7 | ADP: #999.0
+79. Nicholas Singleton (TEN) - VORP: +-120.3 | ADP: #209.5
+80. Emanuel Wilson (SEA) - VORP: +-120.5 | ADP: #250.3
+81. Trevor Etienne (CAR) - VORP: +-122.5 | ADP: #999.0
+82. Kyle Juszczyk (SF) - VORP: +-122.9 | ADP: #1655.0
+83. Kimani Vidal (LAC) - VORP: +-125.0 | ADP: #241.0
+84. Devin Singletary (NYG) - VORP: +-126.2 | ADP: #999.0
+85. Will Shipley (PHI) - VORP: +-126.3 | ADP: #999.0
+86. Sean Tucker (TB) - VORP: +-128.3 | ADP: #243.9
+87. Kendre Miller (NO) - VORP: +-128.9 | ADP: #224.8
+88. Jawhar Jordan (HOU) - VORP: +-130.2 | ADP: #999.0
+89. Zavier Scott (MIN) - VORP: +-130.3 | ADP: #693.0
+90. Brian Robinson Jr. (FA) - VORP: +-72.3 | ADP: #121.6
+91. Amon-Ra St.Brown (FA) - VORP: +-82.3 | ADP: #145.0
+92. Zachariah Branch (FA) - VORP: +-91.1 | ADP: #147.0
+
+
+=== WR RANKINGS ===
+
+--- Tier 1 ---
+1. Ja'Marr Chase (CIN) - VORP: +90.9 | ADP: #3.4
+2. Puka Nacua (LAR) - VORP: +117.7 | ADP: #4.8
+3. Jaxon Smith-Njigba (SEA) - VORP: +87.2 | ADP: #6.8
+
+--- Tier 2 ---
+4. Amon-Ra St. Brown (DET) - VORP: +76.6 | ADP: #7.9
+5. CeeDee Lamb (DAL) - VORP: +64.6 | ADP: #10.4
+6. Justin Jefferson (MIN) - VORP: +63.1 | ADP: #12.8
+7. Drake London (ATL) - VORP: +47.5 | ADP: #19.1
+8. A.J. Brown (NE) - VORP: +38.1 | ADP: #24.7
+9. Nico Collins (HOU) - VORP: +41.0 | ADP: #22.3
+10. George Pickens (DAL) - VORP: +35.8 | ADP: #22.4
+11. Chris Olave (NO) - VORP: +41.0 | ADP: #32.9
+
+--- Tier 3 ---
+12. Malik Nabers (NYG) - VORP: +23.7 | ADP: #32.3
+13. DeVonta Smith (PHI) - VORP: +29.5 | ADP: #29.5
+14. Rashee Rice (KC) - VORP: +43.1 | ADP: #34.5
+
+--- Tier 4 ---
+15. Zay Flowers (BAL) - VORP: +32.2 | ADP: #36.3
+16. Tee Higgins (CIN) - VORP: +38.8 | ADP: #33.5
+17. Tetairoa McMillan (CAR) - VORP: +9.5 | ADP: #41.8
+18. Garrett Wilson (NYJ) - VORP: +30.7 | ADP: #49.4
+19. Jaylen Waddle (DEN) - VORP: +11.6 | ADP: #41.9
+20. Ladd McConkey (LAC) - VORP: +26.1 | ADP: #45.5
+21. Jameson Williams (DET) - VORP: +22.9 | ADP: #65.9
+
+--- Tier 5 ---
+22. Emeka Egbuka (TB) - VORP: +16.5 | ADP: #43.9
+23. Mike Evans (SF) - VORP: +18.0 | ADP: #67.1
+24. Terry McLaurin (WAS) - VORP: +17.4 | ADP: #54.0
+25. Davante Adams (LAR) - VORP: +26.9 | ADP: #53.9
+26. Luther Burden III (CHI) - VORP: +6.2 | ADP: #58.8
+27. Christian Watson (GB) - VORP: +15.2 | ADP: #67.7
+28. Parker Washington (JAX) - VORP: +9.5 | ADP: #82.1
+29. Rome Odunze (CHI) - VORP: +8.8 | ADP: #67.6
+
+--- Tier 6 ---
+30. DJ Moore (BUF) - VORP: +6.4 | ADP: #62.0
+31. Brian Thomas Jr. (JAX) - VORP: +5.0 | ADP: #83.9
+32. DK Metcalf (PIT) - VORP: +2.5 | ADP: #86.3
+33. Quentin Johnston (LAC) - VORP: +4.4 | ADP: #109.7
+34. Courtland Sutton (DEN) - VORP: +0.3 | ADP: #103.2
+35. Jakobi Meyers (JAX) - VORP: +0.6 | ADP: #129.1
+36. Stefon Diggs (WAS) - VORP: +0.0 | ADP: #107.6
+37. Michael Pittman (PIT) - VORP: +-2.6 | ADP: #120.0
+38. Jordan Addison (MIN) - VORP: +-9.6 | ADP: #117.3
+39. Carnell Tate (TEN) - VORP: +-10.4 | ADP: #80.0
+40. Jayden Reed (GB) - VORP: +-11.3 | ADP: #119.2
+
+--- Tier 7 ---
+41. Romeo Doubs (NE) - VORP: +-15.2 | ADP: #131.8
+42. Chris Godwin Jr. (TB) - VORP: +-17.3 | ADP: #97.7
+43. Marvin Harrison Jr. (ARI) - VORP: +-19.3 | ADP: #78.7
+44. Cooper Kupp (SEA) - VORP: +-22.7 | ADP: #223.9
+45. Deebo Samuel Sr. (SF) - VORP: +-22.3 | ADP: #127.5
+46. Josh Downs (IND) - VORP: +-23.5 | ADP: #109.0
+47. Xavier Worthy (KC) - VORP: +-25.0 | ADP: #128.9
+48. Michael Wilson (ARI) - VORP: +-26.5 | ADP: #102.9
+
+--- Tier 8 ---
+49. Matthew Golden (GB) - VORP: +-29.1 | ADP: #128.1
+50. Alec Pierce (IND) - VORP: +-32.5 | ADP: #92.0
+51. Jalen Coker (CAR) - VORP: +-33.5 | ADP: #133.3
+52. Makai Lemon (PHI) - VORP: +-35.3 | ADP: #112.2
+53. Tre Tucker (LV) - VORP: +-35.8 | ADP: #203.7
+54. Khalil Shakir (BUF) - VORP: +-35.6 | ADP: #131.4
+55. Jalen McMillan (TB) - VORP: +-36.2 | ADP: #129.3
+56. Dontayvion Wicks (PHI) - VORP: +-36.5 | ADP: #999.0
+57. Ryan Flournoy (DAL) - VORP: +-36.4 | ADP: #233.0
+58. Keenan Allen (IND) - VORP: +-37.2 | ADP: #197.3
+
+--- Tier 9 ---
+59. Jalen Nailor (LV) - VORP: +-39.0 | ADP: #184.9
+60. Wan'Dale Robinson (TEN) - VORP: +-40.0 | ADP: #130.9
+61. Rashid Shaheed (SEA) - VORP: +-42.4 | ADP: #128.3
+62. Jerry Jeudy (CLE) - VORP: +-44.3 | ADP: #191.2
+63. Adonai Mitchell (NYJ) - VORP: +-49.3 | ADP: #235.5
+64. KC Concepcion (CLE) - VORP: +-50.1 | ADP: #127.7
+65. Rashod Bateman (BAL) - VORP: +-51.7 | ADP: #232.7
+66. Jauan Jennings (MIN) - VORP: +-52.3 | ADP: #126.9
+67. Caleb Douglas (MIA) - VORP: +-53.2 | ADP: #218.6
+68. Calvin Ridley (TEN) - VORP: +-54.2 | ADP: #253.2
+69. Devaughn Vele (NO) - VORP: +-54.7 | ADP: #239.8
+70. KaVontae Turpin (DAL) - VORP: +-57.7 | ADP: #999.0
+71. Denzel Boston (CLE) - VORP: +-59.2 | ADP: #131.4
+72. Kayshon Boutte (HOU) - VORP: +-58.4 | ADP: #239.8
+73. Jordyn Tyson (NO) - VORP: +-60.8 | ADP: #94.4
+74. Jaylin Noel (HOU) - VORP: +-61.3 | ADP: #213.7
+75. Tre Harris (LAC) - VORP: +-63.2 | ADP: #230.6
+76. Malik Washington (MIA) - VORP: +-64.1 | ADP: #200.5
+77. Marvin Mims Jr. (DEN) - VORP: +-64.1 | ADP: #219.5
+78. De'Zhaun Stribling (SF) - VORP: +-65.0 | ADP: #155.0
+79. Omar Cooper Jr. (NYJ) - VORP: +-65.6 | ADP: #130.0
+80. Malachi Fields (NYG) - VORP: +-68.8 | ADP: #226.4
+81. Kendrick Bourne (ARI) - VORP: +-69.1 | ADP: #999.0
+82. Tank Dell (HOU) - VORP: +-71.5 | ADP: #176.1
+83. Pat Bryant (DEN) - VORP: +-71.7 | ADP: #1180.0
+84. Ja'Kobi Lane (BAL) - VORP: +-74.4 | ADP: #157.9
+85. Xavier Legette (CAR) - VORP: +-74.1 | ADP: #1200.0
+86. Tyquan Thornton (KC) - VORP: +-75.3 | ADP: #999.0
+87. Germie Bernard (PIT) - VORP: +-76.5 | ADP: #232.3
+88. Isaac TeSlaa (DET) - VORP: +-77.7 | ADP: #212.3
+89. Jahan Dotson (ATL) - VORP: +-79.0 | ADP: #999.0
+90. Keon Coleman (BUF) - VORP: +-80.8 | ADP: #234.8
+91. Ricky Pearsall (FA) - VORP: +-24.5 | ADP: #141.0
+92. Jayden Higgins (FA) - VORP: +-35.8 | ADP: #146.0
+93. Brandon Aiyuk (FA) - VORP: +-55.1 | ADP: #148.0
+94. Antonio Williams (FA) - VORP: +-71.4 | ADP: #150.0
+
+
+=== TE RANKINGS ===
+
+--- Tier 1 ---
+1. Brock Bowers (LV) - VORP: +44.5 | ADP: #21.1
+2. Trey McBride (ARI) - VORP: +28.1 | ADP: #25.8
+
+--- Tier 2 ---
+3. Colston Loveland (CHI) - VORP: +24.0 | ADP: #39.6
+4. Tyler Warren (IND) - VORP: +22.1 | ADP: #47.2
+
+--- Tier 3 ---
+5. Kyle Pitts (ATL) - VORP: +8.3 | ADP: #72.9
+6. Sam LaPorta (DET) - VORP: +8.4 | ADP: #63.1
+7. Travis Kelce (KC) - VORP: +3.2 | ADP: #94.0
+8. Dallas Goedert (PHI) - VORP: +2.6 | ADP: #106.3
+9. Harold Fannin Jr. (CLE) - VORP: +1.2 | ADP: #71.4
+
+--- Tier 4 ---
+10. Jake Ferguson (DAL) - VORP: +0.6 | ADP: #115.5
+11. George Kittle (SF) - VORP: +1.4 | ADP: #86.7
+12. Tucker Kraft (GB) - VORP: +1.3 | ADP: #60.8
+13. Mark Andrews (BAL) - VORP: +0.0 | ADP: #113.4
+14. Juwan Johnson (NO) - VORP: +-3.9 | ADP: #127.4
+15. Brenton Strange (JAX) - VORP: +-5.2 | ADP: #128.9
+16. Dalton Schultz (HOU) - VORP: +-13.0 | ADP: #128.2
+
+--- Tier 5 ---
+17. Dalton Kincaid (BUF) - VORP: +-12.9 | ADP: #99.0
+18. Hunter Henry (NE) - VORP: +-13.6 | ADP: #127.7
+19. T.J. Hockenson (MIN) - VORP: +-17.5 | ADP: #129.3
+20. Charlie Kolar (LAC) - VORP: +-18.6 | ADP: #999.0
+
+--- Tier 6 ---
+21. Isaiah Likely (NYG) - VORP: +-19.4 | ADP: #109.2
+22. Cade Otton (TB) - VORP: +-21.8 | ADP: #237.3
+23. AJ Barner (SEA) - VORP: +-24.9 | ADP: #126.0
+24. Chig Okonkwo (WAS) - VORP: +-28.2 | ADP: #126.3
+25. Pat Freiermuth (PIT) - VORP: +-31.3 | ADP: #239.9
+
+--- Tier 7 ---
+26. Jonnu Smith (FA) - VORP: +-101.7 | ADP: #8.0
+27. Gunnar Helm (TEN) - VORP: +-34.0 | ADP: #233.4
+28. Evan Engram (DEN) - VORP: +-34.5 | ADP: #999.0
+29. Greg Dulcich (MIA) - VORP: +-38.5 | ADP: #229.7
+30. Michael Mayer (LV) - VORP: +-42.0 | ADP: #999.0
+
+--- Tier 8 ---
+31. Kenyon Sadiq (NYJ) - VORP: +-42.6 | ADP: #130.0
+32. Colby Parkinson (LAR) - VORP: +-42.8 | ADP: #251.4
+33. Mason Taylor (NYJ) - VORP: +-46.0 | ADP: #224.3
+34. Mike Gesicki (CIN) - VORP: +-46.4 | ADP: #999.0
+35. Theo Johnson (NYG) - VORP: +-47.8 | ADP: #232.2
+36. Dawson Knox (BUF) - VORP: +-49.3 | ADP: #999.0
+37. Cole Kmet (CHI) - VORP: +-49.4 | ADP: #999.0
+38. Darnell Washington (PIT) - VORP: +-50.1 | ADP: #999.0
+39. David Njoku (LAC) - VORP: +-57.5 | ADP: #206.9
+40. Terrance Ferguson (LAR) - VORP: +-58.9 | ADP: #207.1
+41. Tyler Higbee (LAR) - VORP: +-59.1 | ADP: #999.0
+42. Darren Waller (CAR) - VORP: +-61.0 | ADP: #999.0
+43. Noah Fant (NO) - VORP: +-63.5 | ADP: #999.0
+44. Oronde Gadsden II (LAC) - VORP: +-63.4 | ADP: #126.6
+45. Noah Gray (KC) - VORP: +-63.7 | ADP: #999.0
+46. Elijah Arroyo (SEA) - VORP: +-66.8 | ADP: #999.0
+47. Oscar Delp (NO) - VORP: +-68.0 | ADP: #999.0
+48. Elijah Higgins (ARI) - VORP: +-68.2 | ADP: #999.0
+49. Jake Tonges (SF) - VORP: +-68.6 | ADP: #241.4
+50. Daniel Bellinger (TEN) - VORP: +-69.0 | ADP: #999.0
+51. Austin Hooper (ATL) - VORP: +-71.2 | ADP: #430.0
+52. Tanner Hudson (CIN) - VORP: +-71.8 | ADP: #999.0
+53. Drew Sample (CIN) - VORP: +-74.5 | ADP: #999.0
+54. Eli Raridon (NE) - VORP: +-76.0 | ADP: #999.0
+55. Josh Whyle (GB) - VORP: +-76.3 | ADP: #695.5
+56. Josh Oliver (MIN) - VORP: +-76.7 | ADP: #999.0
+57. Tommy Tremble (CAR) - VORP: +-77.0 | ADP: #999.0
+58. Will Kacmarek (MIA) - VORP: +-77.1 | ADP: #999.0
+59. Joe Royer (CLE) - VORP: +-79.2 | ADP: #683.0
+60. Ja'Tavion Sanders (CAR) - VORP: +-80.2 | ADP: #999.0
+
+
+=== QB RANKINGS ===
+
+--- Tier 1 ---
+1. Josh Allen (BUF) - VORP: +49.6 | ADP: #19.8
+2. Lamar Jackson (BAL) - VORP: +29.3 | ADP: #37.6
+
+--- Tier 2 ---
+3. Drake Maye (NE) - VORP: +25.5 | ADP: #47.3
+4. Jayden Daniels (WAS) - VORP: +29.1 | ADP: #54.0
+5. Joe Burrow (CIN) - VORP: +17.7 | ADP: #49.0
+6. Jalen Hurts (PHI) - VORP: +25.1 | ADP: #56.9
+
+--- Tier 3 ---
+7. Dak Prescott (DAL) - VORP: +19.0 | ADP: #74.2
+8. Trevor Lawrence (JAX) - VORP: +9.4 | ADP: #84.8
+9. Justin Herbert (LAC) - VORP: +8.6 | ADP: #69.8
+10. Brock Purdy (SF) - VORP: +7.0 | ADP: #98.3
+11. Jaxson Dart (NYG) - VORP: +0.2 | ADP: #88.1
+
+--- Tier 4 ---
+12. Caleb Williams (CHI) - VORP: +2.6 | ADP: #68.0
+13. Matthew Stafford (LAR) - VORP: +0.0 | ADP: #100.5
+14. Bo Nix (DEN) - VORP: +-0.9 | ADP: #99.8
+15. Patrick Mahomes (KC) - VORP: +-0.6 | ADP: #100.1
+16. Malik Willis (MIA) - VORP: +-4.2 | ADP: #124.8
+
+--- Tier 5 ---
+17. Tyler Shough (NO) - VORP: +-4.7 | ADP: #130.0
+18. Jared Goff (DET) - VORP: +-6.5 | ADP: #114.5
+19. Kyler Murray (MIN) - VORP: +-7.9 | ADP: #111.8
+20. Jordan Love (GB) - VORP: +-12.9 | ADP: #124.3
+21. Baker Mayfield (TB) - VORP: +-14.5 | ADP: #126.3
+
+--- Tier 6 ---
+22. Sam Darnold (SEA) - VORP: +-18.5 | ADP: #122.7
+23. Daniel Jones (IND) - VORP: +-23.7 | ADP: #205.8
+24. Jacoby Brissett (ARI) - VORP: +-31.2 | ADP: #243.0
+25. Geno Smith (NYJ) - VORP: +-37.8 | ADP: #999.0
+
+--- Tier 7 ---
+26. Bryce Young (CAR) - VORP: +-44.6 | ADP: #227.1
+27. Aaron Rodgers (PIT) - VORP: +-45.9 | ADP: #228.8
+28. Cam Ward (TEN) - VORP: +-47.7 | ADP: #213.7
+29. Deshaun Watson (CLE) - VORP: +-60.6 | ADP: #999.0
+30. Fernando Mendoza (LV) - VORP: +-88.3 | ADP: #119.9
+31. Tua Tagovailoa (ATL) - VORP: +-109.0 | ADP: #236.5
+32. Michael Penix Jr. (ATL) - VORP: +-115.5 | ADP: #227.9
+33. Kirk Cousins (LV) - VORP: +-121.0 | ADP: #999.0
+34. J.J. McCarthy (MIN) - VORP: +-169.2 | ADP: #224.2
+35. Shedeur Sanders (CLE) - VORP: +-174.3 | ADP: #236.1
+36. Jameis Winston (NYG) - VORP: +-174.7 | ADP: #999.0
+37. Carson Beck (ARI) - VORP: +-176.4 | ADP: #999.0
+38. Marcus Mariota (WAS) - VORP: +-177.6 | ADP: #999.0
+39. Justin Fields (KC) - VORP: +-178.8 | ADP: #999.0
+40. Tyson Bagent (CHI) - VORP: +-179.8 | ADP: #999.0
+41. Tanner McKee (PHI) - VORP: +-179.8 | ADP: #999.0
+42. Josh Johnson (CIN) - VORP: +-180.3 | ADP: #544.0
+43. Joe Milton III (DAL) - VORP: +-180.4 | ADP: #999.0
+44. Mac Jones (SF) - VORP: +-180.9 | ADP: #999.0
+45. CJ Stroud (FA) - VORP: +-19.6 | ADP: #125.6
+
+
+=== K RANKINGS ===
+
+--- Tier 1 ---
+1. Brandon Aubrey (DAL) - VORP: +2.1 | ADP: #999.0
+2. Jake Bates (DET) - VORP: +1.8 | ADP: #999.0
+3. Harrison Mevis (LAR) - VORP: +1.2 | ADP: #999.0
+
+--- Tier 2 ---
+4. Cairo Santos (CHI) - VORP: +0.8 | ADP: #999.0
+5. Jason Myers (SEA) - VORP: +0.5 | ADP: #999.0
+6. Eddy Pineiro (SF) - VORP: +0.6 | ADP: #999.0
+7. Tyler Bass (BUF) - VORP: +0.6 | ADP: #999.0
+8. Ka'imi Fairbairn (HOU) - VORP: +0.4 | ADP: #999.0
+
+--- Tier 3 ---
+9. Cameron Dicker (LAC) - VORP: +0.5 | ADP: #999.0
+10. Spencer Shrader (IND) - VORP: +0.4 | ADP: #999.0
+11. Tyler Loop (BAL) - VORP: +0.3 | ADP: #999.0
+12. Harrison Butker (KC) - VORP: +0.2 | ADP: #999.0
+13. Cam Little (JAX) - VORP: +0.0 | ADP: #999.0
+14. Trey Smack (GB) - VORP: +-0.3 | ADP: #999.0
+
+--- Tier 4 ---
+15. Chase McLaughlin (TB) - VORP: +-0.1 | ADP: #999.0
+16. Jake Elliott (PHI) - VORP: +-0.2 | ADP: #999.0
+17. Nick Folk (ATL) - VORP: +-0.3 | ADP: #999.0
+18. Evan McPherson (CIN) - VORP: +-0.5 | ADP: #999.0
+19. Wil Lutz (DEN) - VORP: +-0.8 | ADP: #999.0
+20. Will Reichard (MIN) - VORP: +-1.0 | ADP: #999.0
+21. Charlie Smyth (NO) - VORP: +-1.0 | ADP: #999.0
+22. Andy Borregales (NE) - VORP: +-1.3 | ADP: #999.0
+23. Drew Stevens (WAS) - VORP: +-2.0 | ADP: #999.0
+24. Chris Boswell (PIT) - VORP: +-2.1 | ADP: #999.0
+25. Chad Ryland (ARI) - VORP: +-2.1 | ADP: #999.0
+26. Dominic Zvada (NYG) - VORP: +-2.7 | ADP: #999.0
+27. Matt Gay (LV) - VORP: +-2.7 | ADP: #999.0
+28. Joey Slye (TEN) - VORP: +-3.0 | ADP: #999.0
+29. Cade York (NYJ) - VORP: +-3.5 | ADP: #999.0
+30. Riley Patterson (MIA) - VORP: +-3.8 | ADP: #999.0
+31. Ryan Fitzgerald (CAR) - VORP: +-4.1 | ADP: #999.0
+32. Andre Szmyt (CLE) - VORP: +-4.6 | ADP: #999.0
+
+
+=== DST RANKINGS ===
+
+--- Tier 1 ---
+1. Houston Texans (HOU) - VORP: +1.8 | ADP: #999.0
+2. Los Angeles Rams (LAR) - VORP: +1.9 | ADP: #999.0
+3. Seattle Seahawks (SEA) - VORP: +1.4 | ADP: #999.0
+
+--- Tier 2 ---
+4. Denver Broncos (DEN) - VORP: +1.2 | ADP: #999.0
+5. Philadelphia Eagles (PHI) - VORP: +1.2 | ADP: #999.0
+6. Jacksonville Jaguars (JAX) - VORP: +1.1 | ADP: #999.0
+7. Minnesota Vikings (MIN) - VORP: +0.6 | ADP: #999.0
+8. New England Patriots (NE) - VORP: +0.4 | ADP: #999.0
+
+--- Tier 3 ---
+9. Kansas City Chiefs (KC) - VORP: +0.4 | ADP: #999.0
+10. Green Bay Packers (GB) - VORP: +0.1 | ADP: #999.0
+11. Los Angeles Chargers (LAC) - VORP: +0.2 | ADP: #999.0
+12. Pittsburgh Steelers (PIT) - VORP: +0.0 | ADP: #999.0
+13. New Orleans Saints (NO) - VORP: +0.0 | ADP: #999.0
+14. Baltimore Ravens (BAL) - VORP: +-0.3 | ADP: #999.0
+
+--- Tier 4 ---
+15. Buffalo Bills (BUF) - VORP: +-0.2 | ADP: #999.0
+16. Carolina Panthers (CAR) - VORP: +-0.3 | ADP: #999.0
+17. Indianapolis Colts (IND) - VORP: +-0.4 | ADP: #999.0
+18. San Francisco 49ers (SF) - VORP: +-0.4 | ADP: #999.0
+19. Atlanta Falcons (ATL) - VORP: +-0.6 | ADP: #999.0
+20. Detroit Lions (DET) - VORP: +-1.0 | ADP: #999.0
+21. Tampa Bay Buccaneers (TB) - VORP: +-1.1 | ADP: #999.0
+22. New York Giants (NYG) - VORP: +-1.4 | ADP: #999.0
+23. Chicago Bears (CHI) - VORP: +-1.4 | ADP: #999.0
+24. Washington Commanders (WAS) - VORP: +-1.6 | ADP: #999.0
+25. Las Vegas Raiders (LV) - VORP: +-1.9 | ADP: #999.0
+26. Miami Dolphins (MIA) - VORP: +-2.0 | ADP: #999.0
+27. Cleveland Browns (CLE) - VORP: +-2.3 | ADP: #999.0
+28. Tennessee Titans (TEN) - VORP: +-2.5 | ADP: #999.0
+29. Dallas Cowboys (DAL) - VORP: +-2.6 | ADP: #999.0
+30. Cincinnati Bengals (CIN) - VORP: +-2.8 | ADP: #999.0
+31. Arizona Cardinals (ARI) - VORP: +-3.2 | ADP: #999.0
+32. New York Jets (NYJ) - VORP: +-3.7 | ADP: #999.0
+

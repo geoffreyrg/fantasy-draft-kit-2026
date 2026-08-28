@@ -23,10 +23,9 @@ def render_tab_platform_sync(df: pd.DataFrame):
     sleeper_client = SleeperClient()
     yahoo_client = YahooClient()
 
-    sync_tab1, sync_tab2, sync_tab3 = st.tabs([
+    sync_tab1, sync_tab2 = st.tabs([
         "⚡ Sleeper League Sync & Live Draft Stream",
-        "🟣 Yahoo Fantasy Sports Sync (OAuth 2.0)",
-        "📈 Sleeper 24-Hour Trending Radar"
+        "🟣 Yahoo Fantasy Sports Sync (OAuth 2.0)"
     ])
 
     # ==========================================================================
@@ -241,90 +240,3 @@ def render_tab_platform_sync(df: pd.DataFrame):
         manual_league_id = st.text_input("Yahoo League ID:", placeholder="e.g. 123456", key="manual_yahoo_id")
         if manual_league_id:
             st.info(f"Targeting Yahoo League #{manual_league_id}. Multi-Platform ADP and Steals are automatically calibrated to Yahoo 1/2 PPR rules.")
-
-    # ==========================================================================
-    # SUBTAB 3: SLEEPER 24-HOUR TRENDING RADAR
-    # ==========================================================================
-    with sync_tab3:
-        st.markdown("### 📈 Sleeper Real-Time Trending Radar")
-        st.markdown("Real-time add/drop transaction velocity across millions of Sleeper fantasy leagues. Detects preseason buzz, depth chart promotions, and injury fallout in real time.")
-
-        ctrl_c1, ctrl_c2 = st.columns([2, 2])
-        with ctrl_c1:
-            time_window = st.selectbox("Lookback Window:", options=[12, 24, 48, 72], index=1, format_func=lambda x: f"Last {x} Hours", key="trending_lookback")
-        with ctrl_c2:
-            pos_filter = st.selectbox("Position Filter:", options=["ALL", "QB", "RB", "WR", "TE"], index=0, key="trending_pos_filter")
-
-        t_col1, t_col2 = st.columns(2)
-        with t_col1:
-            st.markdown(f"#### 🔥 Top Trending Adds (Last {time_window}h)")
-            with st.spinner("Fetching trending adds & player profiles..."):
-                adds = sleeper_client.get_trending_players(trend_type="add", lookback_hours=time_window, limit=25)
-            
-            if adds:
-                df_adds = pd.DataFrame(adds)
-                if "position" in df_adds.columns and pos_filter != "ALL":
-                    df_adds = df_adds[df_adds["position"] == pos_filter]
-                
-                if not df_adds.empty:
-                    if "count" in df_adds.columns:
-                        df_adds["24h Adds"] = df_adds["count"].apply(lambda x: f"+{int(x):,}")
-                    
-                    cols_to_show = []
-                    rename_map = {}
-                    for col, display_name in [
-                        ("player_name", "Player Name"),
-                        ("player_id", "Sleeper ID"),
-                        ("position", "Pos"),
-                        ("team", "Team"),
-                        ("24h Adds", "24h Adds"),
-                        ("count", "Count"),
-                        ("injury_status", "Injury / Status")
-                    ]:
-                        if col in df_adds.columns:
-                            cols_to_show.append(col)
-                            rename_map[col] = display_name
-                    
-                    # Keep most informative columns
-                    final_cols = [c for c in ["player_name", "position", "team", "24h Adds", "injury_status"] if c in df_adds.columns]
-                    if not final_cols:
-                        final_cols = [c for c in cols_to_show if c in df_adds.columns]
-                    
-                    st.dataframe(df_adds[final_cols].rename(columns=rename_map), use_container_width=True, hide_index=True)
-                else:
-                    st.info(f"No {pos_filter} trending adds found.")
-            else:
-                st.info("No trending adds data available right now.")
-
-        with t_col2:
-            st.markdown(f"#### 🧊 Top Trending Drops (Last {time_window}h)")
-            with st.spinner("Fetching trending drops & player profiles..."):
-                drops = sleeper_client.get_trending_players(trend_type="drop", lookback_hours=time_window, limit=25)
-            
-            if drops:
-                df_drops = pd.DataFrame(drops)
-                if "position" in df_drops.columns and pos_filter != "ALL":
-                    df_drops = df_drops[df_drops["position"] == pos_filter]
-
-                if not df_drops.empty:
-                    if "count" in df_drops.columns:
-                        df_drops["24h Drops"] = df_drops["count"].apply(lambda x: f"-{int(x):,}")
-
-                    rename_map = {
-                        "player_name": "Player Name",
-                        "player_id": "Sleeper ID",
-                        "position": "Pos",
-                        "team": "Team",
-                        "24h Drops": "24h Drops",
-                        "count": "Count",
-                        "injury_status": "Injury / Status"
-                    }
-                    final_cols = [c for c in ["player_name", "position", "team", "24h Drops", "injury_status"] if c in df_drops.columns]
-                    if not final_cols:
-                        final_cols = [c for c in df_drops.columns if c in rename_map]
-                    
-                    st.dataframe(df_drops[final_cols].rename(columns=rename_map), use_container_width=True, hide_index=True)
-                else:
-                    st.info(f"No {pos_filter} trending drops found.")
-            else:
-                st.info("No trending drops data available right now.")

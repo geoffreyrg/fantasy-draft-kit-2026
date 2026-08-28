@@ -34,46 +34,39 @@ TEAM_RZ_GL = {
 }
 
 def get_designation_emoji(r) -> str:
-    """Extracts master designation emoji directly from the primary expert consensus designation."""
+    """Extracts master designation emoji with priority given to calibrated archetype badge and expert signals."""
+    arch = str(r.get("archetype_badge", "")).strip().upper()
+    if "EXODIA" in arch or r.get("is_exodia") == 1:
+        return "👑"
+    if "LEAGUE WINNER" in arch:
+        return "🏆"
+    if "TRAP RISK" in arch or r.get("is_dirty_30") == 1:
+        return "⚠️"
+    if "HIGH CEILING" in arch:
+        return "🚀"
+    if "SAFE FLOOR" in arch:
+        return "🎯"
+    if "SLEEPER" in arch or r.get("is_sleeper") == 1:
+        return "💎"
+        
+    smyth = str(r.get("smyth_color_tag", "")).strip().upper()
+    if smyth in ["TARGET", "GREEN", "🎯"]:
+        return "🎯"
+    if smyth in ["PASS", "YELLOW"]:
+        return "🟡"
+    if smyth in ["AVOID", "RED", "🚫"]:
+        return "🚫"
+        
     des = str(r.get("master_designation", "")).strip()
+    if "🚫" in des: return "🚫"
+    if "💥" in des: return "👑"
+    if "🎯" in des: return "🎯"
+    if "👑" in des: return "👑"
+    if "🔥" in des: return "🔥"
+    if "⭐" in des: return "⭐"
+    if "⚠️" in des: return "⚠️"
+    if "💰" in des: return "💰"
     
-    # 1. Direct explicit emoji in Master Designation (HIGHEST PRIORITY)
-    if "🚫" in des:
-        return "🚫"
-    if "💥" in des:
-        return "💥"
-    if "🎯" in des:
-        return "🎯"
-    if "👑" in des:
-        return "👑"
-    if "🔥" in des:
-        return "🔥"
-    if "⭐" in des:
-        return "⭐"
-    if "⚠️" in des:
-        return "⚠️"
-    if "💰" in des:
-        return "💰"
-        
-    # 2. Text keyword matching in Master Designation & Model Tags
-    des_lower = des.lower()
-    if "fade" in des_lower or "avoid" in des_lower or "overvalue" in des_lower or r.get("smyth_color_tag") == "AVOID":
-        return "🚫"
-    if "exodia" in des_lower or "must-have" in des_lower or r.get("is_exodia") == 1:
-        return "💥"
-    if "twelve" in des_lower or "guru" in des_lower or "hero" in des_lower:
-        return "👑"
-    if "target" in des_lower or r.get("smyth_color_tag") == "TARGET":
-        return "🎯"
-    if "catalyst" in des_lower or "breakout" in des_lower or r.get("has_breakout_catalyst") == 1:
-        return "🔥"
-    if "pass" in des_lower or r.get("smyth_color_tag") == "PASS":
-        return "⚠️"
-    if "contract" in des_lower or r.get("is_contract_year") == 1:
-        return "💰"
-    if "value" in des_lower or r.get("is_top_offense_undervalued") == 1:
-        return "⭐"
-        
     return "●"
 
 from src.analytics.schedule_matrix import ScheduleMatrixEngine, TEAM_ALIASES
@@ -206,22 +199,35 @@ STANDARD_COLUMN_CONFIG = {
     "player_name": st.column_config.TextColumn("Player", pinned=True),
     "position": st.column_config.TextColumn("Pos", pinned=True),
     "team": st.column_config.TextColumn("Team", pinned=True),
+    "archetype_badge": st.column_config.TextColumn("Archetype", pinned=True, help="Draft Archetype: 👑 EXODIA, 🏆 LEAGUE WINNER, 🚀 HIGH CEILING, 🎯 SAFE FLOOR, ⚠️ TRAP RISK, 💎 SLEEPER"),
     "expected_round_label": st.column_config.TextColumn("Exp Round", help="Expected Draft Round (12-team format)"),
-    "master_designation": st.column_config.TextColumn("Designation", pinned=True, help="Primary Expert Badge (Exodia / Target / Value / Avoid)"),
+    "master_designation": st.column_config.TextColumn("Designation", help="Primary Expert Badge (Exodia / Target / Value / Avoid)"),
     "composite_tier": st.column_config.TextColumn("Tier", width="small", help="Master Quantitative Composite Tier (T1 to T8)"),
     "boris_tier_pos": st.column_config.TextColumn("Boris Tier", width="small", help="Boris Chen Gaussian clustering positional tier"),
+    "tie_breaker_score": st.column_config.NumberColumn("⚡ Tiebreaker Index", format="%.1f", help="5-Pillar Draft Room Tiebreaker Index (0-100)"),
+    "pillar_scheme_score": st.column_config.NumberColumn("🛡️ Scheme", format="%.1f", help="Pillar 1: Offensive Line Rank + 2-WR Conc + Playcaller PROE (0-100)"),
+    "pillar_sos_score": st.column_config.NumberColumn("⚔️ SOS", format="%.1f", help="Pillar 2: Regular Season Trench SOS + W15-17 Playoff Runway (0-100)"),
+    "pillar_expert_score": st.column_config.NumberColumn("🎯 Expert", format="%.1f", help="Pillar 3: Boris Chen GMM Tier + Smyth Green Target + Hansen 12 (0-100)"),
+    "pillar_talent_score": st.column_config.NumberColumn("🔬 Talent", format="%.1f", help="Pillar 4: JoScho Film & MTF Athletic Talent Grade (0-100)"),
+    "pillar_steam_score": st.column_config.NumberColumn("📈 Steam", format="%.1f", help="Pillar 5: Sleeper 24h Trend + ADP Market Valuation (0-100)"),
     "ecr": st.column_config.NumberColumn("ECR", format="%.1f", help="Consensus Expert Consensus Ranking (ECR)"),
     "adjusted_vorp": st.column_config.NumberColumn("🏆 VORP", format="%.1f", help="Value Over Replacement Player (12-Team 1/2 PPR Baseline)"),
     "adjusted_proj_pts": st.column_config.NumberColumn("🚀 Calib Proj", format="%.1f", help="Multi-source consensus projection scaled by expert upside model"),
-    "upside_pct_display": st.column_config.NumberColumn("🎯 Upside Mod", format="%+.1f%%", help="Expert upside multiplier (-8% to +10%)"),
+    "consensus_proj_pts": st.column_config.NumberColumn("📊 Proj (Med)", format="%.1f", help="Multi-source consensus median projection"),
+    "proj_floor": st.column_config.NumberColumn("Floor", format="%.1f", help="10th percentile projection floor"),
+    "proj_ceiling": st.column_config.NumberColumn("Ceiling", format="%.1f", help="90th percentile projection ceiling"),
+    "proj_spread": st.column_config.NumberColumn("Spread (Δ)", format="%.1f", help="Ceiling minus Floor Spread (Weekly Volatility)"),
+    "reg_season_sos_grade": st.column_config.TextColumn("Reg SOS", width="small", help="Regular Season Strength of Schedule (Weeks 1-14)"),
+    "playoff_sos_grade": st.column_config.TextColumn("Playoff Slate", width="medium", help="Fantasy Playoff Schedule (Weeks 15-17)"),
+    "upside_pct_display": st.column_config.NumberColumn("🎯 Upside Mod", format="%+.1f%%", help="Expert upside multiplier (-3% to +3%)"),
     "adp_yahoo": st.column_config.NumberColumn("Yahoo ADP", format="%.1f", help="Current Live Yahoo Fantasy ADP"),
     "adp_delta_yahoo": st.column_config.NumberColumn("Yahoo Edge", format="%+.1f", help="Model Rank vs Yahoo ADP (Positive = Huge Value / Steal on Yahoo)"),
+    "sleeper_trend_count": st.column_config.NumberColumn("Sleeper 24h", format="%+d", help="Live 24h trending adds/drops volume on Sleeper"),
     "smyth_color_tag": st.column_config.TextColumn("🎯 Smyth", width="small", help="Joel Smyth Big Board: 🎯 Target (+12), 🟡 Pass (-5), 🚫 Avoid (-15), ⚪ Neutral (0)"),
     "duracell_ol_rank": st.column_config.NumberColumn("OL Rk", format="#%d", help="Consensus Offensive Line Rank (1 = Best, 32 = Worst)"),
     "is_contract_year": st.column_config.CheckboxColumn("Contract Yr"),
     "injury_status": st.column_config.TextColumn("Injury"),
     "tactical_context": st.column_config.TextColumn("⚡ Key Tactical Tiebreaker Intel", width="large", help="Position-specific role, playcaller, OL rank, 2-WR usage %, PROE, red zone tendency, playoff W17 spot, and shadow CB flags"),
-    "consensus_proj_pts": st.column_config.NumberColumn("📊 Proj Pts", format="%.1f"),
     "adp_consensus": st.column_config.NumberColumn("Consensus ADP", format="%.1f"),
     "adp_delta_consensus": st.column_config.NumberColumn("Market Delta", format="%+.1f"),
     "two_wr_set_pct": st.column_config.NumberColumn("2-WR Set %", format="%.1f%%"),
@@ -334,18 +340,9 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, i
         color=alt.Color(f"{tier_col}:N", scale=tier_color_scale)
     )
 
-    # 4. Center Circle Glow
-    center_glow = base_chart.mark_circle(
-        size=220,
-        opacity=0.35
-    ).encode(
-        x=alt.X(f"{mean_col}:Q", scale=x_scale),
-        color=alt.Color(f"{tier_col}:N", scale=tier_color_scale)
-    )
-
-    # 5. Center Designation Emoji (🚫 Fade, 💥 Exodia, 🎯 Target, 👑 Hero, ⭐ Value, 💰 Contract, 🔥 Catalyst, ⚠️ Avoid)
+    # 4. Center Designation Emoji (👑 Exodia, 🏆 League Winner, 🚀 High Ceiling, 🎯 Safe Floor, ⚠️ Trap Risk, 💎 Sleeper)
     center_emoji = base_chart.mark_text(
-        fontSize=14,
+        fontSize=15,
         baseline="middle",
         align="center"
     ).encode(
@@ -355,19 +352,20 @@ def render_boris_chen_staircase(chart_data: pd.DataFrame, position_title: str, i
             alt.Tooltip("player_name:N", title="Player"),
             alt.Tooltip("position:N", title="Pos"),
             alt.Tooltip("team:N", title="Team"),
+            alt.Tooltip("archetype_badge:N", title="Archetype"),
             alt.Tooltip("master_designation:N", title="Designation"),
             alt.Tooltip(f"{tier_col}:N", title="Boris Chen Tier"),
             alt.Tooltip(f"{mean_col}:Q", format=".1f", title="Consensus Mean Rank"),
             alt.Tooltip(f"{best_col}:Q", format=".1f", title="Expert High Rank"),
             alt.Tooltip(f"{worst_col}:Q", format=".1f", title="Expert Low Rank"),
-            alt.Tooltip("boris_rank_range:Q", format=".1f", title="Spread Uncertainty"),
+            alt.Tooltip("pos_rank_range:Q", format=".1f", title="Spread Uncertainty") if is_positional else alt.Tooltip("boris_rank_range:Q", format=".1f", title="Spread Uncertainty"),
             alt.Tooltip("composite_rank:Q", title="Our Model Rank"),
             alt.Tooltip("adjusted_proj_pts:Q", format=".1f", title="Calib Proj"),
             alt.Tooltip("adjusted_vorp:Q", format=".1f", title="VORP")
         ]
     )
 
-    staircase_chart = (whisker_line + tick_left + tick_right + center_glow + center_emoji).properties(
+    staircase_chart = (whisker_line + tick_left + tick_right + center_emoji).properties(
         width=850,
         height=max(450, len(chart_df) * 28),
         title=f"📊 {position_title} — Boris Chen GMM Tiering & Uncertainty Ranges"
