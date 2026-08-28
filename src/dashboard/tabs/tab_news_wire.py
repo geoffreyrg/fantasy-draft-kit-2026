@@ -225,21 +225,29 @@ def render_tab_news_wire(df: pd.DataFrame):
         st.caption("Ingests r/fantasyfootball posts & comments to detect breaking sentiment swings and training camp buzz.")
 
         steam_tracker = RedditSteamTracker()
-        steam_data = steam_tracker.get_trending_steam()
+        steam_df = steam_tracker.analyze_sentiment_steam()
 
         col_s1, col_s2 = st.columns(2)
         with col_s1:
             st.markdown("#### 🚀 Rising Market Steam (Hype Trains)")
-            rising = [s for s in steam_data if s.get("sentiment_score", 0) > 0]
-            if rising:
-                st.dataframe(pd.DataFrame(rising)[["player_name", "sentiment_score", "mention_count", "hype_status"]], use_container_width=True, hide_index=True)
+            if isinstance(steam_df, pd.DataFrame) and not steam_df.empty:
+                rising = steam_df[steam_df.get("steam_index", 0) > 0]
+                if not rising.empty:
+                    show_cols = [c for c in ["player_name", "reddit_mentions_7d", "sentiment_polarity", "steam_index", "steam_trend"] if c in rising.columns]
+                    st.dataframe(rising[show_cols], use_container_width=True, hide_index=True)
+                else:
+                    st.write("No high-velocity positive steam spikes detected in the last 24h.")
             else:
                 st.write("No high-velocity positive steam spikes detected in the last 24h.")
 
         with col_s2:
             st.markdown("#### ❄️ Falling Sentiment & Panic Meter")
-            falling = [s for s in steam_data if s.get("sentiment_score", 0) < 0]
-            if falling:
-                st.dataframe(pd.DataFrame(falling)[["player_name", "sentiment_score", "mention_count", "hype_status"]], use_container_width=True, hide_index=True)
+            if isinstance(steam_df, pd.DataFrame) and not steam_df.empty:
+                falling = steam_df[steam_df.get("steam_index", 0) <= 0]
+                if not falling.empty:
+                    show_cols = [c for c in ["player_name", "reddit_mentions_7d", "sentiment_polarity", "steam_index", "steam_trend"] if c in falling.columns]
+                    st.dataframe(falling[show_cols], use_container_width=True, hide_index=True)
+                else:
+                    st.write("No major panic dropoffs detected in the last 24h.")
             else:
                 st.write("No major panic dropoffs detected in the last 24h.")

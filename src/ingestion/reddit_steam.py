@@ -107,6 +107,10 @@ class RedditSteamTracker:
 
         return self._get_fallback_steam_data()
 
+    def get_trending_steam(self, target_players: Optional[List[str]] = None) -> pd.DataFrame:
+        """Alias for analyze_sentiment_steam."""
+        return self.analyze_sentiment_steam(target_players)
+
     def _score_text(self, text: str) -> float:
         """Calculates lexicon sentiment polarity score for a text snippet."""
         text_lower = text.lower()
